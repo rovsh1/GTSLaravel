@@ -186,7 +186,8 @@ class TemplateDataFactory
             $cancelConditionsDto = new CancelConditionsDto(
                 $cancelConditions->noCheckInMarkup()->value()->value(),
                 $this->getHumanCancelPeriodType($cancelConditions->noCheckInMarkup()->cancelPeriodType()),
-                $dailyMarkupsDto
+                $dailyMarkupsDto,
+                $cancelConditions->cancelNoFeeDate()
             );
         }
 
@@ -254,7 +255,8 @@ class TemplateDataFactory
         return new ClientDto(
             $client->name,
             $client->phone,
-            $client->address
+            $client->email,
+            $client->address,
         );
     }
 

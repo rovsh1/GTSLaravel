@@ -6,9 +6,9 @@
             <tr>
                 <td style="width: 35%">Условия отмены:</td>
                 <td style="width: 65%">
-                    {{--                    Отмена без штрафа--}}
-                    {{--                    до {{ $cancelConditions?->cancelNoFeeDate ? Format::date($cancelConditions?->cancelNoFeeDate) : '-' }}--}}
-                    {{--                    <br/>--}}
+                    Отмена без штрафа
+                    до {{ $booking->cancelConditions?->cancelNoFeeDate ? Format::date($booking->cancelConditions?->cancelNoFeeDate) : '-' }}
+                    <br/>
 
                     @if($booking->cancelConditions)
                         Неявка: {{ $booking->cancelConditions->noCheckInMarkup }}
@@ -16,8 +16,7 @@
                         <br/>
 
                         @foreach($booking->cancelConditions->dailyMarkups ?? [] as $dailyMarkup)
-                            За {{ $dailyMarkup->daysCount }} {{ trans_choice('[1] день|[2,4] дня|[5,*] дней', $dailyMarkup->daysCount) }}
-                            :
+                            За {{ $dailyMarkup->daysCount }} {{ trans_choice('[1] день|[2,4] дня|[5,*] дней', $dailyMarkup->daysCount) }}:
 
                             @if($dailyMarkup->valueType === \Sdk\Shared\Enum\Pricing\ValueTypeEnum::PERCENT)
                                 {{ $dailyMarkup->value }}% {{ $dailyMarkup->markupType }}
@@ -29,7 +28,6 @@
                     @endif
                 </td>
             </tr>
-            {cancelPeriods}
             </tbody>
         </table>
     </td>

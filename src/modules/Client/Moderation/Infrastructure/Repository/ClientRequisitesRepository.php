@@ -23,4 +23,11 @@ class ClientRequisitesRepository implements ClientRequisitesRepositoryInterface
 
         return $model?->value;
     }
+
+    public function getEmail(ClientId $clientId): ?string
+    {
+        $model = Contact::whereClientId($clientId->value())->whereIsEmail()->first();
+
+        return $model?->value;
+    }
 }

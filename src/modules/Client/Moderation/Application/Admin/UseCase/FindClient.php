@@ -30,6 +30,7 @@ class FindClient implements UseCaseInterface
             $client->residency(),
             $this->clientRequisitesRepository->getAddress($client->id()),
             $this->clientRequisitesRepository->getPhone($client->id()),
+            $this->clientRequisitesRepository->getEmail($client->id()),
         );
     }
 }

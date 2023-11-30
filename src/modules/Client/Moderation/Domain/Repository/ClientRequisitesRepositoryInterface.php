@@ -11,4 +11,6 @@ interface ClientRequisitesRepositoryInterface
     public function getPhone(ClientId $clientId): ?string;
 
     public function getAddress(ClientId $clientId): ?string;
+
+    public function getEmail(ClientId $clientId): ?string;
 }

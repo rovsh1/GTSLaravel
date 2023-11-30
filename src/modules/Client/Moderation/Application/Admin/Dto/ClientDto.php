@@ -16,6 +16,7 @@ final class ClientDto
         public readonly ResidencyEnum $residency,
         public readonly ?string $address,
         public readonly ?string $phone,
+        public readonly ?string $email,
     ) {}
 
     public function isLegal(): bool

@@ -27,7 +27,7 @@
         @include('_partials.company_requisites_header')
 
         <tr>
-            <td class="title text-align-center" colspan="5">ИНВОЙС № {{ $invoice->number }}</td>
+            <td class="title text-align-center" colspan="5">ИНВОЙС № {{ $order->number }}</td>
         </tr>
         <tr>
             <td class="text-align-right" colspan="5">Дата создания: {{ $invoice->createdAt }}</td>
@@ -41,18 +41,20 @@
                         <td>
                             <table>
                                 <tbody>
-                                <tr>
+                                <tr class="first">
                                     <td>Клиент: {{ $client->name }}</td>
-                                    <td class="text-align-right" style="font-size: 24px; font-weight: bold; color: red">
-                                        Номер заказа: {{ $order->number }}
-                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Договор: {{ $client->name }}</td>
                                 </tr>
                                 <tr>
                                     <td>Адрес: {{ $client->address  }}</td>
-                                    <td class="text-align-right">Статус заказа: {{ $order->status }}</td>
                                 </tr>
                                 <tr>
                                     <td>Телефон: {{ $client->phone }}</td>
+                                </tr>
+                                <tr class="last">
+                                    <td>Email: {{ $client->email }}</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -66,17 +68,14 @@
         <tr>
             <td colspan="2" style="padding-top: 20px;">
                 <table>
-                    <thead>
-                    <tr>
-                        <th style="width: 3%;">№</th>
-                        <th class="text-align-left" style="width: 52%;">Информация об услуге</th>
-                        <th style="width: 15%;">Количество</th>
-                        <th style="width: 15%;">Цена, {{ $order->currency }}</th>
-                        <th style="width: 15%;">Итого, {{ $order->currency }}</th>
-                    </tr>
-                    </thead>
                     <tbody>
-                    @foreach($bookings as $bookingIndex => $booking)
+                    @foreach($bookings as $booking)
+                        <tr>
+                            <th class="text-align-left" style="width: 52%;">Информация об услуге</th>
+                            <th style="width: 15%;">Кол-во</th>
+                            <th style="width: 15%;">Цена, {{ $order->currency }}</th>
+                            <th style="width: 15%;">Итого, {{ $order->currency }}</th>
+                        </tr>
                         @include('invoice._partials.booking')
                     @endforeach
                     <tr class="first">
@@ -91,7 +90,8 @@
                     </tr>
                     <tr>
                         <td colspan="5">
-                            <p>Внимание! Оплата должна быть произведена в полной мере, без учета комиссии межбанковских
+                            <p>Внимание! Оплата должна быть произведена в полной мере, без учета комиссии
+                                межбанковских
                                 переводов, налогов и сборов. В случае необходимости уплаты таковых, все расчеты
                                 должны быть произведены заказчиком сверх сумм, указанных в настоящем инвойсе.</p>
                         </td>

@@ -1,16 +1,15 @@
 <tr class="first padding-bottom">
-    <td class="text-align-center service-number">{{ ++$bookingIndex }}</td>
-    @if($booking->bookingPeriod !== null)
-        <td class="service-name">{{ $booking->serviceName }}</td>
-        <td colspan="3" class="booking-period">Период бронирования: {{ $booking->bookingPeriod->startDate }}
-            - {{ $booking->bookingPeriod->endDate }}
-            @if($booking->bookingPeriod->countDays !== null)
-                ({{ $booking->bookingPeriod->countDays }})
-            @endif
-        </td>
-    @else
+{{--    @if($booking->bookingPeriod !== null)--}}
+{{--        <td class="service-name">{{ $booking->serviceName }}</td>--}}
+{{--        <td colspan="3" class="booking-period">Период бронирования: {{ $booking->bookingPeriod->startDate }}--}}
+{{--            - {{ $booking->bookingPeriod->endDate }}--}}
+{{--            @if($booking->bookingPeriod->countDays !== null)--}}
+{{--                ({{ $booking->bookingPeriod->countDays }})--}}
+{{--            @endif--}}
+{{--        </td>--}}
+{{--    @else--}}
         <td class="service-name" colspan="4">{{ $booking->serviceName }}</td>
-    @endif
+{{--    @endif--}}
 </tr>
 
 @foreach($booking->rooms ?? [] as $index =>  $room)
@@ -25,6 +24,12 @@
     @include('invoice._partials.booking_price')
 @endif
 
+@if(isset($booking->guests))
+    <tr>
+        <td>Гости ({{ count($booking->guests) }}):</td>
+        <td></td>
+    </tr>
+@endif
 @foreach($booking->guests ?? [] as $index => $guest)
     @include('invoice._partials.guest')
 @endforeach
