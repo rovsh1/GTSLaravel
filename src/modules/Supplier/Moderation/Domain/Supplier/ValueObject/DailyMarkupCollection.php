@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace Module\Supplier\Moderation\Domain\Supplier\ValueObject;
 
 use Illuminate\Support\Collection;
-use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Sdk\Shared\Contracts\Support\SerializableInterface;
 
 /**
  * @extends Collection<int, DailyMarkupOption>
  */
-final class DailyMarkupCollection extends Collection implements ValueObjectInterface, SerializableInterface
+final class DailyMarkupCollection extends Collection implements SerializableInterface
 {
     public function serialize(): array
     {

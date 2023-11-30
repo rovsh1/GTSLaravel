@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Sdk\Shared\ValueObject;
 
-use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Sdk\Shared\Contracts\Support\CanEquate;
 use Sdk\Shared\Contracts\Support\SerializableInterface;
 
-class TimePeriod implements ValueObjectInterface, SerializableInterface, CanEquate
+class TimePeriod implements SerializableInterface, CanEquate
 {
     private readonly string $from;
     private readonly string $to;

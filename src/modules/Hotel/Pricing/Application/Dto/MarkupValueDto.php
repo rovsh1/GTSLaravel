@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Module\Hotel\Pricing\Application\Dto;
 
-use Module\Shared\Contracts\Domain\EntityInterface;
-use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Module\Shared\Support\Dto\AbstractDomainBasedDto;
 use Sdk\Shared\Enum\Pricing\ValueTypeEnum;
 use Sdk\Shared\ValueObject\MarkupValue;
@@ -17,12 +15,12 @@ class MarkupValueDto extends AbstractDomainBasedDto
         public readonly ValueTypeEnum $type
     ) {}
 
-    public static function fromDomain(EntityInterface|ValueObjectInterface $entity): static
+    public static function fromDomain(mixed $entity): static
     {
         assert($entity instanceof MarkupValue);
 
         return new static(
-            $entity->value()->value(),
+            $entity->value(),
             $entity->type()
         );
     }

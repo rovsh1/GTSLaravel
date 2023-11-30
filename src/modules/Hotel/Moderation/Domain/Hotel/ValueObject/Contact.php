@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Hotel\Moderation\Domain\Hotel\ValueObject;
 
-use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Sdk\Shared\Enum\ContactTypeEnum;
 
-class Contact implements ValueObjectInterface
+class Contact
 {
     public function __construct(
         private readonly ContactTypeEnum $type,

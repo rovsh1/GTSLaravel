@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Module\Administrator\Application\Response;
 
 use Module\Administrator\Domain\Entity\Administrator;
-use Module\Shared\Contracts\Domain\EntityInterface;
-use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Module\Shared\Support\Dto\AbstractDomainBasedDto;
 
 class AdministratorDto extends AbstractDomainBasedDto
@@ -20,8 +18,10 @@ class AdministratorDto extends AbstractDomainBasedDto
         public readonly ?string $surname,
     ) {}
 
-    public static function fromDomain(EntityInterface|ValueObjectInterface|Administrator $entity): static
+    public static function fromDomain(mixed $entity): static
     {
+        assert($entity instanceof Administrator);
+
         return new static(
             $entity->id()->value(),
             $entity->presentation(),

@@ -6,8 +6,6 @@ namespace Module\Booking\Moderation\Application\Dto;
 
 use Carbon\CarbonImmutable;
 use Module\Booking\Shared\Domain\Voucher\Voucher;
-use Module\Shared\Contracts\Domain\EntityInterface;
-use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Module\Shared\Support\Dto\AbstractDomainBasedDto;
 
 class VoucherDto extends AbstractDomainBasedDto
@@ -17,8 +15,10 @@ class VoucherDto extends AbstractDomainBasedDto
         public readonly CarbonImmutable $dateCreate
     ) {}
 
-    public static function fromDomain(EntityInterface|ValueObjectInterface|Voucher $entity): static
+    public static function fromDomain(mixed $entity): static
     {
+        assert($entity instanceof Voucher);
+
         return new static(
             $entity->id()->value(),
             $entity->dateCreate()

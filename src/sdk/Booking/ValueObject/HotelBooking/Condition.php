@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Sdk\Booking\ValueObject\HotelBooking;
 
-use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Sdk\Shared\Contracts\Support\CanEquate;
 use Sdk\Shared\Contracts\Support\SerializableInterface;
 use Sdk\Shared\ValueObject\Percent;
@@ -13,7 +12,7 @@ use Sdk\Shared\ValueObject\TimePeriod;
 /**
  * @see \Module\Hotel\Moderation\Domain\Hotel\ValueObject\MarkupSettings\Condition
  */
-final class Condition implements ValueObjectInterface, SerializableInterface, CanEquate
+final class Condition implements SerializableInterface, CanEquate
 {
     public function __construct(
         private TimePeriod $timePeriod,

@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Module\Hotel\Moderation\Application\Dto;
 
 use Module\Hotel\Moderation\Domain\Hotel\Hotel;
-use Module\Shared\Contracts\Domain\EntityInterface;
-use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Module\Shared\Support\Dto\AbstractDomainBasedDto;
 
 class HotelDto extends AbstractDomainBasedDto
@@ -23,8 +21,10 @@ class HotelDto extends AbstractDomainBasedDto
         public readonly array $contacts,
     ) {}
 
-    public static function fromDomain(EntityInterface|ValueObjectInterface|Hotel $entity): static
+    public static function fromDomain(mixed $entity): static
     {
+        assert($entity instanceof Hotel);
+
         return new static(
             $entity->id()->value(),
             $entity->name(),

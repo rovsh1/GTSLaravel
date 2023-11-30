@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Sdk\Booking\ValueObject\HotelBooking;
 
-use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Sdk\Shared\Contracts\Support\SerializableInterface;
 
-final class ExternalNumber implements ValueObjectInterface, SerializableInterface
+final class ExternalNumber implements SerializableInterface
 {
     public function __construct(
         private readonly ExternalNumberTypeEnum $type,

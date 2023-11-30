@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Module\Client\Moderation\Application\Admin\Dto;
 
 use Module\Client\Moderation\Domain\Entity\Legal;
-use Module\Shared\Contracts\Domain\EntityInterface;
-use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Module\Shared\Support\Dto\AbstractDomainBasedDto;
 
 final class LegalDto extends AbstractDomainBasedDto
@@ -26,8 +24,10 @@ final class LegalDto extends AbstractDomainBasedDto
         public readonly ?string $currentAccount,
     ) {}
 
-    public static function fromDomain(EntityInterface|ValueObjectInterface|Legal $entity): static
+    public static function fromDomain(mixed $entity): static
     {
+        assert($entity instanceof Legal);
+
         return new static(
             $entity->id()->value(),
             $entity->name(),

@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Supplier\Moderation\Domain\Supplier\ValueObject;
 
-use Module\Shared\Contracts\Domain\ValueObjectInterface;
-
-class Requisites implements ValueObjectInterface
+class Requisites
 {
     public function __construct(
         private readonly string $inn,

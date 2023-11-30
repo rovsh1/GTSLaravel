@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\Dto\Details;
 
-use Module\Shared\Contracts\Domain\EntityInterface;
-use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Module\Shared\Support\Dto\AbstractDomainBasedDto;
 use Sdk\Booking\ValueObject\HotelBooking\HotelInfo;
 
@@ -18,8 +16,10 @@ class HotelInfoDto extends AbstractDomainBasedDto
         public readonly string $checkOutTime,
     ) {}
 
-    public static function fromDomain(EntityInterface|ValueObjectInterface|HotelInfo $entity): static
+    public static function fromDomain(mixed $entity): static
     {
+        assert($entity instanceof HotelInfo);
+
         return new static(
             $entity->id(),
             $entity->name(),

@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace Sdk\Booking\ValueObject;
 
 use Carbon\CarbonImmutable;
-use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Sdk\Booking\ValueObject\CancelCondition\CancelFeeValue;
 use Sdk\Booking\ValueObject\CancelCondition\DailyCancelFeeValueCollection;
 use Sdk\Shared\Contracts\Support\SerializableInterface;
 
-class CancelConditions implements ValueObjectInterface, SerializableInterface
+class CancelConditions implements SerializableInterface
 {
     public function __construct(
         private readonly CancelFeeValue $noCheckInMarkup,

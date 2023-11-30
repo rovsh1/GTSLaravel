@@ -2,12 +2,10 @@
 
 namespace Module\Integration\Traveline\Application\Dto;
 
-use Sdk\Module\Foundation\Support\Dto\Dto;
-
-class HotelDto extends Dto
+class HotelDto
 {
     public function __construct(
-        public readonly int   $hotelId,
+        public readonly int $hotelId,
         /** @var RoomDto[] $roomsAndRatePlans */
         public readonly array $roomsAndRatePlans,
     ) {}

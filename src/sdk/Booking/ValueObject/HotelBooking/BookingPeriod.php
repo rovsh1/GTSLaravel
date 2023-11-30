@@ -6,11 +6,10 @@ use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Carbon\CarbonPeriod;
 use Carbon\CarbonPeriodImmutable;
-use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Sdk\Shared\Contracts\Support\CanEquate;
 use Sdk\Shared\Contracts\Support\SerializableInterface;
 
-final class BookingPeriod implements ValueObjectInterface, SerializableInterface, CanEquate
+final class BookingPeriod implements SerializableInterface, CanEquate
 {
     private int $nightsCount;
 

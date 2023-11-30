@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Supplier\Moderation\Domain\Supplier\ValueObject;
 
-use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Sdk\Shared\Contracts\Support\SerializableInterface;
 
-class CancelConditions implements ValueObjectInterface, SerializableInterface
+class CancelConditions implements SerializableInterface
 {
     public function __construct(
         private readonly CancelMarkupOption $noCheckInMarkup,

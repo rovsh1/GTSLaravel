@@ -9,34 +9,33 @@ use Sdk\Module\Foundation\Support\Dto\Attributes\MapInputName;
 use Sdk\Module\Foundation\Support\Dto\Attributes\WithCast;
 use Sdk\Module\Foundation\Support\Dto\Casts\CarbonInterfaceCast;
 use Sdk\Module\Foundation\Support\Dto\Casts\EnumCast;
-use Sdk\Module\Foundation\Support\Dto\Dto;
 
-class ReservationDto extends Dto
+class ReservationDto
 {
     public function __construct(
         #[MapInputName('id')]
-        public readonly int               $number,
-        public readonly int               $hotelId,
+        public readonly int $number,
+        public readonly int $hotelId,
 
         #[MapInputName('createdDate'), WithCast(CarbonInterfaceCast::class)]
-        public readonly CarbonInterface   $created,
+        public readonly CarbonInterface $created,
 
         #[MapInputName('checkInTime')]
-        public readonly ?string           $arrivalTime,
+        public readonly ?string $arrivalTime,
 
         #[MapInputName('checkOutTime')]
-        public readonly ?string           $departureTime,
+        public readonly ?string $departureTime,
 
         /** @var Reservation\RoomDto[] */
         #[MapInputName('rooms'), \Sdk\Module\Foundation\Support\Dto\DtoCollectionOf(Reservation\RoomDto::class)]
-        public readonly ?\Sdk\Module\Foundation\Support\Dto\DtoCollection    $roomStays = null,
+        public readonly ?\Sdk\Module\Foundation\Support\Dto\DtoCollection $roomStays = null,
 
         #[WithCast(EnumCast::class)]
-        public readonly StatusEnum        $status = StatusEnum::New,
-        public readonly ?string           $currencyCode = null,
+        public readonly StatusEnum $status = StatusEnum::New,
+        public readonly ?string $currencyCode = null,
 
         #[WithCast(EnumCast::class)]
         public readonly PaymentMethodEnum $paymentMethod = PaymentMethodEnum::Credit,
-        public readonly ?string           $paymentMethodComment = null,
+        public readonly ?string $paymentMethodComment = null,
     ) {}
 }

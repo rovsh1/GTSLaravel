@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Hotel\Moderation\Domain\Hotel\ValueObject\TimeSettings;
 
-use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Sdk\Shared\Contracts\Support\SerializableInterface;
 
-class BreakfastPeriod implements ValueObjectInterface, SerializableInterface
+class BreakfastPeriod implements SerializableInterface
 {
     private readonly string $from;
     private readonly string $to;

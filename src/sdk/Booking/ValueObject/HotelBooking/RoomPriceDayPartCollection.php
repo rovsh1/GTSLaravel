@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace Sdk\Booking\ValueObject\HotelBooking;
 
-use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Sdk\Module\Support\AbstractValueObjectCollection;
 use Sdk\Shared\Contracts\Support\SerializableInterface;
 
-final class RoomPriceDayPartCollection extends AbstractValueObjectCollection implements ValueObjectInterface,
-                                                                                        SerializableInterface
+final class RoomPriceDayPartCollection extends AbstractValueObjectCollection implements SerializableInterface
 {
     public function validateItem(mixed $item): void
     {

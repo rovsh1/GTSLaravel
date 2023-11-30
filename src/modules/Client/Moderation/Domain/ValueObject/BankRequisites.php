@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Client\Moderation\Domain\ValueObject;
 
-use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Sdk\Shared\Contracts\Support\SerializableInterface;
 
-class BankRequisites implements ValueObjectInterface, SerializableInterface
+class BankRequisites implements SerializableInterface
 {
     public function __construct(
         public readonly string $bik,

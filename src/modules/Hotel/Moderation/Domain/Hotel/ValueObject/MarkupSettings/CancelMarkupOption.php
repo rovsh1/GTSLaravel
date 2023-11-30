@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Module\Hotel\Moderation\Domain\Hotel\ValueObject\MarkupSettings;
 
-use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Sdk\Shared\Contracts\Support\SerializableInterface;
 use Sdk\Shared\ValueObject\Percent;
 
-final class CancelMarkupOption implements ValueObjectInterface, SerializableInterface
+final class CancelMarkupOption implements SerializableInterface
 {
     public function __construct(
         private Percent $percent,

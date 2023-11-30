@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\Dto\Details;
 
-use Module\Shared\Contracts\Domain\EntityInterface;
-use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Module\Shared\Support\Dto\AbstractDomainBasedDto;
 use Sdk\Booking\ValueObject\HotelBooking\Condition;
 
@@ -17,8 +15,10 @@ class ConditionDto extends AbstractDomainBasedDto
         public readonly int $percent,
     ) {}
 
-    public static function fromDomain(EntityInterface|ValueObjectInterface|Condition $entity): static
+    public static function fromDomain(mixed $entity): static
     {
+        assert($entity instanceof Condition);
+
         return new static(
             $entity->timePeriod()->from(),
             $entity->timePeriod()->to(),

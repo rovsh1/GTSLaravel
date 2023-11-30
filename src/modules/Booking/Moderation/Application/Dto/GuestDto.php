@@ -3,8 +3,6 @@
 namespace Module\Booking\Moderation\Application\Dto;
 
 use Module\Booking\Shared\Domain\Guest\Guest;
-use Module\Shared\Contracts\Domain\EntityInterface;
-use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Module\Shared\Support\Dto\AbstractDomainBasedDto;
 
 class GuestDto extends AbstractDomainBasedDto
@@ -19,8 +17,10 @@ class GuestDto extends AbstractDomainBasedDto
         public readonly ?int $age
     ) {}
 
-    public static function fromDomain(EntityInterface|ValueObjectInterface|Guest $entity): static
+    public static function fromDomain(mixed $entity): static
     {
+        assert($entity instanceof Guest);
+
         return new static(
             $entity->id()->value(),
             $entity->orderId()->value(),

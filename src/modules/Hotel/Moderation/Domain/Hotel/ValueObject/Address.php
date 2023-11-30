@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Hotel\Moderation\Domain\Hotel\ValueObject;
 
-use Module\Shared\Contracts\Domain\ValueObjectInterface;
-
-class Address implements ValueObjectInterface
+class Address
 {
     public function __construct(
         private readonly string $country,

@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Sdk\Shared\ValueObject;
 
-use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Sdk\Shared\Contracts\Support\CanEquate;
 
-class Uint implements ValueObjectInterface, CanEquate
+class Uint implements CanEquate
 {
     protected readonly int $value;
 

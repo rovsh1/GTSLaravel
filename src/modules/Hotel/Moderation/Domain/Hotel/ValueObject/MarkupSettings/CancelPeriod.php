@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace Module\Hotel\Moderation\Domain\Hotel\ValueObject\MarkupSettings;
 
 use Carbon\CarbonPeriodImmutable;
-use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Sdk\Shared\Contracts\Support\SerializableInterface;
 
-final class CancelPeriod implements ValueObjectInterface, SerializableInterface
+final class CancelPeriod implements SerializableInterface
 {
     public function __construct(
         private CarbonPeriodImmutable $period,

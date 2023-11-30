@@ -4,17 +4,15 @@ declare(strict_types=1);
 
 namespace Sdk\Shared\ValueObject;
 
-use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Sdk\Shared\Contracts\Support\CanEquate;
 use Sdk\Shared\Enum\Pricing\ValueTypeEnum;
 
-final class MarkupValue implements ValueObjectInterface, CanEquate
+final class MarkupValue implements CanEquate
 {
     public function __construct(
         private readonly int $value,
         private readonly ValueTypeEnum $type
-    ) {
-    }
+    ) {}
 
     public static function createZero(): MarkupValue
     {

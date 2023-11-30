@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Sdk\Booking\ValueObject\HotelBooking;
 
-use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Sdk\Shared\Contracts\Support\CanEquate;
 use Sdk\Shared\Contracts\Support\SerializableInterface;
 use Sdk\Shared\ValueObject\Percent;
 
-class AccommodationDetails implements ValueObjectInterface, SerializableInterface, CanEquate
+class AccommodationDetails implements SerializableInterface, CanEquate
 {
     public function __construct(
         private readonly int $rateId,

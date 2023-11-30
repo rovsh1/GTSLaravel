@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace Module\Hotel\Moderation\Domain\Hotel\ValueObject\MarkupSettings;
 
 use Illuminate\Support\Collection;
-use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Sdk\Shared\Contracts\Support\SerializableInterface;
 
 /**
  * @extends Collection<int, CancelPeriod>
  */
-final class CancelPeriodCollection extends Collection implements ValueObjectInterface, SerializableInterface
+final class CancelPeriodCollection extends Collection implements SerializableInterface
 {
     public function serialize(): array
     {

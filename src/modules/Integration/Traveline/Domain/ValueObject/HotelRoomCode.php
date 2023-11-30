@@ -2,9 +2,7 @@
 
 namespace Module\Integration\Traveline\Domain\ValueObject;
 
-use Module\Shared\Contracts\Domain\ValueObjectInterface;
-
-class HotelRoomCode implements ValueObjectInterface
+class HotelRoomCode
 {
     public function __construct(
         public readonly int $roomId,

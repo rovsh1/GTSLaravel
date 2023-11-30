@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace Sdk\Shared\Support\ValueObject;
 
 use Illuminate\Support\Str;
-use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Sdk\Shared\Contracts\Support\CanEquate;
 
-abstract class AbstractUuid implements CanEquate, ValueObjectInterface
+abstract class AbstractUuid implements CanEquate
 {
     private string $id;
 

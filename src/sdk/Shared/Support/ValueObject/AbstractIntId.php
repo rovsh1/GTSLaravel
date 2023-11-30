@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Sdk\Shared\Support\ValueObject;
 
-use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Sdk\Shared\Contracts\Support\CanEquate;
 
-abstract class AbstractIntId implements CanEquate, ValueObjectInterface
+abstract class AbstractIntId implements CanEquate
 {
     private int $id;
 

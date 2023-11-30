@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Sdk\Booking\ValueObject\CancelCondition;
 
-use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Sdk\Shared\Contracts\Support\SerializableInterface;
 
-final class DailyCancelFeeValue implements ValueObjectInterface, SerializableInterface
+final class DailyCancelFeeValue implements SerializableInterface
 {
     public function __construct(
         private readonly FeeValue $value,

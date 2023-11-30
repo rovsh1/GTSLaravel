@@ -4,18 +4,16 @@ declare(strict_types=1);
 
 namespace Sdk\Booking\ValueObject\HotelBooking;
 
-use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Sdk\Shared\Contracts\Support\SerializableInterface;
 use Sdk\Shared\ValueObject\Date;
 
-final class RoomPriceDayPart implements ValueObjectInterface, SerializableInterface
+final class RoomPriceDayPart implements SerializableInterface
 {
     public function __construct(
         private readonly Date $date,
         private readonly int|float $value,
         private readonly string $formula,
-    ) {
-    }
+    ) {}
 
     public function date(): Date
     {

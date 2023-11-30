@@ -12,8 +12,7 @@ class FindHotelById implements UseCaseInterface
 {
     public function __construct(
         private readonly HotelRepositoryInterface $hotelRepository
-    ) {
-    }
+    ) {}
 
     public function execute(int $id): ?HotelDto
     {
@@ -22,6 +21,6 @@ class FindHotelById implements UseCaseInterface
             return null;
         }
 
-        return HotelDto::from($hotel);
+        return HotelDto::fromDomain($hotel);
     }
 }

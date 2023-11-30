@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Sdk\Booking\ValueObject\HotelBooking;
 
-use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Sdk\Shared\Contracts\Support\SerializableInterface;
 use Sdk\Shared\ValueObject\Time;
 
-class HotelInfo implements ValueObjectInterface, SerializableInterface
+class HotelInfo implements SerializableInterface
 {
     public function __construct(
         private readonly int $id,

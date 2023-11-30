@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace Module\Hotel\Moderation\Domain\Hotel\ValueObject;
 
 use Module\Hotel\Moderation\Domain\Hotel\ValueObject\TimeSettings\BreakfastPeriod;
-use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Sdk\Shared\Contracts\Support\SerializableInterface;
 use Sdk\Shared\ValueObject\Time;
 
-class TimeSettings implements ValueObjectInterface, SerializableInterface
+class TimeSettings implements SerializableInterface
 {
     public function __construct(
         private Time $checkInAfter,
