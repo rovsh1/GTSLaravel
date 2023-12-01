@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Shared\Infrastructure\Builder\Details;
 
 use Module\Booking\Shared\Infrastructure\Models\Details\Other as Model;
-use Sdk\Booking\Entity\BookingDetails\Other;
+use Sdk\Booking\Entity\Details\Other;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\DetailsId;
 use Sdk\Module\Support\DateTimeImmutable;

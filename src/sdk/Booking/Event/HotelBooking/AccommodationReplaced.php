@@ -2,20 +2,17 @@
 
 namespace Sdk\Booking\Event\HotelBooking;
 
-use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Event\HotelBooking\QuotaChangedEventInterface;
-use Sdk\Booking\Entity\BookingDetails\HotelAccommodation;
-use Sdk\Booking\Support\Event\AbstractBookingEvent;
+use Sdk\Booking\Entity\HotelAccommodation;
 use Sdk\Shared\Event\IntegrationEventMessages;
 
-class AccommodationReplaced extends AbstractBookingEvent implements QuotaChangedEventInterface
+class AccommodationReplaced extends AbstractAccommodationEvent implements QuotaChangedEventInterface
 {
     public function __construct(
-        Booking $booking,
-        public readonly HotelAccommodation $accommodation,
+        HotelAccommodation $accommodation,
         public readonly HotelAccommodation $accommodationBefore,
     ) {
-        parent::__construct($booking);
+        parent::__construct($accommodation);
     }
 
     public function integrationEvent(): string
@@ -26,7 +23,7 @@ class AccommodationReplaced extends AbstractBookingEvent implements QuotaChanged
     public function integrationPayload(): array
     {
         return [
-            'bookingId' => $this->booking->id()->value(),
+            'bookingId' => $this->bookingId()->value(),
             'before' => $this->accommodationBefore->serialize(),
             'after' => $this->accommodation->serialize()
         ];

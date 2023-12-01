@@ -6,7 +6,7 @@ use Module\Booking\Moderation\Application\RequestDto\AddAccommodationRequestDto;
 use Module\Booking\Moderation\Application\RequestDto\UpdateRoomRequestDto;
 use Module\Booking\Shared\Domain\Booking\Adapter\HotelRoomAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\AccommodationRepositoryInterface;
-use Sdk\Booking\Entity\BookingDetails\HotelAccommodation;
+use Sdk\Booking\Entity\HotelAccommodation;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\HotelBooking\AccommodationDetails;
 use Sdk\Booking\ValueObject\HotelBooking\Condition;

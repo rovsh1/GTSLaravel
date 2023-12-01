@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Shared\Infrastructure\Builder\Details;
 
 use Module\Booking\Shared\Infrastructure\Models\Details\Transfer;
-use Sdk\Booking\Entity\BookingDetails\TransferToAirport;
+use Sdk\Booking\Entity\Details\TransferToAirport;
 use Sdk\Booking\ValueObject\AirportId;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\CarBidCollection;

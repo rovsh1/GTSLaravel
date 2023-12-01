@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Sdk\Booking\Entity\BookingDetails;
+namespace Sdk\Booking\Entity\Details;
 
 use DateTimeInterface;
 use Sdk\Booking\Contracts\Entity\TransferDetailsInterface;
-use Sdk\Booking\Entity\BookingDetails\Concerns\HasBookingPeriodTrait;
-use Sdk\Booking\Entity\BookingDetails\Concerns\HasCarBidCollectionTrait;
-use Sdk\Booking\Entity\BookingDetails\Concerns\HasMeetingAddressTrait;
-use Sdk\Booking\Entity\BookingDetails\Concerns\HasMeetingTabletTrait;
+use Sdk\Booking\Entity\Details\Concerns\HasBookingPeriodTrait;
+use Sdk\Booking\Entity\Details\Concerns\HasCarBidCollectionTrait;
+use Sdk\Booking\Entity\Details\Concerns\HasMeetingAddressTrait;
+use Sdk\Booking\Entity\Details\Concerns\HasMeetingTabletTrait;
 use Sdk\Booking\Support\Entity\AbstractServiceDetails;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\BookingPeriod;

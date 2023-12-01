@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Shared\Infrastructure\Storage\Details;
 
 use Module\Booking\Shared\Infrastructure\Models\Details\Hotel;
-use Sdk\Booking\Entity\BookingDetails\HotelBooking;
+use Sdk\Booking\Entity\Details\HotelBooking;
 
 class HotelBookingStorage
 {

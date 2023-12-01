@@ -8,7 +8,7 @@ use Module\Booking\Pricing\Domain\Booking\Service\HotelPriceCalculator\Calculate
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
 use Module\Hotel\Pricing\Application\Dto\CalculatedHotelRoomsPricesDto;
-use Sdk\Booking\Entity\BookingDetails\HotelBooking;
+use Sdk\Booking\Entity\Details\HotelBooking;
 use Sdk\Booking\ValueObject\BookingPriceItem;
 use Sdk\Booking\ValueObject\BookingPrices;
 

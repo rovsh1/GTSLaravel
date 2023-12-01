@@ -8,7 +8,7 @@ use DateTimeInterface;
 use Module\Booking\Shared\Domain\Booking\Factory\Details\DayCarTripFactoryInterface;
 use Module\Booking\Shared\Infrastructure\Builder\Details\DayCarTripBuilder;
 use Module\Booking\Shared\Infrastructure\Models\Details\Transfer;
-use Sdk\Booking\Entity\BookingDetails\DayCarTrip;
+use Sdk\Booking\Entity\Details\DayCarTrip;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\CarBidCollection;
 use Sdk\Booking\ValueObject\ServiceInfo;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Domain\Booking\Factory\Details;
 
-use Sdk\Booking\Entity\BookingDetails\CarRentWithDriver;
+use Sdk\Booking\Entity\Details\CarRentWithDriver;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\BookingPeriod;
 use Sdk\Booking\ValueObject\CarBidCollection;

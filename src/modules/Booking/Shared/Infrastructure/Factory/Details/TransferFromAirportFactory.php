@@ -8,7 +8,7 @@ use DateTimeInterface;
 use Module\Booking\Shared\Domain\Booking\Factory\Details\TransferFromAirportFactoryInterface;
 use Module\Booking\Shared\Infrastructure\Builder\Details\TransferFromAirportBuilder;
 use Module\Booking\Shared\Infrastructure\Models\Details\Transfer;
-use Sdk\Booking\Entity\BookingDetails\TransferFromAirport;
+use Sdk\Booking\Entity\Details\TransferFromAirport;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\CarBidCollection;
 use Sdk\Booking\ValueObject\ServiceInfo;

@@ -7,7 +7,7 @@ use Module\Booking\Moderation\Application\Exception\NotFoundServicePriceExceptio
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
-use Sdk\Booking\Entity\BookingDetails\Other;
+use Sdk\Booking\Entity\Details\Other;
 use Sdk\Booking\ValueObject\BookingPriceItem;
 use Sdk\Booking\ValueObject\BookingPrices;
 

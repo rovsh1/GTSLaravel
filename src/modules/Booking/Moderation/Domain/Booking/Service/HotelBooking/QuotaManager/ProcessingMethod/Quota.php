@@ -10,7 +10,7 @@ use Module\Booking\Shared\Domain\Booking\Repository\AccommodationRepositoryInter
 use Module\Hotel\Quotation\Application\Dto\BookingRoomDto;
 use Module\Hotel\Quotation\Application\RequestDto\BookRequestDto;
 use Module\Hotel\Quotation\Application\RequestDto\ReserveRequestDto;
-use Sdk\Booking\Entity\BookingDetails\HotelBooking;
+use Sdk\Booking\Entity\Details\HotelBooking;
 use Sdk\Booking\ValueObject\HotelBooking\BookingPeriod;
 use Sdk\Shared\Enum\Booking\BookingStatusEnum;
 

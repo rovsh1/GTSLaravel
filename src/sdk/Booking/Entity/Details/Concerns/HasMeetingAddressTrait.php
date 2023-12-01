@@ -1,6 +1,6 @@
 <?php
 
-namespace Sdk\Booking\Entity\BookingDetails\Concerns;
+namespace Sdk\Booking\Entity\Details\Concerns;
 
 trait HasMeetingAddressTrait
 {

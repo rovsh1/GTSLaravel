@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Sdk\Booking\Entity\BookingDetails;
+namespace Sdk\Booking\Entity\Details;
 
 use DateTimeInterface;
 use Sdk\Booking\Contracts\Entity\TransferDetailsInterface;
-use Sdk\Booking\Entity\BookingDetails\Concerns\HasCarBidCollectionTrait;
-use Sdk\Booking\Entity\BookingDetails\Concerns\HasDepartureDateTrait;
+use Sdk\Booking\Entity\Details\Concerns\HasCarBidCollectionTrait;
+use Sdk\Booking\Entity\Details\Concerns\HasDepartureDateTrait;
 use Sdk\Booking\Support\Entity\AbstractServiceDetails;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\CarBidCollection;
@@ -17,7 +17,7 @@ use Sdk\Booking\ValueObject\ServiceInfo;
 use Sdk\Shared\Enum\ServiceTypeEnum;
 use Sdk\Shared\Support\DateTimeImmutableFactory;
 
-final class IntercityTransfer extends AbstractServiceDetails implements TransferDetailsInterface
+final class DayCarTrip extends AbstractServiceDetails implements TransferDetailsInterface
 {
     use HasDepartureDateTrait;
     use HasCarBidCollectionTrait;
@@ -26,9 +26,8 @@ final class IntercityTransfer extends AbstractServiceDetails implements Transfer
         DetailsId $id,
         BookingId $bookingId,
         ServiceInfo $serviceInfo,
-        private readonly CityId $fromCityId,
-        private readonly CityId $toCityId,
-        private readonly bool $returnTripIncluded,
+        private readonly CityId $cityId,
+        private ?string $destinationsDescription,
         protected ?DateTimeInterface $departureDate,
         protected CarBidCollection $carBids
     ) {
@@ -37,22 +36,27 @@ final class IntercityTransfer extends AbstractServiceDetails implements Transfer
 
     public function serviceType(): ServiceTypeEnum
     {
-        return ServiceTypeEnum::INTERCITY_TRANSFER;
+        return ServiceTypeEnum::DAY_CAR_TRIP;
     }
 
-    public function fromCityId(): CityId
+    public function id(): DetailsId
     {
-        return $this->fromCityId;
+        return $this->id;
     }
 
-    public function toCityId(): CityId
+    public function cityId(): CityId
     {
-        return $this->toCityId;
+        return $this->cityId;
     }
 
-    public function isReturnTripIncluded(): bool
+    public function destinationsDescription(): ?string
     {
-        return $this->returnTripIncluded;
+        return $this->destinationsDescription;
+    }
+
+    public function setDestinationsDescription(?string $destinationsDescription): void
+    {
+        $this->destinationsDescription = $destinationsDescription;
     }
 
     public function serialize(): array
@@ -61,9 +65,8 @@ final class IntercityTransfer extends AbstractServiceDetails implements Transfer
             'id' => $this->id->value(),
             'bookingId' => $this->bookingId->value(),
             'serviceInfo' => $this->serviceInfo->serialize(),
-            'fromCityId' => $this->fromCityId->value(),
-            'toCityId' => $this->toCityId->value(),
-            'returnTripIncluded' => $this->returnTripIncluded,
+            'cityId' => $this->cityId->value(),
+            'destinationsDescription' => $this->destinationsDescription,
             'departureDate' => $this->departureDate?->getTimestamp(),
             'carBids' => $this->carBids->toData(),
         ];
@@ -71,13 +74,12 @@ final class IntercityTransfer extends AbstractServiceDetails implements Transfer
 
     public static function deserialize(array $payload): static
     {
-        return new IntercityTransfer(
+        return new DayCarTrip(
             new DetailsId($payload['id']),
             new BookingId($payload['bookingId']),
             ServiceInfo::deserialize($payload['serviceInfo']),
-            new CityId($payload['fromCityId']),
-            new CityId($payload['toCityId']),
-            $payload['returnTripIncluded'],
+            new CityId($payload['cityId']),
+            $payload['destinationsDescription'],
             $payload['departureDate'] ? DateTimeImmutableFactory::createFromTimestamp($payload['departureDate']) : null,
             CarBidCollection::fromData($payload['guestIds'])
         );

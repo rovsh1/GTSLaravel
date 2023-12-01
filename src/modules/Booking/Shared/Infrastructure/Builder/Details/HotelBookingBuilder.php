@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Shared\Infrastructure\Builder\Details;
 
 use Module\Booking\Shared\Infrastructure\Models\Details\Hotel;
-use Sdk\Booking\Entity\BookingDetails\HotelBooking;
+use Sdk\Booking\Entity\Details\HotelBooking;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\DetailsId;
 use Sdk\Booking\ValueObject\HotelBooking\BookingPeriod as HotelBookingPeriod;

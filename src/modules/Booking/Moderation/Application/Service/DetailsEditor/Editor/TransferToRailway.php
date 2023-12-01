@@ -6,7 +6,7 @@ namespace Module\Booking\Moderation\Application\Service\DetailsEditor\Editor;
 
 use Module\Booking\Shared\Domain\Booking\Factory\Details\TransferToRailwayFactoryInterface;
 use Module\Supplier\Moderation\Infrastructure\Models\Service as InfrastructureSupplierService;
-use Sdk\Booking\Entity\BookingDetails\TransferToRailway as Entity;
+use Sdk\Booking\Entity\Details\TransferToRailway as Entity;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\CarBidCollection;
 use Sdk\Booking\ValueObject\ServiceId;

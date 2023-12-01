@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Domain\Booking\Repository;
 
-use Sdk\Booking\Entity\BookingDetails\HotelAccommodation;
+use Sdk\Booking\Entity\HotelAccommodation;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\HotelBooking\AccommodationCollection;
 use Sdk\Booking\ValueObject\HotelBooking\AccommodationDetails;

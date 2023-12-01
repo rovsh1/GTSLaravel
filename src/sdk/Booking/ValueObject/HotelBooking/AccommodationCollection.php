@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Sdk\Booking\ValueObject\HotelBooking;
 
 use Illuminate\Support\Collection;
-use Sdk\Booking\Entity\BookingDetails\HotelAccommodation;
+use Sdk\Booking\Entity\HotelAccommodation;
 use Sdk\Module\Support\AbstractValueObjectCollection;
 
 /**

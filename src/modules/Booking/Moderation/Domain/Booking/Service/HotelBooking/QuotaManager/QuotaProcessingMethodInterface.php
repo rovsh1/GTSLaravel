@@ -3,7 +3,7 @@
 namespace Module\Booking\Moderation\Domain\Booking\Service\HotelBooking\QuotaManager;
 
 use Module\Booking\Shared\Domain\Booking\Booking;
-use Sdk\Booking\Entity\BookingDetails\HotelBooking;
+use Sdk\Booking\Entity\Details\HotelBooking;
 
 interface QuotaProcessingMethodInterface
 {

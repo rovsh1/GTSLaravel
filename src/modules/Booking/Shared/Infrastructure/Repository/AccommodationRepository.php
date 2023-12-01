@@ -7,7 +7,7 @@ namespace Module\Booking\Shared\Infrastructure\Repository;
 use Illuminate\Support\Facades\DB;
 use Module\Booking\Shared\Domain\Booking\Repository\AccommodationRepositoryInterface;
 use Module\Booking\Shared\Infrastructure\Models\Accommodation as Model;
-use Sdk\Booking\Entity\BookingDetails\HotelAccommodation;
+use Sdk\Booking\Entity\HotelAccommodation;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\GuestIdCollection;
 use Sdk\Booking\ValueObject\HotelBooking\AccommodationCollection;

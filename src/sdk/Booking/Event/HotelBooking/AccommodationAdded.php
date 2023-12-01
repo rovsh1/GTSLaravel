@@ -2,19 +2,16 @@
 
 namespace Sdk\Booking\Event\HotelBooking;
 
-use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Event\HotelBooking\QuotaChangedEventInterface;
-use Sdk\Booking\Entity\BookingDetails\HotelAccommodation;
-use Sdk\Booking\Support\Event\AbstractBookingEvent;
+use Sdk\Booking\Entity\HotelAccommodation;
 use Sdk\Shared\Event\IntegrationEventMessages;
 
-class AccommodationAdded extends AbstractBookingEvent implements QuotaChangedEventInterface
+class AccommodationAdded extends AbstractAccommodationEvent implements QuotaChangedEventInterface
 {
     public function __construct(
-        Booking $booking,
-        public readonly HotelAccommodation $accommodation,
+        HotelAccommodation $accommodation,
     ) {
-        parent::__construct($booking);
+        parent::__construct($accommodation);
     }
 
     public function integrationEvent(): string

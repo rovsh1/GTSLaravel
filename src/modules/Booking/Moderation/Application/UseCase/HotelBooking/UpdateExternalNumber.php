@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Moderation\Application\UseCase\HotelBooking;
 
 use Module\Booking\Shared\Domain\Booking\Service\BookingUnitOfWorkInterface;
-use Sdk\Booking\Entity\BookingDetails\HotelBooking;
+use Sdk\Booking\Entity\Details\HotelBooking;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\HotelBooking\ExternalNumber;
 use Sdk\Booking\ValueObject\HotelBooking\ExternalNumberTypeEnum;

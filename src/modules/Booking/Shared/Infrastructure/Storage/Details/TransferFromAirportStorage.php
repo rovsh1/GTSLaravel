@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Shared\Infrastructure\Storage\Details;
 
 use Module\Booking\Shared\Infrastructure\Models\Details\Transfer;
-use Sdk\Booking\Entity\BookingDetails\TransferFromAirport;
+use Sdk\Booking\Entity\Details\TransferFromAirport;
 
 class TransferFromAirportStorage extends AbstractStorage
 {

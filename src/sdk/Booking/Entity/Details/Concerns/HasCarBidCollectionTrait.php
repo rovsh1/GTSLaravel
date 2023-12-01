@@ -1,6 +1,6 @@
 <?php
 
-namespace Sdk\Booking\Entity\BookingDetails\Concerns;
+namespace Sdk\Booking\Entity\Details\Concerns;
 
 use Sdk\Booking\Event\ServiceBooking\CarBidAdded;
 use Sdk\Booking\Event\ServiceBooking\CarBidRemoved;

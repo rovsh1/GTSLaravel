@@ -7,7 +7,7 @@ namespace Module\Booking\Shared\Infrastructure\Factory\Details;
 use Module\Booking\Shared\Domain\Booking\Factory\Details\CarRentWithDriverFactoryInterface;
 use Module\Booking\Shared\Infrastructure\Builder\Details\CarRentWithDriverBuilder;
 use Module\Booking\Shared\Infrastructure\Models\Details\Transfer;
-use Sdk\Booking\Entity\BookingDetails\CarRentWithDriver;
+use Sdk\Booking\Entity\Details\CarRentWithDriver;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\BookingPeriod;
 use Sdk\Booking\ValueObject\CarBidCollection;

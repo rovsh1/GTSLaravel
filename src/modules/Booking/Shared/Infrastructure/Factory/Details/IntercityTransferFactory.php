@@ -8,7 +8,7 @@ use DateTimeInterface;
 use Module\Booking\Shared\Domain\Booking\Factory\Details\IntercityTransferFactoryInterface;
 use Module\Booking\Shared\Infrastructure\Builder\Details\IntercityTransferBuilder;
 use Module\Booking\Shared\Infrastructure\Models\Details\Transfer;
-use Sdk\Booking\Entity\BookingDetails\IntercityTransfer;
+use Sdk\Booking\Entity\Details\IntercityTransfer;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\CarBidCollection;
 use Sdk\Booking\ValueObject\ServiceInfo;

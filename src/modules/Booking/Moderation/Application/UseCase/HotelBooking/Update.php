@@ -6,7 +6,7 @@ namespace Module\Booking\Moderation\Application\UseCase\HotelBooking;
 
 use Carbon\CarbonPeriod;
 use Module\Booking\Shared\Domain\Booking\Service\BookingUnitOfWorkInterface;
-use Sdk\Booking\Entity\BookingDetails\HotelBooking;
+use Sdk\Booking\Entity\Details\HotelBooking;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\HotelBooking\BookingPeriod;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;

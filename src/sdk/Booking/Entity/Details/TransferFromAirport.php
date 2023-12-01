@@ -2,27 +2,29 @@
 
 declare(strict_types=1);
 
-namespace Sdk\Booking\Entity\BookingDetails;
+namespace Sdk\Booking\Entity\Details;
 
 use DateTimeInterface;
-use Sdk\Booking\Contracts\Entity\AirportDetailsInterface;
-use Sdk\Booking\Entity\BookingDetails\Concerns\HasArrivalDateTrait;
-use Sdk\Booking\Entity\BookingDetails\Concerns\HasFlightNumberTrait;
-use Sdk\Booking\Entity\BookingDetails\Concerns\HasGuestIdCollectionTrait;
+use Sdk\Booking\Contracts\Entity\TransferDetailsInterface;
+use Sdk\Booking\Entity\Details\Concerns\HasArrivalDateTrait;
+use Sdk\Booking\Entity\Details\Concerns\HasCarBidCollectionTrait;
+use Sdk\Booking\Entity\Details\Concerns\HasFlightNumberTrait;
+use Sdk\Booking\Entity\Details\Concerns\HasMeetingTabletTrait;
 use Sdk\Booking\Support\Entity\AbstractServiceDetails;
 use Sdk\Booking\ValueObject\AirportId;
 use Sdk\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\CarBidCollection;
 use Sdk\Booking\ValueObject\DetailsId;
-use Sdk\Booking\ValueObject\GuestIdCollection;
 use Sdk\Booking\ValueObject\ServiceInfo;
 use Sdk\Shared\Enum\ServiceTypeEnum;
 use Sdk\Shared\Support\DateTimeImmutableFactory;
 
-final class CIPMeetingInAirport extends AbstractServiceDetails implements AirportDetailsInterface
+final class TransferFromAirport extends AbstractServiceDetails implements TransferDetailsInterface
 {
+    use HasMeetingTabletTrait;
     use HasFlightNumberTrait;
-    use HasGuestIdCollectionTrait;
     use HasArrivalDateTrait;
+    use HasCarBidCollectionTrait;
 
     public function __construct(
         DetailsId $id,
@@ -30,15 +32,16 @@ final class CIPMeetingInAirport extends AbstractServiceDetails implements Airpor
         ServiceInfo $serviceInfo,
         private readonly AirportId $airportId,
         private ?string $flightNumber,
+        private ?string $meetingTablet,
         private ?DateTimeInterface $arrivalDate,
-        private GuestIdCollection $guestIds,
+        private CarBidCollection $carBids
     ) {
         parent::__construct($id, $bookingId, $serviceInfo);
     }
 
     public function serviceType(): ServiceTypeEnum
     {
-        return ServiceTypeEnum::CIP_MEETING_IN_AIRPORT;
+        return ServiceTypeEnum::TRANSFER_FROM_AIRPORT;
     }
 
     public function airportId(): AirportId
@@ -55,20 +58,22 @@ final class CIPMeetingInAirport extends AbstractServiceDetails implements Airpor
             'airportId' => $this->airportId->value(),
             'flightNumber' => $this->flightNumber,
             'arrivalDate' => $this->arrivalDate?->getTimestamp(),
-            'guestIds' => $this->guestIds->serialize(),
+            'meetingTablet' => $this->meetingTablet,
+            'carBids' => $this->carBids->toData(),
         ];
     }
 
     public static function deserialize(array $payload): static
     {
-        return new CIPMeetingInAirport(
+        return new TransferFromAirport(
             new DetailsId($payload['id']),
             new BookingId($payload['bookingId']),
             ServiceInfo::deserialize($payload['serviceInfo']),
             new AirportId($payload['airportId']),
             $payload['flightNumber'],
+            $payload['meetingTablet'],
             $payload['arrivalDate'] ? DateTimeImmutableFactory::createFromTimestamp($payload['arrivalDate']) : null,
-            GuestIdCollection::deserialize($payload['guestIds'])
+            CarBidCollection::fromData($payload['guestIds'])
         );
     }
 }

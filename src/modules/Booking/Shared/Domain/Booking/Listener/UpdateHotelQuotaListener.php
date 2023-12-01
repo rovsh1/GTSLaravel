@@ -6,7 +6,7 @@ use Module\Booking\Moderation\Application\Exception\HotelDetailsExpectedExceptio
 use Module\Booking\Moderation\Domain\Booking\Service\HotelBooking\QuotaManager\QuotaProcessingMethodFactory;
 use Module\Booking\Shared\Domain\Booking\Event\HotelBooking\QuotaChangedEventInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
-use Sdk\Booking\Entity\BookingDetails\HotelBooking;
+use Sdk\Booking\Entity\Details\HotelBooking;
 use Sdk\Module\Contracts\Event\DomainEventInterface;
 use Sdk\Module\Contracts\Event\DomainEventListenerInterface;
 

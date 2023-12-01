@@ -8,7 +8,7 @@ use DateTimeInterface;
 use Module\Booking\Shared\Domain\Booking\Factory\Details\CIPMeetingInAirportFactoryInterface;
 use Module\Booking\Shared\Infrastructure\Builder\Details\CIPMeetingInAirportBuilder;
 use Module\Booking\Shared\Infrastructure\Models\Details\Airport;
-use Sdk\Booking\Entity\BookingDetails\CIPMeetingInAirport;
+use Sdk\Booking\Entity\Details\CIPMeetingInAirport;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\GuestIdCollection;
 use Sdk\Booking\ValueObject\ServiceInfo;

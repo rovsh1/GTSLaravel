@@ -9,6 +9,7 @@ use Sdk\Booking\Contracts\Event\PriceBecomeDeprecatedEventInterface;
 use Sdk\Booking\Support\Event\AbstractDetailsEvent;
 use Sdk\Booking\ValueObject\HotelBooking\BookingPeriod;
 
+//@todo integration event
 class BookingPeriodChanged extends AbstractDetailsEvent implements PriceBecomeDeprecatedEventInterface
 {
     public function __construct(

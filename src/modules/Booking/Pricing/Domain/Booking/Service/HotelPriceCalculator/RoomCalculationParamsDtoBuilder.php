@@ -3,7 +3,7 @@
 namespace Module\Booking\Pricing\Domain\Booking\Service\HotelPriceCalculator;
 
 use Module\Hotel\Pricing\Application\Dto\RoomCalculationParamsDto;
-use Sdk\Booking\Entity\BookingDetails\HotelAccommodation;
+use Sdk\Booking\Entity\HotelAccommodation;
 
 class RoomCalculationParamsDtoBuilder
 {

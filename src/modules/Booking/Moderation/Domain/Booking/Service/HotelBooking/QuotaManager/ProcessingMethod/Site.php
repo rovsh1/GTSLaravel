@@ -5,7 +5,7 @@ namespace Module\Booking\Moderation\Domain\Booking\Service\HotelBooking\QuotaMan
 
 use Module\Booking\Moderation\Domain\Booking\Service\HotelBooking\QuotaManager\QuotaProcessingMethodInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
-use Sdk\Booking\Entity\BookingDetails\HotelBooking;
+use Sdk\Booking\Entity\Details\HotelBooking;
 
 class Site implements QuotaProcessingMethodInterface
 {

@@ -14,7 +14,7 @@ use Module\Booking\Shared\Infrastructure\Service\UnitOfWork\BookingCommiter;
 use Module\Booking\Shared\Infrastructure\Service\UnitOfWork\IdentityMap;
 use Sdk\Booking\Contracts\Entity\BookingPartInterface;
 use Sdk\Booking\Contracts\Entity\DetailsInterface;
-use Sdk\Booking\Entity\BookingDetails\HotelAccommodation;
+use Sdk\Booking\Entity\HotelAccommodation;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 

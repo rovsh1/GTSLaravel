@@ -8,7 +8,7 @@ use DateTimeInterface;
 use Module\Booking\Shared\Domain\Booking\Factory\Details\TransferToRailwayFactoryInterface;
 use Module\Booking\Shared\Infrastructure\Builder\Details\TransferToRailwayBuilder;
 use Module\Booking\Shared\Infrastructure\Models\Details\Transfer;
-use Sdk\Booking\Entity\BookingDetails\TransferToRailway;
+use Sdk\Booking\Entity\Details\TransferToRailway;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\CarBidCollection;
 use Sdk\Booking\ValueObject\ServiceInfo;

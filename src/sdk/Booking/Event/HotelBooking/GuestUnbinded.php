@@ -2,23 +2,20 @@
 
 namespace Sdk\Booking\Event\HotelBooking;
 
-use Module\Booking\Shared\Domain\Booking\Booking;
-use Module\Booking\Shared\Domain\Guest\Guest;
 use Sdk\Booking\Contracts\Event\PriceBecomeDeprecatedEventInterface;
-use Sdk\Booking\Support\Event\AbstractBookingEvent;
-use Sdk\Booking\ValueObject\HotelBooking\AccommodationId;
+use Sdk\Booking\Entity\HotelAccommodation;
+use Sdk\Booking\ValueObject\GuestId;
 use Sdk\Module\Contracts\Event\IntegrationEventInterface;
 use Sdk\Shared\Event\IntegrationEventMessages;
 
-class GuestUnbinded extends AbstractBookingEvent implements PriceBecomeDeprecatedEventInterface,
-                                                            IntegrationEventInterface
+class GuestUnbinded extends AbstractAccommodationEvent implements PriceBecomeDeprecatedEventInterface,
+                                                                  IntegrationEventInterface
 {
     public function __construct(
-        Booking $booking,
-        public readonly AccommodationId $accommodationId,
-        public readonly Guest $guest,
+        HotelAccommodation $accommodation,
+        public readonly GuestId $guestId
     ) {
-        parent::__construct($booking);
+        parent::__construct($accommodation);
     }
 
     public function integrationEvent(): string
@@ -29,9 +26,9 @@ class GuestUnbinded extends AbstractBookingEvent implements PriceBecomeDeprecate
     public function integrationPayload(): array
     {
         return [
-            'bookingId' => $this->booking->id()->value(),
-            'accommodationId' => $this->accommodationId,
-            'guestId' => $this->guest->serialize()
+            'bookingId' => $this->bookingId()->value(),
+            'accommodationId' => $this->accommodation->id()->value(),
+            'guestId' => $this->guestId->value()
         ];
     }
 }

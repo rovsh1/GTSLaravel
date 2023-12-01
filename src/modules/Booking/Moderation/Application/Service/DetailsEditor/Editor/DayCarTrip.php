@@ -6,7 +6,7 @@ namespace Module\Booking\Moderation\Application\Service\DetailsEditor\Editor;
 
 use Module\Booking\Shared\Domain\Booking\Factory\Details\DayCarTripFactoryInterface;
 use Module\Supplier\Moderation\Infrastructure\Models\Service as InfrastructureSupplierService;
-use Sdk\Booking\Entity\BookingDetails\DayCarTrip as Entity;
+use Sdk\Booking\Entity\Details\DayCarTrip as Entity;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\CarBidCollection;
 use Sdk\Booking\ValueObject\ServiceId;

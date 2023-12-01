@@ -40,8 +40,7 @@ final class Add implements UseCaseInterface
         $this->bookingUnitOfWork->touch($booking->id());
         $this->bookingUnitOfWork->commiting(function () use ($requestDto, $booking) {
             $accommodation = $this->accommodationFactory->create($booking->id());
-
-            $this->eventDispatcher->dispatch(new AccommodationAdded($booking, $accommodation));
+            $this->eventDispatcher->dispatch(new AccommodationAdded($accommodation));
         });
         $this->bookingUnitOfWork->commit();
     }

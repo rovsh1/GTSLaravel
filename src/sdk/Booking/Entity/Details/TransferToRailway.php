@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Sdk\Booking\Entity\BookingDetails;
+namespace Sdk\Booking\Entity\Details;
 
 use DateTimeInterface;
 use Sdk\Booking\Contracts\Entity\TransferDetailsInterface;
-use Sdk\Booking\Entity\BookingDetails\Concerns\HasArrivalDateTrait;
-use Sdk\Booking\Entity\BookingDetails\Concerns\HasCarBidCollectionTrait;
-use Sdk\Booking\Entity\BookingDetails\Concerns\HasMeetingTabletTrait;
-use Sdk\Booking\Entity\BookingDetails\Concerns\HasTrainNumberTrait;
+use Sdk\Booking\Entity\Details\Concerns\HasCarBidCollectionTrait;
+use Sdk\Booking\Entity\Details\Concerns\HasDepartureDateTrait;
+use Sdk\Booking\Entity\Details\Concerns\HasMeetingTabletTrait;
+use Sdk\Booking\Entity\Details\Concerns\HasTrainNumberTrait;
 use Sdk\Booking\Support\Entity\AbstractServiceDetails;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\CarBidCollection;
@@ -19,12 +19,12 @@ use Sdk\Booking\ValueObject\ServiceInfo;
 use Sdk\Shared\Enum\ServiceTypeEnum;
 use Sdk\Shared\Support\DateTimeImmutableFactory;
 
-final class TransferFromRailway extends AbstractServiceDetails implements TransferDetailsInterface
+final class TransferToRailway extends AbstractServiceDetails implements TransferDetailsInterface
 {
     use HasTrainNumberTrait;
-    use HasMeetingTabletTrait;
-    use HasArrivalDateTrait;
+    use HasDepartureDateTrait;
     use HasCarBidCollectionTrait;
+    use HasMeetingTabletTrait;
 
     public function __construct(
         DetailsId $id,
@@ -33,7 +33,7 @@ final class TransferFromRailway extends AbstractServiceDetails implements Transf
         private readonly RailwayStationId $railwayStationId,
         private ?string $trainNumber,
         private ?string $meetingTablet,
-        private ?DateTimeInterface $arrivalDate,
+        private ?DateTimeInterface $departureDate,
         private CarBidCollection $carBids
     ) {
         parent::__construct($id, $bookingId, $serviceInfo);
@@ -41,7 +41,7 @@ final class TransferFromRailway extends AbstractServiceDetails implements Transf
 
     public function serviceType(): ServiceTypeEnum
     {
-        return ServiceTypeEnum::TRANSFER_FROM_AIRPORT;
+        return ServiceTypeEnum::TRANSFER_TO_AIRPORT;
     }
 
     public function railwayStationId(): RailwayStationId
@@ -58,21 +58,21 @@ final class TransferFromRailway extends AbstractServiceDetails implements Transf
             'railwayStationId' => $this->railwayStationId->value(),
             'trainNumber' => $this->trainNumber,
             'meetingTablet' => $this->meetingTablet,
-            'arrivalDate' => $this->arrivalDate?->getTimestamp(),
+            'departureDate' => $this->departureDate?->getTimestamp(),
             'carBids' => $this->carBids->toData(),
         ];
     }
 
     public static function deserialize(array $payload): static
     {
-        return new TransferFromRailway(
+        return new TransferToRailway(
             new DetailsId($payload['id']),
             new BookingId($payload['bookingId']),
             ServiceInfo::deserialize($payload['serviceInfo']),
             new RailwayStationId($payload['railwayStationId']),
             $payload['trainNumber'],
             $payload['meetingTablet'],
-            $payload['arrivalDate'] ? DateTimeImmutableFactory::createFromTimestamp($payload['arrivalDate']) : null,
+            $payload['departureDate'] ? DateTimeImmutableFactory::createFromTimestamp($payload['departureDate']) : null,
             CarBidCollection::fromData($payload['guestIds'])
         );
     }

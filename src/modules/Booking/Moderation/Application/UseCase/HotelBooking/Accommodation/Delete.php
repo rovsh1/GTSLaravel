@@ -23,11 +23,11 @@ final class Delete implements UseCaseInterface
     public function execute(int $bookingId, int $accommodationId): void
     {
         $booking = $this->bookingUnitOfWork->findOrFail(new BookingId($bookingId));
+        $accommodation = $this->accommodationRepository->findOrFail(new AccommodationId($accommodationId));
         $this->bookingUnitOfWork->touch($booking->id());
-        $this->bookingUnitOfWork->commiting(function () use ($booking, $accommodationId) {
-            $accommodationId = new AccommodationId($accommodationId);
-            $this->accommodationRepository->delete($accommodationId);
-            $this->eventDispatcher->dispatch(new AccommodationDeleted($booking, $accommodationId));
+        $this->bookingUnitOfWork->commiting(function () use ($accommodation) {
+            $this->accommodationRepository->delete($accommodation->id());
+            $this->eventDispatcher->dispatch(new AccommodationDeleted($accommodation));
         });
     }
 }

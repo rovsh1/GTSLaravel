@@ -10,7 +10,7 @@ use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
 use Module\Booking\Shared\Domain\Order\Order;
 use Module\Booking\Shared\Domain\Order\Repository\OrderRepositoryInterface;
 use Module\Hotel\Pricing\Application\RequestDto\CalculateHotelPriceRequestDto;
-use Sdk\Booking\Entity\BookingDetails\HotelBooking;
+use Sdk\Booking\Entity\Details\HotelBooking;
 use Sdk\Booking\ValueObject\ClientId;
 use Sdk\Shared\Enum\CurrencyEnum;
 

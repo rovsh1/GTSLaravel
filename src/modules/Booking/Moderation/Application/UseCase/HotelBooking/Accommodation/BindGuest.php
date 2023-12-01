@@ -9,7 +9,7 @@ use Module\Booking\Moderation\Application\Service\GuestValidator;
 use Module\Booking\Shared\Domain\Booking\Adapter\HotelRoomAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\AccommodationRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Service\BookingUnitOfWorkInterface;
-use Sdk\Booking\Entity\BookingDetails\HotelAccommodation;
+use Sdk\Booking\Entity\HotelAccommodation;
 use Sdk\Booking\ValueObject\GuestId;
 use Sdk\Booking\ValueObject\HotelBooking\AccommodationId;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;

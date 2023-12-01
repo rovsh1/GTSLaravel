@@ -9,7 +9,7 @@ use Module\Booking\Moderation\Application\Service\AccommodationChecker;
 use Module\Booking\Moderation\Application\Service\AccommodationFactory;
 use Module\Booking\Shared\Domain\Booking\Repository\AccommodationRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Service\BookingUnitOfWorkInterface;
-use Sdk\Booking\Entity\BookingDetails\HotelAccommodation;
+use Sdk\Booking\Entity\HotelAccommodation;
 use Sdk\Booking\Event\HotelBooking\AccommodationReplaced;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\HotelBooking\AccommodationId;
@@ -79,7 +79,7 @@ final class Update implements UseCaseInterface
             $this->accommodationRepository->store($newAccommodation);
 
             $this->eventDispatcher->dispatch(
-                new AccommodationReplaced($booking, $newAccommodation, $beforeAccommodation)
+                new AccommodationReplaced($newAccommodation, $beforeAccommodation)
             );
         });
     }

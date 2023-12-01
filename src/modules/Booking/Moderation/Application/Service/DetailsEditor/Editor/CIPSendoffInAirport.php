@@ -6,7 +6,7 @@ namespace Module\Booking\Moderation\Application\Service\DetailsEditor\Editor;
 
 use Module\Booking\Shared\Domain\Booking\Factory\Details\CIPSendoffInAirportFactoryInterface;
 use Module\Supplier\Moderation\Infrastructure\Models\Service as InfrastructureSupplierService;
-use Sdk\Booking\Entity\BookingDetails\CIPSendoffInAirport as Entity;
+use Sdk\Booking\Entity\Details\CIPSendoffInAirport as Entity;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\GuestIdCollection;
 use Sdk\Booking\ValueObject\ServiceId;
