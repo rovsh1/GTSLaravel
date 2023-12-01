@@ -34,7 +34,7 @@ class HistoryRepository implements HistoryRepositoryInterface
     public function getStatusHistory(int $bookingId): Collection
     {
         return BookingHistory::whereBookingId($bookingId)
-            ->whereGroup(EventGroupEnum::STATUS_UPDATED->name)
+            ->whereGroup(EventGroupEnum::STATUS_UPDATED)
             ->get();
     }
 }
