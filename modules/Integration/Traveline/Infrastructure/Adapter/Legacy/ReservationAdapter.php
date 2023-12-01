@@ -31,13 +31,14 @@ class ReservationAdapter implements ReservationAdapterInterface
             ->whereStatus($status)
             ->update(['accepted_at' => now()]);
 
+        /** @var Reservation $reservation */
+        $reservation = Reservation::find($id);
         if ($status === TravelineReservationStatusEnum::New) {
-            Reservation::whereId($id)->update(['status' => ReservationStatusEnum::Confirmed]);
+            $reservation->changeStatus(ReservationStatusEnum::Confirmed);
             return;
         }
-        $reservation = Reservation::find($id);
         if ($reservation->status === ReservationStatusEnum::WaitingProcessing) {
-            Reservation::whereId($id)->update(['status' => ReservationStatusEnum::Confirmed]);
+            $reservation->changeStatus(ReservationStatusEnum::Confirmed);
         }
     }
 

@@ -4,6 +4,7 @@ namespace Module\Integration\Traveline\Infrastructure\Models\Legacy;
 
 use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 use Module\Integration\Traveline\Infrastructure\Models\Legacy\Hotel\Option;
 use Module\Integration\Traveline\Infrastructure\Models\Legacy\Hotel\OptionTypeEnum;
 
@@ -167,6 +168,24 @@ class Reservation extends Model
     {
         $builder->leftJoin('users', 'users.id', '=', 'reservation.administrator_id')
             ->addSelect('users.email as manager_email');
+    }
+
+    public function changeStatus(ReservationStatusEnum $status): void
+    {
+        $this->update(['status' => $status]);
+        try {
+            DB::table('reservation_status_log')->insert([
+                'reservation_id' => $this->id,
+                'user_id' => null,
+                'source' => 3,
+                'status' => $status->value,
+                'notification' => 0,
+                'created' => now(),
+                'description' => null,
+            ]);
+        } catch (\Throwable $e) {
+            \Log::warning('Ошибка при попытке записать лог изменения статуса', ['error' => $e]);
+        }
     }
 
     public function rooms()
