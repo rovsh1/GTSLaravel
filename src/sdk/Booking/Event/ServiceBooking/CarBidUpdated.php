@@ -1,20 +1,21 @@
 <?php
 
-namespace Module\Booking\Moderation\Domain\Booking\Event;
+namespace Sdk\Booking\Event\ServiceBooking;
 
-use Module\Booking\Shared\Domain\Booking\Booking;
-use Sdk\Booking\Support\AbstractBookingEvent;
+use Sdk\Booking\Contracts\Entity\DetailsInterface;
+use Sdk\Booking\Contracts\Event\CarBidChangedInterface;
+use Sdk\Booking\Support\Event\AbstractDetailsEvent;
 use Sdk\Booking\ValueObject\CarBid;
 use Sdk\Shared\Event\IntegrationEventMessages;
 
-class CarBidUpdated extends AbstractBookingEvent implements CarBidChangedInterface
+class CarBidUpdated extends AbstractDetailsEvent implements CarBidChangedInterface
 {
     public function __construct(
-        Booking $booking,
+        DetailsInterface $details,
         public readonly CarBid $carBidBefore,
         public readonly CarBid $carBidAfter,
     ) {
-        parent::__construct($booking);
+        parent::__construct($details);
     }
 
     public function integrationEvent(): string
@@ -25,7 +26,7 @@ class CarBidUpdated extends AbstractBookingEvent implements CarBidChangedInterfa
     public function integrationPayload(): array
     {
         return [
-            'bookingId' => $this->booking->id()->value(),
+            'bookingId' => $this->bookingId()->value(),
             'before' => $this->carBidBefore->serialize(),
             'after' => $this->carBidAfter->serialize()
         ];

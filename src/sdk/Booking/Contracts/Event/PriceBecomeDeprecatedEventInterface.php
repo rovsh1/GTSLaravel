@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Shared\Domain\Booking\Event;
+namespace Sdk\Booking\Contracts\Event;
 
 use Sdk\Booking\ValueObject\BookingId;
 

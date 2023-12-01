@@ -1,11 +1,11 @@
 <?php
 
-namespace Module\Booking\Moderation\Domain\Booking\Event\HotelBooking;
+namespace Sdk\Booking\Event\HotelBooking;
 
 use Module\Booking\Shared\Domain\Booking\Booking;
-use Module\Booking\Shared\Domain\Booking\Event\PriceBecomeDeprecatedEventInterface;
+use Sdk\Booking\Contracts\Event\PriceBecomeDeprecatedEventInterface;
 use Sdk\Booking\Entity\BookingDetails\HotelAccommodation;
-use Sdk\Booking\Support\AbstractBookingEvent;
+use Sdk\Booking\Support\Event\AbstractBookingEvent;
 use Sdk\Booking\ValueObject\HotelBooking\AccommodationDetails;
 use Sdk\Shared\Event\IntegrationEventMessages;
 

@@ -6,6 +6,8 @@ namespace Sdk\Booking\Entity\BookingDetails;
 
 use DateTimeInterface;
 use Sdk\Booking\Contracts\Entity\DetailsInterface;
+use Sdk\Booking\Event\HotelBooking\BookingPeriodChanged;
+use Sdk\Booking\Support\Entity\AbstractDetails;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\DetailsId;
 use Sdk\Booking\ValueObject\HotelBooking\BookingPeriod;
@@ -14,31 +16,22 @@ use Sdk\Booking\ValueObject\HotelBooking\HotelInfo;
 use Sdk\Shared\Enum\Booking\QuotaProcessingMethodEnum;
 use Sdk\Shared\Enum\ServiceTypeEnum;
 
-final class HotelBooking implements DetailsInterface
+final class HotelBooking extends AbstractDetails implements DetailsInterface
 {
     public function __construct(
-        private readonly DetailsId $id,
-        private readonly BookingId $bookingId,
+        DetailsId $id,
+        BookingId $bookingId,
         private readonly HotelInfo $hotelInfo,
         private BookingPeriod $bookingPeriod,
         private ?ExternalNumber $externalNumber,
         private readonly QuotaProcessingMethodEnum $quotaProcessingMethod,
     ) {
+        parent::__construct($id, $bookingId);
     }
 
     public function serviceType(): ServiceTypeEnum
     {
         return ServiceTypeEnum::HOTEL_BOOKING;
-    }
-
-    public function id(): DetailsId
-    {
-        return $this->id;
-    }
-
-    public function bookingId(): BookingId
-    {
-        return $this->bookingId;
     }
 
     public function hotelInfo(): HotelInfo
@@ -53,9 +46,12 @@ final class HotelBooking implements DetailsInterface
 
     public function setBookingPeriod(BookingPeriod $period): void
     {
-        if (!$this->bookingPeriod->isEqual($period)) {
-            $this->bookingPeriod = $period;
+        if ($this->bookingPeriod->isEqual($period)) {
+            return;
         }
+
+        $this->pushEvent(new BookingPeriodChanged($this, $this->bookingPeriod));
+        $this->bookingPeriod = $period;
     }
 
     public function externalNumber(): ?ExternalNumber

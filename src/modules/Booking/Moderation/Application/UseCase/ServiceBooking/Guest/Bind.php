@@ -6,42 +6,38 @@ namespace Module\Booking\Moderation\Application\UseCase\ServiceBooking\Guest;
 
 use Carbon\Carbon;
 use Module\Booking\Moderation\Application\Exception\NotFoundServicePriceException;
-use Module\Booking\Moderation\Domain\Booking\Event\GuestBinded;
+use Module\Booking\Moderation\Application\Service\GuestValidator;
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
-use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
-use Module\Booking\Shared\Domain\Guest\Repository\GuestRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\Service\BookingUnitOfWorkInterface;
 use Sdk\Booking\Contracts\Entity\AirportDetailsInterface;
 use Sdk\Booking\Entity\BookingDetails\CIPMeetingInAirport;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\GuestId;
-use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
 class Bind implements UseCaseInterface
 {
     public function __construct(
-        private readonly BookingRepositoryInterface $bookingRepository,
-        private readonly GuestRepositoryInterface $guestRepository,
-        private readonly DetailsRepositoryInterface $detailsRepository,
-        private readonly SupplierAdapterInterface $supplierAdapter,
-        private readonly DomainEventDispatcherInterface $eventDispatcher
+        private readonly BookingUnitOfWorkInterface $bookingUnitOfWork,
+        private readonly GuestValidator $guestValidator,
+        private readonly SupplierAdapterInterface $supplierAdapter
     ) {}
 
     public function execute(int $bookingId, int $guestId): void
     {
-        $booking = $this->bookingRepository->findOrFail(new BookingId($bookingId));
-        $details = $this->detailsRepository->findOrFail($booking->id());
+        $booking = $this->bookingUnitOfWork->findOrFail(new BookingId($bookingId));
+        $details = $this->bookingUnitOfWork->getDetails($booking->id());
         assert($details instanceof AirportDetailsInterface);
-        $guest = $this->guestRepository->findOrFail(new GuestId($guestId));
+
+        $this->guestValidator->ensureCanBindToBooking($bookingId, $guestId);
 
         $this->validateSupplier($booking, $details);
 
-        $details->addGuest($guest->id());
-        $this->detailsRepository->store($details);
-        $this->eventDispatcher->dispatch(new GuestBinded($booking, $guest));
+        $details->addGuest(new GuestId($guestId));
+
+        $this->bookingUnitOfWork->commit();
     }
 
     /**

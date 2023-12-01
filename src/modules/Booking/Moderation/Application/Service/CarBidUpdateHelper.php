@@ -6,13 +6,12 @@ use Module\Booking\Moderation\Application\Exception\NotFoundServiceCancelConditi
 use Module\Booking\Moderation\Application\Exception\NotFoundServicePriceException as NotFoundApplicationException;
 use Module\Booking\Moderation\Application\Exception\ServiceDateUndefinedException;
 use Module\Booking\Moderation\Domain\Booking\Exception\NotFoundServiceCancelConditions;
-use Module\Booking\Moderation\Domain\Booking\Service\CancelConditionsUpdater;
+use Module\Booking\Moderation\Domain\Booking\Factory\TransferCancelConditionsFactory;
 use Module\Booking\Moderation\Domain\Booking\Service\TransferBooking\CarBidPriceBuilder;
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Exception\NotFoundTransferServicePrice;
-use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\Service\BookingUnitOfWorkInterface;
 use Sdk\Booking\Contracts\Entity\TransferDetailsInterface;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\CarBid\CarBidPrices;
@@ -28,10 +27,9 @@ class CarBidUpdateHelper
 
     public function __construct(
         private readonly SupplierAdapterInterface $supplierAdapter,
-        private readonly DetailsRepositoryInterface $detailsRepository,
-        private readonly BookingRepositoryInterface $bookingRepository,
+        private readonly BookingUnitOfWorkInterface $bookingUnitOfWork,
         private readonly CarBidPriceBuilder $carBidPriceBuilder,
-        private readonly CancelConditionsUpdater $cancelConditionsUpdater,
+        private readonly TransferCancelConditionsFactory $cancelConditionsFactory,
     ) {}
 
     public function boot(int $bookingId, int $carId = null): void
@@ -44,8 +42,8 @@ class CarBidUpdateHelper
             $this->carId = $carId;
         }
 
-        $booking = $this->bookingRepository->findOrFail(new BookingId($bookingId));
-        $details = $this->detailsRepository->findOrFail($booking->id());
+        $booking = $this->bookingUnitOfWork->findOrFail(new BookingId($bookingId));
+        $details = $this->bookingUnitOfWork->getDetails($booking->id());
         assert($details instanceof TransferDetailsInterface);
 
         if ($details->serviceDate() === null) {
@@ -54,11 +52,6 @@ class CarBidUpdateHelper
 
         $this->booking = $booking;
         $this->details = $details;
-    }
-
-    public function booking(): Booking
-    {
-        return $this->booking;
     }
 
     public function details(): TransferDetailsInterface
@@ -83,14 +76,27 @@ class CarBidUpdateHelper
         }
     }
 
-    public function store(): void
+    public function commit(): void
     {
-        $this->detailsRepository->store($this->details);
-
         try {
-            $this->cancelConditionsUpdater->update($this->booking);
+            $this->updateCancelConditions($this->booking);
         } catch (NotFoundServiceCancelConditions $e) {
             throw new NotFoundServiceCancelConditionsException($e);
         }
+
+        $this->bookingUnitOfWork->commit();
+//        $this->detailsRepository->store($this->details);
+    }
+
+    private function updateCancelConditions(Booking $booking): void
+    {
+        $details = $this->details;
+        assert($details instanceof TransferDetailsInterface);
+        $cancelConditions = $this->cancelConditionsFactory->build(
+            $details->serviceInfo()->id(),
+            $details->carBids(),
+            $details->serviceDate()
+        );
+        $booking->setCancelConditions($cancelConditions);
     }
 }

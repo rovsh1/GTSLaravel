@@ -9,6 +9,7 @@ use Sdk\Booking\Contracts\Entity\AirportDetailsInterface;
 use Sdk\Booking\Entity\BookingDetails\Concerns\HasDepartureDateTrait;
 use Sdk\Booking\Entity\BookingDetails\Concerns\HasFlightNumberTrait;
 use Sdk\Booking\Entity\BookingDetails\Concerns\HasGuestIdCollectionTrait;
+use Sdk\Booking\Support\Entity\AbstractServiceDetails;
 use Sdk\Booking\ValueObject\AirportId;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\DetailsId;
@@ -17,41 +18,27 @@ use Sdk\Booking\ValueObject\ServiceInfo;
 use Sdk\Shared\Enum\ServiceTypeEnum;
 use Sdk\Shared\Support\DateTimeImmutableFactory;
 
-final class CIPSendoffInAirport implements AirportDetailsInterface
+final class CIPSendoffInAirport extends AbstractServiceDetails implements AirportDetailsInterface
 {
     use HasFlightNumberTrait;
     use HasGuestIdCollectionTrait;
     use HasDepartureDateTrait;
 
     public function __construct(
-        private readonly DetailsId $id,
-        private readonly BookingId $bookingId,
-        private readonly ServiceInfo $serviceInfo,
+        DetailsId $id,
+        BookingId $bookingId,
+        ServiceInfo $serviceInfo,
         private readonly AirportId $airportId,
         private ?string $flightNumber,
         private ?DateTimeInterface $departureDate,
         private GuestIdCollection $guestIds,
     ) {
+        parent::__construct($id, $bookingId, $serviceInfo);
     }
 
     public function serviceType(): ServiceTypeEnum
     {
         return ServiceTypeEnum::CIP_SENDOFF_IN_AIRPORT;
-    }
-
-    public function serviceInfo(): ServiceInfo
-    {
-        return $this->serviceInfo;
-    }
-
-    public function id(): DetailsId
-    {
-        return $this->id;
-    }
-
-    public function bookingId(): BookingId
-    {
-        return $this->bookingId;
     }
 
     public function airportId(): AirportId

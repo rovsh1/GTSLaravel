@@ -11,8 +11,8 @@ use Module\Booking\Moderation\Application\Service\DetailsEditor\DetailsEditorFac
 use Module\Booking\Moderation\Application\Support\UseCase\AbstractCreateBooking;
 use Module\Booking\Moderation\Domain\Booking\Service\HotelBooking\HotelValidator;
 use Module\Booking\Shared\Domain\Booking\Adapter\HotelAdapterInterface;
+use Module\Booking\Shared\Domain\Booking\DbContext\BookingDbContextInterface;
 use Module\Booking\Shared\Domain\Booking\Exception\HotelBooking\NotFoundHotelCancelPeriod;
-use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Order\Repository\OrderRepositoryInterface;
 use Module\Booking\Shared\Domain\Shared\Adapter\AdministratorAdapterInterface;
 use Sdk\Booking\ValueObject\BookingPrices;
@@ -27,7 +27,7 @@ class CreateBooking extends AbstractCreateBooking
     public function __construct(
         OrderRepositoryInterface $orderRepository,
         AdministratorAdapterInterface $administratorAdapter,
-        private readonly BookingRepositoryInterface $repository,
+        private readonly BookingDbContextInterface $bookingDbContext,
         private readonly HotelAdapterInterface $hotelAdapter,
         private readonly HotelValidator $hotelValidator,
         private readonly DetailsEditorFactory $detailsEditorFactory,
@@ -55,7 +55,7 @@ class CreateBooking extends AbstractCreateBooking
             throw new ApplicationNotFoundHotelCancelPeriod($e);
         }
 
-        $booking = $this->repository->create(
+        $booking = $this->bookingDbContext->create(
             orderId: $orderId,
             creatorId: new CreatorId($request->creatorId),
             prices: BookingPrices::createEmpty(CurrencyEnum::UZS, $orderCurrency),

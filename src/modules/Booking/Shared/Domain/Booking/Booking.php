@@ -15,12 +15,11 @@ use Sdk\Booking\ValueObject\CancelConditions;
 use Sdk\Booking\ValueObject\Context;
 use Sdk\Booking\ValueObject\OrderId;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
-use Sdk\Shared\Contracts\Support\SerializableInterface;
 use Sdk\Shared\Enum\Booking\BookingStatusEnum;
 use Sdk\Shared\Enum\ServiceTypeEnum;
 use Sdk\Shared\ValueObject\Timestamps;
 
-class Booking extends AbstractAggregateRoot implements SerializableInterface
+class Booking extends AbstractAggregateRoot
 {
     use HasStatusesTrait;
     use StatusesFlagsTrait;
@@ -35,8 +34,7 @@ class Booking extends AbstractAggregateRoot implements SerializableInterface
         private ?string $note,
         private readonly Context $context,
         private readonly Timestamps $timestamps,
-    ) {
-    }
+    ) {}
 
     public function id(): BookingId
     {
@@ -131,7 +129,9 @@ class Booking extends AbstractAggregateRoot implements SerializableInterface
             serviceType: ServiceTypeEnum::from($payload['serviceType']),
             status: BookingStatusEnum::from($payload['status']),
             prices: BookingPrices::deserialize($payload['prices']),
-            cancelConditions: $payload['cancelConditions'] ? CancelConditions::deserialize($payload['cancelConditions']) : null,
+            cancelConditions: $payload['cancelConditions'] ? CancelConditions::deserialize(
+                $payload['cancelConditions']
+            ) : null,
             note: $payload['note'],
             context: Context::deserialize($payload['context']),
             timestamps: Timestamps::deserialize($payload['timestamps'])

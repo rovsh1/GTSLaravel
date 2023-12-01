@@ -2,9 +2,11 @@
 
 namespace Module\Booking\Shared\Providers;
 
+use Module\Booking\Shared\Domain\Booking\DbContext\BookingDbContextInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Service\BookingStatusStorageInterface;
 use Module\Booking\Shared\Domain\Booking\Service\BookingUnitOfWorkInterface;
+use Module\Booking\Shared\Infrastructure\DbContext\BookingDbContext;
 use Module\Booking\Shared\Infrastructure\Repository\BookingRepository;
 use Module\Booking\Shared\Infrastructure\Service\BookingStatusStorage;
 use Module\Booking\Shared\Infrastructure\Service\BookingUnitOfWork;
@@ -14,6 +16,7 @@ class BookingServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
+        $this->app->singleton(BookingDbContextInterface::class, BookingDbContext::class);
         $this->app->singleton(BookingRepositoryInterface::class, BookingRepository::class);
         $this->app->singleton(BookingStatusStorageInterface::class, BookingStatusStorage::class);
         $this->app->singleton(BookingUnitOfWorkInterface::class, BookingUnitOfWork::class);

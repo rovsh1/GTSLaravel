@@ -8,6 +8,7 @@ use Carbon\CarbonPeriod;
 use Module\Booking\Moderation\Application\Dto\ServiceBooking\BookingDto;
 use Module\Booking\Moderation\Application\Factory\BookingDtoFactory;
 use Module\Booking\Moderation\Application\Service\DetailsEditor\DetailsEditorFactory;
+use Module\Booking\Shared\Domain\Booking\DbContext\BookingDbContextInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
 use Module\Booking\Shared\Domain\Shared\Adapter\AdministratorAdapterInterface;
@@ -21,6 +22,7 @@ use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 class CopyBooking implements UseCaseInterface
 {
     public function __construct(
+        private readonly BookingDbContextInterface $bookingDbContext,
         private readonly BookingRepositoryInterface $repository,
         private readonly DetailsEditorFactory $detailsEditorFactory,
         private readonly DetailsRepositoryInterface $detailsRepository,
@@ -35,7 +37,7 @@ class CopyBooking implements UseCaseInterface
         if ($booking === null) {
             throw new EntityNotFoundException('Booking not found');
         }
-        $newBooking = $this->repository->create(
+        $newBooking = $this->bookingDbContext->create(
             orderId: $booking->orderId(),
             creatorId: $booking->context()->creatorId(),
             prices: BookingPrices::createEmpty(

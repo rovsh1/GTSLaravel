@@ -3,7 +3,7 @@
 namespace Module\Booking\Shared\Domain\Booking\Listener;
 
 use Module\Booking\Shared\Domain\Booking\Adapter\PricingAdapterInterface;
-use Module\Booking\Shared\Domain\Booking\Event\PriceBecomeDeprecatedEventInterface;
+use Sdk\Booking\Contracts\Event\PriceBecomeDeprecatedEventInterface;
 use Sdk\Module\Contracts\Event\DomainEventInterface;
 use Sdk\Module\Contracts\Event\DomainEventListenerInterface;
 

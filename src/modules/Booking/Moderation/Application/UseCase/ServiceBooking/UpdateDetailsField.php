@@ -14,12 +14,11 @@ class UpdateDetailsField implements UseCaseInterface
     public function __construct(
         private readonly DetailsEditorFactory $detailsEditorFactory,
         private readonly BookingUnitOfWorkInterface $bookingUnitOfWork,
-    ) {
-    }
+    ) {}
 
     public function execute(int $bookingId, string $field, mixed $value): void
     {
-        $details = $this->bookingUnitOfWork->detailsRepository()->findOrFail(new BookingId($bookingId));
+        $details = $this->bookingUnitOfWork->getDetails(new BookingId($bookingId));
         $editor = $this->detailsEditorFactory->build($details->serviceType());
         $editor->update($details, [$field => $value]);
         $this->bookingUnitOfWork->commit();

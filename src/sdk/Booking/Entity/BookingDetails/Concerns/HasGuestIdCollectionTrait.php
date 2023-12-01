@@ -2,6 +2,8 @@
 
 namespace Sdk\Booking\Entity\BookingDetails\Concerns;
 
+use Sdk\Booking\Event\ServiceBooking\GuestBinded;
+use Sdk\Booking\Event\ServiceBooking\GuestUnbinded;
 use Sdk\Booking\Exception\GuestAlreadyExists;
 use Sdk\Booking\ValueObject\GuestId;
 use Sdk\Booking\ValueObject\GuestIdCollection;
@@ -19,6 +21,7 @@ trait HasGuestIdCollectionTrait
             throw new GuestAlreadyExists('Guest already exists');
         }
         $this->guestIds = new GuestIdCollection([...$this->guestIds->all(), $id]);
+        $this->pushEvent(new GuestBinded($this, $id));
     }
 
     public function removeGuest(GuestId $guestId): void
@@ -29,6 +32,7 @@ trait HasGuestIdCollectionTrait
         $this->guestIds = new GuestIdCollection(
             array_filter($this->guestIds->all(), fn($id) => !$guestId->isEqual($id))
         );
+        $this->pushEvent(new GuestUnbinded($this, $guestId));
     }
 
     public function guestsCount(): int

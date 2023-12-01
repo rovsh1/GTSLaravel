@@ -8,9 +8,8 @@ use Module\Booking\Moderation\Application\Dto\UpdateStatusResponseDto;
 use Module\Booking\Moderation\Domain\Booking\Exception\InvalidStatusTransition;
 use Module\Booking\Moderation\Domain\Booking\Service\StatusRules\StatusTransitionsFactory;
 use Module\Booking\Shared\Domain\Booking\Booking;
-use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\Service\BookingUnitOfWorkInterface;
 use Sdk\Booking\ValueObject\BookingId;
-use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 use Sdk\Shared\Enum\Booking\BookingStatusEnum;
 use Sdk\Shared\Enum\ServiceTypeEnum;
@@ -18,11 +17,9 @@ use Sdk\Shared\Enum\ServiceTypeEnum;
 class UpdateStatus implements UseCaseInterface
 {
     public function __construct(
-        private readonly BookingRepositoryInterface $bookingRepository,
+        private readonly BookingUnitOfWorkInterface $bookingUnitOfWork,
         private readonly StatusTransitionsFactory $statusTransitionsFactory,
-        private readonly DomainEventDispatcherInterface $eventDispatcher,
-    ) {
-    }
+    ) {}
 
     public function execute(
         int $bookingId,
@@ -32,7 +29,7 @@ class UpdateStatus implements UseCaseInterface
         ?float $clientPenalty = null
     ): UpdateStatusResponseDto {
         $statusEnum = BookingStatusEnum::from($statusId);
-        $booking = $this->bookingRepository->findOrFail(new BookingId($bookingId));
+        $booking = $this->bookingUnitOfWork->findOrFail(new BookingId($bookingId));
 
         $this->ensureCanTransitToStatus($booking, $statusEnum);
 
@@ -75,8 +72,7 @@ class UpdateStatus implements UseCaseInterface
                 throw new \LogicException('Status change not implemented');
         }
 
-        $this->bookingRepository->store($booking);
-        $this->eventDispatcher->dispatch(...$booking->pullEvents());
+        $this->bookingUnitOfWork->commit();
 
         return new UpdateStatusResponseDto();
     }

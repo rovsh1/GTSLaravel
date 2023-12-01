@@ -10,12 +10,11 @@ class RecalculatePriceService
     public function __construct(
         private readonly BookingUnitOfWorkInterface $bookingUnitOfWork,
         private readonly PriceCalculatorFactory $priceCalculatorFactory,
-    ) {
-    }
+    ) {}
 
     public function recalculate(BookingId $bookingId): void
     {
-        $booking = $this->bookingUnitOfWork->bookingRepository()->findOrFail($bookingId);
+        $booking = $this->bookingUnitOfWork->findOrFail($bookingId);
         $calculator = $this->priceCalculatorFactory->build($booking->serviceType());
         $bookingPrices = $calculator->calculate($booking);
         $booking->updatePrice($bookingPrices);

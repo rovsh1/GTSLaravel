@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\UseCase;
 
-use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\DbContext\BookingDbContextInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class BulkDeleteBookings implements UseCaseInterface
 {
     public function __construct(
-        private readonly BookingRepositoryInterface $repository
+        private readonly BookingDbContextInterface $bookingDbContext
     ) {}
 
     /**
@@ -19,6 +19,6 @@ class BulkDeleteBookings implements UseCaseInterface
      */
     public function execute(array $ids): void
     {
-        $this->repository->bulkDelete($ids);
+        $this->bookingDbContext->bulkDelete($ids);
     }
 }

@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 namespace Sdk\Booking\Entity\BookingDetails;
 
+use Sdk\Booking\Contracts\Entity\BookingPartInterface;
 use Sdk\Booking\Entity\BookingDetails\Concerns\HasGuestIdCollectionTrait;
+use Sdk\Booking\Event\HotelBooking\AccommodationDetailsEdited;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\GuestIdCollection;
 use Sdk\Booking\ValueObject\HotelBooking\AccommodationDetails;
 use Sdk\Booking\ValueObject\HotelBooking\AccommodationId;
 use Sdk\Booking\ValueObject\HotelBooking\RoomInfo;
 use Sdk\Booking\ValueObject\HotelBooking\RoomPrices;
-use Sdk\Shared\Contracts\Support\SerializableInterface;
+use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 
-final class HotelAccommodation implements SerializableInterface
+final class HotelAccommodation extends AbstractAggregateRoot implements BookingPartInterface
 {
     use HasGuestIdCollectionTrait;
 
@@ -24,8 +26,7 @@ final class HotelAccommodation implements SerializableInterface
         private GuestIdCollection $guestIds,
         private AccommodationDetails $details,
         private RoomPrices $prices,
-    ) {
-    }
+    ) {}
 
     public function id(): AccommodationId
     {
@@ -49,6 +50,7 @@ final class HotelAccommodation implements SerializableInterface
 
     public function updateDetails(AccommodationDetails $details): void
     {
+        $this->pushEvent(new AccommodationDetailsEdited($this, $this->details));
         $this->details = $details;
     }
 

@@ -6,40 +6,28 @@ namespace Sdk\Booking\Entity\BookingDetails;
 
 use DateTimeInterface;
 use Sdk\Booking\Contracts\Entity\DetailsInterface;
+use Sdk\Booking\Support\Entity\AbstractServiceDetails;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\DetailsId;
 use Sdk\Booking\ValueObject\ServiceInfo;
 use Sdk\Module\Support\DateTimeImmutable;
 use Sdk\Shared\Enum\ServiceTypeEnum;
 
-final class Other implements DetailsInterface
+final class Other extends AbstractServiceDetails implements DetailsInterface
 {
     public function __construct(
-        private readonly DetailsId $id,
-        private readonly BookingId $bookingId,
-        private readonly ServiceInfo $serviceInfo,
+        DetailsId $id,
+        BookingId $bookingId,
+        ServiceInfo $serviceInfo,
         private ?string $description,
         private ?DateTimeInterface $date,
-    ) {}
-
-    public function bookingId(): BookingId
-    {
-        return $this->bookingId;
+    ) {
+        parent::__construct($id, $bookingId, $serviceInfo);
     }
 
     public function serviceType(): ServiceTypeEnum
     {
         return ServiceTypeEnum::OTHER_SERVICE;
-    }
-
-    public function serviceInfo(): ServiceInfo
-    {
-        return $this->serviceInfo;
-    }
-
-    public function id(): DetailsId
-    {
-        return $this->id;
     }
 
     public function setDescription(?string $description): void

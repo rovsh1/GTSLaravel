@@ -8,6 +8,7 @@ use DateTimeInterface;
 use Sdk\Booking\Contracts\Entity\TransferDetailsInterface;
 use Sdk\Booking\Entity\BookingDetails\Concerns\HasCarBidCollectionTrait;
 use Sdk\Booking\Entity\BookingDetails\Concerns\HasDepartureDateTrait;
+use Sdk\Booking\Support\Entity\AbstractServiceDetails;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\CarBidCollection;
 use Sdk\Booking\ValueObject\CityId;
@@ -16,20 +17,21 @@ use Sdk\Booking\ValueObject\ServiceInfo;
 use Sdk\Shared\Enum\ServiceTypeEnum;
 use Sdk\Shared\Support\DateTimeImmutableFactory;
 
-final class DayCarTrip implements TransferDetailsInterface
+final class DayCarTrip extends AbstractServiceDetails implements TransferDetailsInterface
 {
     use HasDepartureDateTrait;
     use HasCarBidCollectionTrait;
 
     public function __construct(
-        private readonly DetailsId $id,
-        private readonly BookingId $bookingId,
-        private readonly ServiceInfo $serviceInfo,
+        DetailsId $id,
+        BookingId $bookingId,
+        ServiceInfo $serviceInfo,
         private readonly CityId $cityId,
         private ?string $destinationsDescription,
         protected ?DateTimeInterface $departureDate,
         protected CarBidCollection $carBids
     ) {
+        parent::__construct($id, $bookingId, $serviceInfo);
     }
 
     public function serviceType(): ServiceTypeEnum
@@ -45,16 +47,6 @@ final class DayCarTrip implements TransferDetailsInterface
     public function cityId(): CityId
     {
         return $this->cityId;
-    }
-
-    public function bookingId(): BookingId
-    {
-        return $this->bookingId;
-    }
-
-    public function serviceInfo(): ServiceInfo
-    {
-        return $this->serviceInfo;
     }
 
     public function destinationsDescription(): ?string

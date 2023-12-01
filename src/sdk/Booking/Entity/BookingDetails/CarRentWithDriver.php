@@ -10,6 +10,7 @@ use Sdk\Booking\Entity\BookingDetails\Concerns\HasBookingPeriodTrait;
 use Sdk\Booking\Entity\BookingDetails\Concerns\HasCarBidCollectionTrait;
 use Sdk\Booking\Entity\BookingDetails\Concerns\HasMeetingAddressTrait;
 use Sdk\Booking\Entity\BookingDetails\Concerns\HasMeetingTabletTrait;
+use Sdk\Booking\Support\Entity\AbstractServiceDetails;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\BookingPeriod;
 use Sdk\Booking\ValueObject\CarBidCollection;
@@ -18,7 +19,7 @@ use Sdk\Booking\ValueObject\DetailsId;
 use Sdk\Booking\ValueObject\ServiceInfo;
 use Sdk\Shared\Enum\ServiceTypeEnum;
 
-final class CarRentWithDriver implements TransferDetailsInterface
+final class CarRentWithDriver extends AbstractServiceDetails implements TransferDetailsInterface
 {
     use HasBookingPeriodTrait;
     use HasCarBidCollectionTrait;
@@ -26,15 +27,16 @@ final class CarRentWithDriver implements TransferDetailsInterface
     use HasMeetingAddressTrait;
 
     public function __construct(
-        private readonly DetailsId $id,
-        private readonly BookingId $bookingId,
-        private readonly ServiceInfo $serviceInfo,
+        DetailsId $id,
+        BookingId $bookingId,
+        ServiceInfo $serviceInfo,
         private readonly CityId $cityId,
         private ?string $meetingAddress,
         private ?string $meetingTablet,
         protected ?BookingPeriod $bookingPeriod,
         protected CarBidCollection $carBids
     ) {
+        parent::__construct($id, $bookingId, $serviceInfo);
     }
 
     public function serviceType(): ServiceTypeEnum
@@ -42,19 +44,9 @@ final class CarRentWithDriver implements TransferDetailsInterface
         return ServiceTypeEnum::CAR_RENT_WITH_DRIVER;
     }
 
-    public function id(): DetailsId
-    {
-        return $this->id;
-    }
-
     public function cityId(): CityId
     {
         return $this->cityId;
-    }
-
-    public function serviceInfo(): ServiceInfo
-    {
-        return $this->serviceInfo;
     }
 
     public function serialize(): array

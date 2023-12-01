@@ -7,7 +7,7 @@ namespace Module\Booking\Requesting\Domain\BookingRequest\Event;
 use Module\Booking\Requesting\Domain\BookingRequest\BookingRequest;
 use Module\Booking\Requesting\Domain\BookingRequest\ValueObject\RequestId;
 use Module\Booking\Shared\Domain\Booking\Booking;
-use Sdk\Booking\Support\AbstractBookingEvent;
+use Sdk\Booking\Support\Event\AbstractBookingEvent;
 use Sdk\Shared\Event\IntegrationEventMessages;
 
 abstract class AbstractRequestEvent extends AbstractBookingEvent implements BookingRequestEventInterface

@@ -10,6 +10,7 @@ use Sdk\Booking\Entity\BookingDetails\Concerns\HasArrivalDateTrait;
 use Sdk\Booking\Entity\BookingDetails\Concerns\HasCarBidCollectionTrait;
 use Sdk\Booking\Entity\BookingDetails\Concerns\HasFlightNumberTrait;
 use Sdk\Booking\Entity\BookingDetails\Concerns\HasMeetingTabletTrait;
+use Sdk\Booking\Support\Entity\AbstractServiceDetails;
 use Sdk\Booking\ValueObject\AirportId;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\CarBidCollection;
@@ -18,7 +19,7 @@ use Sdk\Booking\ValueObject\ServiceInfo;
 use Sdk\Shared\Enum\ServiceTypeEnum;
 use Sdk\Shared\Support\DateTimeImmutableFactory;
 
-final class TransferFromAirport implements TransferDetailsInterface
+final class TransferFromAirport extends AbstractServiceDetails implements TransferDetailsInterface
 {
     use HasMeetingTabletTrait;
     use HasFlightNumberTrait;
@@ -26,35 +27,21 @@ final class TransferFromAirport implements TransferDetailsInterface
     use HasCarBidCollectionTrait;
 
     public function __construct(
-        private readonly DetailsId $id,
-        private readonly BookingId $bookingId,
-        private readonly ServiceInfo $serviceInfo,
+        DetailsId $id,
+        BookingId $bookingId,
+        ServiceInfo $serviceInfo,
         private readonly AirportId $airportId,
         private ?string $flightNumber,
         private ?string $meetingTablet,
         private ?DateTimeInterface $arrivalDate,
         private CarBidCollection $carBids
     ) {
+        parent::__construct($id, $bookingId, $serviceInfo);
     }
 
     public function serviceType(): ServiceTypeEnum
     {
         return ServiceTypeEnum::TRANSFER_FROM_AIRPORT;
-    }
-
-    public function serviceInfo(): ServiceInfo
-    {
-        return $this->serviceInfo;
-    }
-
-    public function id(): DetailsId
-    {
-        return $this->id;
-    }
-
-    public function bookingId(): BookingId
-    {
-        return $this->bookingId;
     }
 
     public function airportId(): AirportId

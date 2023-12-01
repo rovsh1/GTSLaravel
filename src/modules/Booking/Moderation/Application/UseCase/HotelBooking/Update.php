@@ -20,10 +20,10 @@ class Update implements UseCaseInterface
 
     public function execute(int $bookingId, CarbonPeriod $period, string|null $note): void
     {
-        $booking = $this->bookingUnitOfWork->bookingRepository()->findOrFail(new BookingId($bookingId));
+        $booking = $this->bookingUnitOfWork->findOrFail(new BookingId($bookingId));
         $booking->setNote($note);
 
-        $bookingDetails = $this->bookingUnitOfWork->detailsRepository()->findOrFail($booking->id());
+        $bookingDetails = $this->bookingUnitOfWork->getDetails($booking->id());
         assert($bookingDetails instanceof HotelBooking);
 
         $bookingDetails->setBookingPeriod(BookingPeriod::fromCarbon($period));

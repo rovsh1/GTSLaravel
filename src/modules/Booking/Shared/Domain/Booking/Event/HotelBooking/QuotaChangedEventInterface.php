@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Domain\Booking\Event\HotelBooking;
 
-use Module\Booking\Shared\Domain\Booking\Booking;
+use Sdk\Booking\Contracts\Event\BookingEventInterface;
+use Sdk\Booking\Contracts\Event\PriceBecomeDeprecatedEventInterface;
+use Sdk\Module\Contracts\Event\IntegrationEventInterface;
 
-interface QuotaChangedEventInterface
+interface QuotaChangedEventInterface extends BookingEventInterface,
+                                             PriceBecomeDeprecatedEventInterface,
+                                             IntegrationEventInterface
 {
-    public function booking(): Booking;
 }
