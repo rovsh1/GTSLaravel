@@ -75,6 +75,10 @@ class BookingUnitOfWork implements BookingUnitOfWorkInterface
         DB::beginTransaction();
 
         while ($entity = $this->identityMap->shift()) {
+            if (!$this->identityMap->isChanged($entity)) {
+                continue;
+            }
+
             if ($entity instanceof Booking) {
                 $this->bookingCommiter->store($entity);
                 continue;

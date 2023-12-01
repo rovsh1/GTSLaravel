@@ -2,6 +2,7 @@
 
 namespace Module\Booking\Shared\Infrastructure\Service\UnitOfWork;
 
+use Module\Booking\Shared\Domain\Booking\Booking;
 use Sdk\Booking\Contracts\Entity\BookingPartInterface;
 
 class IdentityMap
@@ -10,7 +11,7 @@ class IdentityMap
 
     private array $originalData = [];
 
-    public function add(BookingPartInterface $entity): void
+    public function add(Booking|BookingPartInterface $entity): void
     {
         $id = $this->entityId($entity);
         if (isset($this->identityMap[$id])) {
@@ -20,14 +21,9 @@ class IdentityMap
         $this->originalData[$id] = $entity->serialize();
     }
 
-    public function shift(): ?BookingPartInterface
+    public function shift(): Booking|BookingPartInterface|null
     {
-        $entity = array_shift($this->identityMap);
-        if ($this->isDirty($entity)) {
-            return $entity;
-        }
-
-        return null;
+        return array_shift($this->identityMap);
     }
 
     public function reset(): void
@@ -36,15 +32,15 @@ class IdentityMap
         $this->originalData = [];
     }
 
-    private function entityId(BookingPartInterface $entity): string
-    {
-        return spl_object_hash($entity);
-    }
-
-    private function isDirty(BookingPartInterface $entity): bool
+    public function isChanged(Booking|BookingPartInterface $entity): bool
     {
         $id = $this->entityId($entity);
 
         return json_encode($this->originalData[$id]) !== json_encode($entity->serialize());
+    }
+
+    private function entityId(Booking|BookingPartInterface $entity): string
+    {
+        return spl_object_hash($entity);
     }
 }
