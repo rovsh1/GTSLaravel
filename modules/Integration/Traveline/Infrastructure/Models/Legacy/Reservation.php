@@ -4,7 +4,6 @@ namespace Module\Integration\Traveline\Infrastructure\Models\Legacy;
 
 use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\DB;
 use Module\Integration\Traveline\Infrastructure\Models\Legacy\Hotel\Option;
 use Module\Integration\Traveline\Infrastructure\Models\Legacy\Hotel\OptionTypeEnum;
 
@@ -174,15 +173,7 @@ class Reservation extends Model
     {
         $this->update(['status' => $status]);
         try {
-            DB::table('reservation_status_log')->insert([
-                'reservation_id' => $this->id,
-                'user_id' => null,
-                'source' => 3,
-                'status' => $status->value,
-                'notification' => 0,
-                'created' => now(),
-                'description' => null,
-            ]);
+            ReservationStatusLog::log($this->id, $status, 3);
         } catch (\Throwable $e) {
             \Log::warning('Ошибка при попытке записать лог изменения статуса', ['error' => $e]);
         }
