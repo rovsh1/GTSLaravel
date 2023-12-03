@@ -87,7 +87,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        @include('booking.shared.cancel-conditions')
+                        <div id="booking-cancel-conditions" class="position-relative mt-3 rounded shadow-lg p-4 flex-grow-1"></div>
                     </div>
                     <div class="w-100 d-flex flex-column">
                         <div id="booking-control-panel" class="flex-grow-1"></div>
