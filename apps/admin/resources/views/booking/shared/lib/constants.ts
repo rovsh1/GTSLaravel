@@ -75,6 +75,20 @@ export const getHumanRequestType = (typeId: number): string | undefined => {
   return preparedType || 'изменение'
 }
 
+export const getDaysWord = (number: number) => {
+  const lastTwoDigits = number % 100
+  if (lastTwoDigits >= 11 && lastTwoDigits <= 19) {
+    return 'дней'
+  }
+  const lastDigit = number % 10
+  if (lastDigit === 1) {
+    return 'день'
+  } if (lastDigit >= 2 && lastDigit <= 4) {
+    return 'дня'
+  }
+  return 'дней'
+}
+
 export const mapClientsToSelect2Options = (clients: Client[]): Select2Option[] => clients.map(
   (client) => ({ id: client.id, text: client.name }),
 )
