@@ -3,9 +3,12 @@ import { nextTick, onMounted, ref } from 'vue'
 import { defineStore } from 'pinia'
 import { z } from 'zod'
 
-import { sendOrderVoucher, useOrderVoucherListAPI } from '~resources/api/order/voucher'
-
-import { downloadDocument as downloadDocumentRequest } from '~api/order/document'
+import {
+  createOrderVoucher,
+  downloadDocument,
+  sendOrderVoucher,
+  useOrderVoucherGetAPI,
+} from '~api/order/voucher'
 
 import { showConfirmDialog } from '~lib/confirm-dialog'
 import { requestInitialData } from '~lib/initial-data'
@@ -14,35 +17,42 @@ const { orderID } = requestInitialData('view-initial-data-booking-order', z.obje
   orderID: z.number(),
 }))
 
-export const useOrderVoucherStore = defineStore('order-vouchers', () => {
-  const { data: vouchers, execute: fetchOrderVouchers, isFetching } = useOrderVoucherListAPI({ orderID })
-  const voucherSendIsFetching = ref(false)
+export const useOrderVoucherStore = defineStore('order-voucher', () => {
+  const { data: voucher, execute: fetchOrderVoucher, isFetching } = useOrderVoucherGetAPI({ orderID })
+  const voucherCreateIsFetching = ref(false)
+
+  const createVoucher = async () => {
+    voucherCreateIsFetching.value = true
+    await createOrderVoucher({ orderID })
+    await fetchOrderVoucher()
+    voucherCreateIsFetching.value = false
+  }
 
   const sendVoucher = async () => {
     const { result: isConfirmed, toggleClose } = await showConfirmDialog('Отправить ваучер?')
     if (isConfirmed) {
-      voucherSendIsFetching.value = true
+      voucherCreateIsFetching.value = true
       nextTick(toggleClose)
       await sendOrderVoucher({ orderID })
-      await fetchOrderVouchers()
+      await fetchOrderVoucher()
     }
-    voucherSendIsFetching.value = false
+    voucherCreateIsFetching.value = false
   }
 
-  const downloadDocument = async (requestId: number): Promise<void> => {
-    await downloadDocumentRequest({ documentID: requestId, documentType: 'voucher', orderID })
+  const downloadFile = async (): Promise<void> => {
+    await downloadDocument({ orderID })
   }
 
   onMounted(() => {
-    fetchOrderVouchers()
+    fetchOrderVoucher()
   })
 
   return {
-    vouchers,
+    voucher,
     isFetching,
-    voucherSendIsFetching,
-    fetchOrderVouchers,
+    voucherCreateIsFetching,
+    createVoucher,
     sendVoucher,
-    downloadDocument,
+    downloadFile,
   }
 })
