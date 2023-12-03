@@ -24,10 +24,11 @@ const cancelConditions = computed(() => bookingStore.booking?.cancelConditions)
       </tr>
       <tr>
         <th>Незаезд</th>
-        <td v-if="cancelConditions">
+        <td v-if="cancelConditions?.noCheckInMarkup">
           {{ cancelConditions.noCheckInMarkup.value }}{{ cancelConditions.noCheckInMarkup.valueType }}
           {{ getCancelPeriodTypeName(cancelConditions.noCheckInMarkup.cancelPeriodType) }}
         </td>
+        <td v-else>-</td>
       </tr>
       <tr v-for="dailyMarkup in cancelConditions?.dailyMarkups" :key="dailyMarkup.daysCount">
         <th>За {{ dailyMarkup.daysCount }} {{ getDaysWord(dailyMarkup.daysCount) }}</th>

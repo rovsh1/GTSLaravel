@@ -108,7 +108,7 @@
                         <div id="booking-cancel-conditions" class="position-relative mt-3 rounded shadow-lg p-4 flex-grow-1"></div>
                     </div>
                     <div class="w-100 d-flex flex-column">
-                        <div id="booking-control-panel" class="flex-grow-1"></div>
+                        <div id="booking-control-panel" class="d-flex flex-column flex-grow-1"></div>
                     </div>
                 </div>
             </div>
