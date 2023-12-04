@@ -45,6 +45,7 @@
       "App\\Console\\": "apps/console/app/",
       "App\\Shared\\": "apps/shared/app/",
       "Module\\": "src/modules/",
+      "Supplier\\": "src/suppliers/",
       "Sdk\\": "src/sdk",
       "Database\\Factories\\": "database/factories/",
       "Database\\Seeders\\": "database/seeders/"
