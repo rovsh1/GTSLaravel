@@ -176,6 +176,25 @@ $.fn.childCombo = async function (options) {
       }
       child.change()
       trigger('load', items)
+    }).catch(async (error) => {
+      child.html('')
+      if (preparedOptions.allowEmpty) {
+        child.append(`<option value=''>${preparedOptions.emptyItem}</option>`)
+      }
+      child.prop('disabled', false)
+      await useSelectElement(child[0], {
+        multiple: isMultiple,
+      })
+      if (!preparedOptions.allowEmpty) {
+        setSelect2PlaceholderValue(preparedOptions.emptyText)
+      }
+      if (preparedOptions.allowEmpty && preparedOptions.emptyItem !== '' && !isMultiple) {
+        setTimeout(() => {
+          child.val('').change()
+        }, 0)
+      }
+      trigger('load', [])
+      return
     })
   }
 
