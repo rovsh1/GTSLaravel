@@ -1,5 +1,7 @@
 <script setup lang="ts">
 
+import { useCurrencyStore } from '~resources/store/currency'
+
 import { OrderBooking } from '~api/order/booking'
 
 import { formatDate, formatPeriod } from '~lib/date'
@@ -14,6 +16,8 @@ defineEmits<{
   (event: 'edit', guest: any): void
   (event: 'delete', guest: any): void
 }>()
+
+const { getCurrencyByCodeChar } = useCurrencyStore()
 
 const formatBookingPeriod = (booking: OrderBooking): string | null => {
   if (!booking.bookingPeriod) {
@@ -44,8 +48,10 @@ const formatBookingPeriod = (booking: OrderBooking): string | null => {
           </td>
           <td>{{ formatBookingPeriod(booking) }}</td>
           <td>
-            {{ formatBookingPrice(booking.prices.clientPrice) }} /
-            {{ formatBookingPrice(booking.prices.supplierPrice) }}
+            {{ formatBookingPrice(booking.prices.clientPrice,
+                                  getCurrencyByCodeChar(booking.prices.clientPrice.currency.value)?.sign) }} /
+            {{ formatBookingPrice(booking.prices.supplierPrice,
+                                  getCurrencyByCodeChar(booking.prices.supplierPrice.currency.value)?.sign) }}
           </td>
           <td>
             <span
