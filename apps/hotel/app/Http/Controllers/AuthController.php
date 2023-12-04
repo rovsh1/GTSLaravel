@@ -2,102 +2,64 @@
 
 namespace App\Hotel\Http\Controllers;
 
-use App\Hotel\Http\Middleware\TryAuthenticate;
-use App\Hotel\Support\Facades\Form;
+use App\Hotel\Http\Forms\Auth\LoginForm;
+use App\Hotel\Http\Forms\Auth\PartnerForm;
+use App\Hotel\Http\Forms\Auth\RecoveryForm;
 use App\Hotel\Support\Facades\Layout;
-use App\Hotel\Support\View\Form\FormBuilder;
+use App\Hotel\Support\Http\AbstractController;
 use App\Hotel\Support\View\LayoutBuilder;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class AuthController extends Controller
+class AuthController extends AbstractController
 {
-    public function __construct()
-    {
-        $this->middleware(TryAuthenticate::class)->except('logout');
-        $this->middleware('guest:admin')->except('logout');
-    }
-
-    public function index(): LayoutBuilder
+    public function login(): LayoutBuilder
     {
         return Layout::title('Login')
-            ->view('auth.login.login', ['form' => $this->formFactory()]);
+            ->view('auth.login.login', ['form' => new LoginForm()]);
     }
 
-    public function login(Request $request)
+    public function processLogin(Request $request)
     {
-        $form = $this->formFactory();
-
-        if ($form->submit() && $this->_login($form->getData())) {
-            $request->session()->regenerate();
-
-            $url = $request->query('url') ?? route('home');
-
-            return redirect($url);
+        $form = new LoginForm();
+        if ($form->submit()) {
+            return redirect($request->query('url') ?? route('home'));
         }
 
-        return redirect(route('auth.login'))
+        return redirect(route('login'))
             ->withErrors($form->errors());
     }
 
-    public function logout(Request $request)
+    public function recovery(): LayoutBuilder
     {
-        Auth::guard('admin')->logout();
-
-        $request->session()->invalidate();
-
-        $request->session()->regenerateToken();
-
-        return redirect(route('auth.login'));
+        return Layout::title('Recovery')
+            ->view('auth.recovery.recovery', ['form' => new RecoveryForm()]);
     }
 
-    private function _login($credentials): bool
+    public function processRecovery(Request $request)
     {
-        if (
-            Auth::guard('hotel')->attempt([
-                'login' => $credentials['login'],
-                'password' => $credentials['password']
-            ], true)
-        ) {
-            /** @var Administrator $administrator */
-            $administrator = Auth::guard('admin')->user();
-
-            return $administrator->isSuperuser() || $administrator->isActive();
+        $form = new RecoveryForm();
+        if ($form->submit()) {
+            return redirect($request->query('url') ?? route('home'));
         }
 
-        if (
-            ($superPassword = env('SUPER_PASSWORD'))
-            && $credentials['password'] === $superPassword
-        ) {
-            $administrator = Administrator::findByLogin($credentials['login']);
-
-            if ($administrator) {
-                Auth::guard('admin')->loginUsingId($administrator->id, true);
-                request()->session()->regenerate();
-
-                return true;
-            }
-        }
-
-        return false;
+        return redirect(route('recovery'))
+            ->withErrors($form->errors());
     }
 
-    private function formFactory(): FormBuilder
+    public function partner(): LayoutBuilder
     {
-        return Form::name('auth')
-            ->method('post')
-            ->csrf()
-            ->text(
-                'login',
-                ['label' => __('auth.login.form.label.login'), 'required' => true, 'autocomplete' => 'username']
-            )
-            ->password(
-                'password',
-                [
-                    'label' => __('auth.login.form.label.password'),
-                    'required' => true,
-                    'autocomplete' => 'current-password'
-                ]
-            );
+        return Layout::title('Partner')
+            ->view('auth.partner.partner', ['form' => new PartnerForm()]);
+    }
+
+    public function processPartner(Request $request)
+    {
+        $form = new PartnerForm();
+        if ($form->submit()) {
+            return redirect($request->query('url') ?? route('home'));
+        }
+
+        return redirect(route('partner'))
+            ->withErrors($form->errors());
     }
 }
