@@ -12,6 +12,7 @@ class Icon extends Component
         'administration' => 'settings',
         'client' => 'person',
         'finance' => 'payments',
+        'supplier' => 'group',
         'hotel' => 'hotel',
         'data' => 'database',
         'reports' => 'bar_chart',

@@ -3,7 +3,7 @@
 use App\Admin\Components\Factory\Factory;
 
 return Factory::key('supplier')
-    ->category(Factory::CATEGORY_CLIENT)
+    ->category(Factory::CATEGORY_SUPPLIER)
     ->model(\App\Admin\Models\Supplier\Supplier::class)
     ->controller(\App\Admin\Http\Controllers\Supplier\SupplierController::class)
     ->titles([
