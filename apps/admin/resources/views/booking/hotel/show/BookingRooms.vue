@@ -253,15 +253,15 @@ const onRoomModalSubmit = async () => {
   await fetchBooking()
 }
 
-const getMinDayPrices = (dayPrices: RoomBookingDayPrice[]): number | null => {
+const getMinDayPrices = (dayPrices: RoomBookingDayPrice[]): number | undefined => {
   const minPrice = dayPrices.length > 0 ? dayPrices.reduce((min, dayPrice) =>
-    ((dayPrice.grossValue < min) ? dayPrice.grossValue : min), dayPrices[0].grossValue) : null
+    ((dayPrice.grossValue < min) ? dayPrice.grossValue : min), dayPrices[0].grossValue) : undefined
   return minPrice
 }
 
-const getMaxDayPrices = (dayPrices: RoomBookingDayPrice[]): number | null => {
+const getMaxDayPrices = (dayPrices: RoomBookingDayPrice[]): number | undefined => {
   const maxPrice = dayPrices.length > 0 ? dayPrices.reduce((max, dayPrice) =>
-    ((dayPrice.grossValue > max) ? dayPrice.grossValue : max), dayPrices[0].grossValue) : null
+    ((dayPrice.grossValue > max) ? dayPrice.grossValue : max), dayPrices[0].grossValue) : undefined
   return maxPrice
 }
 
