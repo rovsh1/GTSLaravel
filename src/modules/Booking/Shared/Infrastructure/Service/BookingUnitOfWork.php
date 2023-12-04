@@ -74,6 +74,18 @@ class BookingUnitOfWork implements BookingUnitOfWorkInterface
 
         DB::beginTransaction();
 
+        $this->commitLoop();
+
+        $this->bookingCommiter->finish();
+
+        DB::commit();
+
+        $this->identityMap->reset();
+        $this->commitState = false;
+    }
+
+    private function commitLoop(): void
+    {
         while ($entity = $this->identityMap->shift()) {
             if (!$this->identityMap->isChanged($entity)) {
                 continue;
@@ -95,16 +107,12 @@ class BookingUnitOfWork implements BookingUnitOfWorkInterface
             $this->domainEventDispatcher->dispatch(...$entity->pullEvents());
         }
 
-        foreach ($this->commitCallbacks as $callback) {
+        while ($callback = array_shift($this->commitCallbacks)) {
             $callback();
         }
 
-        $this->bookingCommiter->finish();
-
-        DB::commit();
-
-        //@todo catch changes, add events
-        $this->identityMap->reset();
-        $this->commitState = false;
+        if (!$this->identityMap->isEmpty()) {
+            $this->commitLoop();
+        }
     }
 }

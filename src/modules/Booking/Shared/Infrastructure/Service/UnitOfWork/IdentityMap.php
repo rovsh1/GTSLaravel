@@ -26,6 +26,11 @@ class IdentityMap
         return array_shift($this->identityMap);
     }
 
+    public function isEmpty(): bool
+    {
+        return empty($this->identityMap);
+    }
+
     public function reset(): void
     {
         $this->identityMap = [];
