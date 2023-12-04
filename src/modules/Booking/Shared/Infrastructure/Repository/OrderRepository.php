@@ -12,6 +12,7 @@ use Module\Booking\Shared\Infrastructure\Models\Order as Model;
 use Sdk\Booking\ValueObject\ClientId;
 use Sdk\Booking\ValueObject\CreatorId;
 use Sdk\Booking\ValueObject\OrderId;
+use Sdk\Booking\ValueObject\OrderPeriod;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 use Sdk\Shared\Contracts\Service\ApplicationContextInterface;
 use Sdk\Shared\Enum\CurrencyEnum;
@@ -27,6 +28,7 @@ class OrderRepository implements OrderRepositoryInterface
     public function create(
         ClientId $clientId,
         CurrencyEnum $currency,
+        OrderPeriod $period,
         CreatorId $creatorId,
         ?int $legalId = null
     ): Order {
@@ -35,6 +37,8 @@ class OrderRepository implements OrderRepositoryInterface
             'client_id' => $clientId->value(),
             'legal_id' => $legalId,
             'currency' => $currency,
+            'date_start' => $period->dateFrom(),
+            'date_end' => $period->dateTo(),
             'source' => $this->context->source(),
             'creator_id' => $creatorId->value(),
         ]);

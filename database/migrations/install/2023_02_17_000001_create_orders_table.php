@@ -15,6 +15,8 @@ return new class extends Migration {
             $table->unsignedInteger('client_id');
             $table->unsignedInteger('legal_id')->nullable();
             $table->char('currency', 3);
+            $table->date('date_start');
+            $table->date('date_end');
             $table->tinyInteger('status');
             $table->string('source');
             $table->unsignedInteger('creator_id');

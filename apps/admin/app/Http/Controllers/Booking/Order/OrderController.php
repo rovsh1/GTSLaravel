@@ -28,7 +28,10 @@ use App\Shared\Http\Responses\AjaxResponseInterface;
 use App\Shared\Http\Responses\AjaxSuccessResponse;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Sdk\Shared\Enum\CurrencyEnum;
 use Sdk\Shared\Enum\SourceEnum;
+use Sdk\Shared\Exception\ApplicationException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class OrderController extends Controller
@@ -40,18 +43,6 @@ class OrderController extends Controller
     ) {
         $this->prototype = Prototypes::get($this->getPrototypeKey());
     }
-
-    //@todo
-
-    /**
-     * Юзкейсы
-     * 1. Получить заказ
-     * 2. Получить список броней заказа (без деталей)
-     * 3. Получить статусы заказа
-     * 4. Получить доступные действия с заказом
-     * 5. Получить список ваучеров
-     * 6. Получить список инвоисов
-     */
 
     public function index(): LayoutContract
     {
@@ -85,6 +76,39 @@ class OrderController extends Controller
                 'form' => $form,
                 'cancelUrl' => $this->prototype->route('index'),
             ]);
+    }
+
+    public function store(): RedirectResponse {
+        $form = $this->formFactory()
+            ->method('post')
+            ->failUrl($this->prototype->route('create'));
+
+        $form->submitOrFail();
+
+        $data = $form->getData();
+        $creatorId = request()->user()->id;
+        $managerId = $data['manager_id'] ?? $creatorId;
+        $currency = $data['currency'] ? CurrencyEnum::from($data['currency']) : null;
+        if ($currency === null) {
+            $client = Client::find($data['client_id']);
+            $currency = $client->currency;
+        }
+        try {
+            $orderId = OrderAdapter::create(
+                clientId: $data['client_id'],
+                legalId: $data['legal_id'],
+                currency: $currency ?? $client->currency,
+                period: $data['period'],
+                managerId: $managerId,
+                creatorId: $creatorId,
+            );
+        } catch (ApplicationException $e) {
+            $form->throwException($e);
+        }
+
+        return redirect(
+            $this->prototype->route('show', $orderId)
+        );
     }
 
     public function show(int $id): LayoutContract
@@ -201,6 +225,10 @@ class OrderController extends Controller
             ->currency('currency', [
                 'label' => 'Валюта',
                 'emptyItem' => '',
+            ])
+            ->dateRange('period', [
+                'label' => 'Период',
+                'required' => true
             ])
             ->manager('manager_id', [
                 'label' => 'Менеджер',

@@ -23,6 +23,8 @@ class Order extends Model
         'legal_id',
         'currency',
         'status',
+        'date_start',
+        'date_end',
         'source',
         'creator_id',
     ];
@@ -31,6 +33,8 @@ class Order extends Model
         'currency' => CurrencyEnum::class,
         'status' => OrderStatusEnum::class,
         'source' => SourceEnum::class,
+        'date_start' => 'date',
+        'date_end' => 'date',
         'client_price' => 'float',
         'payed_amount' => 'float',
     ];

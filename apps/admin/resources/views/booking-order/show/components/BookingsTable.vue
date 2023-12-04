@@ -28,7 +28,6 @@ const formatBookingPeriod = (booking: OrderBooking): string | null => {
   <table class="table table-striped mb-0">
     <thead>
       <tr>
-        <th>№ брони</th>
         <th class="column-text">Название услуги</th>
         <th class="column-text">Период</th>
         <th class="column-text">Стоимость (приход/расход)</th>
@@ -40,8 +39,9 @@ const formatBookingPeriod = (booking: OrderBooking): string | null => {
     <tbody>
       <template v-if="orderBookings.length > 0">
         <tr v-for="(booking) in orderBookings" :key="booking.id">
-          <td><a :href="booking.link" target="_blank" rel="noopener noreferrer">{{ booking.id }}</a></td>
-          <td>{{ booking.serviceInfo.name }}</td>
+          <td>
+            <a :href="booking.link" target="_blank" rel="noopener noreferrer">{{ booking.serviceInfo.name }}</a>
+          </td>
           <td>{{ formatBookingPeriod(booking) }}</td>
           <td>
             {{ formatBookingPrice(booking.prices.clientPrice) }} /

@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace App\Admin\Support\Adapters\Booking;
 
+use Carbon\CarbonPeriod;
 use Module\Booking\Moderation\Application\Dto\GuestDto;
 use Module\Booking\Moderation\Application\Dto\OrderAvailableActionsDto;
 use Module\Booking\Moderation\Application\Dto\OrderDto;
 use Module\Booking\Moderation\Application\Dto\UpdateGuestDto;
 use Module\Booking\Moderation\Application\RequestDto\AddGuestRequestDto;
+use Module\Booking\Moderation\Application\RequestDto\CreateOrderRequestDto;
+use Module\Booking\Moderation\Application\UseCase\Order\CreateOrder;
 use Module\Booking\Moderation\Application\UseCase\Order\GetActiveOrders;
 use Module\Booking\Moderation\Application\UseCase\Order\GetAvailableActions;
 use Module\Booking\Moderation\Application\UseCase\Order\GetOrder;
@@ -19,6 +22,7 @@ use Module\Booking\Moderation\Application\UseCase\Order\Guest\Delete;
 use Module\Booking\Moderation\Application\UseCase\Order\Guest\Get;
 use Module\Booking\Moderation\Application\UseCase\Order\Guest\Update;
 use Module\Booking\Moderation\Application\UseCase\Order\UpdateStatus;
+use Sdk\Shared\Enum\CurrencyEnum;
 
 class OrderAdapter
 {
@@ -100,5 +104,25 @@ class OrderAdapter
     public function updateStatus(int $orderId, int $status): void
     {
         app(UpdateStatus::class)->execute($orderId, $status);
+    }
+
+    public function create(
+        int $clientId,
+        int|null $legalId,
+        CurrencyEnum $currency,
+        CarbonPeriod $period,
+        int $managerId,
+        int $creatorId
+    ): int {
+        return app(CreateOrder::class)->execute(
+            new CreateOrderRequestDto(
+                $clientId,
+                $legalId,
+                $currency,
+                $period,
+                $managerId,
+                $creatorId
+            )
+        );
     }
 }

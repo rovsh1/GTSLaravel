@@ -15,6 +15,7 @@ use Sdk\Booking\ValueObject\GuestId;
 use Sdk\Booking\ValueObject\GuestIdCollection;
 use Sdk\Booking\ValueObject\LegalId;
 use Sdk\Booking\ValueObject\OrderId;
+use Sdk\Booking\ValueObject\OrderPeriod;
 use Sdk\Shared\ValueObject\Money;
 
 class OrderFactory
@@ -29,6 +30,10 @@ class OrderFactory
             new ClientId($model->client_id),
             $model->legal_id !== null ? new LegalId($model->legal_id) : null,
             $model->status,
+            new OrderPeriod(
+                $model->date_start,
+                $model->date_end,
+            ),
             new CarbonImmutable($model->created_at),
             new GuestIdCollection($guestIds),
             new Money(
