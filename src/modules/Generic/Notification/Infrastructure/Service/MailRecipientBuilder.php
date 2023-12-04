@@ -5,8 +5,8 @@ namespace Module\Generic\Notification\Infrastructure\Service;
 use App\Admin\Models\Administrator\Administrator;
 use App\Admin\Models\Hotel\Contact as HotelContact;
 use App\Admin\Models\Hotel\User as HotelUser;
-use Module\Generic\Notification\Domain\MailSettings\Dto\RecipientDto;
-use Module\Generic\Notification\Domain\MailSettings\Dto\RecipientListDto;
+use Module\Generic\Notification\Domain\Dto\RecipientDto;
+use Module\Generic\Notification\Domain\Dto\RecipientListDto;
 
 class MailRecipientBuilder
 {

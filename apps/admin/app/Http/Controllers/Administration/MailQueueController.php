@@ -7,10 +7,10 @@ use App\Admin\Http\Controllers\Controller;
 use App\Admin\Support\Facades\Breadcrumb;
 use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Facades\Layout;
-use App\Admin\Support\Facades\MailAdapter;
 use App\Admin\Support\Facades\Prototypes;
 use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Layout as LayoutContract;
+use Module\Support\MailManager\Infrastructure\Model\QueueMessage;
 
 class MailQueueController extends Controller
 {
@@ -28,9 +28,7 @@ class MailQueueController extends Controller
         $grid = $this->gridFactory();
 //throw new \Exception('asd');
 //        MailAdapter::sendTo('s16121986@yandex.ru', 'dd', 'eerr');
-        $data = MailAdapter::getQueue([
-            //'limit' => 10
-        ])
+        $data = QueueMessage::query()
             ->orderBy('priority', 'desc')
             ->orderBy('created_at', 'desc');
         //$query = $this->repository->queryWithCriteria($grid->getSearchCriteria());

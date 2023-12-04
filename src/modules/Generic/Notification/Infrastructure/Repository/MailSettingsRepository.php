@@ -3,10 +3,10 @@
 namespace Module\Generic\Notification\Infrastructure\Repository;
 
 use Illuminate\Support\Facades\DB;
-use Module\Generic\Notification\Domain\MailSettings\Factory\RecipientFactory;
-use Module\Generic\Notification\Domain\MailSettings\MailSettings;
-use Module\Generic\Notification\Domain\MailSettings\Repository\MailSettingsRepositoryInterface;
-use Module\Generic\Notification\Domain\Shared\Enum\NotificationTypeEnum;
+use Module\Generic\Notification\Domain\Entity\MailSettings;
+use Module\Generic\Notification\Domain\Enum\NotificationTypeEnum;
+use Module\Generic\Notification\Domain\Factory\RecipientFactory;
+use Module\Generic\Notification\Domain\Repository\MailSettingsRepositoryInterface;
 
 class MailSettingsRepository implements MailSettingsRepositoryInterface
 {
@@ -47,7 +47,7 @@ class MailSettingsRepository implements MailSettingsRepositoryInterface
                 ->where('notification_type', $type)
                 ->delete();
 
-            DB::table('s_notification_recipients')
+            DB::table('s_mail_recipients')
                 ->insert($insert);
         });
     }

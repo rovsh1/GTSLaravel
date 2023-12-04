@@ -2,8 +2,8 @@
 
 namespace Module\Generic\Notification\Providers;
 
-use Module\Generic\Notification\Domain\MailSettings\Repository\MailSettingsRepositoryInterface;
-use Module\Generic\Notification\Domain\MailSettings\Service\RecipientResolverInterface;
+use Module\Generic\Notification\Domain\Repository\MailSettingsRepositoryInterface;
+use Module\Generic\Notification\Domain\Service\RecipientResolverInterface;
 use Module\Generic\Notification\Infrastructure\Repository\MailSettingsRepository;
 use Module\Generic\Notification\Infrastructure\Service\MailRecipientResolver;
 use Sdk\Module\Support\ServiceProvider;

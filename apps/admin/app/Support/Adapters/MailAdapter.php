@@ -2,12 +2,9 @@
 
 namespace App\Admin\Support\Adapters;
 
-use Illuminate\Database\Eloquent\Builder;
-use Module\Support\MailManager\Application\Dto\MailMessageDto;
-use Module\Support\MailManager\Application\RequestDto\SendMessageRequestDto;
-use Module\Support\MailManager\Application\UseCase\Admin\GetMessagesQueue;
-use Module\Support\MailManager\Application\UseCase\Admin\GetTemplatesList;
 use Module\Support\MailManager\Application\UseCase\SendMessage;
+use Sdk\Shared\Dto\Mail\MailMessageDto;
+use Sdk\Shared\Dto\Mail\SendMessageRequestDto;
 
 class MailAdapter
 {
@@ -23,15 +20,5 @@ class MailAdapter
                 context: []
             )
         );
-    }
-
-    public function getQueue(array $criteria = []): Builder
-    {
-        return app(GetMessagesQueue::class)->execute();
-    }
-
-    public function getTemplatesList(): array
-    {
-        return app(GetTemplatesList::class)->execute();
     }
 }

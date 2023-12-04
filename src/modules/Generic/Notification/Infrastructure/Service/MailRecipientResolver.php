@@ -2,12 +2,12 @@
 
 namespace Module\Generic\Notification\Infrastructure\Service;
 
-use Module\Generic\Notification\Domain\MailSettings\Dto\MailDataDto;
-use Module\Generic\Notification\Domain\MailSettings\MailSettings;
-use Module\Generic\Notification\Domain\MailSettings\Service\RecipientResolverInterface;
-use Module\Generic\Notification\Domain\MailSettings\Dto\RecipientListDto;
-use Module\Generic\Notification\Domain\MailSettings\ValueObject\Recipient\RecipientInterface;
-use Module\Generic\Notification\Domain\MailSettings\ValueObject\RecipientTypeEnum;
+use Module\Generic\Notification\Domain\Dto\MailDataDto;
+use Module\Generic\Notification\Domain\Dto\RecipientListDto;
+use Module\Generic\Notification\Domain\Entity\MailSettings;
+use Module\Generic\Notification\Domain\Enum\RecipientTypeEnum;
+use Module\Generic\Notification\Domain\Recipient\RecipientInterface;
+use Module\Generic\Notification\Domain\Service\RecipientResolverInterface;
 
 class MailRecipientResolver implements RecipientResolverInterface
 {

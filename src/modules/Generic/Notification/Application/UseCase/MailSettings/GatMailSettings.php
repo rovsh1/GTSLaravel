@@ -4,8 +4,8 @@ namespace Module\Generic\Notification\Application\UseCase\MailSettings;
 
 use Module\Generic\Notification\Application\Dto\MailRecipientDto;
 use Module\Generic\Notification\Application\Dto\MailSettingsDto;
-use Module\Generic\Notification\Domain\MailSettings\Repository\MailSettingsRepositoryInterface;
-use Module\Generic\Notification\Domain\Shared\Enum\NotificationTypeEnum;
+use Module\Generic\Notification\Domain\Enum\NotificationTypeEnum;
+use Module\Generic\Notification\Domain\Repository\MailSettingsRepositoryInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 use Sdk\Shared\Contracts\Service\TranslatorInterface;
 

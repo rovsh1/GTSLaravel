@@ -3,9 +3,9 @@
 namespace Module\Support\MailManager\Application\UseCase;
 
 use Module\Support\MailManager\Application\Factory\MailMessageFactory;
-use Module\Support\MailManager\Application\RequestDto\SendMessageRequestDto;
 use Module\Support\MailManager\Domain\Service\QueueManagerInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
+use Sdk\Shared\Dto\Mail\SendMessageRequestDto;
 
 class SendMessage implements UseCaseInterface
 {

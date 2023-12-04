@@ -12,11 +12,7 @@ use Sdk\Module\Support\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {
-    public function register(): void
-    {
-        $this->app->register(TemplateServiceProvider::class);
-        $this->app->register(AdapterServiceProvider::class);
-    }
+    public function register(): void {}
 
     public function boot(): void
     {
