@@ -306,7 +306,6 @@ onMounted(() => {
     @submit="({ grossPrice, netPrice }) => handleUpdateRoomPrice(grossPrice, netPrice)"
     @clear="guestForm = {}"
   />
-
   <div class="mt-3" />
   <BootstrapCard v-for="(room, index) in bookingDetails?.roomBookings" :key="room.id">
     <div class="d-flex align-items-start">

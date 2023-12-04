@@ -16,6 +16,11 @@ export interface EntityInterface {
   shortName: string
 }
 
+export enum CancelConditionsValueType {
+  PERCENT = 1,
+  ABSOLUTE,
+}
+
 export const mapEntitiesToSelectOptions = (entities: EntityInterface[]): SelectOption[] => entities.map(
   (entity) => ({ value: entity.value, label: entity.name }),
 )

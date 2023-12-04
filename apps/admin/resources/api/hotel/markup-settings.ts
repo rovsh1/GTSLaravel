@@ -34,14 +34,14 @@ export interface MarkupCondition {
 export type NoCheckInMarkup = {
   percent: Percent
   value?: number
-  valueType?: string
+  valueType?: number
   cancelPeriodType: CancelPeriodType
 }
 
 export type DailyMarkup = {
   percent: Percent
   value?: number
-  valueType?: string
+  valueType?: number
   cancelPeriodType: CancelPeriodType
   daysCount: number
 }

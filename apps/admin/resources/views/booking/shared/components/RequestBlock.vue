@@ -43,6 +43,7 @@ defineEmits<{
   padding: 0.438rem 9.75rem 0.438rem 1rem;
   border-radius: 4px;
   color: black;
+  min-height: 3rem;
 
   a {
     position: absolute;
