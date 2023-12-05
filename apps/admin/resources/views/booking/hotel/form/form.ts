@@ -158,11 +158,15 @@ $(async () => {
     disabledText: 'Выберите клиента',
     parent: $clientIdSelect,
     dataIndex: 'client_id',
+    allowEmpty: true,
+    emptyItem: 'Создать новый заказ',
     labelGetter: (order: Record<string, any>) => `№${order.id} от ${formatDate(order.createdAt)}`,
     childChange: toggleOrderFields,
     load: () => {
       if (bookingID === null && clientIdParam && orderIdParam) {
         $orderIdSelect?.val(orderIdParam).trigger('change')
+      } else if (bookingID === null) {
+        $orderIdSelect?.val('').trigger('change')
       }
     },
   }))()
