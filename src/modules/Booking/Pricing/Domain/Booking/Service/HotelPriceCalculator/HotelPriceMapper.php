@@ -23,9 +23,6 @@ class HotelPriceMapper
 
     private CalculatedHotelRoomsPricesDto $clientPriceDto;
 
-    public function __construct(
-    ) {}
-
     public function boot(
         Booking $booking,
         CalculatedHotelRoomsPricesDto $supplierPriceDto,
