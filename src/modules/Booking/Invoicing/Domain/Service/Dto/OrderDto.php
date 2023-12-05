@@ -8,7 +8,6 @@ class OrderDto
 {
     public function __construct(
         public readonly string $number,
-        public readonly string $status,
         public readonly string $currency,
     ) {}
 }

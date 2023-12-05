@@ -16,7 +16,6 @@ class OrderDto
         public readonly StatusDto $status,
         public readonly int $clientId,
         public readonly ?int $legalId,
-        public readonly OrderPeriodDto $period,
         public readonly CarbonImmutable $createdAt,
         /** @var int[] $guestIds */
         public readonly array $guestIds,

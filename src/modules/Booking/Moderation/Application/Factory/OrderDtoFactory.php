@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Module\Booking\Moderation\Application\Factory;
 
 use Module\Booking\Moderation\Application\Dto\OrderDto;
-use Module\Booking\Moderation\Application\Dto\OrderPeriodDto;
 use Module\Booking\Shared\Domain\Order\Order;
 use Sdk\Booking\ValueObject\GuestId;
 use Sdk\Shared\Contracts\Service\TranslatorInterface;
@@ -26,7 +25,6 @@ class OrderDtoFactory
             $this->statusDtoFactory->get($entity->status()),
             $entity->clientId()->value(),
             $entity->legalId()?->value(),
-            OrderPeriodDto::fromDomain($entity->period()),
             $entity->createdAt(),
             $entity->guestIds()->map(fn(GuestId $id) => $id->value()),
             $entity->context()->creatorId()->value(),

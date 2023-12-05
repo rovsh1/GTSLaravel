@@ -9,8 +9,8 @@ class BookingPeriodDto
     public function __construct(
         public readonly string $startDate,
         public readonly string $startTime,
-        public readonly string $endDate,
-        public readonly string $endTime,
+        public readonly ?string $endDate,
+        public readonly ?string $endTime,
         public readonly ?int $countDays,
     ) {}
 }

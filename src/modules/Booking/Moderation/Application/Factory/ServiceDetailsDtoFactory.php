@@ -223,7 +223,8 @@ class ServiceDetailsDtoFactory
         return new OtherServiceDto(
             $details->id()->value(),
             $this->buildServiceInfoDto($details->serviceInfo()),
-            $details->description()
+            $details->description(),
+            $details->serviceDate()?->format(DATE_ATOM)
         );
     }
 

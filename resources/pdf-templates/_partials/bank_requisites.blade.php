@@ -6,16 +6,6 @@
             <tbody>
             <tr>
                 <td colspan="2" width="717">
-                    <p>
-                        <strong>
-                            В деталях платежа, просим указывать: "За ТУРИСТИЧЕСКИЕ УСЛУГИ согласно Дог-ру №__ от
-                            __.__.202_г.":
-                        </strong>
-                    </p>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2" width="717">
                     <p>&nbsp;</p>
                 </td>
             </tr>
@@ -75,11 +65,6 @@
 
             @if($currency === \Sdk\Shared\Enum\CurrencyEnum::UZS)
                 <tr>
-                    <td colspan="2" width="717">
-                        <p><strong>для оплат в UZS (узбекский сум)</strong></p>
-                    </td>
-                </tr>
-                <tr>
                     <td width="158">
                         <p><em>Банк:</em></p>
                     </td>
@@ -114,11 +99,6 @@
             @endif
 
             @if($currency === \Sdk\Shared\Enum\CurrencyEnum::USD)
-                <tr>
-                    <td colspan="2" width="717">
-                        <p><strong>для оплат в USD (доллар США)</strong></p>
-                    </td>
-                </tr>
                 <tr>
                     <td width="158">
                         <p><em>Банк:</em></p>

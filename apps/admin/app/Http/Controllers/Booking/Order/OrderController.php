@@ -226,10 +226,6 @@ class OrderController extends Controller
                 'label' => 'Валюта',
                 'emptyItem' => '',
             ])
-            ->dateRange('period', [
-                'label' => 'Период',
-                'required' => true
-            ])
             ->manager('manager_id', [
                 'label' => 'Менеджер',
                 'emptyItem' => '',

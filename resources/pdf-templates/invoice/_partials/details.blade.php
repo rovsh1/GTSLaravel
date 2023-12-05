@@ -1,5 +1,16 @@
-@foreach($booking->detailOptions as $detailOption)
+@foreach($service->detailOptions as $index => $detailOption)
     <tr>
-        <td colspan="4">{{ $detailOption->label }}: {{ $detailOption->getHumanValue() }}</td>
+        @if($index === $service->detailOptions->count() - 1)
+            <td>{{ $detailOption->label }}: {{ $detailOption->getHumanValue() }}</td>
+            <td class="text-align-center" style="padding: 5px 0;">{{ $service->price->quantity }}</td>
+            <td class="text-align-center" style="padding: 5px 0;">
+                {{ Format::number($service->price->amount) }}
+            </td>
+            <td class="text-align-center" style="padding: 5px 0;">
+                {{ Format::number($service->price->total) }}
+            </td>
+        @else
+            <td colspan="4">{{ $detailOption->label }}: {{ $detailOption->getHumanValue() }}</td>
+        @endif
     </tr>
 @endforeach

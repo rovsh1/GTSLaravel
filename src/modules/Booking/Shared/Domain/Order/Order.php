@@ -13,7 +13,6 @@ use Sdk\Booking\ValueObject\Context;
 use Sdk\Booking\ValueObject\GuestIdCollection;
 use Sdk\Booking\ValueObject\LegalId;
 use Sdk\Booking\ValueObject\OrderId;
-use Sdk\Booking\ValueObject\OrderPeriod;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 use Sdk\Shared\Enum\CurrencyEnum;
 use Sdk\Shared\Enum\Order\OrderStatusEnum;
@@ -29,7 +28,6 @@ final class Order extends AbstractAggregateRoot implements EntityInterface
         private ClientId $clientId,
         private ?LegalId $legalId,
         private OrderStatusEnum $status,
-        private OrderPeriod $period,
         private readonly CarbonImmutable $createdAt,
         private readonly GuestIdCollection $guestIds,
         private readonly Money $clientPrice,
@@ -50,16 +48,6 @@ final class Order extends AbstractAggregateRoot implements EntityInterface
     public function status(): OrderStatusEnum
     {
         return $this->status;
-    }
-
-    public function period(): OrderPeriod
-    {
-        return $this->period;
-    }
-
-    public function setPeriod(OrderPeriod $period): void
-    {
-        $this->period = $period;
     }
 
     public function setClientId(ClientId $clientId): void

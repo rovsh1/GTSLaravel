@@ -10,5 +10,6 @@ class OtherServiceDto implements ServiceDetailsDtoInterface
         public readonly int $id,
         public readonly ServiceInfoDto $serviceInfo,
         public readonly ?string $description,
+        public readonly ?string $date,
     ) {}
 }

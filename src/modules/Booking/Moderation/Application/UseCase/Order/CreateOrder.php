@@ -9,7 +9,6 @@ use Module\Booking\Shared\Domain\Order\Repository\OrderRepositoryInterface;
 use Module\Booking\Shared\Domain\Shared\Adapter\AdministratorAdapterInterface;
 use Sdk\Booking\ValueObject\ClientId;
 use Sdk\Booking\ValueObject\CreatorId;
-use Sdk\Booking\ValueObject\OrderPeriod;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class CreateOrder implements UseCaseInterface
@@ -24,7 +23,6 @@ class CreateOrder implements UseCaseInterface
         $order = $this->repository->create(
             new ClientId($request->clientId),
             $request->currency,
-            OrderPeriod::fromCarbon($request->period),
             new CreatorId($request->creatorId),
             $request->legalId
         );

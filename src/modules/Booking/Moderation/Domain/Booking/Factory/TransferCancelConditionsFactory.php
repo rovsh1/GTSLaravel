@@ -27,7 +27,7 @@ class TransferCancelConditionsFactory
         int $serviceId,
         CarBidCollection $carBids,
         \DateTimeInterface $bookingDate
-    ): CancelConditions {
+    ): ?CancelConditions {
         $cancelConditions = null;
         foreach ($carBids as $carBid) {
             $carCancelConditions = $this->supplierAdapter->getCarCancelConditions($serviceId, $carBid->carId()->value(), $bookingDate);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\UseCase\Order;
 
+use Carbon\CarbonImmutable;
 use Module\Booking\Moderation\Application\Dto\Details\CancelConditionsDto;
 use Module\Booking\Moderation\Application\Dto\ServiceBooking\ServiceTypeDto;
 use Module\Booking\Moderation\Application\Factory\BookingPriceDtoFactory;
@@ -75,12 +76,9 @@ class GetOrderBookings implements UseCaseInterface
         } elseif ($details instanceof CarRentWithDriver) {
             $dateFrom = $details->bookingPeriod()?->dateFrom();
             $dateTo = $details->bookingPeriod()?->dateTo();
-        } elseif (method_exists($details, 'arrivalDate')) {
-            $dateFrom = $details->arrivalDate();
-            $dateTo = $details->arrivalDate();
-        } elseif (method_exists($details, 'departureDate')) {
-            $dateFrom = $details->departureDate();
-            $dateTo = $details->departureDate();
+        } elseif (method_exists($details, 'serviceDate')) {
+            $dateFrom = new CarbonImmutable($details->serviceDate());
+            $dateTo = new CarbonImmutable($details->serviceDate());
         }
 
         if ($dateFrom === null && $dateTo === null) {

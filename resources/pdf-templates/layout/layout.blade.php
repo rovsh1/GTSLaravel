@@ -31,12 +31,12 @@
             text-align: center;
         }
 
-        table tr.first td {
+        table tr.first td, table tr.first th {
             padding-top: 10px;
             border-top: 2px solid;
         }
 
-        table tr.last td {
+        table tr.last td, table tr.last th {
             padding-bottom: 10px;
             border-bottom: 2px solid;
         }

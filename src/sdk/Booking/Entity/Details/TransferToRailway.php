@@ -41,7 +41,7 @@ final class TransferToRailway extends AbstractServiceDetails implements Transfer
 
     public function serviceType(): ServiceTypeEnum
     {
-        return ServiceTypeEnum::TRANSFER_TO_AIRPORT;
+        return ServiceTypeEnum::TRANSFER_TO_RAILWAY;
     }
 
     public function railwayStationId(): RailwayStationId
