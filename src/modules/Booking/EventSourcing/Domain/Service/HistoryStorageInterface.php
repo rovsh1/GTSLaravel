@@ -22,5 +22,11 @@ interface HistoryStorageInterface
      * @param int $bookingId
      * @return Collection<int, BookingHistory>
      */
+    public function getHistory(int $bookingId): Collection;
+
+    /**
+     * @param int $bookingId
+     * @return Collection<int, BookingHistory>
+     */
     public function getStatusHistory(int $bookingId): Collection;
 }

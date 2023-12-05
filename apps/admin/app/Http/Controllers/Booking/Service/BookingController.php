@@ -243,7 +243,14 @@ class BookingController extends Controller
     public function getStatusHistory(int $id): JsonResponse
     {
         return response()->json(
-            BookingAdapter::getStatusHistory($id)
+            array_map(fn($eventDto) => [
+                'event' => $eventDto->description,
+                'color' => $eventDto->color,
+                'payload' => $eventDto->payload,
+                'administratorName' => $eventDto->context['administrator']['name'] ?? null,
+                'source' => $eventDto->context['source'] ?? null,
+                'createdAt' => $eventDto->createdAt
+            ], BookingAdapter::getStatusHistory($id))
         );
     }
 

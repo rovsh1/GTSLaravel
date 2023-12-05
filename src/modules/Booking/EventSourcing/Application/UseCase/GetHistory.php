@@ -10,7 +10,7 @@ use Module\Booking\EventSourcing\Domain\Service\HistoryStorageInterface;
 use Module\Booking\EventSourcing\Infrastructure\Model\BookingHistory;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
-class GetStatusHistory implements UseCaseInterface
+class GetHistory implements UseCaseInterface
 {
     public function __construct(
         private readonly HistoryStorageInterface $historyStorage,
@@ -23,7 +23,7 @@ class GetStatusHistory implements UseCaseInterface
      */
     public function execute(int $id): array
     {
-        $statusEvents = $this->historyStorage->getStatusHistory($id);
+        $statusEvents = $this->historyStorage->getHistory($id);
 
         return $statusEvents->map(fn(BookingHistory $history) => $this->eventDtoFactory->build($history))->all();
     }

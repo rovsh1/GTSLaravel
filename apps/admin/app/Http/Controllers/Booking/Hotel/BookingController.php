@@ -272,7 +272,6 @@ class BookingController extends Controller
             ->paginator(20);
     }
 
-
     private function getRoomNamesTooltip(mixed $tableRow): string
     {
         $roomNames = $tableRow['room_names'] ?? null;
