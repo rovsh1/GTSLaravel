@@ -11,9 +11,10 @@ class SitemapBuilder
 {
     private static array $buildCategories = [
         'booking',
-        'hotel',
         'finance',
         'client',
+        'hotel',
+        'supplier',
         'data',
         'site',
         'reports',

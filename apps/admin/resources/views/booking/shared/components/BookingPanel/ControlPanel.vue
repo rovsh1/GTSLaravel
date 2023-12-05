@@ -18,7 +18,7 @@ const { recalculatePrice } = bookingStore
 </script>
 
 <template>
-  <div class="d-flex flex-wrap flex-grow-1 gap-2 align-items-center rounded shadow-lg p-4">
+  <div class="d-flex flex-wrap gap-2 align-items-center rounded shadow-lg p-4">
     <BookingStatus />
     <BookingStatusHistory />
     <BookingTotalAmount />
@@ -31,7 +31,7 @@ const { recalculatePrice } = bookingStore
     <BookingExternalNumberType />
   </ControlPanelSection>
 
-  <ControlPanelSection title="Финансовая стоимость брони">
+  <ControlPanelSection title="Финансовая стоимость брони" class="d-flex flex-column flex-grow-1">
     <OverlayLoading v-if="bookingStore.isRecalculateBookingPrice" />
     <template #actions>
       <BootstrapButton
