@@ -10,7 +10,6 @@ use App\Admin\Support\Facades\Layout;
 use App\Admin\Support\Facades\Prototypes;
 use App\Admin\Support\View\Layout as LayoutContract;
 use Module\Booking\EventSourcing\Application\UseCase\GetHistory;
-use Module\Booking\EventSourcing\Infrastructure\Model\BookingHistory;
 
 class TimelineController extends Controller
 {
@@ -27,7 +26,8 @@ class TimelineController extends Controller
 
         $title = "Бронь №{$id}";
         Breadcrumb::prototype($this->prototype)
-            ->add($title);
+            ->addUrl(route('hotel-booking.show', $id), $title)
+            ->add('История изменений');
 
         return Layout::title($title)
             ->view('booking.hotel.timeline.timeline', [
