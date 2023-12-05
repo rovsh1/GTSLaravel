@@ -29,5 +29,6 @@ final class Delete implements UseCaseInterface
             $this->accommodationRepository->delete($accommodation->id());
             $this->eventDispatcher->dispatch(new AccommodationDeleted($accommodation));
         });
+        $this->bookingUnitOfWork->commit();
     }
 }
