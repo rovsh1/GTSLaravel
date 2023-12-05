@@ -4,18 +4,27 @@ namespace Sdk\Shared\Support\ApplicationContext;
 
 use Illuminate\Support\Str;
 use Sdk\Shared\Contracts\Service\ApplicationContextInterface;
+use Sdk\Shared\Support\ApplicationContext\Concerns\AdministratorContextTrait;
+use Sdk\Shared\Support\ApplicationContext\Concerns\CommonContextTrait;
+use Sdk\Shared\Support\ApplicationContext\Concerns\EntityContextTrait;
+use Sdk\Shared\Support\ApplicationContext\Concerns\ErrorContextTrait;
+use Sdk\Shared\Support\ApplicationContext\Concerns\EventContextTrait;
+use Sdk\Shared\Support\ApplicationContext\Concerns\HttpRequestContextTrait;
+use Sdk\Shared\Support\ApplicationContext\Concerns\ModuleContextTrait;
+use Sdk\Shared\Support\ApplicationContext\Concerns\TagContextTrait;
+use Sdk\Shared\Support\ApplicationContext\Concerns\UserContextTrait;
 
 class ApplicationContextManager implements ApplicationContextInterface
 {
-    use \Sdk\Shared\Support\ApplicationContext\Concerns\CommonContextTrait;
-    use \Sdk\Shared\Support\ApplicationContext\Concerns\AdministratorContextTrait;
-    use \Sdk\Shared\Support\ApplicationContext\Concerns\EntityContextTrait;
-    use \Sdk\Shared\Support\ApplicationContext\Concerns\ErrorContextTrait;
-    use \Sdk\Shared\Support\ApplicationContext\Concerns\EventContextTrait;
-    use \Sdk\Shared\Support\ApplicationContext\Concerns\HttpRequestContextTrait;
-    use \Sdk\Shared\Support\ApplicationContext\Concerns\ModuleContextTrait;
-    use \Sdk\Shared\Support\ApplicationContext\Concerns\UserContextTrait;
-    use \Sdk\Shared\Support\ApplicationContext\Concerns\TagContextTrait;
+    use CommonContextTrait;
+    use AdministratorContextTrait;
+    use EntityContextTrait;
+    use ErrorContextTrait;
+    use EventContextTrait;
+    use HttpRequestContextTrait;
+    use ModuleContextTrait;
+    use UserContextTrait;
+    use TagContextTrait;
 
     protected array $data = [];
 
@@ -31,7 +40,10 @@ class ApplicationContextManager implements ApplicationContextInterface
 
     public function toArray(array $extra = []): array
     {
-        return array_merge($this->data, ['extra' => $extra]);
+        return array_merge($this->data, [
+            'timezone' => date_default_timezone_get(),
+            'extra' => $extra
+        ]);
     }
 
     protected function set(string $key, mixed $value): void
