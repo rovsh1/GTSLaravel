@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Facade;
 /**
  * @method static LayoutBuilder title(string $title)
  * @method static LayoutBuilder h1(string $h1)
- * @method static LayoutBuilder addMetaVariable(string $name, mixed $value)
+ * @method static LayoutBuilder addJsVariable(string $name, mixed $value)
  * @method static LayoutBuilder data(array $data)
  * @method static LayoutBuilder view(string $view, array $data = [])
  * @method static string getTitle()

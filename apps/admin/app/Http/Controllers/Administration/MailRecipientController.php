@@ -29,7 +29,7 @@ class MailRecipientController extends Controller
         $settings = app(GatMailSettings::class)->execute();
 
         return Layout::title($this->prototype->title('index'))
-            ->addMetaVariable('mail-settings', $settings)
+            ->addJsVariable('mail-settings', $settings)
             ->view('mail.recipient.index');
     }
 
