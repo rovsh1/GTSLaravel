@@ -24,6 +24,7 @@ class ChangesRegistrator
         DB::table('administrator_journal_log')
             ->insert([
                 'administrator_id' => Auth::id(),
+                'administrator_presentation' => Auth::user()->presentation,
                 'event' => $changes->event()->name,
                 'entity_id' => $changes->entityId(),
                 'entity_class' => $changes->entityClass(),

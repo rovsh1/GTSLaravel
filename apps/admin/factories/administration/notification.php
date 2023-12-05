@@ -6,6 +6,7 @@ return Factory::key('notification')
     ->category(Factory::CATEGORY_ADMINISTRATION)
     ->group(Factory::GROUP_NOTIFICATION)
     ->route('notifications')
+    ->priority(10)
 //    ->model(\App\Admin\Models\System\Constant::class)
 //    ->controller(\App\Admin\Http\Controllers\Administration\ConstantController::class, ['except' => ['show']])
     ->titles([
