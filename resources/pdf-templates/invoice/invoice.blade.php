@@ -105,7 +105,7 @@
                     @endforeach
                     <tr class="first summary">
                         <td class="text-align-left">ИТОГО К ОПЛАТЕ</td>
-                        <td colspan="4" class="text-align-right">{{ $invoice->totalAmount }} {{ $order->currency }}</td>
+                        <td colspan="4" class="text-align-right">{{ Format::number($invoice->totalAmount) }} {{ $order->currency }}</td>
                     </tr>
                     <tr>
                         <td colspan="5">
