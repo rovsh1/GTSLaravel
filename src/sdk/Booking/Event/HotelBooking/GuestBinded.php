@@ -12,10 +12,10 @@ class GuestBinded extends AbstractAccommodationEvent implements PriceBecomeDepre
                                                                 IntegrationEventInterface
 {
     public function __construct(
-        public readonly HotelAccommodation $accommodation,
+        HotelAccommodation $accommodation,
         public readonly GuestId $guestId
     ) {
-        parent::__construct($this->accommodation);
+        parent::__construct($accommodation);
     }
 
     public function integrationEvent(): string

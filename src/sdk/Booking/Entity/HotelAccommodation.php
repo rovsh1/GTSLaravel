@@ -64,6 +64,7 @@ final class HotelAccommodation extends AbstractAggregateRoot implements BookingP
     {
         $this->prices = $prices;
     }
+
     public function guestIds(): GuestIdCollection
     {
         return $this->guestIds;

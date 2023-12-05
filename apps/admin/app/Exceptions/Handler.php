@@ -90,10 +90,10 @@ class Handler extends ExceptionHandler
         return new JsonResponse([
             'success' => false,
             'error' => $e->getMessage(),
-            'code' => $e->getCode()
+            'code' => $e->getCode(),
 //            'error' => $e->getCode(),
 //            'message' => $e->getMessage(),
-//            'trace' => $e->getTraceAsString()
+            'trace' => config('app.debug') ? $e->getTraceAsString() : null
         ], $this->getExceptionHttpCode($e));
     }
 
