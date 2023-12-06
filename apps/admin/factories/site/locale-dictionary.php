@@ -3,7 +3,7 @@
 use App\Admin\Components\Factory\Factory;
 
 return Factory::key('locale-dictionary')
-    ->category(Factory::CATEGORY_DATA)
+    ->category(Factory::CATEGORY_SITE)
     ->group(Factory::GROUP_REFERENCE)
 //    ->model(\App\Admin\Models\Reference\PaymentMethod::class)
     ->controller(

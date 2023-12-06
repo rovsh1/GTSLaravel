@@ -60,7 +60,7 @@ watch(isOpened, (opened) => {
           </td>
           <td>{{ statusEvent.source }}</td>
           <td>{{ statusEvent.administratorName }}</td>
-          <td>{{ formatDateTime(statusEvent.dateCreate) }}</td>
+          <td>{{ formatDateTime(statusEvent.createdAt) }}</td>
         </tr>
         <tr v-if="!isFetching && statusHistoryEvents?.length === 0">
           <td colspan="4" class="grid-empty-text">Записи отсутствуют</td>

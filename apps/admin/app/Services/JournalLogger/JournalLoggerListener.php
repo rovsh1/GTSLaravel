@@ -2,7 +2,6 @@
 
 namespace App\Admin\Services\JournalLogger;
 
-use App\Admin\Models\Administrator\Administrator;
 use App\Admin\Services\JournalLogger\Changes\ModelChanged;
 use App\Admin\Services\JournalLogger\Changes\ModelCreated;
 use App\Admin\Services\JournalLogger\Changes\ModelDeleted;
@@ -10,6 +9,12 @@ use Illuminate\Support\Facades\Auth;
 
 class JournalLoggerListener
 {
+    private array $skipAttributes = [
+        'remember_token',
+        'updated_at',
+        'created_at'
+    ];
+
     public function __construct(
         public readonly ChangesRegistrator $changesRegistrator
     ) {}
@@ -35,10 +40,11 @@ class JournalLoggerListener
 
     private function isSkipChanges($model): bool
     {
-        if ($model instanceof Administrator) {
-            return array_key_exists('remember_token', $model->getChanges());
+        $changes = $model->getChanges();
+        foreach ($this->skipAttributes as $key) {
+            unset($changes[$key]);
         }
 
-        return false;
+        return empty($changes);
     }
 }

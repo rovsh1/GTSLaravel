@@ -10,6 +10,7 @@ return new class extends Migration {
     {
         Schema::create('administrator_journal_log', function (Blueprint $table) {
             $table->unsignedInteger('administrator_id');
+            $table->string('administrator_presentation');
             $table->string('event');
             $table->unsignedInteger('entity_id')->nullable();
             $table->string('entity_class')->nullable();

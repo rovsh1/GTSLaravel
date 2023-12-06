@@ -26,7 +26,7 @@ export interface BookingStatusHistoryResponse {
   payload: BookingStatusHistoryData | null
   administratorName: string
   source: string
-  dateCreate: DateResponse
+  createdAt: DateResponse
 }
 
 export interface BookingAvailableStatusesPayload {

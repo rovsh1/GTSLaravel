@@ -2,7 +2,7 @@
 
 namespace Module\Booking\EventSourcing\Domain\Listener;
 
-use Module\Booking\EventSourcing\Domain\Repository\HistoryRepositoryInterface;
+use Module\Booking\EventSourcing\Domain\Service\HistoryStorageInterface;
 use Module\Booking\EventSourcing\Domain\ValueObject\EventGroupEnum;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Module\Contracts\Event\IntegrationEventListenerInterface;
@@ -12,7 +12,7 @@ use Sdk\Shared\Event\IntegrationEventMessages;
 class RegisterEventListener implements IntegrationEventListenerInterface
 {
     public function __construct(
-        private readonly HistoryRepositoryInterface $changesLogRepository,
+        private readonly HistoryStorageInterface $historyStorage,
     ) {
     }
 
@@ -21,7 +21,7 @@ class RegisterEventListener implements IntegrationEventListenerInterface
         $data = $message->payload;
         unset($data['bookingId']);
         $data['@event'] = $message->event;
-        $this->changesLogRepository->register(
+        $this->historyStorage->register(
             new BookingId($message->payload['bookingId']),
             $this->exchangeEventToType($message->event),
             $data,
