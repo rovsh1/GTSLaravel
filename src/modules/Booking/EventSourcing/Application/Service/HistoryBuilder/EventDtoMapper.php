@@ -23,6 +23,7 @@ class EventDtoMapper
     {
         return match ($group) {
             EventGroupEnum::STATUS_UPDATED => $this->statusDtoFactory,
+//            EventGroupEnum::PRICE_CHANGED => $this->statusDtoFactory,
             EventGroupEnum::REQUEST_SENT => $this->requestDtoFactory,
             default => $this->defaultDtoFactory
         };

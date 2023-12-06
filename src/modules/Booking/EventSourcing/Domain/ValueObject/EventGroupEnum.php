@@ -7,7 +7,7 @@ enum EventGroupEnum
     case STATUS_UPDATED;
     case PRICE_CHANGED;
     case REQUEST_SENT;
-    case DETAILS_MODIFIED;
+    case OTHER;
 
     public static function fromName(string $name): EventGroupEnum
     {

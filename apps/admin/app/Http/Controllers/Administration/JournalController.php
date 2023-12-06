@@ -91,17 +91,21 @@ class JournalController extends Controller
             ->text('entity_class', ['text' => 'EntityClass'])
             ->text('payload', [
                 'text' => 'Payload',
-                'renderer' => fn($r) => self::printJson($r->payload)
+                'renderer' => fn($r) => self::printJson('description', $r->payload)
             ])
             ->text('context', [
                 'text' => 'Context',
-                'renderer' => fn($r) => self::printJson($r->context)
+                'renderer' => fn($r) => self::printJson('info', $r->context)
             ])
             ->orderBy('created_at', 'desc');
     }
 
-    private static function printJson(string|null $data): string
+    private static function printJson(string $icon, string|null $data): string
     {
-        return '<pre>' . json_encode(json_decode($data), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . '</pre>';
+        $str = json_encode(json_decode($data), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+
+        return '<div class="btn-data-content" data-content="' . htmlspecialchars($str) . '">'
+            . '<i class="icon">' . $icon . '</i>'
+            . '</div>';
     }
 }

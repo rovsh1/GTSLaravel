@@ -16,6 +16,7 @@ class IntegrationEventServiceProvider extends ServiceProvider
     ];
 
     protected array $registerChangesEvents = [
+        IntegrationEventMessages::BOOKING_CREATED,
         IntegrationEventMessages::BOOKING_STATUS_UPDATED,
         IntegrationEventMessages::BOOKING_REQUEST_SENT,
         IntegrationEventMessages::HOTEL_BOOKING_ACCOMMODATION_ADDED,

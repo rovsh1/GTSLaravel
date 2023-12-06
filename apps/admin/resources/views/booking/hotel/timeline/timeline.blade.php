@@ -19,15 +19,15 @@
                         <div class="point"></div>
                         <div class="description">{!! $event->description !!}</div>
                         <div class="payload">
-                            <div class="icon"
-                                 title="{{ json_encode($event->payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}">
-                                description
+                            <div class="btn-data-content"
+                                 data-content="{{ json_encode($event->payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}">
+                                <i class="icon">description</i>
                             </div>
                         </div>
                         <div class="context">
-                            <div class="icon"
-                                 title="{{ json_encode($event->context, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}">
-                                info
+                            <div class="btn-data-content"
+                                 data-content="{{ json_encode($event->context, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}">
+                                <i class="icon">info</i>
                             </div>
                         </div>
                     </div>

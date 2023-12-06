@@ -38,7 +38,7 @@ class RegisterEventListener implements IntegrationEventListenerInterface
 //            IntegrationEventMessages::HOTEL_BOOKING_ACCOMMODATION_REPLACED,
 //            IntegrationEventMessages::HOTEL_BOOKING_ACCOMMODATION_REMOVED,
 //            IntegrationEventMessages::HOTEL_BOOKING_ACCOMMODATION_DETAILS_EDITED => BookingEventEnum::DETAILS_MODIFIED,
-            default => EventGroupEnum::DETAILS_MODIFIED,
+            default => EventGroupEnum::OTHER,
         };
     }
 }

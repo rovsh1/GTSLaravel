@@ -2,7 +2,17 @@
 
 ## Ссылки портала
 
+#### Prod
+
 - [Web Site](http://www.gotostans.com/)
+
+#### Dev
+
+- [BO Panel](http://fdqec.admin.gotostans.com)
+- [HO Panel](http://fdqec.hotel.gotostans.com)
+
+#### Deprecated
+
 - [Dev Admin panel](http://bspems.qcthmb.gotostans.com/)
 
 ## Документация
