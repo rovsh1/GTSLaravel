@@ -7,7 +7,7 @@ export type FileResponse = {
   guid: string
   name: string
   url: string
-  entity_id: number
+  entity_id?: number
 }
 
 export type HotelImageResponse = {

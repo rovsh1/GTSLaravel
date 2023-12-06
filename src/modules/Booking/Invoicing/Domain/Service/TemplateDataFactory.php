@@ -12,6 +12,7 @@ use Module\Booking\Invoicing\Domain\Service\Dto\ManagerDto;
 use Module\Booking\Invoicing\Domain\Service\Dto\OrderDto;
 use Module\Booking\Invoicing\Domain\Service\Dto\ServiceInfoDto;
 use Module\Booking\Invoicing\Domain\Service\Factory\ServiceInfoDataFactory;
+use Module\Booking\Shared\Domain\Order\Order;
 use Module\Booking\Shared\Domain\Order\Repository\OrderRepositoryInterface;
 use Module\Booking\Shared\Domain\Shared\Adapter\AdministratorAdapterInterface;
 use Module\Booking\Shared\Domain\Shared\Adapter\ClientAdapterInterface;
@@ -29,16 +30,17 @@ class TemplateDataFactory
         private readonly ServiceInfoDataFactory $serviceInfoDataFactory,
     ) {}
 
-    public function build(OrderId $orderId, ClientId $clientId): array
+    public function build(OrderId $orderId): array
     {
+        $order = $this->orderRepository->findOrFail($orderId);
         $services = $this->serviceInfoDataFactory->build($orderId);
 
         return [
-            'order' => $this->buildOrderDto($orderId),
+            'order' => $this->buildOrderDto($order),
             'services' => $services,
             'company' => $this->getCompanyRequisites(),
             'manager' => $this->buildOrderManagerDto($orderId),
-            'client' => $this->buildClientDto($clientId),
+            'client' => $this->buildClientDto($order->clientId()),
             'invoice' => $this->buildInvoiceDto($orderId, now(), $services),
         ];
     }
@@ -85,10 +87,8 @@ class TemplateDataFactory
         );
     }
 
-    private function buildOrderDto(OrderId $orderId): OrderDto
+    private function buildOrderDto(Order $order): OrderDto
     {
-        $order = $this->orderRepository->findOrFail($orderId);
-
         return new OrderDto(
             (string)$order->id()->value(),
             $order->currency()->name

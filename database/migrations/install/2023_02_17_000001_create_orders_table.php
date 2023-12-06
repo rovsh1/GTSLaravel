@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->unsignedInteger('legal_id')->nullable();
             $table->char('currency', 3);
             $table->tinyInteger('status');
+            $table->json('voucher')->nullable();
             $table->string('source');
             $table->unsignedInteger('creator_id');
             $table->timestamps();

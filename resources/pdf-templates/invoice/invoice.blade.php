@@ -42,7 +42,7 @@
                 <table class="text-align-right">
                     <tbody>
                     <tr>
-                        <td class="title">ИНВОЙС № {{ $order->number }}</td>
+                        <td class="title">ИНВОЙС №{{ $order->number }}</td>
                     </tr>
                     <tr>
                         <td>Дата создания: {{ $invoice->createdAt }}</td>

@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\Factory;
 
+use Carbon\CarbonImmutable;
 use Module\Booking\Moderation\Application\Dto\OrderDto;
+use Module\Booking\Moderation\Application\Dto\VoucherDto;
 use Module\Booking\Shared\Domain\Order\Order;
 use Sdk\Booking\ValueObject\GuestId;
+use Sdk\Shared\Contracts\Adapter\FileStorageAdapterInterface;
 use Sdk\Shared\Contracts\Service\TranslatorInterface;
 use Sdk\Shared\Dto\CurrencyDto;
 use Sdk\Shared\Dto\MoneyDto;
@@ -15,11 +18,21 @@ class OrderDtoFactory
 {
     public function __construct(
         private readonly TranslatorInterface $translator,
-        private readonly OrderStatusDtoFactory $statusDtoFactory
+        private readonly OrderStatusDtoFactory $statusDtoFactory,
+        private readonly FileStorageAdapterInterface $fileStorageAdapter
     ) {}
 
     public function createFromEntity(Order $entity): OrderDto
     {
+        $voucherDto = null;
+        if ($entity->voucher() !== null) {
+            $fileDto = $this->fileStorageAdapter->find($entity->voucher()->file()->guid());
+            $voucherDto = new VoucherDto(
+                createdAt: new CarbonImmutable($entity->voucher()->createdAt()),
+                file: $fileDto
+            );
+        }
+
         return new OrderDto(
             $entity->id()->value(),
             $this->statusDtoFactory->get($entity->status()),
@@ -32,7 +45,8 @@ class OrderDtoFactory
                 CurrencyDto::fromEnum($entity->clientPrice()->currency(), $this->translator),
                 $entity->clientPrice()->value()
             ),
-            $entity->context()->source()
+            $entity->context()->source(),
+            $voucherDto,
         );
     }
 

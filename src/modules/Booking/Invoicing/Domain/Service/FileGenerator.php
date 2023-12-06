@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Invoicing\Domain\Service;
 
-use Sdk\Booking\ValueObject\ClientId;
+use Module\Booking\Shared\Domain\Shared\Service\TemplateCompilerInterface;
 use Sdk\Booking\ValueObject\OrderId;
 use Sdk\Shared\Contracts\Adapter\FileStorageAdapterInterface;
 use Sdk\Shared\Dto\FileDto;
@@ -17,9 +17,9 @@ class FileGenerator
         private readonly TemplateCompilerInterface $templateCompiler,
     ) {}
 
-    public function generate(string $filename, OrderId $orderId, ClientId $clientId): FileDto
+    public function generate(string $filename, OrderId $orderId): FileDto
     {
-        $templateData = $this->templateDataFactory->build($orderId, $clientId);
+        $templateData = $this->templateDataFactory->build($orderId);
 
         $content = $this->templateCompiler->compile('invoice.invoice', $templateData);
 

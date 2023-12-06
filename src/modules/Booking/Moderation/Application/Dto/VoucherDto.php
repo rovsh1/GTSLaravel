@@ -5,23 +5,13 @@ declare(strict_types=1);
 namespace Module\Booking\Moderation\Application\Dto;
 
 use Carbon\CarbonImmutable;
-use Module\Booking\Shared\Domain\Voucher\Voucher;
-use Module\Shared\Support\Dto\AbstractDomainBasedDto;
+use Sdk\Shared\Dto\FileDto;
 
-class VoucherDto extends AbstractDomainBasedDto
+class VoucherDto
 {
     public function __construct(
-        public readonly int $id,
-        public readonly CarbonImmutable $dateCreate
-    ) {}
-
-    public static function fromDomain(mixed $entity): static
-    {
-        assert($entity instanceof Voucher);
-
-        return new static(
-            $entity->id()->value(),
-            $entity->dateCreate()
-        );
+        public readonly CarbonImmutable $createdAt,
+        public readonly FileDto $file
+    ) {
     }
 }

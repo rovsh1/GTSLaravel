@@ -35,7 +35,6 @@ class InvoiceFactory
             $fileDto = $this->fileGeneratorAdapter->generate(
                 $this->getFilename($order->id()),
                 $order->id(),
-                $order->clientId()
             );
 
             $invoice = $this->invoiceRepository->create(

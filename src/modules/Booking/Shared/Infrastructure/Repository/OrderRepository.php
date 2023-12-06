@@ -87,6 +87,7 @@ class OrderRepository implements OrderRepositoryInterface
             'client_id' => $order->clientId()->value(),
             'legal_id' => $order->legalId()?->value(),
             'currency' => $order->currency(),
+            'voucher' => $order->voucher()?->serialize(),
         ]);
     }
 }

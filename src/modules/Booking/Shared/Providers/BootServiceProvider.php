@@ -16,7 +16,5 @@ class BootServiceProvider extends ServiceProvider
         $this->app->register(DomainEventServiceProvider::class);
     }
 
-    public function boot(): void
-    {
-    }
+    public function boot(): void {}
 }

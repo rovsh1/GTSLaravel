@@ -13,13 +13,12 @@ use Sdk\Shared\Dto\FileDto;
 
 class FileGeneratorAdapter implements FileGeneratorAdapterInterface
 {
-    public function generate(string $filename, OrderId $orderId, ClientId $clientId): FileDto
+    public function generate(string $filename, OrderId $orderId): FileDto
     {
         return app(GenerateInvoiceFile::class)->execute(
             new GenerateInvoiceFileRequestDto(
                 $filename,
                 $orderId->value(),
-                $clientId->value(),
             )
         );
     }

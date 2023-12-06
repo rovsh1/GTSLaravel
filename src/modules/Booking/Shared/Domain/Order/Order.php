@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Shared\Domain\Order;
 
 use Carbon\CarbonImmutable;
+use Module\Booking\Moderation\Domain\Order\ValueObject\Voucher;
 use Module\Booking\Shared\Domain\Order\Event\ClientChanged;
 use Module\Booking\Shared\Domain\Order\Support\Concerns\HasStatusesTrait;
 use Module\Shared\Contracts\Domain\EntityInterface;
@@ -28,6 +29,7 @@ final class Order extends AbstractAggregateRoot implements EntityInterface
         private ClientId $clientId,
         private ?LegalId $legalId,
         private OrderStatusEnum $status,
+        private ?Voucher $voucher,
         private readonly CarbonImmutable $createdAt,
         private readonly GuestIdCollection $guestIds,
         private readonly Money $clientPrice,
@@ -94,5 +96,15 @@ final class Order extends AbstractAggregateRoot implements EntityInterface
     public function clientPrice(): Money
     {
         return $this->clientPrice;
+    }
+
+    public function voucher(): ?Voucher
+    {
+        return $this->voucher;
+    }
+
+    public function setVoucher(?Voucher $voucher): void
+    {
+        $this->voucher = $voucher;
     }
 }

@@ -3,12 +3,12 @@ import { computed } from 'vue'
 
 import RequestBlock from '~resources/views/booking/shared/components/RequestBlock.vue'
 import { useOrderStore } from '~resources/views/booking-order/show/store/order'
-import { useOrderVoucherStore } from '~resources/views/booking-order/show/store/voucher'
 
 import { OrderAvailableActionsResponse } from '~api/order/status'
 import { OrderVoucher } from '~api/order/voucher'
 
 import { formatDateTime } from '~lib/date'
+import { downloadFile } from '~lib/download-file'
 
 import { showToast } from '~components/Bootstrap/BootstrapToast'
 import InlineIcon from '~components/InlineIcon.vue'
@@ -16,29 +16,28 @@ import InlineIcon from '~components/InlineIcon.vue'
 const orderStore = useOrderStore()
 const availableActions = computed<OrderAvailableActionsResponse | null>(() => orderStore.availableActions)
 
-const voucherStore = useOrderVoucherStore()
+const orderVoucher = computed<OrderVoucher | null>(() => orderStore.order?.voucher || null)
 
-const orderVoucher = computed<OrderVoucher | null>(
-  () => (voucherStore.voucher && Object.keys(voucherStore.voucher).length > 0 ? voucherStore.voucher : null),
-)
-const isFetching = computed(() => voucherStore.voucherCreateIsFetching || voucherStore.isFetching)
+const download = async (): Promise<void> => {
+  if (!orderVoucher.value?.file) {
+    return
+  }
+  await downloadFile(orderVoucher.value.file.url, orderVoucher.value.file.name)
+}
 
 const handleVoucherCreate = async () => {
-  await voucherStore.createVoucher()
-  await orderStore.refreshOrder()
+  await orderStore.createVoucher()
 }
 
 const handleVoucherSend = async () => {
   try {
-    await voucherStore.sendVoucher()
+    await orderStore.sendVoucher()
     showToast({ title: 'Ваучер успешно отправлен' }, {
       type: 'success',
     })
   } catch (error) {
     await orderStore.refreshOrder()
-    return
   }
-  await orderStore.refreshOrder()
 }
 </script>
 
@@ -67,7 +66,7 @@ const handleVoucherSend = async () => {
           href="#"
           class="btn-download"
           aria-label="Скачать"
-          @click.prevent="voucherStore.downloadFile()"
+          @click.prevent="download"
         >
           <InlineIcon icon="download" />
         </a>
@@ -81,7 +80,7 @@ const handleVoucherSend = async () => {
       text="При необходимости клиенту можно сформировать ваучер"
       button-text="Сформировать ваучер"
       variant="success"
-      :loading="isFetching"
+      :loading="orderStore.isVoucherFetching"
       @click="handleVoucherCreate"
     />
     <RequestBlock

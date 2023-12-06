@@ -10,5 +10,5 @@ use Sdk\Shared\Dto\FileDto;
 
 interface FileGeneratorAdapterInterface
 {
-    public function generate(string $filename, OrderId $orderId, ClientId $clientId): FileDto;
+    public function generate(string $filename, OrderId $orderId): FileDto;
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Invoicing\Domain\Service\Factory;
 
-use Module\Booking\Invoicing\Domain\Service\Dto\Booking\GuestDto;
+use Module\Booking\Invoicing\Domain\Service\Dto\Service\GuestDto;
 use Module\Booking\Shared\Domain\Guest\Guest;
 use Module\Booking\Shared\Domain\Guest\Repository\GuestRepositoryInterface;
 use Sdk\Booking\ValueObject\GuestIdCollection;

@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace Module\Booking\Invoicing\Domain\Service\Dto;
 
 use Illuminate\Support\Collection;
-use Module\Booking\Invoicing\Domain\Service\Dto\Booking\BookingPeriodDto;
-use Module\Booking\Invoicing\Domain\Service\Dto\Booking\GuestDto;
-use Module\Booking\Invoicing\Domain\Service\Dto\Booking\PriceDto;
-use Module\Booking\Moderation\Application\Dto\BookingPriceDto;
+use Module\Booking\Invoicing\Domain\Service\Dto\Service\BookingPeriodDto;
+use Module\Booking\Invoicing\Domain\Service\Dto\Service\GuestDto;
+use Module\Booking\Invoicing\Domain\Service\Dto\Service\PriceDto;
 
 class ServiceInfoDto
 {

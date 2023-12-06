@@ -4,10 +4,11 @@ import { MaybeRef } from '@vueuse/core'
 
 import { BaseResponse, useAdminAPI } from '~api'
 import { BaseOrder, OrderID } from '~api/order/models'
+import { OrderVoucher } from '~api/order/voucher'
 
 import { getNullableRef } from '~lib/vue'
 
-export type Order = BaseOrder
+export type Order = BaseOrder & { voucher: OrderVoucher | null }
 
 export interface GetOrderPayload {
   orderID: OrderID

@@ -22,7 +22,6 @@ class GenerateInvoiceFile implements UseCaseInterface
         return $this->fileGenerator->generate(
             $request->filename,
             new OrderId($request->orderId),
-            new ClientId($request->clientId),
         );
     }
 }

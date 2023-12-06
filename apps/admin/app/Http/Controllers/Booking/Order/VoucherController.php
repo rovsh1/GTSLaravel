@@ -4,33 +4,32 @@ declare(strict_types=1);
 
 namespace App\Admin\Http\Controllers\Booking\Order;
 
-use App\Admin\Support\Facades\Booking\VoucherAdapter;
+use App\Admin\Support\Facades\Booking\Order\VoucherAdapter;
 use App\Shared\Http\Responses\AjaxResponseInterface;
 use App\Shared\Http\Responses\AjaxSuccessResponse;
-use Illuminate\Http\JsonResponse;
+use Sdk\Shared\Exception\ApplicationException;
 
 class VoucherController
 {
-    public function sendVoucher(int $id): AjaxResponseInterface
+    public function create(int $orderId): AjaxResponseInterface
     {
         try {
-            VoucherAdapter::sendVoucher($id);
-        } catch (\Throwable $e) {
-            //@todo отлов доменных эксепшнов
-            dd($e);
+            VoucherAdapter::create($orderId);
+        } catch (ApplicationException $e) {
+            throw $e;
         }
+
         return new AjaxSuccessResponse();
     }
 
-    public function getBookingVouchers(int $bookingId): JsonResponse
+    public function send(int $orderId): AjaxResponseInterface
     {
-        $requests = VoucherAdapter::getBookingVouchers($bookingId);
-        return response()->json($requests);
-    }
+        try {
+            VoucherAdapter::send($orderId);
+        } catch (ApplicationException $e) {
+            throw $e;
+        }
 
-    public function getFileInfo(int $bookingId, int $voucherId): JsonResponse
-    {
-        $fileInfo = VoucherAdapter::getDocumentFileInfo($voucherId);
-        return response()->json($fileInfo);
+        return new AjaxSuccessResponse();
     }
 }
