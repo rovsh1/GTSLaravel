@@ -22,5 +22,6 @@ class OrderDto
         public readonly int $creatorId,
         public readonly MoneyDto $clientPrice,
         public readonly SourceEnum $source,
+        public readonly ?VoucherDto $voucher,
     ) {}
 }

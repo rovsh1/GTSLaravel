@@ -23,6 +23,7 @@ class Order extends Model
         'legal_id',
         'currency',
         'status',
+        'voucher',
         'source',
         'creator_id',
     ];
@@ -33,6 +34,7 @@ class Order extends Model
         'source' => SourceEnum::class,
         'client_price' => 'float',
         'payed_amount' => 'float',
+        'voucher' => 'array',
     ];
 
     protected $appends = [

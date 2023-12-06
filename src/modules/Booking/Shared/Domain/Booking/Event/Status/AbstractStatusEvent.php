@@ -20,7 +20,7 @@ abstract class AbstractStatusEvent extends AbstractBookingEvent implements Booki
         return [
             'bookingId' => $this->booking->id()->value(),
             'status' => $this->booking->status()->value,
-            'statusBefore' => null
+//            'statusBefore' => null
         ];
     }
 }

@@ -72,6 +72,7 @@ export default defineConfig(({ command }) => ({
         'resources/views/booking/hotel/form/form.ts',
         'resources/views/booking/hotel/show/show.ts',
         'resources/views/booking/hotel/show/show.scss',
+        'resources/views/booking/hotel/timeline/timeline.scss',
         'resources/views/booking/services/form/form.ts',
         'resources/views/booking/services/show/show.ts',
         'resources/views/booking/services/show/show.scss',

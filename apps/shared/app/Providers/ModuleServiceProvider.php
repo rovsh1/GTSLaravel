@@ -32,6 +32,7 @@ class ModuleServiceProvider extends ServiceProvider
         'MailManager' => 'Support/MailManager',
         'IntegrationEventBus' => 'Support/IntegrationEventBus',
         'Scheduler' => 'Support/Scheduler',
+        'LocaleTranslator' => 'Support/LocaleTranslator',
 //        'Traveline' => 'Traveline',
     ];
 
@@ -56,7 +57,5 @@ class ModuleServiceProvider extends ServiceProvider
         }
     }
 
-    public function boot(): void
-    {
-    }
+    public function boot(): void {}
 }

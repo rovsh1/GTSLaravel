@@ -23,15 +23,6 @@ return new class extends Migration {
                     'updated_at' => now(),
                 ]);
         }
-
-        $q = DB::connection('mysql_old')->table('price_lists_options')->where('entity', 'hotel');
-        foreach ($q->cursor() as $r) {
-            DB::table('client_currency_rate_hotels')
-                ->insert([
-                    'rate_id' => $r->price_list_id,
-                    'hotel_id' => $r->entity_id,
-                ]);
-        }
     }
 
     /**

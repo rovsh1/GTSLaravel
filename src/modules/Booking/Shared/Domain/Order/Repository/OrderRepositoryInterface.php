@@ -13,8 +13,6 @@ use Sdk\Shared\Enum\CurrencyEnum;
 
 interface OrderRepositoryInterface
 {
-    public function create(ClientId $clientId, CurrencyEnum $currency, CreatorId $creatorId, ?int $legalId = null): Order;
-
     public function find(OrderId $id): ?Order;
 
     /**
@@ -28,6 +26,4 @@ interface OrderRepositoryInterface
      * @return Order[]
      */
     public function getActiveOrders(int|null $clientId): array;
-
-    public function store(Order $order): bool;
 }

@@ -1,6 +1,5 @@
 <?php
 
-use App\Admin\Enums\Hotel\VisibilityEnum;
 use Carbon\CarbonPeriodImmutable;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
@@ -17,6 +16,7 @@ use Module\Hotel\Moderation\Domain\Hotel\ValueObject\MarkupSettings\EarlyCheckIn
 use Module\Hotel\Moderation\Domain\Hotel\ValueObject\MarkupSettings\LateCheckOutCollection;
 use Module\Hotel\Moderation\Domain\Hotel\ValueObject\TimeSettings;
 use Sdk\Shared\Enum\CurrencyEnum;
+use Sdk\Shared\Enum\Hotel\VisibilityEnum;
 use Sdk\Shared\ValueObject\Percent;
 use Sdk\Shared\ValueObject\Time;
 use Sdk\Shared\ValueObject\TimePeriod;

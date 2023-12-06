@@ -2,7 +2,6 @@
 
 namespace App\Admin\Models\Supplier;
 
-use App\Admin\Enums\Contract\StatusEnum;
 use App\Admin\Support\Models\HasPeriod;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -13,6 +12,7 @@ use Module\Supplier\Moderation\Application\UseCase\Contract\UploadFiles;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
 use Sdk\Module\Database\Eloquent\Model;
 use Sdk\Shared\Dto\UploadedFileDto;
+use Sdk\Shared\Enum\Contract\StatusEnum;
 use Sdk\Shared\Enum\ServiceTypeEnum;
 
 class Contract extends Model

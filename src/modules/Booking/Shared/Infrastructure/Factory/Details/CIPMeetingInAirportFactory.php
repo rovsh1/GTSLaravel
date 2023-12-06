@@ -15,9 +15,7 @@ use Sdk\Booking\ValueObject\ServiceInfo;
 
 class CIPMeetingInAirportFactory extends AbstractServiceDetailsFactory implements CIPMeetingInAirportFactoryInterface
 {
-    public function __construct(private readonly CIPMeetingInAirportBuilder $builder)
-    {
-    }
+    public function __construct(private readonly CIPMeetingInAirportBuilder $builder) {}
 
     public function create(
         BookingId $bookingId,
@@ -31,11 +29,11 @@ class CIPMeetingInAirportFactory extends AbstractServiceDetailsFactory implement
             'booking_id' => $bookingId->value(),
             'date' => $arrivalDate,
             'service_id' => $serviceInfo->id(),
+            'guestIds' => $guestIds->serialize(),
             'data' => [
                 'serviceInfo' => $this->serializeServiceInfo($serviceInfo),
                 'airportId' => $airportId,
                 'flightNumber' => $flightNumber,
-                'guestIds' => $guestIds->serialize(),
             ]
         ]);
 

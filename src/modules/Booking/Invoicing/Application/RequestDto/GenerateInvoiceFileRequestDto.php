@@ -9,6 +9,5 @@ class GenerateInvoiceFileRequestDto
     public function __construct(
         public readonly string $filename,
         public readonly int $orderId,
-        public readonly int $clientId,
     ) {}
 }

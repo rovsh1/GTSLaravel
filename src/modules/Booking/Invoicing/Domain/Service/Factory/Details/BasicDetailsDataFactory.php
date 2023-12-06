@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Invoicing\Domain\Service\Factory\Details;
 
 use Illuminate\Support\Collection;
-use Module\Booking\Invoicing\Domain\Service\Dto\Booking\PriceDto;
+use Module\Booking\Invoicing\Domain\Service\Dto\Service\PriceDto;
 use Module\Booking\Invoicing\Domain\Service\Dto\ServiceInfoDto;
 use Module\Booking\Invoicing\Domain\Service\Factory\BookingPeriodDataFactory;
 use Module\Booking\Invoicing\Domain\Service\Factory\GuestDataFactory;

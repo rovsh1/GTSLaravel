@@ -37,11 +37,10 @@ return new class extends Migration {
     private function upBookingHotelRoomGuests(): void
     {
         Schema::create('booking_hotel_room_guests', function (Blueprint $table) {
-            $table->increments('id');
             $table->unsignedInteger('accommodation_id');
             $table->unsignedInteger('guest_id');
 
-            $table->unique(['accommodation_id', 'guest_id']);
+            $table->primary(['accommodation_id', 'guest_id']);
 
             $table->foreign('accommodation_id')
                 ->references('id')
@@ -60,13 +59,12 @@ return new class extends Migration {
     private function upBookingAirportGuests(): void
     {
         Schema::create('booking_airport_guests', function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedInteger('booking_airport_id');
+            $table->unsignedInteger('booking_id');
             $table->unsignedInteger('guest_id');
 
-            $table->unique(['booking_airport_id', 'guest_id']);
+            $table->primary(['booking_id', 'guest_id']);
 
-            $table->foreign('booking_airport_id')
+            $table->foreign('booking_id')
                 ->references('id')
                 ->on('bookings')
                 ->cascadeOnDelete()

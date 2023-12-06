@@ -22,18 +22,20 @@ class CancelOrderInvoice implements UseCaseInterface
     {
         $order = $this->orderRepository->findOrFail(new OrderId($orderId));
 
+        $invoice = $this->invoiceRepository->findByOrderId($order->id());
+        if ($invoice === null) {
+            throw new InvoiceNotFoundException();
+        }
+
         try {
             $order->ensureInvoiceCanBeCancelled();
         } catch (InvalidOrderStatusToCancelInvoice $e) {
             throw new CancellationForbiddenException($e);
         }
 
-        $invoice = $this->invoiceRepository->findByOrderId($order->id());
-        if ($invoice === null) {
-            throw new InvoiceNotFoundException();
-        }
         $invoice->delete();
         $this->invoiceRepository->store($invoice);
+        //@todo удалить ваучер
 
         $this->updateOrderStatus($order);
     }

@@ -4,52 +4,37 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Infrastructure\Repository;
 
-use Illuminate\Database\Eloquent\Builder;
 use Module\Booking\Shared\Domain\Order\Order;
 use Module\Booking\Shared\Domain\Order\Repository\OrderRepositoryInterface;
-use Module\Booking\Shared\Infrastructure\Factory\OrderFactory;
-use Module\Booking\Shared\Infrastructure\Models\Order as Model;
-use Sdk\Booking\ValueObject\ClientId;
-use Sdk\Booking\ValueObject\CreatorId;
+use Module\Booking\Shared\Infrastructure\DbContext\OrderDbContext;
 use Sdk\Booking\ValueObject\OrderId;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
-use Sdk\Shared\Contracts\Service\ApplicationContextInterface;
-use Sdk\Shared\Enum\CurrencyEnum;
-use Sdk\Shared\Enum\Order\OrderStatusEnum;
+use Sdk\Shared\Support\RepositoryInstances;
 
 class OrderRepository implements OrderRepositoryInterface
 {
+    private RepositoryInstances $instances;
+
     public function __construct(
-        private readonly OrderFactory $factory,
-        private readonly ApplicationContextInterface $context
-    ) {}
-
-    public function create(
-        ClientId $clientId,
-        CurrencyEnum $currency,
-        CreatorId $creatorId,
-        ?int $legalId = null
-    ): Order {
-        $model = Model::create([
-            'status' => OrderStatusEnum::IN_PROGRESS,
-            'client_id' => $clientId->value(),
-            'legal_id' => $legalId,
-            'currency' => $currency,
-            'source' => $this->context->source(),
-            'creator_id' => $creatorId->value(),
-        ]);
-
-        return $this->factory->fromModel($model);
+        private readonly OrderDbContext $orderDbContext,
+    ) {
+        $this->instances = new RepositoryInstances();
     }
 
     public function find(OrderId $id): ?Order
     {
-        $model = Model::find($id->value());
-        if (!$model) {
+        if ($this->instances->has($id)) {
+            return $this->instances->get($id);
+        }
+
+        $order = $this->orderDbContext->find($id);
+        if ($order === null) {
             return null;
         }
 
-        return $this->factory->fromModel($model);
+        $this->instances->add($order->id(), $order);
+
+        return $order;
     }
 
     /**
@@ -62,31 +47,11 @@ class OrderRepository implements OrderRepositoryInterface
         return $this->find($id) ?? throw new EntityNotFoundException("Order[{$id->value()}] not found");
     }
 
-
     /**
      * @return Order[]
      */
     public function getActiveOrders(int|null $clientId): array
     {
-        $models = Model::query()
-            ->where(function (Builder $builder) use ($clientId) {
-                if ($clientId !== null) {
-                    $builder->whereClientId($clientId);
-                }
-                $builder->whereStatus(OrderStatusEnum::IN_PROGRESS);
-            })
-            ->get();
-
-        return $this->factory->collectionFromModel($models);
-    }
-
-    public function store(Order $order): bool
-    {
-        return (bool)Model::whereId($order->id()->value())->update([
-            'status' => $order->status(),
-            'client_id' => $order->clientId()->value(),
-            'legal_id' => $order->legalId()?->value(),
-            'currency' => $order->currency(),
-        ]);
+        return $this->orderDbContext->getActiveOrders($clientId);
     }
 }

@@ -1,4 +1,4 @@
-import { onMounted, ref } from 'vue'
+import { nextTick, onMounted, ref } from 'vue'
 
 import { defineStore, storeToRefs } from 'pinia'
 import { z } from 'zod'
@@ -17,7 +17,9 @@ import {
 } from '~api/order'
 import { useGetOrderGuestsAPI } from '~api/order/guest'
 import { useOrderAvailableActionsAPI } from '~api/order/status'
+import { createOrderVoucher, sendOrderVoucher } from '~api/order/voucher'
 
+import { showConfirmDialog } from '~lib/confirm-dialog'
 import { requestInitialData } from '~lib/initial-data'
 
 const { orderID, manager } = requestInitialData('view-initial-data-booking-order', z.object({
@@ -37,6 +39,7 @@ export const useOrderStore = defineStore('booking-order', () => {
   const { statuses } = storeToRefs(orderStatusesStore)
 
   const isStatusUpdateFetching = ref(false)
+  const isVoucherFetching = ref(false)
   const bookingManagerId = ref(manager.id)
 
   const refreshOrder = async () => {
@@ -89,6 +92,24 @@ export const useOrderStore = defineStore('booking-order', () => {
     bookingManagerId.value = Number(managerId)
   }
 
+  const createVoucher = async () => {
+    isVoucherFetching.value = true
+    await createOrderVoucher({ orderID })
+    refreshOrder()
+    isVoucherFetching.value = false
+  }
+
+  const sendVoucher = async () => {
+    const { result: isConfirmed, toggleClose } = await showConfirmDialog('Отправить ваучер?')
+    if (isConfirmed) {
+      isVoucherFetching.value = true
+      nextTick(toggleClose)
+      await sendOrderVoucher({ orderID })
+    }
+    refreshOrder()
+    isVoucherFetching.value = false
+  }
+
   onMounted(() => {
     fetchOrder()
     fetchAvailableActions()
@@ -115,5 +136,8 @@ export const useOrderStore = defineStore('booking-order', () => {
     copy,
     updateNote,
     updateManager,
+    isVoucherFetching,
+    createVoucher,
+    sendVoucher,
   }
 })

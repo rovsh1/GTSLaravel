@@ -2,8 +2,8 @@
 
 namespace App\Admin\View\Components\Helpers;
 
-use App\Admin\Enums\Hotel\RatingEnum;
 use Illuminate\View\Component;
+use Sdk\Shared\Enum\Hotel\RatingEnum;
 
 class HotelRating extends Component
 {

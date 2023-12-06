@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Invoicing\Domain\Service\Factory;
 
-use Module\Booking\Invoicing\Domain\Service\Dto\Booking\BookingPeriodDto;
+use Module\Booking\Invoicing\Domain\Service\Dto\Service\BookingPeriodDto;
 use Sdk\Booking\Contracts\Entity\DetailsInterface;
 
 class BookingPeriodDataFactory

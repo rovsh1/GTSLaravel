@@ -2,12 +2,9 @@
 
 namespace App\Admin\Models\Client;
 
-use App\Admin\Models\Hotel\Hotel;
 use App\Admin\Support\Models\HasPeriod;
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
 use Sdk\Module\Database\Eloquent\Model;
 use Sdk\Shared\Enum\CurrencyEnum;
@@ -27,7 +24,6 @@ use Sdk\Shared\Enum\CurrencyEnum;
  * @property-read string $currency_code_char
  * @property \Sdk\Module\Support\DateTime|null $created_at
  * @property \Sdk\Module\Support\DateTime|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Hotel> $hotels
  * @method static Builder|CurrencyRate newModelQuery()
  * @method static Builder|CurrencyRate newQuery()
  * @method static Builder|CurrencyRate query()
@@ -56,7 +52,6 @@ class CurrencyRate extends Model
         'date_start',
         'date_end',
         'rate',
-        'hotel_ids',
     ];
 
     protected $casts = [
@@ -64,8 +59,6 @@ class CurrencyRate extends Model
         'date_start' => 'date',
         'date_end' => 'date',
     ];
-
-    private array $savingHotelIds;
 
     public static function booted()
     {
@@ -77,13 +70,6 @@ class CurrencyRate extends Model
                 ->addSelect('clients.name as client_name')
                 ->addSelect('r_currencies.code_char as currency_code_char')
                 ->joinTranslatable('r_currencies', 'name as currency_name');
-        });
-
-        static::saved(function (self $model): void {
-            if (isset($model->savingHotelIds)) {
-                $model->hotels()->sync($model->savingHotelIds);
-                unset($model->savingHotelIds);
-            }
         });
     }
 
@@ -100,28 +86,6 @@ class CurrencyRate extends Model
     public function scopeWhereCurrency(Builder $builder, int $id): void
     {
         $builder->where('client_currency_rates.currency', $id);
-    }
-
-    public function hotels(): BelongsToMany
-    {
-        return $this->belongsToMany(
-            Hotel::class,
-            'client_currency_rate_hotels',
-            'rate_id',
-            'hotel_id',
-        );
-    }
-
-    public function hotelIds(): Attribute
-    {
-        return Attribute::make(
-            get: fn() => $this->hotels()->pluck('id')->toArray(),
-            set: function (array $hotelIds) {
-                $this->savingHotelIds = $hotelIds;
-
-                return [];
-            }
-        );
     }
 
     public function __toString()

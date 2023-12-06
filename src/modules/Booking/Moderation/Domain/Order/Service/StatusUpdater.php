@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Module\Booking\Moderation\Domain\Order\Service;
 
 use Module\Booking\Moderation\Domain\Order\Exception\OrderHasBookingInProgress;
+use Module\Booking\Moderation\Domain\Order\Exception\OrderWithoutBookings;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Order\Order;
+use Module\Booking\Shared\Domain\Shared\Exception\InvalidStatusTransition;
 use Sdk\Shared\Enum\Order\OrderStatusEnum;
 
 class StatusUpdater
@@ -14,8 +16,7 @@ class StatusUpdater
     public function __construct(
         private readonly BookingRepositoryInterface $repository,
         private readonly StatusTransitionRules $statusTransitionRules,
-    ) {
-    }
+    ) {}
 
     public function update(Order $order, OrderStatusEnum $status): void
     {
@@ -53,6 +54,9 @@ class StatusUpdater
     private function ensureAllBookingsCompleted(Order $order): void
     {
         $bookings = $this->repository->getByOrderId($order->id());
+        if (count($bookings) === 0) {
+            throw new OrderWithoutBookings();
+        }
         foreach ($bookings as $booking) {
             if ($booking->inModeration()) {
                 throw new OrderHasBookingInProgress();

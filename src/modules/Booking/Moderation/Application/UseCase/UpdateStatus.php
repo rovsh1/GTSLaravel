@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Module\Booking\Moderation\Application\UseCase;
 
 use Module\Booking\Moderation\Application\Dto\UpdateStatusResponseDto;
-use Module\Booking\Moderation\Domain\Booking\Exception\InvalidStatusTransition;
 use Module\Booking\Moderation\Domain\Booking\Service\StatusRules\StatusTransitionsFactory;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Service\BookingUnitOfWorkInterface;
+use Module\Booking\Shared\Domain\Shared\Exception\InvalidStatusTransition;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 use Sdk\Shared\Enum\Booking\BookingStatusEnum;

@@ -3,7 +3,6 @@
 namespace App\Admin\Http\Controllers\Supplier;
 
 use App\Admin\Components\Factory\Prototype;
-use App\Admin\Enums\Contract\StatusEnum;
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Models\Supplier\Contract;
 use App\Admin\Models\Supplier\Supplier;
@@ -27,6 +26,7 @@ use App\Admin\View\Menus\SupplierMenu;
 use App\Shared\Http\Responses\AjaxResponseInterface;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Sdk\Shared\Enum\Contract\StatusEnum;
 
 class ContractController extends Controller
 {

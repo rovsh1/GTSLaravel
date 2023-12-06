@@ -2,12 +2,12 @@
 
 namespace App\Admin\Models\Supplier;
 
-use App\Admin\Enums\Contract\StatusEnum;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Support\Facades\DB;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
+use Sdk\Shared\Enum\Contract\StatusEnum;
 use Sdk\Shared\Enum\ServiceTypeEnum;
 
 class Service extends \Module\Supplier\Moderation\Infrastructure\Models\Service

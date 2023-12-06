@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Admin\Support\Facades\Booking;
 
-use Carbon\CarbonPeriod;
 use Illuminate\Support\Facades\Facade;
 use Module\Booking\Moderation\Application\Dto\OrderAvailableActionsDto;
 use Module\Booking\Moderation\Application\Dto\OrderDto;
@@ -23,7 +22,7 @@ use Sdk\Shared\Enum\CurrencyEnum;
  * @method static OrderAvailableActionsDto getAvailableActions(int $orderId)
  * @method static OrderBookingDto[] getBookings(int $orderId)
  * @method static void updateStatus(int $orderId, int $status)
- * @method static int create(int $clientId, int|null $legalId, CurrencyEnum $currency, CarbonPeriod $period, int $managerId, int $creatorId)
+ * @method static int create(int $clientId, int|null $legalId, CurrencyEnum $currency, int $managerId, int $creatorId)
  **/
 class OrderAdapter extends Facade
 {

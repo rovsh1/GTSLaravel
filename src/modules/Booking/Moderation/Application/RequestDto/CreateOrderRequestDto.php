@@ -13,7 +13,6 @@ class CreateOrderRequestDto
         public readonly int $clientId,
         public readonly ?int $legalId,
         public readonly CurrencyEnum $currency,
-        public readonly CarbonPeriod $period,
         public readonly int $administratorId,
         public readonly int $creatorId,
     ) {}

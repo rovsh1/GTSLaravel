@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Module\Booking\Invoicing\Domain\Service\Factory\Details;
 
 use Illuminate\Support\Collection;
-use Module\Booking\Invoicing\Domain\Service\Dto\Booking\CarDto;
-use Module\Booking\Invoicing\Domain\Service\Dto\Booking\PriceDto;
+use Module\Booking\Invoicing\Domain\Service\Dto\Service\PriceDto;
 use Module\Booking\Invoicing\Domain\Service\Dto\ServiceInfoDto;
 use Module\Booking\Invoicing\Domain\Service\Factory\BookingPeriodDataFactory;
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Service\Dto\DetailOptionDto;
+use Module\Supplier\Moderation\Application\Dto\CarDto;
 use Sdk\Booking\Contracts\Entity\DetailsInterface;
 use Sdk\Booking\ValueObject\CarBid;
 use Sdk\Shared\Enum\CurrencyEnum;

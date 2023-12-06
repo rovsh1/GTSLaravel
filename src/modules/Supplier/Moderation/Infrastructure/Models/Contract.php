@@ -2,12 +2,12 @@
 
 namespace Module\Supplier\Moderation\Infrastructure\Models;
 
-use App\Admin\Enums\Contract\StatusEnum;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Sdk\Module\Database\Eloquent\Model;
+use Sdk\Shared\Enum\Contract\StatusEnum;
 
 class Contract extends Model
 {

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Admin\Http\Controllers\Booking\Order;
 
 use App\Admin\Http\Controllers\Controller;
-use App\Admin\Support\Facades\Client\InvoiceAdapter;
+use App\Admin\Support\Facades\Booking\Order\InvoiceAdapter;
 use App\Shared\Http\Responses\AjaxResponseInterface;
 use App\Shared\Http\Responses\AjaxSuccessResponse;
 use Illuminate\Http\JsonResponse;

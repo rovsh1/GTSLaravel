@@ -21,10 +21,10 @@ use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Layout as LayoutContract;
 use App\Admin\View\Menus\HotelMenu;
 use App\Shared\Http\Responses\AjaxResponseInterface;
+use App\Shared\Support\Facades\Lang;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Sdk\Shared\Contracts\Service\TranslatorInterface;
 use Sdk\Shared\Enum\Hotel\ReviewRatingTypeEnum;
 use Sdk\Shared\Enum\Hotel\ReviewStatusEnum;
 
@@ -32,9 +32,8 @@ class ReviewController extends Controller
 {
     private Prototype $prototype;
 
-    public function __construct(
-        private readonly TranslatorInterface $translator
-    ) {
+    public function __construct()
+    {
         $this->prototype = Prototypes::get('hotel');
     }
 
@@ -182,7 +181,7 @@ class ReviewController extends Controller
             [
                 'items' => [['value' => 1], ['value' => 2], ['value' => 3], ['value' => 4], ['value' => 5]],
                 'required' => true,
-                'label' => $this->translator->translateEnum($enum)
+                'label' => Lang::translateEnum($enum)
             ]
         ];
         foreach (ReviewRatingTypeEnum::cases() as $ratingType) {

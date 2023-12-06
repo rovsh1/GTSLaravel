@@ -15,7 +15,6 @@ class CurrencyRateRepository implements CurrencyRateRepositoryInterface
     {
         $model = CurrencyRate::whereClientId($clientId->value())
             ->whereIncludeDate($date)
-            ->whereHotelId($hotelId)
             ->whereCurrency($currencyTo)
             ->first();
 

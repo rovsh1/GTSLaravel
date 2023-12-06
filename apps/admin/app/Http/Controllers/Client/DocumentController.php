@@ -3,13 +3,11 @@
 namespace App\Admin\Http\Controllers\Client;
 
 use App\Admin\Components\Factory\Prototype;
-use App\Admin\Enums\Contract\StatusEnum;
 use App\Admin\Exceptions\FormSubmitFailedException;
 use App\Admin\Http\Actions\Hotel\UpdateContractAction;
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Models\Client\Client;
 use App\Admin\Models\Client\Document;
-use App\Admin\Models\Client\DocumentTypeEnum;
 use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Facades\Breadcrumb;
 use App\Admin\Support\Facades\Form;
@@ -30,6 +28,8 @@ use App\Shared\Http\Responses\AjaxResponseInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Sdk\Shared\Enum\Client\DocumentTypeEnum;
+use Sdk\Shared\Enum\Contract\StatusEnum;
 
 class DocumentController extends Controller
 {
