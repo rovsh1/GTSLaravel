@@ -4,8 +4,6 @@ namespace App\Admin\Http\Controllers\Client;
 
 use App\Admin\Exceptions\FormSubmitFailedException;
 use App\Admin\Models\Client\CurrencyRate;
-use App\Admin\Models\Hotel\Hotel;
-use App\Admin\Models\Reference\City;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Format;
 use App\Admin\Support\Facades\Grid;
@@ -82,16 +80,7 @@ class CurrencyRateController extends AbstractPrototypeController
 
     protected function formFactory(): FormContract
     {
-        return Form::select('hotel_ids', [
-            'label' => 'Отель',
-            'emptyItem' => '',
-            'required' => true,
-            'multiple' => true,
-            'groupIndex' => 'city_id',
-            'groups' => City::whereHasHotel()->get(),
-            'items' => Hotel::all()
-        ])
-            ->client('client_id', ['label' => 'Клиент', 'emptyItem' => '', 'required' => true])
+        return Form::client('client_id', ['label' => 'Клиент', 'emptyItem' => '', 'required' => true])
             ->currency('currency', ['label' => 'Валюта', 'required' => true, 'emptyItem' => ''])
             ->number('rate', ['label' => 'Курс', 'required' => true])
             ->dateRange('period', ['label' => 'Период действия', 'required' => true]);

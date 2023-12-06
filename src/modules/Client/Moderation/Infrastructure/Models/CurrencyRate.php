@@ -24,14 +24,4 @@ class CurrencyRate extends Model
         $builder->whereDate('date_start', '<=', $date)
             ->whereDate('date_end', '>=', $date);
     }
-
-    public function scopeWhereHotelId(Builder $builder, int $hotelId): void
-    {
-        $builder->whereExists(function (Query $query) use ($hotelId) {
-            $query->selectRaw(1)
-                ->from('client_currency_rate_hotels')
-                ->whereColumn('client_currency_rate_hotels.rate_id', 'client_currency_rates.id')
-                ->where('hotel_id', $hotelId);
-        });
-    }
 }

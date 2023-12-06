@@ -31,8 +31,6 @@ return new class extends Migration {
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
         });
-
-        $this->createClientCurrencyRateHotels();
     }
 
     /**
@@ -41,26 +39,5 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::dropIfExists('client_currency_rates');
-        Schema::dropIfExists('client_currency_rate_hotels');
-    }
-
-    private function createClientCurrencyRateHotels(): void
-    {
-        Schema::create('client_currency_rate_hotels', function (Blueprint $table) {
-            $table->unsignedInteger('rate_id');
-            $table->unsignedInteger('hotel_id');
-
-            $table->foreign('rate_id')
-                ->references('id')
-                ->on('client_currency_rates')
-                ->cascadeOnDelete()
-                ->cascadeOnUpdate();
-
-            $table->foreign('hotel_id')
-                ->references('id')
-                ->on('hotels')
-                ->cascadeOnDelete()
-                ->cascadeOnUpdate();
-        });
     }
 };
