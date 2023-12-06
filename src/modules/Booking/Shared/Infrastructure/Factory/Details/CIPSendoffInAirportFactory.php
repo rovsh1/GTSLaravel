@@ -31,11 +31,11 @@ class CIPSendoffInAirportFactory extends AbstractServiceDetailsFactory implement
             'booking_id' => $bookingId->value(),
             'date' => $departureDate,
             'service_id' => $serviceInfo->id(),
+            'guestIds' => $guestIds->serialize(),
             'data' => [
                 'serviceInfo' => $this->serializeServiceInfo($serviceInfo),
                 'airportId' => $airportId,
                 'flightNumber' => $flightNumber,
-                'guestIds' => $guestIds->serialize(),
             ]
         ]);
 

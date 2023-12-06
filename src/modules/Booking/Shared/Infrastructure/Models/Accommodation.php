@@ -26,7 +26,7 @@ class Accommodation extends Model
         'data' => 'array'
     ];
 
-    private array $guestIds;
+    private array $savingGuestIds;
 
     protected static function booted()
     {
@@ -38,9 +38,9 @@ class Accommodation extends Model
         });
 
         static::saved(function (self $model) {
-            if (isset($model->guestIds)) {
-                $model->guests()->sync($model->guestIds);
-                unset($model->guestIds);
+            if (isset($model->savingGuestIds)) {
+                $model->guests()->sync($model->savingGuestIds);
+                unset($model->savingGuestIds);
             }
         });
     }
@@ -70,7 +70,7 @@ class Accommodation extends Model
         return Attribute::make(
             get: fn() => $this->guests()->pluck('guest_id')->toArray(),
             set: function (array $guestIds) {
-                $this->guestIds = $guestIds;
+                $this->savingGuestIds = $guestIds;
 
                 return [];
             }
