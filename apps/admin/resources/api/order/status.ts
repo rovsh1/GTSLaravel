@@ -36,12 +36,12 @@ export interface BookingStatusHistoryPayload {
   bookingID: number
 }
 
-export const useBookingStatusesAPI = (props?: any) =>
+export const useOrderStatusesAPI = (props?: any) =>
   useAdminAPI(props, () => '/booking-order/status/list')
     .get()
     .json<OrderStatusResponse[]>()
 
-export const useBookingAvailableActionsAPI = (props: MaybeRef<OrderAvailableStatusesPayload | null>) =>
+export const useOrderAvailableActionsAPI = (props: MaybeRef<OrderAvailableStatusesPayload | null>) =>
   useAdminAPI(props, ({ orderID }) =>
     `/booking-order/${orderID}/actions/available`)
     .get()

@@ -1,9 +1,10 @@
 import { computed, onMounted, ref } from 'vue'
 
-import { defineStore } from 'pinia'
+import { defineStore, storeToRefs } from 'pinia'
 import { z } from 'zod'
 
 import { showCancelFeeDialog, showNotConfirmedReasonDialog } from '~resources/views/booking/shared/lib/modals'
+import { useBookingStatusesStore } from '~resources/views/booking/shared/store/status'
 import { useBookingStatusHistoryStore } from '~resources/views/booking/shared/store/status-history'
 
 import { HotelRoomBooking } from '~api/booking/hotel/details'
@@ -17,7 +18,7 @@ import {
   useGetBookingAPI,
 } from '~api/booking/service'
 import { UpdateBookingPrice, updateBookingPrice, useRecalculateBookingPriceAPI } from '~api/booking/service/price'
-import { useBookingAvailableActionsAPI, useBookingStatusesAPI } from '~api/booking/status'
+import { useBookingAvailableActionsAPI } from '~api/booking/status'
 import { useHotelMarkupSettingsAPI } from '~api/hotel/markup-settings'
 
 import { isInitialDataExists, requestInitialData, ViewInitialDataKey } from '~lib/initial-data'
@@ -42,9 +43,11 @@ export const useBookingStore = defineStore('booking', () => {
   const { data: booking, execute: fetchBooking } = useGetBookingAPI({ bookingID })
   const { data: markupSettings, execute: fetchMarkupSettings } = useHotelMarkupSettingsAPI(hotelID ? { hotelID } : null)
   const { data: availableActions, execute: fetchAvailableActions, isFetching: isAvailableActionsFetching } = useBookingAvailableActionsAPI({ bookingID })
-  const { data: statuses, execute: fetchStatuses } = useBookingStatusesAPI()
   const { isFetching: isRecalculatePrice, execute: recalculateBookingPrice } = useRecalculateBookingPriceAPI({ bookingID })
   const { fetchStatusHistory } = useBookingStatusHistoryStore()
+  const bookingStatusesStore = useBookingStatusesStore()
+  const { fetchStatuses } = bookingStatusesStore
+  const { statuses } = storeToRefs(bookingStatusesStore)
 
   const isStatusUpdateFetching = ref(false)
   const bookingManagerId = ref(manager.id)
@@ -124,7 +127,6 @@ export const useBookingStore = defineStore('booking', () => {
 
   onMounted(() => {
     fetchMarkupSettings()
-    fetchStatuses()
     fetchBooking()
     fetchAvailableActions()
     fetchStatusHistory()

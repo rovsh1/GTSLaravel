@@ -3,8 +3,10 @@
 import { computed, MaybeRef, onMounted, reactive, ref, unref, watch } from 'vue'
 
 import { useToggle } from '@vueuse/core'
+import { storeToRefs } from 'pinia'
 import { z } from 'zod'
 
+import { useCountryStore } from '~resources/store/countries'
 import { useCurrencyStore } from '~resources/store/currency'
 import RoomModal from '~resources/views/booking/hotel/show/components/RoomModal.vue'
 import RoomPriceModal from '~resources/views/booking/hotel/show/components/RoomPriceModal.vue'
@@ -28,7 +30,6 @@ import {
 } from '~api/booking/hotel/details'
 import { updateRoomBookingPrice } from '~api/booking/hotel/price'
 import { addGuestToBooking, deleteBookingGuest, deleteBookingRoom } from '~api/booking/hotel/rooms'
-import { useCountrySearchAPI } from '~api/country'
 import { MarkupSettings } from '~api/hotel/markup-settings'
 import { HotelRate, useHotelRatesAPI } from '~api/hotel/price-rate'
 import { Currency } from '~api/models'
@@ -98,7 +99,8 @@ const selectedRoomDetails = reactive({
 })
 
 const { execute: fetchPriceRates, data: priceRates } = useHotelRatesAPI({ hotelID })
-const { data: countries, execute: fetchCountries } = useCountrySearchAPI()
+
+const { countries } = storeToRefs(useCountryStore())
 
 const getPriceRateName = (id: number): string | undefined =>
   priceRates.value?.find((priceRate: HotelRate) => priceRate.id === id)?.name
@@ -267,7 +269,6 @@ const getMaxDayPrices = (dayPrices: RoomBookingDayPrice[]): number | undefined =
 
 onMounted(() => {
   fetchPriceRates()
-  fetchCountries()
 })
 
 </script>

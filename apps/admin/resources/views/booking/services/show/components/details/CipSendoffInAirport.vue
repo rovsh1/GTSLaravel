@@ -1,10 +1,12 @@
 <script setup lang="ts">
 
-import { computed, onMounted, ref, unref, watch } from 'vue'
+import { computed, ref, unref, watch } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
+import { storeToRefs } from 'pinia'
 import { z } from 'zod'
 
+import { useCountryStore } from '~resources/store/countries'
 import { BookingCipSendoffInAirportDetails } from '~resources/views/booking/services/show/components/details/lib/types'
 import GuestModal from '~resources/views/booking/shared/components/GuestModal.vue'
 import GuestsTable from '~resources/views/booking/shared/components/GuestsTable.vue'
@@ -16,7 +18,6 @@ import { useOrderStore } from '~resources/views/booking/shared/store/order'
 import { useEditableModal } from '~resources/views/hotel/settings/composables/editable-modal'
 
 import { addBookingGuest, deleteBookingGuest } from '~api/booking/service/guests'
-import { useCountrySearchAPI } from '~api/country'
 import { addOrderGuest, Guest, updateOrderGuest } from '~api/order/guest'
 
 import { showConfirmDialog } from '~lib/confirm-dialog'
@@ -45,11 +46,7 @@ const filteredOrderGuests = computed<Guest[]>(() => orderGuests.value.filter((gu
 
 const isEditableStatus = computed<boolean>(() => bookingStore.availableActions?.isEditable || false)
 
-const { data: countries, execute: fetchCountries } = useCountrySearchAPI()
-
-onMounted(() => {
-  fetchCountries()
-})
+const { countries } = storeToRefs(useCountryStore())
 
 const modalSettings = {
   add: {

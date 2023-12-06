@@ -1,10 +1,11 @@
 import { onMounted, ref } from 'vue'
 
-import { defineStore } from 'pinia'
+import { defineStore, storeToRefs } from 'pinia'
 import { z } from 'zod'
 
 import { useGetOrderBookingsAPI } from '~resources/api/order/booking'
 import { showCancelFeeDialog, showNotConfirmedReasonDialog } from '~resources/views/booking/shared/lib/modals'
+import { useOrderStatusesStore } from '~resources/views/booking-order/show/store/status'
 
 import {
   copyOrder,
@@ -15,7 +16,7 @@ import {
   useGetOrderAPI,
 } from '~api/order'
 import { useGetOrderGuestsAPI } from '~api/order/guest'
-import { useBookingAvailableActionsAPI, useBookingStatusesAPI } from '~api/order/status'
+import { useOrderAvailableActionsAPI } from '~api/order/status'
 
 import { requestInitialData } from '~lib/initial-data'
 
@@ -30,8 +31,10 @@ export const useOrderStore = defineStore('booking-order', () => {
   const { data: order, execute: fetchOrder } = useGetOrderAPI({ orderID })
   const { data: guests, execute: fetchGuests } = useGetOrderGuestsAPI({ orderId: orderID })
   const { data: bookings, execute: fetchBookings } = useGetOrderBookingsAPI({ orderId: orderID })
-  const { data: availableActions, execute: fetchAvailableActions, isFetching: isAvailableActionsFetching } = useBookingAvailableActionsAPI({ orderID })
-  const { data: statuses, execute: fetchStatuses } = useBookingStatusesAPI()
+  const { data: availableActions, execute: fetchAvailableActions, isFetching: isAvailableActionsFetching } = useOrderAvailableActionsAPI({ orderID })
+  const orderStatusesStore = useOrderStatusesStore()
+  const { fetchStatuses } = orderStatusesStore
+  const { statuses } = storeToRefs(orderStatusesStore)
 
   const isStatusUpdateFetching = ref(false)
   const bookingManagerId = ref(manager.id)
@@ -88,7 +91,6 @@ export const useOrderStore = defineStore('booking-order', () => {
 
   onMounted(() => {
     fetchOrder()
-    fetchStatuses()
     fetchAvailableActions()
     fetchGuests()
     fetchBookings()

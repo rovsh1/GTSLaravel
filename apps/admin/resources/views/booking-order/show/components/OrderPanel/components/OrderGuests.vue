@@ -1,6 +1,9 @@
 <script setup lang="ts">
-import { computed, MaybeRef, onMounted, ref, unref, watch } from 'vue'
+import { computed, MaybeRef, ref, unref, watch } from 'vue'
 
+import { storeToRefs } from 'pinia'
+
+import { useCountryStore } from '~resources/store/countries'
 import GuestModal from '~resources/views/booking/shared/components/GuestModal.vue'
 import GuestsTable from '~resources/views/booking/shared/components/GuestsTable.vue'
 import InfoBlock from '~resources/views/booking/shared/components/InfoBlock/InfoBlock.vue'
@@ -9,12 +12,11 @@ import { GuestFormData } from '~resources/views/booking/shared/lib/data-types'
 import { useOrderStore } from '~resources/views/booking-order/show/store/order'
 import { useEditableModal } from '~resources/views/hotel/settings/composables/editable-modal'
 
-import { useCountrySearchAPI } from '~api/country'
 import { addOrderGuest, updateOrderGuest } from '~api/order/guest'
 
 import IconButton from '~components/IconButton.vue'
 
-const { data: countries, execute: fetchCountries } = useCountrySearchAPI()
+const { countries } = storeToRefs(useCountryStore())
 const orderStore = useOrderStore()
 const orderId = computed(() => orderStore.order?.id)
 const isEditableStatus = computed<boolean>(() => orderStore.availableActions?.isEditable || false)
@@ -75,9 +77,6 @@ watch(editableGuest, (value) => {
   guestForm.value = value
 })
 
-onMounted(() => {
-  fetchCountries()
-})
 </script>
 
 <template>
