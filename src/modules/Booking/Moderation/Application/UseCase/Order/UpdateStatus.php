@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Module\Booking\Moderation\Application\UseCase\Order;
 
 use Module\Booking\Moderation\Application\Exception\OrderHasBookingInProgressException;
+use Module\Booking\Moderation\Application\Exception\OrderWithoutBookingsException;
 use Module\Booking\Moderation\Domain\Order\Exception\OrderHasBookingInProgress;
+use Module\Booking\Moderation\Domain\Order\Exception\OrderWithoutBookings;
 use Module\Booking\Moderation\Domain\Order\Service\StatusUpdater;
 use Module\Booking\Shared\Domain\Order\DbContext\OrderDbContextInterface;
 use Sdk\Booking\ValueObject\OrderId;
@@ -30,6 +32,8 @@ class UpdateStatus implements UseCaseInterface
             $this->statusUpdater->update($order, $statusEnum);
         } catch (OrderHasBookingInProgress $e) {
             throw new OrderHasBookingInProgressException($e);
+        } catch (OrderWithoutBookings $e) {
+            throw new OrderWithoutBookingsException($e);
         }
 
         $this->orderDbContext->store($order);

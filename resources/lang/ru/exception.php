@@ -9,6 +9,7 @@ return [
     'BOOKING_ROOM_TOO_MANY_GUESTS' => 'Превышено допустимое количество гостей в номере.',
     'BOOKING_TRANSFER_SERVICE_DATE_UNDEFINED' => 'Не заполнена дата или период бронирования услуги.',
     'ORDER_HAS_BOOKING_IN_PROGRESS' => 'У заказа есть брони в активных статусах. Брони должны быть подтверждены или отменены.',
+    'ORDER_WITHOUT_BOOKINGS' => 'Заказ без броней. У заказа должна быть хотя бы одна бронь.',
     'ORDER_INVOICE_NOT_FOUND' => 'Not found invoice for order',
     'ORDER_INVOICE_CANCELLATION_FORBIDDEN' => 'Невозможно отменить инвойс для заказа в текущем статусе.',
     'ORDER_INVOICE_CREATING_FORBIDDEN' => 'Невозможно создать инвойс для заказа в текущем статусе.',

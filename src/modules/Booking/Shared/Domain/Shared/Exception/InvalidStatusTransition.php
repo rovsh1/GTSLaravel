@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Moderation\Domain\Booking\Exception;
+namespace Module\Booking\Shared\Domain\Shared\Exception;
 
 class InvalidStatusTransition extends \DomainException
 {
