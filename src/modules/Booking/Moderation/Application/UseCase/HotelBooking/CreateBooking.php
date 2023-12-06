@@ -13,7 +13,7 @@ use Module\Booking\Moderation\Domain\Booking\Service\HotelBooking\HotelValidator
 use Module\Booking\Shared\Domain\Booking\Adapter\HotelAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\DbContext\BookingDbContextInterface;
 use Module\Booking\Shared\Domain\Booking\Exception\HotelBooking\NotFoundHotelCancelPeriod;
-use Module\Booking\Shared\Domain\Order\Repository\OrderRepositoryInterface;
+use Module\Booking\Shared\Domain\Order\DbContext\OrderDbContextInterface;
 use Module\Booking\Shared\Domain\Shared\Adapter\AdministratorAdapterInterface;
 use Sdk\Booking\ValueObject\BookingPrices;
 use Sdk\Booking\ValueObject\CreatorId;
@@ -25,14 +25,14 @@ use Sdk\Shared\Enum\ServiceTypeEnum;
 class CreateBooking extends AbstractCreateBooking
 {
     public function __construct(
-        OrderRepositoryInterface $orderRepository,
+        OrderDbContextInterface $orderDbContext,
         AdministratorAdapterInterface $administratorAdapter,
         private readonly BookingDbContextInterface $bookingDbContext,
         private readonly HotelAdapterInterface $hotelAdapter,
         private readonly HotelValidator $hotelValidator,
         private readonly DetailsEditorFactory $detailsEditorFactory,
     ) {
-        parent::__construct($orderRepository, $administratorAdapter);
+        parent::__construct($orderDbContext, $administratorAdapter);
     }
 
     public function execute(CreateBookingRequestDto $request): int

@@ -11,7 +11,7 @@ use Module\Booking\Moderation\Application\Support\UseCase\AbstractCreateBooking;
 use Module\Booking\Moderation\Domain\Booking\Factory\CancelConditionsFactory;
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\DbContext\BookingDbContextInterface;
-use Module\Booking\Shared\Domain\Order\Repository\OrderRepositoryInterface;
+use Module\Booking\Shared\Domain\Order\DbContext\OrderDbContextInterface;
 use Module\Booking\Shared\Domain\Shared\Adapter\AdministratorAdapterInterface;
 use Sdk\Booking\ValueObject\BookingPrices;
 use Sdk\Booking\ValueObject\CreatorId;
@@ -23,14 +23,14 @@ use Sdk\Shared\Enum\ServiceTypeEnum;
 class CreateBooking extends AbstractCreateBooking
 {
     public function __construct(
-        OrderRepositoryInterface $orderRepository,
+        OrderDbContextInterface $orderDbContext,
         AdministratorAdapterInterface $administratorAdapter,
         private readonly BookingDbContextInterface $bookingDbContext,
         private readonly SupplierAdapterInterface $supplierAdapter,
         private readonly CancelConditionsFactory $cancelConditionsFactory,
         private readonly DetailsEditorFactory $detailsEditorFactory,
     ) {
-        parent::__construct($orderRepository, $administratorAdapter);
+        parent::__construct($orderDbContext, $administratorAdapter);
     }
 
     public function execute(CreateBookingRequestDto $request): int
