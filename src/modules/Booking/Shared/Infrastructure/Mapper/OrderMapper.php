@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Shared\Infrastructure\Factory;
+namespace Module\Booking\Shared\Infrastructure\Mapper;
 
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Collection;
@@ -18,7 +18,7 @@ use Sdk\Booking\ValueObject\LegalId;
 use Sdk\Booking\ValueObject\OrderId;
 use Sdk\Shared\ValueObject\Money;
 
-class OrderFactory
+class OrderMapper
 {
     public function fromModel(Model $model): Order
     {
