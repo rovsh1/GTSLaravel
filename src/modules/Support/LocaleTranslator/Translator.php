@@ -41,7 +41,7 @@ class Translator implements TranslatorInterface
     {
         $key = str_replace($this->enumNamespaces, '', $enum::class);
 
-        return 'enum.' . $key . '::' . $enum->name;
+        return 'Enum::' . $key . '::' . $enum->name;
     }
 
     private function makeReplacements(string $line, array $replace): string

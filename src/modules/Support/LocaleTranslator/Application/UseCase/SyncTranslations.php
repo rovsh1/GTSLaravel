@@ -53,7 +53,7 @@ class SyncTranslations implements UseCaseInterface
             if (empty($k)) {
                 continue;
             }
-            $key = $prefix . '.' . $k;
+            $key = ucfirst($prefix) . '::' . $k;
             if (Dictionary::where('key', $key)->exists()) {
                 continue;
             }
