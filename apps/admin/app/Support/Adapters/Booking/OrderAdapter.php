@@ -110,7 +110,6 @@ class OrderAdapter
         int $clientId,
         int|null $legalId,
         CurrencyEnum $currency,
-        CarbonPeriod $period,
         int $managerId,
         int $creatorId
     ): int {
@@ -119,7 +118,6 @@ class OrderAdapter
                 $clientId,
                 $legalId,
                 $currency,
-                $period,
                 $managerId,
                 $creatorId
             )

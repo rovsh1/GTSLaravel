@@ -98,7 +98,6 @@ class OrderController extends Controller
                 clientId: $data['client_id'],
                 legalId: $data['legal_id'],
                 currency: $currency ?? $client->currency,
-                period: $data['period'],
                 managerId: $managerId,
                 creatorId: $creatorId,
             );
