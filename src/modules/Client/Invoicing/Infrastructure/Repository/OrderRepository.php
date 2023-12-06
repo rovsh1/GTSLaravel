@@ -75,11 +75,11 @@ class OrderRepository implements OrderRepositoryInterface
             status: $model->status,
             clientPrice: new Money(
                 $model->currency,
-                $model->client_price,
+                $model->client_price ?? 0,
             ),
             payedAmount: new Money(
                 $model->currency,
-                $model->payed_amount,
+                $model->payed_amount ?? 0,
             )
         );
     }
