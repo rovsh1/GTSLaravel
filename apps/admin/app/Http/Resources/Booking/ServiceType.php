@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Admin\Http\Resources\Booking;
 
+use App\Shared\Support\Facades\Lang;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Sdk\Shared\Contracts\Service\TranslatorInterface;
 use Sdk\Shared\Enum\ServiceTypeEnum;
 
 class ServiceType extends JsonResource
@@ -29,6 +29,6 @@ class ServiceType extends JsonResource
     {
         $enum = ServiceTypeEnum::from($this->value);
 
-        return app(TranslatorInterface::class)->translateEnum($enum);
+        return Lang::translateEnum($enum);
     }
 }
