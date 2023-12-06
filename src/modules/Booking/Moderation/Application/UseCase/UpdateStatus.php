@@ -9,9 +9,9 @@ use Module\Booking\Moderation\Domain\Booking\Service\StatusRules\StatusTransitio
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Service\BookingUnitOfWorkInterface;
 use Module\Booking\Shared\Domain\Shared\Exception\InvalidStatusTransition;
+use Sdk\Booking\Enum\StatusEnum;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
-use Sdk\Shared\Enum\Booking\BookingStatusEnum;
 use Sdk\Shared\Enum\ServiceTypeEnum;
 
 class UpdateStatus implements UseCaseInterface
@@ -28,44 +28,44 @@ class UpdateStatus implements UseCaseInterface
         ?float $supplierPenalty = null,
         ?float $clientPenalty = null
     ): UpdateStatusResponseDto {
-        $statusEnum = BookingStatusEnum::from($statusId);
+        $statusEnum = StatusEnum::from($statusId);
         $booking = $this->bookingUnitOfWork->findOrFail(new BookingId($bookingId));
 
         $this->ensureCanTransitToStatus($booking, $statusEnum);
 
         $isHotelBooking = $booking->serviceType() === ServiceTypeEnum::HOTEL_BOOKING;
         switch ($statusEnum) {
-            case BookingStatusEnum::PROCESSING:
+            case StatusEnum::PROCESSING:
                 $booking->toProcessing();
                 break;
-            case BookingStatusEnum::CANCELLED:
+            case StatusEnum::CANCELLED:
                 $booking->cancel();
                 break;
-            case BookingStatusEnum::CONFIRMED:
+            case StatusEnum::CONFIRMED:
                 $booking->confirm();
                 break;
-            case BookingStatusEnum::NOT_CONFIRMED:
+            case StatusEnum::NOT_CONFIRMED:
                 if ($isHotelBooking && empty($notConfirmedReason)) {
                     return new UpdateStatusResponseDto(isNotConfirmedReasonRequired: true);
                 }
                 $booking->toNotConfirmed($notConfirmedReason);
                 break;
-            case BookingStatusEnum::CANCELLED_NO_FEE:
+            case StatusEnum::CANCELLED_NO_FEE:
                 $booking->toCancelledNoFee();
                 break;
-            case BookingStatusEnum::CANCELLED_FEE:
+            case StatusEnum::CANCELLED_FEE:
                 if ($isHotelBooking && empty($supplierPenalty)) {
                     return new UpdateStatusResponseDto(isCancelFeeAmountRequired: true);
                 }
                 $booking->toCancelledFee($supplierPenalty, $clientPenalty);
                 break;
-            case BookingStatusEnum::WAITING_CONFIRMATION:
+            case StatusEnum::WAITING_CONFIRMATION:
                 $booking->toWaitingConfirmation();
                 break;
-            case BookingStatusEnum::WAITING_CANCELLATION:
+            case StatusEnum::WAITING_CANCELLATION:
                 $booking->toWaitingCancellation();
                 break;
-            case BookingStatusEnum::WAITING_PROCESSING:
+            case StatusEnum::WAITING_PROCESSING:
                 $booking->toWaitingProcessing();
                 break;
             default:
@@ -77,7 +77,7 @@ class UpdateStatus implements UseCaseInterface
         return new UpdateStatusResponseDto();
     }
 
-    private function ensureCanTransitToStatus(Booking $booking, BookingStatusEnum $statusTo): void
+    private function ensureCanTransitToStatus(Booking $booking, StatusEnum $statusTo): void
     {
         $statusTransitions = $this->statusTransitionsFactory->build($booking->serviceType());
 

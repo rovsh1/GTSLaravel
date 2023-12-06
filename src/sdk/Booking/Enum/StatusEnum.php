@@ -1,8 +1,8 @@
 <?php
 
-namespace Sdk\Shared\Enum\Booking;
+namespace Sdk\Booking\Enum;
 
-enum BookingStatusEnum: int
+enum StatusEnum: int
 {
     case DRAFT = 0;
     case CREATED = 1;

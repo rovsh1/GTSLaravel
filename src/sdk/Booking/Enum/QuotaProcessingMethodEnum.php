@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Sdk\Shared\Enum\Booking;
+namespace Sdk\Booking\Enum;
 
 enum QuotaProcessingMethodEnum: int
 {

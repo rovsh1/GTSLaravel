@@ -35,8 +35,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Module\Booking\Requesting\Domain\Booking\Service\RequestingRules;
-use Sdk\Shared\Enum\Booking\BookingStatusEnum;
-use Sdk\Shared\Enum\Booking\QuotaProcessingMethodEnum;
+use Sdk\Booking\Enum\StatusEnum;
+use Sdk\Booking\Enum\QuotaProcessingMethodEnum;
 use Sdk\Shared\Enum\CurrencyEnum;
 use Sdk\Shared\Enum\SourceEnum;
 use Sdk\Shared\Exception\ApplicationException;
@@ -417,7 +417,7 @@ class BookingController extends Controller
 
     private function prepareGridQuery(Builder $query, array $searchCriteria): Builder
     {
-        $requestableStatuses = array_map(fn(BookingStatusEnum $status) => $status->value,
+        $requestableStatuses = array_map(fn(StatusEnum $status) => $status->value,
             RequestingRules::getRequestableStatuses());
 
         return $query

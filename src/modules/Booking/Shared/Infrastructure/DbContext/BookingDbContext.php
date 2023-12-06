@@ -9,6 +9,7 @@ use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\DbContext\BookingDbContextInterface;
 use Module\Booking\Shared\Infrastructure\Mapper\BookingMapper;
 use Module\Booking\Shared\Infrastructure\Models\Booking as BookingModel;
+use Sdk\Booking\Enum\StatusEnum;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\BookingPrices;
 use Sdk\Booking\ValueObject\CancelConditions;
@@ -16,7 +17,6 @@ use Sdk\Booking\ValueObject\CreatorId;
 use Sdk\Booking\ValueObject\OrderId;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 use Sdk\Shared\Contracts\Service\ApplicationContextInterface;
-use Sdk\Shared\Enum\Booking\BookingStatusEnum;
 use Sdk\Shared\Enum\ServiceTypeEnum;
 
 class BookingDbContext implements BookingDbContextInterface
@@ -96,7 +96,7 @@ class BookingDbContext implements BookingDbContextInterface
         $model = BookingModel::create([
             'order_id' => $orderId->value(),
             'service_type' => $serviceType,
-            'status' => BookingStatusEnum::CREATED,
+            'status' => StatusEnum::CREATED,
             'source' => $this->context->source(),
             'creator_id' => $creatorId->value(),
             'client_price' => $clientPrice->calculatedValue(),

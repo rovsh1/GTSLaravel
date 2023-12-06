@@ -6,6 +6,7 @@ namespace Sdk\Booking\Entity\Details;
 
 use DateTimeInterface;
 use Sdk\Booking\Contracts\Entity\DetailsInterface;
+use Sdk\Booking\Enum\QuotaProcessingMethodEnum;
 use Sdk\Booking\Event\HotelBooking\BookingPeriodChanged;
 use Sdk\Booking\Support\Entity\AbstractDetails;
 use Sdk\Booking\ValueObject\BookingId;
@@ -13,7 +14,6 @@ use Sdk\Booking\ValueObject\DetailsId;
 use Sdk\Booking\ValueObject\HotelBooking\BookingPeriod;
 use Sdk\Booking\ValueObject\HotelBooking\ExternalNumber;
 use Sdk\Booking\ValueObject\HotelBooking\HotelInfo;
-use Sdk\Shared\Enum\Booking\QuotaProcessingMethodEnum;
 use Sdk\Shared\Enum\ServiceTypeEnum;
 
 final class HotelBooking extends AbstractDetails implements DetailsInterface

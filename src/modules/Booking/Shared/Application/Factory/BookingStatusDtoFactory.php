@@ -6,7 +6,7 @@ namespace Module\Booking\Shared\Application\Factory;
 
 use Module\Booking\Shared\Domain\Booking\Service\BookingStatusStorageInterface;
 use Sdk\Booking\Dto\StatusDto;
-use Sdk\Shared\Enum\Booking\BookingStatusEnum;
+use Sdk\Booking\Enum\StatusEnum;
 
 class BookingStatusDtoFactory
 {
@@ -14,7 +14,7 @@ class BookingStatusDtoFactory
         private readonly BookingStatusStorageInterface $statusStorage
     ) {}
 
-    public function get(BookingStatusEnum $status): StatusDto
+    public function get(StatusEnum $status): StatusDto
     {
         return new StatusDto(
             $status->value,
@@ -28,6 +28,6 @@ class BookingStatusDtoFactory
      */
     public function statuses(): array
     {
-        return array_map(fn(BookingStatusEnum $status) => $this->get($status), BookingStatusEnum::cases());
+        return array_map(fn(StatusEnum $status) => $this->get($status), StatusEnum::cases());
     }
 }

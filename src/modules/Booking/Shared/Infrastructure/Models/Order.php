@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Query\Builder as Query;
+use Sdk\Booking\Enum\StatusEnum;
 use Sdk\Module\Database\Eloquent\Model;
-use Sdk\Shared\Enum\Booking\BookingStatusEnum;
 use Sdk\Shared\Enum\CurrencyEnum;
 use Sdk\Shared\Enum\Order\OrderStatusEnum;
 use Sdk\Shared\Enum\SourceEnum;
@@ -47,8 +47,8 @@ class Order extends Model
             $builder->addSelect('orders.*');
 
             $builder->selectSub(function (Query $query) {
-                $cancelledFeeStatus = BookingStatusEnum::CANCELLED_FEE->value;
-                $cancelledNoFeeStatus = BookingStatusEnum::CANCELLED_NO_FEE->value;
+                $cancelledFeeStatus = StatusEnum::CANCELLED_FEE->value;
+                $cancelledNoFeeStatus = StatusEnum::CANCELLED_NO_FEE->value;
                 $query->selectRaw(
                     "(SELECT SUM(client_price) FROM (SELECT order_id, IF(status IN ({$cancelledFeeStatus}, {$cancelledNoFeeStatus}), COALESCE(client_penalty, 0), COALESCE(client_manual_price, client_price)) as client_price FROM bookings) as t WHERE t.order_id=orders.id)"
                 );

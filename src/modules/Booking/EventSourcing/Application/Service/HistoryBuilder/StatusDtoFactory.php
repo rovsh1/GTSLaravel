@@ -6,7 +6,7 @@ use Module\Booking\EventSourcing\Application\Dto\EventDto;
 use Module\Booking\EventSourcing\Infrastructure\Model\BookingHistory;
 use Module\Booking\Shared\Application\Factory\BookingStatusDtoFactory;
 use Module\Booking\Shared\Domain\Booking\Service\BookingStatusStorageInterface;
-use Sdk\Shared\Enum\Booking\BookingStatusEnum;
+use Sdk\Booking\Enum\StatusEnum;
 
 class StatusDtoFactory extends AbstractDtoFactory implements DtoFactoryInterface
 {
@@ -28,7 +28,7 @@ class StatusDtoFactory extends AbstractDtoFactory implements DtoFactoryInterface
     {
         return $this->wrap(
             $history,
-            $this->bookingStatusStorage->getName(BookingStatusEnum::from($history->payload['status'])),
+            $this->bookingStatusStorage->getName(StatusEnum::from($history->payload['status'])),
             $this->statusColors[$history->payload['status']] ?? null
         );
     }

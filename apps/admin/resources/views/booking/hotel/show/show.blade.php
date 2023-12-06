@@ -57,7 +57,7 @@
                                 </tr>
                                 <tr>
                                     <th>Тип брони</th>
-                                    <td>{{$model->details->quotaProcessingMethod === \Sdk\Shared\Enum\Booking\QuotaProcessingMethodEnum::REQUEST ? 'По запросу' : 'По квоте'}}</td>
+                                    <td>{{$model->details->quotaProcessingMethod === \Sdk\Booking\Enum\QuotaProcessingMethodEnum::REQUEST ? 'По запросу' : 'По квоте'}}</td>
                                 </tr>
                                 <tr>
                                     <th>Тип карты оплаты</th>
@@ -105,7 +105,8 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div id="booking-cancel-conditions" class="position-relative mt-3 rounded shadow-lg p-4 flex-grow-1"></div>
+                        <div id="booking-cancel-conditions"
+                             class="position-relative mt-3 rounded shadow-lg p-4 flex-grow-1"></div>
                     </div>
                     <div class="w-100 d-flex flex-column">
                         <div id="booking-control-panel" class="d-flex flex-column flex-grow-1"></div>

@@ -3,7 +3,7 @@
 namespace Module\Booking\Moderation\Application\Service;
 
 use Module\Booking\Shared\Domain\Booking\Booking;
-use Sdk\Shared\Enum\Booking\BookingStatusEnum;
+use Sdk\Booking\Enum\StatusEnum;
 use Sdk\Shared\Enum\ServiceTypeEnum;
 
 final class EditRules
@@ -18,26 +18,26 @@ final class EditRules
     public function isEditable(): bool
     {
         return in_array($this->booking->status(), [
-            BookingStatusEnum::CREATED,
-            BookingStatusEnum::PROCESSING,
-            BookingStatusEnum::WAITING_PROCESSING,
-            BookingStatusEnum::NOT_CONFIRMED,
+            StatusEnum::CREATED,
+            StatusEnum::PROCESSING,
+            StatusEnum::WAITING_PROCESSING,
+            StatusEnum::NOT_CONFIRMED,
         ]);
     }
 
     public function canEditExternalNumber(): bool
     {
-        return !$this->isOtherService() && $this->booking->status() === BookingStatusEnum::CONFIRMED;
+        return !$this->isOtherService() && $this->booking->status() === StatusEnum::CONFIRMED;
     }
 
     public function canChangeRoomPrice(): bool
     {
         return $this->isHotelBooking()
             && in_array($this->booking->status(), [
-                BookingStatusEnum::CREATED,
-                BookingStatusEnum::PROCESSING,
-                BookingStatusEnum::WAITING_PROCESSING,
-                BookingStatusEnum::NOT_CONFIRMED,
+                StatusEnum::CREATED,
+                StatusEnum::PROCESSING,
+                StatusEnum::WAITING_PROCESSING,
+                StatusEnum::NOT_CONFIRMED,
             ]) && !$this->booking->prices()->clientPrice()->manualValue();
     }
 

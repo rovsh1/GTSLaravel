@@ -8,10 +8,10 @@ use Module\Booking\Shared\Domain\Booking\Factory\Details\HotelBookingFactoryInte
 use Module\Booking\Shared\Infrastructure\Builder\Details\HotelBookingBuilder;
 use Module\Booking\Shared\Infrastructure\Models\Details\Hotel;
 use Sdk\Booking\Entity\Details\HotelBooking;
+use Sdk\Booking\Enum\QuotaProcessingMethodEnum;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\HotelBooking\BookingPeriod;
 use Sdk\Booking\ValueObject\HotelBooking\HotelInfo;
-use Sdk\Shared\Enum\Booking\QuotaProcessingMethodEnum;
 
 class HotelBookingFactory implements HotelBookingFactoryInterface
 {

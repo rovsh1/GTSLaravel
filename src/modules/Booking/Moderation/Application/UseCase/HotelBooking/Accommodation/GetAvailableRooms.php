@@ -11,9 +11,9 @@ use Module\Booking\Shared\Domain\Booking\Adapter\HotelRoomAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
 use Module\Hotel\Moderation\Application\Dto\RoomDto;
 use Sdk\Booking\Entity\Details\HotelBooking;
+use Sdk\Booking\Enum\QuotaProcessingMethodEnum;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
-use Sdk\Shared\Enum\Booking\QuotaProcessingMethodEnum;
 
 class GetAvailableRooms implements UseCaseInterface
 {

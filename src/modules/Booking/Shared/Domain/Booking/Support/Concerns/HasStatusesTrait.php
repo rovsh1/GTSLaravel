@@ -13,32 +13,32 @@ use Module\Booking\Shared\Domain\Booking\Event\Status\BookingProcessing;
 use Module\Booking\Shared\Domain\Booking\Event\Status\BookingWaitingCancellation;
 use Module\Booking\Shared\Domain\Booking\Event\Status\BookingWaitingConfirmation;
 use Module\Booking\Shared\Domain\Booking\Event\Status\BookingWaitingProcessing;
+use Sdk\Booking\Enum\StatusEnum;
 use Sdk\Booking\ValueObject\BookingPriceItem;
 use Sdk\Booking\ValueObject\BookingPrices;
-use Sdk\Shared\Enum\Booking\BookingStatusEnum;
 
 trait HasStatusesTrait
 {
-    public function status(): BookingStatusEnum
+    public function status(): StatusEnum
     {
         return $this->status;
     }
 
     public function toProcessing(): void
     {
-        $this->setStatus(BookingStatusEnum::PROCESSING);
+        $this->setStatus(StatusEnum::PROCESSING);
         $this->pushEvent(new BookingProcessing($this));
     }
 
     public function cancel(): void
     {
-        $this->setStatus(BookingStatusEnum::CANCELLED);
+        $this->setStatus(StatusEnum::CANCELLED);
         $this->pushEvent(new BookingCancelled($this));
     }
 
     public function confirm(): void
     {
-        $this->setStatus(BookingStatusEnum::CONFIRMED);
+        $this->setStatus(StatusEnum::CONFIRMED);
         $this->pushEvent(new BookingConfirmed($this));
     }
 
@@ -53,13 +53,13 @@ trait HasStatusesTrait
 //        if ($this->type() === BookingTypeEnum::HOTEL && empty($reason)) {
 //            throw new \InvalidArgumentException('Not confirmed reason can\'t be empty');
 //        }
-        $this->setStatus(BookingStatusEnum::NOT_CONFIRMED);
+        $this->setStatus(StatusEnum::NOT_CONFIRMED);
         $this->pushEvent(new BookingNotConfirmed($this, $reason));
     }
 
     public function toCancelledNoFee(): void
     {
-        $this->setStatus(BookingStatusEnum::CANCELLED_NO_FEE);
+        $this->setStatus(StatusEnum::CANCELLED_NO_FEE);
         $this->pushEvent(new BookingCancelledNoFee($this));
     }
 
@@ -74,7 +74,7 @@ trait HasStatusesTrait
         if ($supplierPenalty <= 0) {
             throw new \InvalidArgumentException('Cancel fee amount can\'t be below zero');
         }
-        $this->setStatus(BookingStatusEnum::CANCELLED_FEE);
+        $this->setStatus(StatusEnum::CANCELLED_FEE);
 
         $newSupplierPrice = new BookingPriceItem(
             $this->prices()->supplierPrice()->currency(),
@@ -95,23 +95,23 @@ trait HasStatusesTrait
 
     public function toWaitingConfirmation(): void
     {
-        $this->setStatus(BookingStatusEnum::WAITING_CONFIRMATION);
+        $this->setStatus(StatusEnum::WAITING_CONFIRMATION);
         $this->pushEvent(new BookingWaitingConfirmation($this));
     }
 
     public function toWaitingCancellation(): void
     {
-        $this->setStatus(BookingStatusEnum::WAITING_CANCELLATION);
+        $this->setStatus(StatusEnum::WAITING_CANCELLATION);
         $this->pushEvent(new BookingWaitingCancellation($this));
     }
 
     public function toWaitingProcessing(): void
     {
-        $this->setStatus(BookingStatusEnum::WAITING_PROCESSING);
+        $this->setStatus(StatusEnum::WAITING_PROCESSING);
         $this->pushEvent(new BookingWaitingProcessing($this));
     }
 
-    protected function setStatus(BookingStatusEnum $status): void
+    protected function setStatus(StatusEnum $status): void
     {
         $this->status = $status;
     }

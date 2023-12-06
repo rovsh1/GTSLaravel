@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Domain\Booking\Service\StatusRules;
 
-use Sdk\Shared\Enum\Booking\BookingStatusEnum;
+use Sdk\Booking\Enum\StatusEnum;
 
 interface StatusTransitionsInterface
 {
-    public function canTransit(BookingStatusEnum $fromStatus, BookingStatusEnum $toStatus): bool;
+    public function canTransit(StatusEnum $fromStatus, StatusEnum $toStatus): bool;
 
     /**
-     * @param BookingStatusEnum $statusEnum
-     * @return BookingStatusEnum[]
+     * @param StatusEnum $statusEnum
+     * @return StatusEnum[]
      */
-    public function getAvailableTransitions(BookingStatusEnum $statusEnum): array;
+    public function getAvailableTransitions(StatusEnum $statusEnum): array;
 }

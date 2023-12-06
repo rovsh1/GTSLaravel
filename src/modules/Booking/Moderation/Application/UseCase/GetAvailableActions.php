@@ -11,9 +11,9 @@ use Module\Booking\Shared\Application\Factory\BookingStatusDtoFactory;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Sdk\Booking\Dto\StatusDto;
+use Sdk\Booking\Enum\StatusEnum;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
-use Sdk\Shared\Enum\Booking\BookingStatusEnum;
 
 class GetAvailableActions implements UseCaseInterface
 {
@@ -50,7 +50,7 @@ class GetAvailableActions implements UseCaseInterface
         $statusTransitions = $this->statusTransitionsFactory->build($booking->serviceType());
 
         return array_map(
-            fn(BookingStatusEnum $s) => $this->statusDtoFactory->get($s),
+            fn(StatusEnum $s) => $this->statusDtoFactory->get($s),
             $statusTransitions->getAvailableTransitions($booking->status())
         );
     }

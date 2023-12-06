@@ -2,12 +2,12 @@
 
 namespace Module\Booking\Moderation\Domain\Booking\Service\StatusRules;
 
-use Sdk\Shared\Enum\Booking\BookingStatusEnum;
+use Sdk\Booking\Enum\StatusEnum;
 
 abstract class AbstractTransitions
 {
     /**
-     * @var array<int, BookingStatusEnum[]> $transitions
+     * @var array<int, StatusEnum[]> $transitions
      */
     protected array $transitions = [];
 
@@ -18,7 +18,7 @@ abstract class AbstractTransitions
 
     abstract protected function configure(): void;
 
-    protected function addTransition(BookingStatusEnum $fromStatus, BookingStatusEnum $toStatus): void
+    protected function addTransition(StatusEnum $fromStatus, StatusEnum $toStatus): void
     {
         if (!isset($this->transitions[$fromStatus->value])) {
             $this->transitions[$fromStatus->value] = [];
@@ -39,7 +39,7 @@ abstract class AbstractTransitions
 //        ];
 //    }
 
-    public function canTransit(BookingStatusEnum $fromStatus, BookingStatusEnum $toStatus): bool
+    public function canTransit(StatusEnum $fromStatus, StatusEnum $toStatus): bool
     {
         if (!isset($this->transitions[$fromStatus->value])) {
             return false;
@@ -49,10 +49,10 @@ abstract class AbstractTransitions
     }
 
     /**
-     * @param BookingStatusEnum $statusEnum
-     * @return BookingStatusEnum[]
+     * @param StatusEnum $statusEnum
+     * @return StatusEnum[]
      */
-    public function getAvailableTransitions(BookingStatusEnum $statusEnum): array
+    public function getAvailableTransitions(StatusEnum $statusEnum): array
     {
         return $this->transitions[$statusEnum->value] ?? [];
     }

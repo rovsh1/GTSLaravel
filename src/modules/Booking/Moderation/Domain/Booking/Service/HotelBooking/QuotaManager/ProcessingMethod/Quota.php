@@ -11,8 +11,8 @@ use Module\Hotel\Quotation\Application\Dto\BookingRoomDto;
 use Module\Hotel\Quotation\Application\RequestDto\BookRequestDto;
 use Module\Hotel\Quotation\Application\RequestDto\ReserveRequestDto;
 use Sdk\Booking\Entity\Details\HotelBooking;
+use Sdk\Booking\Enum\StatusEnum;
 use Sdk\Booking\ValueObject\HotelBooking\BookingPeriod;
-use Sdk\Shared\Enum\Booking\BookingStatusEnum;
 
 class Quota implements QuotaProcessingMethodInterface
 {
@@ -48,7 +48,7 @@ class Quota implements QuotaProcessingMethodInterface
     private function isBookingConfirmed(Booking $booking): bool
     {
         //@todo надо перенести в рулзы
-        return $booking->status() === BookingStatusEnum::CONFIRMED;
+        return $booking->status() === StatusEnum::CONFIRMED;
     }
 
     private function isBookingCancelled(Booking $booking): bool

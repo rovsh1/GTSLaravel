@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Domain\Booking\Support\Concerns;
 
-use Sdk\Shared\Enum\Booking\BookingStatusEnum;
+use Sdk\Booking\Enum\StatusEnum;
 
 trait StatusesFlagsTrait
 {
     public function isConfirmed(): bool
     {
-        return $this->status === BookingStatusEnum::CONFIRMED;
+        return $this->status === StatusEnum::CONFIRMED;
     }
 
     public function isCancelled(): bool
     {
         return in_array($this->status, [
-            BookingStatusEnum::CANCELLED,
-            BookingStatusEnum::CANCELLED_FEE,
-            BookingStatusEnum::CANCELLED_NO_FEE,
+            StatusEnum::CANCELLED,
+            StatusEnum::CANCELLED_FEE,
+            StatusEnum::CANCELLED_NO_FEE,
 //            BookingStatusEnum::DELETED,
 //            BookingStatusEnum::WAITING_CANCELLATION,//@todo должно ли быть тут?
         ]);
@@ -33,6 +33,6 @@ trait StatusesFlagsTrait
 
     public function isDeleted(): bool
     {
-        return $this->status == BookingStatusEnum::DELETED;
+        return $this->status == StatusEnum::DELETED;
     }
 }

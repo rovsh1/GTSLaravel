@@ -9,13 +9,13 @@ use Module\Booking\Shared\Domain\Booking\Event\NoteChanged;
 use Module\Booking\Shared\Domain\Booking\Event\PriceUpdated;
 use Module\Booking\Shared\Domain\Booking\Support\Concerns\HasStatusesTrait;
 use Module\Booking\Shared\Domain\Booking\Support\Concerns\StatusesFlagsTrait;
+use Sdk\Booking\Enum\StatusEnum;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\BookingPrices;
 use Sdk\Booking\ValueObject\CancelConditions;
 use Sdk\Booking\ValueObject\Context;
 use Sdk\Booking\ValueObject\OrderId;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
-use Sdk\Shared\Enum\Booking\BookingStatusEnum;
 use Sdk\Shared\Enum\ServiceTypeEnum;
 use Sdk\Shared\ValueObject\Timestamps;
 
@@ -28,7 +28,7 @@ class Booking extends AbstractAggregateRoot
         private readonly BookingId $id,
         private readonly OrderId $orderId,
         private readonly ServiceTypeEnum $serviceType,
-        private BookingStatusEnum $status,
+        private StatusEnum $status,
         private BookingPrices $prices,
         private ?CancelConditions $cancelConditions,
         private ?string $note,
@@ -79,7 +79,7 @@ class Booking extends AbstractAggregateRoot
 
     public function delete(): void
     {
-        $this->setStatus(BookingStatusEnum::DELETED);
+        $this->setStatus(StatusEnum::DELETED);
         $this->pushEvent(
             new BookingDeleted($this)
         );
@@ -127,7 +127,7 @@ class Booking extends AbstractAggregateRoot
             id: new BookingId($payload['id']),
             orderId: new OrderId($payload['orderId']),
             serviceType: ServiceTypeEnum::from($payload['serviceType']),
-            status: BookingStatusEnum::from($payload['status']),
+            status: StatusEnum::from($payload['status']),
             prices: BookingPrices::deserialize($payload['prices']),
             cancelConditions: $payload['cancelConditions'] ? CancelConditions::deserialize(
                 $payload['cancelConditions']

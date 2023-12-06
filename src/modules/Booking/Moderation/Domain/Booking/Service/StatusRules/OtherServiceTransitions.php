@@ -2,16 +2,16 @@
 
 namespace Module\Booking\Moderation\Domain\Booking\Service\StatusRules;
 
-use Sdk\Shared\Enum\Booking\BookingStatusEnum;
+use Sdk\Booking\Enum\StatusEnum;
 
 final class OtherServiceTransitions extends AbstractTransitions implements StatusTransitionsInterface
 {
     protected function configure(): void
     {
-        $this->addTransition(BookingStatusEnum::CREATED, BookingStatusEnum::CANCELLED);
-        $this->addTransition(BookingStatusEnum::CREATED, BookingStatusEnum::PROCESSING);
-        $this->addTransition(BookingStatusEnum::PROCESSING, BookingStatusEnum::CONFIRMED);
-        $this->addTransition(BookingStatusEnum::CONFIRMED, BookingStatusEnum::PROCESSING);
-        $this->addTransition(BookingStatusEnum::CONFIRMED, BookingStatusEnum::CANCELLED);
+        $this->addTransition(StatusEnum::CREATED, StatusEnum::CANCELLED);
+        $this->addTransition(StatusEnum::CREATED, StatusEnum::PROCESSING);
+        $this->addTransition(StatusEnum::PROCESSING, StatusEnum::CONFIRMED);
+        $this->addTransition(StatusEnum::CONFIRMED, StatusEnum::PROCESSING);
+        $this->addTransition(StatusEnum::CONFIRMED, StatusEnum::CANCELLED);
     }
 }
