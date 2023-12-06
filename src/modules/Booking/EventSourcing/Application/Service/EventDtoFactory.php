@@ -6,6 +6,7 @@ use Module\Booking\EventSourcing\Application\Dto\EventDto;
 use Module\Booking\EventSourcing\Domain\ValueObject\EventGroupEnum;
 use Module\Booking\EventSourcing\Infrastructure\Model\BookingHistory;
 use Module\Booking\Shared\Application\Factory\BookingStatusDtoFactory;
+use Module\Booking\Shared\Domain\Booking\Service\BookingStatusStorageInterface;
 use Sdk\Shared\Enum\Booking\BookingStatusEnum;
 
 class EventDtoFactory
@@ -13,7 +14,8 @@ class EventDtoFactory
     private readonly array $statusColors;
 
     public function __construct(
-        private readonly BookingStatusDtoFactory $statusDtoFactory
+        private readonly BookingStatusDtoFactory $statusDtoFactory,
+        private readonly BookingStatusStorageInterface $bookingStatusStorage,
     ) {
         $colors = [];
         $statusesSettings = $this->statusDtoFactory->statuses();
@@ -43,16 +45,11 @@ class EventDtoFactory
     {
         return new EventDto(
             event: $history->payload['@event'],
-            description: $this->getEvent($history->payload['status']),
+            description: $this->bookingStatusStorage->getName(BookingStatusEnum::from($history->payload['status'])),
             color: $this->statusColors[$history->payload['status']] ?? null,
             payload: $history->payload,
             context: $history->context,
             createdAt: $history->created_at
         );
-    }
-
-    private function getEvent(int $status): string
-    {
-        return BookingStatusEnum::from($status)->name;
     }
 }

@@ -6,6 +6,7 @@ namespace Module\Booking\Shared\Infrastructure\Service;
 
 use Module\Booking\Shared\Domain\Booking\Service\BookingStatusStorageInterface;
 use Module\Booking\Shared\Infrastructure\Models\StatusSettings;
+use Sdk\Shared\Contracts\Service\TranslatorInterface;
 use Sdk\Shared\Enum\Booking\BookingStatusEnum;
 
 class BookingStatusStorage implements BookingStatusStorageInterface
@@ -15,11 +16,15 @@ class BookingStatusStorage implements BookingStatusStorageInterface
      */
     private static array $statuses;
 
+    public function __construct(
+        private readonly TranslatorInterface $translator
+    ) {}
+
     public function getName(BookingStatusEnum $status, ?string $locale = null): string
     {
         $statusSettings = $this->statuses()[$status->value];
 
-        return $this->getNameByLocale($statusSettings, $locale);
+        return $this->getNameByLocale($statusSettings, $locale ?? $this->translator->locale());
     }
 
     public function getColor(BookingStatusEnum $status): ?string
@@ -27,23 +32,20 @@ class BookingStatusStorage implements BookingStatusStorageInterface
         return $this->statuses()[$status->value]?->color;
     }
 
-    private function getNameByLocale(StatusSettings $model, ?string $locale = null): ?string
+    private function getNameByLocale(StatusSettings $model, string $locale): ?string
     {
-        $preparedLocale = $locale ?? 'ru';
-        $property = "name_{$preparedLocale}";
-
-        return $model->$property;
+        return $model->{"name_$locale"};
     }
 
     /**
      * @return array<int, StatusSettings>
      */
-    public function statuses(): array
+    private function statuses(): array
     {
         if (!isset(self::$statuses)) {
             return self::$statuses = StatusSettings::onlyBookingStatuses()
                 ->get()
-                ->keyBy('value')
+                ->keyBy('status')
                 ->all();
         }
 

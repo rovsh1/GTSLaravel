@@ -1,16 +1,22 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
+namespace Database\Seeders;
+
+use BackedEnum;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Module\Booking\Shared\Infrastructure\Enum\StatusSettingsEntityEnum;
 use Sdk\Shared\Enum\Booking\BookingStatusEnum;
 use Sdk\Shared\Enum\Order\OrderStatusEnum;
 
-return new class extends Migration {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
+class BookingStatusesSeeder extends Seeder
+{
+    public function run(): void
     {
+        if (DB::table('booking_status_settings')->exists()) {
+            return;
+        }
+
         DB::table('booking_status_settings')->insert([
             $this->wrap(BookingStatusEnum::DRAFT, [
                 'name_ru' => 'Черновик',
@@ -121,20 +127,17 @@ return new class extends Migration {
 
     private function wrap(BackedEnum $enum, array $data): array
     {
+        $type = match ($enum::class) {
+            OrderStatusEnum::class => StatusSettingsEntityEnum::ORDER,
+            BookingStatusEnum::class => StatusSettingsEntityEnum::BOOKING,
+        };
+
         return [
             ...$data,
-            'value' => $enum,
-            'type' => $enum::class,
+            'entity_type' => $type->value,
+            'status' => $enum->value,
             'created_at' => now(),
             'updated_at' => now(),
         ];
     }
-
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        DB::table('booking_status_settings')->truncate();
-    }
-};
+}

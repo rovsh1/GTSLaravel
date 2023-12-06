@@ -5,30 +5,34 @@ declare(strict_types=1);
 namespace Module\Booking\Shared\Infrastructure\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Module\Booking\Shared\Infrastructure\Enum\StatusSettingsEntityEnum;
 use Sdk\Module\Database\Eloquent\Model;
-use Sdk\Shared\Enum\Booking\BookingStatusEnum;
-use Sdk\Shared\Enum\Order\OrderStatusEnum;
 
 class StatusSettings extends Model
 {
     protected $table = 'booking_status_settings';
 
     protected $fillable = [
-        'value',
-        'type',
+        'entity_type',
+        'status',
         'name_ru',
         'name_en',
         'name_uz',
         'color',
     ];
 
+    protected $casts = [
+        'entity_type' => StatusSettingsEntityEnum::class,
+        'status' => 'int'
+    ];
+
     public function scopeOnlyOrderStatuses(Builder $builder): void
     {
-        $builder->where('type', OrderStatusEnum::class);
+        $builder->where('entity_type', StatusSettingsEntityEnum::ORDER->value);
     }
 
     public function scopeOnlyBookingStatuses(Builder $builder): void
     {
-        $builder->where('type', BookingStatusEnum::class);
+        $builder->where('entity_type', StatusSettingsEntityEnum::BOOKING->value);
     }
 }

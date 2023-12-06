@@ -15,7 +15,15 @@ class Translator implements TranslatorInterface
 
     private string $locale;
 
-    public function __construct(private readonly DictionaryRepository $dictionaryRepository) {}
+    public function __construct(private readonly DictionaryRepository $dictionaryRepository)
+    {
+        $this->locale = app()->getLocale();
+    }
+
+    public function locale(): string
+    {
+        return $this->locale;
+    }
 
     public function setLocale(string $locale): void
     {
