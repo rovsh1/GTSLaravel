@@ -7,9 +7,9 @@ namespace Module\Booking\Requesting\Infrastructure\Repository;
 use Module\Booking\Requesting\Domain\BookingRequest\BookingRequest as Entity;
 use Module\Booking\Requesting\Domain\BookingRequest\Repository\RequestRepositoryInterface;
 use Module\Booking\Requesting\Domain\BookingRequest\ValueObject\RequestId;
-use Module\Booking\Requesting\Domain\BookingRequest\ValueObject\RequestTypeEnum;
 use Module\Booking\Requesting\Infrastructure\Factory\RequestFactory;
 use Module\Booking\Requesting\Infrastructure\Models\BookingRequest as Model;
+use Sdk\Booking\Enum\RequestTypeEnum;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Shared\ValueObject\File;
 

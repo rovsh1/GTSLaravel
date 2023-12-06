@@ -11,13 +11,13 @@ class IntegrationEventServiceProvider extends ServiceProvider
 {
     protected array $listen = [
 //        IntegrationEventMessages::BOOKING_STATUS_UPDATED => StatusUpdatedListener::class,
-//        IntegrationEventMessages::BOOKING_REQUEST_SENT => StatusUpdatedListener::class,
 //        IntegrationEventMessages::BOOKING_MODIFIED => BookingChangesListener::class,
 //        IntegrationEventMessages::BOOKING_DETAILS_MODIFIED => BookingChangesListener::class,
     ];
 
     protected array $registerChangesEvents = [
         IntegrationEventMessages::BOOKING_STATUS_UPDATED,
+        IntegrationEventMessages::BOOKING_REQUEST_SENT,
         IntegrationEventMessages::HOTEL_BOOKING_ACCOMMODATION_ADDED,
         IntegrationEventMessages::HOTEL_BOOKING_ACCOMMODATION_REMOVED,
         IntegrationEventMessages::HOTEL_BOOKING_ACCOMMODATION_DETAILS_EDITED,

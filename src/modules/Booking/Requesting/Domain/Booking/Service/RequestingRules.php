@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Booking\Requesting\Domain\Booking\Service;
 
-use Module\Booking\Requesting\Domain\BookingRequest\ValueObject\RequestTypeEnum;
 use Module\Booking\Shared\Domain\Booking\Booking;
+use Sdk\Booking\Enum\RequestTypeEnum;
 use Sdk\Shared\Enum\Booking\BookingStatusEnum;
 use Sdk\Shared\Enum\ServiceTypeEnum;
 

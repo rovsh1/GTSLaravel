@@ -17,9 +17,19 @@
                     <div class="item group-{{ strtolower($event->event) }}">
                         <time>{{ Format::date($event->createdAt, 'datetime') }}</time>
                         <div class="point"></div>
-                        <div class="description">{{ $event->description }}</div>
-                        <div class="payload">{{ json_encode($event->payload, JSON_PRETTY_PRINT) }}</div>
-                        <div class="context">{{ json_encode($event->context, JSON_PRETTY_PRINT) }}</div>
+                        <div class="description">{!! $event->description !!}</div>
+                        <div class="payload">
+                            <div class="icon"
+                                 title="{{ json_encode($event->payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}">
+                                description
+                            </div>
+                        </div>
+                        <div class="context">
+                            <div class="icon"
+                                 title="{{ json_encode($event->context, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}">
+                                info
+                            </div>
+                        </div>
                     </div>
                 @endforeach
             </div>

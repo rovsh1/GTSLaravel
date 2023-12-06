@@ -13,8 +13,7 @@ class RegisterEventListener implements IntegrationEventListenerInterface
 {
     public function __construct(
         private readonly HistoryStorageInterface $historyStorage,
-    ) {
-    }
+    ) {}
 
     public function handle(IntegrationEventMessage $message): void
     {
@@ -34,6 +33,7 @@ class RegisterEventListener implements IntegrationEventListenerInterface
         return match ($event) {
             IntegrationEventMessages::BOOKING_STATUS_UPDATED => EventGroupEnum::STATUS_UPDATED,
             IntegrationEventMessages::BOOKING_PRICE_CHANGED => EventGroupEnum::PRICE_CHANGED,
+            IntegrationEventMessages::BOOKING_REQUEST_SENT => EventGroupEnum::REQUEST_SENT,
 //            IntegrationEventMessages::HOTEL_BOOKING_ACCOMMODATION_ADDED,
 //            IntegrationEventMessages::HOTEL_BOOKING_ACCOMMODATION_REPLACED,
 //            IntegrationEventMessages::HOTEL_BOOKING_ACCOMMODATION_REMOVED,

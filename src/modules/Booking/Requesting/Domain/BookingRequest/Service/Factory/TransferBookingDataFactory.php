@@ -8,12 +8,12 @@ use Module\Booking\Requesting\Domain\BookingRequest\Service\Dto\TransferBooking\
 use Module\Booking\Requesting\Domain\BookingRequest\Service\Dto\TransferBooking\CarPriceDto;
 use Module\Booking\Requesting\Domain\BookingRequest\Service\TemplateData\TransferBooking\BookingRequest;
 use Module\Booking\Requesting\Domain\BookingRequest\Service\TemplateDataInterface;
-use Module\Booking\Requesting\Domain\BookingRequest\ValueObject\RequestTypeEnum;
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Service\DetailOptionsDataFactory;
 use Sdk\Booking\Entity\Details\CarRentWithDriver;
+use Sdk\Booking\Enum\RequestTypeEnum;
 use Sdk\Booking\ValueObject\BookingPeriod;
 use Sdk\Booking\ValueObject\CarBid;
 use Sdk\Booking\ValueObject\CarBidCollection;

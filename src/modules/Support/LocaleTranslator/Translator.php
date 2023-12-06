@@ -10,7 +10,8 @@ use UnitEnum;
 class Translator implements TranslatorInterface
 {
     private array $enumNamespaces = [
-        'Sdk\\Shared\\Enum\\'
+        'Sdk\\Shared\\Enum\\' => '',
+        'Sdk\\Booking\\Enum\\' => 'Booking\\'
     ];
 
     private string $locale;
@@ -47,7 +48,10 @@ class Translator implements TranslatorInterface
 
     private function buildEnumKey(UnitEnum $enum): string
     {
-        $key = str_replace($this->enumNamespaces, '', $enum::class);
+        $key = $enum::class;
+        foreach ($this->enumNamespaces as $k => $v) {
+            $key = str_replace($k, $v, $key);
+        }
 
         return 'Enum::' . $key . '::' . $enum->name;
     }

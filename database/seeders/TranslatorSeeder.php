@@ -6,7 +6,7 @@ use Illuminate\Database\Seeder;
 use Module\Support\LocaleTranslator\Application\UseCase\SyncTranslations;
 use Module\Support\LocaleTranslator\Model\Dictionary;
 
-class TranslationsSeeder extends Seeder
+class TranslatorSeeder extends Seeder
 {
     public function run(): void
     {

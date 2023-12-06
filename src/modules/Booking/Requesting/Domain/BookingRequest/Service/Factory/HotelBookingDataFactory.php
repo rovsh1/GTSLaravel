@@ -9,7 +9,6 @@ use Module\Booking\Requesting\Domain\BookingRequest\Service\Dto\HotelBooking\Hot
 use Module\Booking\Requesting\Domain\BookingRequest\Service\Dto\HotelBooking\RoomDto;
 use Module\Booking\Requesting\Domain\BookingRequest\Service\TemplateData\HotelBooking\BookingRequest;
 use Module\Booking\Requesting\Domain\BookingRequest\Service\TemplateDataInterface;
-use Module\Booking\Requesting\Domain\BookingRequest\ValueObject\RequestTypeEnum;
 use Module\Booking\Shared\Domain\Booking\Adapter\HotelAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Repository\AccommodationRepositoryInterface;
@@ -20,6 +19,7 @@ use Module\Hotel\Moderation\Application\Dto\ContactDto;
 use Sdk\Booking\Entity\Details\HotelBooking;
 use Sdk\Booking\Entity\Details\HotelBooking as DetailsEntity;
 use Sdk\Booking\Entity\HotelAccommodation;
+use Sdk\Booking\Enum\RequestTypeEnum;
 use Sdk\Booking\ValueObject\GuestIdCollection;
 use Sdk\Booking\ValueObject\HotelBooking\AccommodationCollection;
 use Sdk\Shared\Contracts\Adapter\CountryAdapterInterface;

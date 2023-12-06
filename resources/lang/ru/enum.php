@@ -25,6 +25,11 @@ return [
     'Supplier\\ContractServiceTypeEnum::AIRPORT' => 'Аэропорт',
     'Supplier\\ContractServiceTypeEnum::TRANSFER' => 'Трансфер',
 
+    // Booking
+    'Booking\\RequestTypeEnum::BOOKING' => 'Запрос на бронирование',
+    'Booking\\RequestTypeEnum::CHANGE' => 'Запрос на изменение',
+    'Booking\\RequestTypeEnum::CANCEL' => 'Запрос на отмену',
+
     // Shared
 
     'SourceEnum::SITE' => 'Сайт',

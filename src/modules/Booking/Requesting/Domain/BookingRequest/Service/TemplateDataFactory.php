@@ -6,8 +6,8 @@ use Module\Booking\Requesting\Domain\BookingRequest\Service\Factory\AirportBooki
 use Module\Booking\Requesting\Domain\BookingRequest\Service\Factory\CommonDataFactory;
 use Module\Booking\Requesting\Domain\BookingRequest\Service\Factory\HotelBookingDataFactory;
 use Module\Booking\Requesting\Domain\BookingRequest\Service\Factory\TransferBookingDataFactory;
-use Module\Booking\Requesting\Domain\BookingRequest\ValueObject\RequestTypeEnum;
 use Module\Booking\Shared\Domain\Booking\Booking;
+use Sdk\Booking\Enum\RequestTypeEnum;
 use Sdk\Module\Contracts\Support\ContainerInterface;
 use Sdk\Shared\Enum\ServiceTypeEnum;
 

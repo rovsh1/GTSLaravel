@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Requesting\Domain\BookingRequest\ValueObject;
+namespace Sdk\Booking\Enum;
 
 enum RequestTypeEnum: int
 {

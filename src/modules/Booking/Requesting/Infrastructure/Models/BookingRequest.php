@@ -4,7 +4,7 @@ namespace Module\Booking\Requesting\Infrastructure\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Module\Booking\Requesting\Domain\BookingRequest\ValueObject\RequestTypeEnum;
+use Sdk\Booking\Enum\RequestTypeEnum;
 
 class BookingRequest extends Model
 {

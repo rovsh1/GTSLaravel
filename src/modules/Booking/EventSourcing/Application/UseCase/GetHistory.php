@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\EventSourcing\Application\UseCase;
 
 use Module\Booking\EventSourcing\Application\Dto\EventDto;
-use Module\Booking\EventSourcing\Application\Service\EventDtoFactory;
+use Module\Booking\EventSourcing\Application\Service\HistoryBuilder\EventDtoMapper;
 use Module\Booking\EventSourcing\Domain\Service\HistoryStorageInterface;
 use Module\Booking\EventSourcing\Infrastructure\Model\BookingHistory;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
@@ -14,7 +14,7 @@ class GetHistory implements UseCaseInterface
 {
     public function __construct(
         private readonly HistoryStorageInterface $historyStorage,
-        private readonly EventDtoFactory $eventDtoFactory
+        private readonly EventDtoMapper $eventDtoMapper
     ) {}
 
     /**
@@ -25,6 +25,6 @@ class GetHistory implements UseCaseInterface
     {
         $statusEvents = $this->historyStorage->getHistory($id);
 
-        return $statusEvents->map(fn(BookingHistory $history) => $this->eventDtoFactory->build($history))->all();
+        return $statusEvents->map(fn(BookingHistory $history) => $this->eventDtoMapper->toDto($history))->all();
     }
 }
