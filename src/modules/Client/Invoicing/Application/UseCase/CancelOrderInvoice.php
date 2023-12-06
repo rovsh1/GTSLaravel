@@ -34,6 +34,7 @@ class CancelOrderInvoice implements UseCaseInterface
         }
         $invoice->delete();
         $this->invoiceRepository->store($invoice);
+        //@todo удалить ваучер
 
         $this->updateOrderStatus($order);
     }

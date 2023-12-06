@@ -439,7 +439,7 @@ class BookingController extends Controller
             ->addSelect('administrators.presentation as manager_name')
             ->selectSub(
                 DB::table('booking_hotel_room_guests')
-                    ->selectRaw('count(id)')
+                    ->selectRaw('count(1)')
                     ->whereExists(function ($query) {
                         $query->selectRaw(1)
                             ->from('booking_hotel_accommodations')
