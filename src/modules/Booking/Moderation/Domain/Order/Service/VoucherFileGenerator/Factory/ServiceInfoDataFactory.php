@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Factory;
 
+use Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Dto\ServiceInfoDto;
 use Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Factory\Details\BasicDetailsDataFactory;
 use Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Factory\Details\CarBidDataFactory;
 use Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Factory\Details\HotelAccommodationDataFactory;
