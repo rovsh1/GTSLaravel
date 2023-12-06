@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Console\Commands\System\GarbageCollector;
+namespace App\Shared\Console\Commands\System\GarbageCollector;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;

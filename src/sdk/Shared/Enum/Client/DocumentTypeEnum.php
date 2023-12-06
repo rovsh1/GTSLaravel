@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Admin\Models\Client;
+namespace Sdk\Shared\Enum\Client;
 
 enum DocumentTypeEnum: int
 {

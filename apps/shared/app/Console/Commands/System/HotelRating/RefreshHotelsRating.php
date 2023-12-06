@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Console\Commands\System\HotelRating;
+namespace App\Shared\Console\Commands\System\HotelRating;
 
 use App\Admin\Models\Hotel\Hotel;
 use Illuminate\Console\Command;

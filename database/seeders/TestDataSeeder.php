@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Admin\Enums\Contract\StatusEnum;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Module\Booking\Moderation\Application\UseCase\HotelBooking\System\FillCalculatedPriceCalendar;
+use Sdk\Shared\Enum\Contract\StatusEnum;
 use Sdk\Shared\Enum\CurrencyEnum;
 use Sdk\Shared\Enum\ServiceTypeEnum;
 

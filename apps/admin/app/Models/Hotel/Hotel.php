@@ -2,9 +2,6 @@
 
 namespace App\Admin\Models\Hotel;
 
-use App\Admin\Enums\Hotel\RatingEnum;
-use App\Admin\Enums\Hotel\StatusEnum;
-use App\Admin\Enums\Hotel\VisibilityEnum;
 use App\Admin\Models\HasIndexedChildren;
 use App\Admin\Models\Hotel\Reference\Service;
 use App\Admin\Models\Hotel\Reference\Usability;
@@ -18,6 +15,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
 use Sdk\Module\Database\Eloquent\Model;
 use Sdk\Shared\Enum\CurrencyEnum;
+use Sdk\Shared\Enum\Hotel\RatingEnum;
+use Sdk\Shared\Enum\Hotel\StatusEnum;
+use Sdk\Shared\Enum\Hotel\VisibilityEnum;
 
 /**
  * @property int city_id

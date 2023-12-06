@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Console;
+namespace App\Shared\Console;
 
 use Illuminate\Console\Application as Artisan;
 use Illuminate\Console\Command;
@@ -35,24 +35,24 @@ class Kernel extends ConsoleKernel
     protected function commands()
     {
         //$loadPaths[] = admin_path('app/Console/Commands');
-        $this->loadNamespacePath('App\\Admin\\Console\\Commands', admin_path('app/Console/Commands'));
+        $this->loadNamespacePath('App\\Shared\\Console\\Commands', __DIR__ . '/Commands');
 //        $this->loadNamespacePath('App\\Site\\Console\\Commands', site_path('app/Console/Commands'));
 //        $this->loadNamespacePath('App\\Api\\Console\\Commands', api_path('app/Console/Commands'));
 
-        foreach (app('modules') as $module) {
+//        foreach (app('modules') as $module) {
 //            $commandsPath = $module->path('Console/Commands');
 //            if (is_dir($commandsPath)) {
 //                $this->loadNamespacePath($module->namespace('Console\\Commands'), $commandsPath);
 //                //$loadPaths[] = $commandsPath;
 //            }
-        }
+//        }
 
         //$this->load(__DIR__ . '/Commands');
 
         require __DIR__ . '/routes.php';
     }
 
-    protected function loadNamespacePath($namespace, $path)
+    protected function loadNamespacePath($namespace, $path): void
     {
         foreach ((new NamespaceReader($namespace, $path))->read() as $command) {
             if (is_subclass_of($command, Command::class) &&

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Enums\Contract;
+namespace Sdk\Shared\Enum\Contract;
 
 enum StatusEnum: int
 {

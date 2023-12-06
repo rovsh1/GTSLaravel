@@ -8,7 +8,7 @@ use Sdk\Module\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-    public function register()
+    public function register(): void
     {
         $this->registerServices();
 
@@ -17,20 +17,21 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(MacrosServiceProvider::class);
         $this->app->register(QueueServiceProvider::class);
         $this->app->register(ModuleServiceProvider::class);
+        $this->app->register(TranslationServiceProvider::class);
 
         $this->registerApp();
 
         $this->registerComponents();
     }
 
-    private function registerServices()
+    private function registerServices(): void
     {
         if ($this->app->isLocal()) {
             $this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
         }
     }
 
-    private function registerApp()
+    private function registerApp(): void
     {
         $namespace = $this->app->getNamespace();
         if ($namespace && class_exists($namespace . 'Providers\BootServiceProvider')) {
@@ -38,7 +39,7 @@ class AppServiceProvider extends ServiceProvider
         }
     }
 
-    private function registerComponents()
+    private function registerComponents(): void
     {
         $this->app->singleton('languages', fn($app) => new Languages($app['config']['languages']));
     }

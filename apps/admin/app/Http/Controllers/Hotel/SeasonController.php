@@ -2,7 +2,6 @@
 
 namespace App\Admin\Http\Controllers\Hotel;
 
-use App\Admin\Enums\Contract\StatusEnum;
 use App\Admin\Exceptions\FormSubmitFailedException;
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Models\Hotel\Contract;
@@ -28,6 +27,7 @@ use App\Shared\Http\Responses\AjaxResponseInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Sdk\Shared\Enum\Contract\StatusEnum;
 
 class SeasonController extends Controller
 {

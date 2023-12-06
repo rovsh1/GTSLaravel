@@ -44,7 +44,6 @@
       "App\\Admin\\": "apps/admin/app/",
       "App\\Hotel\\": "apps/hotel/app/",
       "App\\Api\\": "apps/api/app/",
-      "App\\Console\\": "apps/console/app/",
       "App\\Shared\\": "apps/shared/app/",
       "Module\\": "src/modules/",
       "Supplier\\": "src/suppliers/",

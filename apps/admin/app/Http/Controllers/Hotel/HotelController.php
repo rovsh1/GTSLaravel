@@ -2,9 +2,6 @@
 
 namespace App\Admin\Http\Controllers\Hotel;
 
-use App\Admin\Enums\Hotel\RatingEnum;
-use App\Admin\Enums\Hotel\StatusEnum;
-use App\Admin\Enums\Hotel\VisibilityEnum;
 use App\Admin\Http\Requests\Hotel\SearchRequest;
 use App\Admin\Http\Requests\Hotel\UpdateSettingsRequest;
 use App\Admin\Http\Resources\Hotel as HotelResource;
@@ -36,6 +33,9 @@ use Gsdk\Format\View\ParamsTable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Sdk\Shared\Enum\Hotel\RatingEnum;
+use Sdk\Shared\Enum\Hotel\StatusEnum;
+use Sdk\Shared\Enum\Hotel\VisibilityEnum;
 
 class HotelController extends AbstractPrototypeController
 {

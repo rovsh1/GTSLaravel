@@ -2,7 +2,6 @@
 
 namespace App\Admin\Http\Controllers\Hotel;
 
-use App\Admin\Enums\Contract\StatusEnum;
 use App\Admin\Exceptions\FormSubmitFailedException;
 use App\Admin\Http\Actions\Hotel\UpdateContractAction;
 use App\Admin\Http\Controllers\Controller;
@@ -27,6 +26,7 @@ use App\Shared\Http\Responses\AjaxResponseInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Sdk\Shared\Enum\Contract\StatusEnum;
 
 class ContractController extends Controller
 {

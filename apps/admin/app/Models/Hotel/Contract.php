@@ -2,7 +2,6 @@
 
 namespace App\Admin\Models\Hotel;
 
-use App\Admin\Enums\Contract\StatusEnum;
 use App\Admin\Support\Models\HasPeriod;
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
@@ -16,6 +15,7 @@ use Sdk\Module\Database\Eloquent\Model;
 use Sdk\Module\Support\DateTime;
 use Sdk\Shared\Dto\FileDto;
 use Sdk\Shared\Dto\UploadedFileDto;
+use Sdk\Shared\Enum\Contract\StatusEnum;
 
 /**
  * App\Admin\Models\Hotel\Contract

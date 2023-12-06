@@ -12,18 +12,12 @@ class ModuleAdapterFactory
         private readonly string $modulesPath,
         private readonly string $modulesNamespace,
         private readonly SharedContainer $sharedContainer,
-    ) {
-    }
+    ) {}
 
     public function build(string $name, string $relativePath, array $config): ModuleAdapter
     {
         $path = $this->modulesPath . DIRECTORY_SEPARATOR . $relativePath;
         $namespace = $this->modulesNamespace . '\\' . str_replace(DIRECTORY_SEPARATOR, '\\', $relativePath);
-
-        $bootServiceProvider = $namespace . '\\Providers\\BootServiceProvider';
-        if (!class_exists($bootServiceProvider)) {
-            throw new LogicException('Module boot provider [' . $bootServiceProvider . '] not implemented');
-        }
 
 //        $configPath = $path . DIRECTORY_SEPARATOR . 'config.php';
 //        if (!file_exists($configPath)) {
@@ -34,7 +28,12 @@ class ModuleAdapterFactory
         $config['namespace'] = $namespace;
 
         $module = new Module($name, $config, $this->sharedContainer);
-        $module->register($bootServiceProvider);
+
+        $bootServiceProvider = $namespace . '\\Providers\\BootServiceProvider';
+        if (class_exists($bootServiceProvider)) {
+            $module->register($bootServiceProvider);
+//            throw new LogicException('Module boot provider [' . $bootServiceProvider . '] not implemented');
+        }
         $module->register(CommonServiceProvider::class);
 
         return new ModuleAdapter($name, $module);

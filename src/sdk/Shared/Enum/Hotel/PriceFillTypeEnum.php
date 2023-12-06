@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Enums\Hotel;
+namespace Sdk\Shared\Enum\Hotel;
 
 enum PriceFillTypeEnum: int
 {

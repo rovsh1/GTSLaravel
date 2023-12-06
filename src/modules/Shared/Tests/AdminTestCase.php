@@ -2,7 +2,7 @@
 
 namespace Module\Shared\Tests;
 
-use App\Console\Console\Kernel;
+use App\Shared\Console\Kernel;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class AdminTestCase extends BaseTestCase

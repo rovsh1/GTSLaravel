@@ -70,6 +70,6 @@ abstract class ApplicationException extends \RuntimeException
 
     private function makeErrorMessage(): string
     {
-        return __('exception.' . $this->getErrorKey(), $this->getErrorParameters());
+        return __('Shared::exception.' . $this->getErrorKey(), $this->getErrorParameters());
     }
 }

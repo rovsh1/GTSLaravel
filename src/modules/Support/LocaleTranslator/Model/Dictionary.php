@@ -33,7 +33,7 @@ class Dictionary extends Model
         $query
             ->addSelect('r_locale_dictionary.key')
             ->addSelect('values.value')
-            ->leftJoin($this->valuesTable . ' as values', 'values.dictionary_id', '=', 'r_locale_dictionary.id')
+            ->join($this->valuesTable . ' as values', 'values.dictionary_id', '=', 'r_locale_dictionary.id')
             ->where('values.language', $locale);
     }
 }
