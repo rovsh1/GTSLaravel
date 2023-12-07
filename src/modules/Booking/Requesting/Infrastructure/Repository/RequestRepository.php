@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Booking\Requesting\Infrastructure\Repository;
 
-use Module\Booking\Requesting\Domain\BookingRequest\BookingRequest as Entity;
-use Module\Booking\Requesting\Domain\BookingRequest\Repository\RequestRepositoryInterface;
-use Module\Booking\Requesting\Domain\BookingRequest\ValueObject\RequestId;
+use Module\Booking\Requesting\Domain\Entity\BookingRequest as Entity;
+use Module\Booking\Requesting\Domain\Repository\RequestRepositoryInterface;
+use Module\Booking\Requesting\Domain\ValueObject\RequestId;
 use Module\Booking\Requesting\Infrastructure\Factory\RequestFactory;
 use Module\Booking\Requesting\Infrastructure\Models\BookingRequest as Model;
 use Sdk\Booking\Enum\RequestTypeEnum;

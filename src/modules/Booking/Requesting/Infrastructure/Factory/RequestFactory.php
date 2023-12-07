@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Module\Booking\Requesting\Infrastructure\Factory;
 
 use Carbon\CarbonImmutable;
-use Module\Booking\Requesting\Domain\BookingRequest\BookingRequest;
-use Module\Booking\Requesting\Domain\BookingRequest\ValueObject\RequestId;
+use Module\Booking\Requesting\Domain\Entity\BookingRequest;
+use Module\Booking\Requesting\Domain\ValueObject\RequestId;
 use Sdk\Booking\Enum\RequestTypeEnum;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Module\Foundation\Support\EntityFactory\AbstractEntityFactory;

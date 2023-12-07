@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Booking\Requesting\Application\UseCase;
 
-use Module\Booking\Requesting\Domain\BookingRequest\Repository\RequestRepositoryInterface;
-use Module\Booking\Requesting\Domain\BookingRequest\ValueObject\RequestId;
+use Module\Booking\Requesting\Domain\Repository\RequestRepositoryInterface;
+use Module\Booking\Requesting\Domain\ValueObject\RequestId;
 use Module\Support\FileStorage\Application\Dto\FileInfoDto;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 use Sdk\Shared\Contracts\Adapter\FileStorageAdapterInterface;

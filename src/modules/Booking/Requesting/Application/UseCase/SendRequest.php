@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Booking\Requesting\Application\UseCase;
 
-use Module\Booking\Requesting\Domain\Booking\Service\RequestingRules;
-use Module\Booking\Requesting\Domain\BookingRequest\Factory\RequestFactory;
+use Module\Booking\Requesting\Domain\Factory\RequestFactory;
+use Module\Booking\Requesting\Domain\Service\RequestingRules;
 use Module\Booking\Shared\Domain\Booking\Service\BookingUnitOfWorkInterface;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;

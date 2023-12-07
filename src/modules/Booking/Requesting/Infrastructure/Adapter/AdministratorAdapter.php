@@ -6,7 +6,7 @@ namespace Module\Booking\Requesting\Infrastructure\Adapter;
 
 use Module\Administrator\Application\Response\AdministratorDto;
 use Module\Administrator\Application\UseCase\GetManagerByBookingId;
-use Module\Booking\Requesting\Domain\BookingRequest\Adapter\AdministratorAdapterInterface;
+use Module\Booking\Requesting\Domain\Adapter\AdministratorAdapterInterface;
 
 class AdministratorAdapter implements AdministratorAdapterInterface
 {

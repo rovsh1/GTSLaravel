@@ -2,7 +2,7 @@
 
 namespace Module\Booking\Requesting\Providers;
 
-use Module\Booking\Requesting\Domain\Booking\Listener\RegisterChangesListener;
+use Module\Booking\Requesting\Domain\Listener\RegisterChangesListener;
 use Sdk\Module\Contracts\Event\IntegrationEventSubscriberInterface;
 use Sdk\Module\Support\Providers\IntegrationEventServiceProvider as ServiceProvider;
 use Sdk\Shared\Event\IntegrationEventMessages;
