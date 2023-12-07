@@ -1,5 +1,13 @@
+<script lang="ts" setup>
+withDefaults(defineProps<{
+  existGrid: boolean
+}>(), {
+  existGrid: false,
+})
+</script>
+
 <template>
-  <div class="card">
+  <div :class="[existGrid ? 'card card-grid' : 'card']">
     <div class="card-body unselectable">
       <slot />
     </div>
@@ -47,4 +55,14 @@
     }
   }
 }
+
+.card-grid {
+  white-space: normal;
+
+  table td:first-child,
+  table th:first-child {
+    padding-left: 1rem;
+  }
+}
+
 </style>
