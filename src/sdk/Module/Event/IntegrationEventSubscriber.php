@@ -2,7 +2,6 @@
 
 namespace Sdk\Module\Event;
 
-use Sdk\Module\Contracts\Event\IntegrationEventMessage;
 use Sdk\Module\Contracts\Event\IntegrationEventSubscriberInterface;
 use Sdk\Module\Contracts\Support\ContainerInterface;
 
@@ -12,8 +11,7 @@ class IntegrationEventSubscriber implements IntegrationEventSubscriberInterface
 
     public function __construct(
         private readonly ContainerInterface $container
-    ) {
-    }
+    ) {}
 
     public function listen(string $eventClass, string $listenerClass): void
     {
@@ -26,7 +24,7 @@ class IntegrationEventSubscriber implements IntegrationEventSubscriberInterface
     public function handle(IntegrationEventMessage $message): void
     {
         foreach ($this->listeners as $eventClass => $listeners) {
-            if ($message->event === $eventClass) {
+            if (is_a($message->event, $eventClass)) {
                 $this->dispatchListeners($message, $listeners);
             }
         }

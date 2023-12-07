@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Domain\Booking;
 
-use Module\Booking\Shared\Domain\Booking\Event\BookingDeleted;
-use Module\Booking\Shared\Domain\Booking\Event\NoteChanged;
-use Module\Booking\Shared\Domain\Booking\Event\PriceUpdated;
+use Module\Booking\Moderation\Domain\Booking\Event\NoteChanged;
 use Module\Booking\Shared\Domain\Booking\Support\Concerns\HasStatusesTrait;
 use Module\Booking\Shared\Domain\Booking\Support\Concerns\StatusesFlagsTrait;
 use Sdk\Booking\Enum\StatusEnum;
+use Sdk\Booking\Event\BookingDeleted;
+use Sdk\Booking\Event\PriceUpdated;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\BookingPrices;
 use Sdk\Booking\ValueObject\CancelConditions;

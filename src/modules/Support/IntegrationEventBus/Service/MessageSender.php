@@ -4,11 +4,18 @@ namespace Module\Support\IntegrationEventBus\Service;
 
 use App\Shared\Contracts\Module\ModuleAdapterInterface;
 use Module\Support\IntegrationEventBus\Entity\Message;
-use Sdk\Module\Contracts\Event\IntegrationEventMessage;
+use Sdk\Module\Contracts\Event\IntegrationEventInterface;
+use Sdk\Module\Event\IntegrationEventMessage;
+use Sdk\Module\Services\IntegrationEventSerializer;
 
 class MessageSender
 {
-    public function __construct(private readonly array $availableModules) {}
+    private readonly IntegrationEventSerializer $eventSerializer;
+
+    public function __construct(private readonly array $availableModules)
+    {
+        $this->eventSerializer = new IntegrationEventSerializer();
+    }
 
     public function send(Message $message): void
     {
@@ -38,10 +45,14 @@ class MessageSender
 
     private function makeIntegrationEvent(Message $message): IntegrationEventMessage
     {
+        $eventClass = $message->event();
+
+        assert(is_subclass_of($eventClass, IntegrationEventInterface::class));
+
+
         return new IntegrationEventMessage(
             module: $message->module(),
-            event: $message->event(),
-            payload: $message->payload(),
+            event: $this->eventSerializer->deserialize($eventClass, $message->payload()),
             context: $message->context()
         );
     }

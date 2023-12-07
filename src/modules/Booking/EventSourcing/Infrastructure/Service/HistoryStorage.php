@@ -30,7 +30,7 @@ class HistoryStorage implements HistoryStorageInterface
     public function getHistory(int $bookingId): Collection
     {
         return BookingHistory::whereBookingId($bookingId)
-            ->orderBy('created_at', 'desc')
+            ->orderBy('id', 'desc')
             ->get();
     }
 
@@ -42,7 +42,7 @@ class HistoryStorage implements HistoryStorageInterface
     {
         return BookingHistory::whereBookingId($bookingId)
             ->whereGroup(EventGroupEnum::STATUS_UPDATED)
-            ->orderBy('created_at', 'desc')
+            ->orderBy('id', 'desc')
             ->get();
     }
 }

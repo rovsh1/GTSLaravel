@@ -9,6 +9,7 @@ use Sdk\Module\Contracts\ContextInterface;
 use Sdk\Module\Contracts\Event\IntegrationEventInterface;
 use Sdk\Module\Contracts\Event\IntegrationEventPublisherInterface;
 use Sdk\Module\Contracts\ModuleInterface;
+use Sdk\Module\Services\IntegrationEventSerializer;
 
 class IntegrationEventPublisher implements IntegrationEventPublisherInterface
 {
@@ -19,8 +20,8 @@ class IntegrationEventPublisher implements IntegrationEventPublisherInterface
     public function __construct(
         private readonly ModuleInterface $module,
         private readonly ContextInterface $context,
-    ) {
-    }
+        private readonly IntegrationEventSerializer $eventSerializer
+    ) {}
 
     public function publish(IntegrationEventInterface ...$events): void
     {
@@ -31,8 +32,8 @@ class IntegrationEventPublisher implements IntegrationEventPublisherInterface
                     'id' => Str::orderedUuid()->toString(),
                     'module' => $this->module->name(),
                     'status' => 0,
-                    'event' => $event->integrationEvent(),
-                    'payload' => $event->integrationPayload(),
+                    'event' => $event::class,
+                    'payload' => $this->eventSerializer->serialize($event),
                     'context' => $this->context->toArray(),
                     'timestamp' => time()
                 ])

@@ -26,17 +26,11 @@ class Queue extends Base implements QueueContract
         return (int)$this->connection->lLen(self::QUEUE);
     }
 
-    public function push($job, $data = '', $queue = null)
-    {
-    }
+    public function push($job, $data = '', $queue = null) {}
 
-    public function pushRaw($payload, $queue = null, array $options = [])
-    {
-    }
+    public function pushRaw($payload, $queue = null, array $options = []) {}
 
-    public function later($delay, $job, $data = '', $queue = null)
-    {
-    }
+    public function later($delay, $job, $data = '', $queue = null) {}
 
     public function pop($queue = null)
     {

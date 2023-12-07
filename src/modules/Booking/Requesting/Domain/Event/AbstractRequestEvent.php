@@ -8,7 +8,7 @@ use Module\Booking\Requesting\Domain\Entity\BookingRequest;
 use Module\Booking\Requesting\Domain\ValueObject\RequestId;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Sdk\Booking\Support\Event\AbstractBookingEvent;
-use Sdk\Shared\Event\IntegrationEventMessages;
+use Sdk\Booking\IntegrationEvent\RequestSent;
 
 abstract class AbstractRequestEvent extends AbstractBookingEvent implements BookingRequestEventInterface
 {
@@ -24,16 +24,13 @@ abstract class AbstractRequestEvent extends AbstractBookingEvent implements Book
         return $this->request->id();
     }
 
-    public function integrationEvent(): string
+    public function integrationEvent(): RequestSent
     {
-        return IntegrationEventMessages::BOOKING_REQUEST_SENT;
-    }
-
-    public function integrationPayload(): array
-    {
-        return [
-            'bookingId' => $this->booking->id()->value(),
-            'request' => $this->request->serialize()
-        ];
+        return new RequestSent(
+            $this->bookingId()->value(),
+            $this->request->id()->value(),
+            $this->request->type(),
+            $this->request->file()->guid(),
+        );
     }
 }

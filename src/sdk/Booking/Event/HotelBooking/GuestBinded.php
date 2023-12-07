@@ -5,7 +5,6 @@ namespace Sdk\Booking\Event\HotelBooking;
 use Sdk\Booking\Contracts\Event\PriceBecomeDeprecatedEventInterface;
 use Sdk\Booking\Entity\HotelAccommodation;
 use Sdk\Booking\ValueObject\GuestId;
-use Sdk\Shared\Event\IntegrationEventMessages;
 
 class GuestBinded extends AbstractAccommodationEvent implements PriceBecomeDeprecatedEventInterface
 {
@@ -14,19 +13,5 @@ class GuestBinded extends AbstractAccommodationEvent implements PriceBecomeDepre
         public readonly GuestId $guestId
     ) {
         parent::__construct($accommodation);
-    }
-
-    public function integrationEvent(): string
-    {
-        return IntegrationEventMessages::HOTEL_BOOKING_GUEST_ADDED;
-    }
-
-    public function integrationPayload(): array
-    {
-        return [
-            'bookingId' => $this->bookingId()->value(),
-            'accommodationId' => $this->accommodation->id()->value(),
-            'guestId' => $this->guestId->value()
-        ];
     }
 }
