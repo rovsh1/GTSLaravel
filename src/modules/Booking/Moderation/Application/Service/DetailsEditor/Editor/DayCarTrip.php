@@ -8,7 +8,6 @@ use Module\Booking\Shared\Domain\Booking\Factory\Details\DayCarTripFactoryInterf
 use Module\Supplier\Moderation\Infrastructure\Models\Service as InfrastructureSupplierService;
 use Sdk\Booking\Entity\Details\DayCarTrip as Entity;
 use Sdk\Booking\ValueObject\BookingId;
-use Sdk\Booking\ValueObject\CarBidCollection;
 use Sdk\Booking\ValueObject\ServiceId;
 use Sdk\Booking\ValueObject\ServiceInfo;
 
@@ -16,8 +15,7 @@ class DayCarTrip extends AbstractEditor implements EditorInterface
 {
     public function __construct(
         private readonly DayCarTripFactoryInterface $detailsFactory
-    ) {
-    }
+    ) {}
 
     public function create(BookingId $bookingId, ServiceId $serviceId, array $detailsData): Entity
     {
@@ -29,7 +27,6 @@ class DayCarTrip extends AbstractEditor implements EditorInterface
             $bookingId,
             $serviceInfo,
             (int)$supplierService->data['cityId'],
-            new CarBidCollection([]),
             $detailsData['destinationsDescription'] ?? null,
             $detailsData['date'] ?? null,
         );

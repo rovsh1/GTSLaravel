@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Infrastructure\Builder\Details;
 
+use RuntimeException;
 use Sdk\Module\Contracts\Support\ContainerInterface;
 use Sdk\Shared\Enum\ServiceTypeEnum;
 
@@ -11,8 +12,7 @@ class DetailsBuilderFactory
 {
     public function __construct(
         private readonly ContainerInterface $container
-    ) {
-    }
+    ) {}
 
     public function build(ServiceTypeEnum $serviceType): mixed
     {
@@ -28,7 +28,7 @@ class DetailsBuilderFactory
             ServiceTypeEnum::TRANSFER_TO_RAILWAY => $this->container->make(TransferToRailwayBuilder::class),
             ServiceTypeEnum::TRANSFER_FROM_RAILWAY => $this->container->make(TransferFromRailwayBuilder::class),
             ServiceTypeEnum::OTHER_SERVICE => $this->container->make(OtherServiceBuilder::class),
-            default => throw new \RuntimeException('Service type repository not implemented'),
+            default => throw new RuntimeException('Service type repository not implemented'),
         };
     }
 }

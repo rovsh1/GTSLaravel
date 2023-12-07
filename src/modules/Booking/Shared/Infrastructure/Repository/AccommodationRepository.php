@@ -86,11 +86,11 @@ class AccommodationRepository implements AccommodationRepositoryInterface
         return $this->buildEntityFromModel($model);
     }
 
-    public function store(HotelAccommodation $accommodation): bool
+    public function store(HotelAccommodation $accommodation): void
     {
         $model = Model::findOrFail($accommodation->id()->value());
 
-        return (bool)$model->update([
+        $model->update([
             'hotel_room_id' => $accommodation->roomInfo()->id(),
             'room_name' => $accommodation->roomInfo()->name(),
             'data' => $this->serializeEntity($accommodation),
@@ -98,11 +98,11 @@ class AccommodationRepository implements AccommodationRepositoryInterface
         ]);
     }
 
-    public function delete(AccommodationId $id): bool
+    public function delete(AccommodationId $id): void
     {
         $this->instances->remove($id);
 
-        return (bool)Model::whereId($id->value())->delete();
+        Model::whereId($id->value())->delete();
     }
 
     private function serializeEntity(HotelAccommodation $booking): array

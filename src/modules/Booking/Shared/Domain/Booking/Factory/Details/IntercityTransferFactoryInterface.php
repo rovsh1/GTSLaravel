@@ -17,7 +17,6 @@ interface IntercityTransferFactoryInterface
         ServiceInfo $serviceInfo,
         int $fromCityId,
         int $toCityId,
-        CarBidCollection $carBids,
         bool $returnTripIncluded,
         ?DateTimeInterface $departureDate,
     ): IntercityTransfer;

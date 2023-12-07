@@ -24,7 +24,6 @@ class IntercityTransferFactory extends AbstractServiceDetailsFactory implements 
         ServiceInfo $serviceInfo,
         int $fromCityId,
         int $toCityId,
-        CarBidCollection $carBids,
         bool $returnTripIncluded,
         ?DateTimeInterface $departureDate,
     ): IntercityTransfer {
@@ -34,7 +33,6 @@ class IntercityTransferFactory extends AbstractServiceDetailsFactory implements 
             'service_id' => $serviceInfo->id(),
             'data' => [
                 'serviceInfo' => $this->serializeServiceInfo($serviceInfo),
-                'carBids' => $carBids->toData(),
                 'fromCityId' => $fromCityId,
                 'toCityId' => $toCityId,
                 'returnTripIncluded' => $returnTripIncluded,

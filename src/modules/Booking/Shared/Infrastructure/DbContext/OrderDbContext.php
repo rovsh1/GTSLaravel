@@ -80,9 +80,9 @@ class OrderDbContext implements OrderDbContextInterface
         return $this->orderMapper->collectionFromModel($models);
     }
 
-    public function store(Order $order): bool
+    public function store(Order $order): void
     {
-        return (bool)Model::whereId($order->id()->value())->update([
+        Model::whereId($order->id()->value())->update([
             'status' => $order->status(),
             'client_id' => $order->clientId()->value(),
             'legal_id' => $order->legalId()?->value(),

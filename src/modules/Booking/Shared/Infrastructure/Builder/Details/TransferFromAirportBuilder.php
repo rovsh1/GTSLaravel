@@ -8,7 +8,6 @@ use Module\Booking\Shared\Infrastructure\Models\Details\Transfer;
 use Sdk\Booking\Entity\Details\TransferFromAirport;
 use Sdk\Booking\ValueObject\AirportId;
 use Sdk\Booking\ValueObject\BookingId;
-use Sdk\Booking\ValueObject\CarBidCollection;
 use Sdk\Booking\ValueObject\DetailsId;
 
 class TransferFromAirportBuilder extends AbstractServiceDetailsBuilder
@@ -25,7 +24,6 @@ class TransferFromAirportBuilder extends AbstractServiceDetailsBuilder
             flightNumber: $detailsData['flightNumber'] ?? null,
             arrivalDate: $details->date_start,
             meetingTablet: $detailsData['meetingTablet'] ?? null,
-            carBids: CarBidCollection::fromData($detailsData['carBids'])
         );
     }
 }

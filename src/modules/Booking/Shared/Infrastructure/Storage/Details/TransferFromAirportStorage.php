@@ -18,7 +18,6 @@ class TransferFromAirportStorage extends AbstractStorage
                 'airportId' => $details->airportId()->value(),
                 'flightNumber' => $details->flightNumber(),
                 'meetingTablet' => $details->meetingTablet(),
-                'carBids' => $details->carBids()->toData(),
             ]
         ]);
     }

@@ -43,25 +43,4 @@ class DetailsController
 
         return new AjaxSuccessResponse();
     }
-
-    public function addCarBid(int $bookingId, Request $request): AjaxResponseInterface
-    {
-        DetailsAdapter::addCarBid($bookingId, $request->toArray());
-
-        return new AjaxSuccessResponse();
-    }
-
-    public function updateCarBid(int $bookingId, string $carBidId, Request $request): AjaxResponseInterface
-    {
-        DetailsAdapter::updateCarBid($bookingId, $carBidId, $request->toArray());
-
-        return new AjaxSuccessResponse();
-    }
-
-    public function removeCarBid(int $bookingId, string $carBidId): AjaxResponseInterface
-    {
-        DetailsAdapter::removeCarBid($bookingId, $carBidId);
-
-        return new AjaxSuccessResponse();
-    }
 }

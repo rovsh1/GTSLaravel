@@ -9,6 +9,7 @@ use Module\Booking\Invoicing\Domain\Service\Factory\Details\BasicDetailsDataFact
 use Module\Booking\Invoicing\Domain\Service\Factory\Details\CarBidDataFactory;
 use Module\Booking\Invoicing\Domain\Service\Factory\Details\HotelAccommodationDataFactory;
 use Module\Booking\Shared\Domain\Booking\Booking;
+use Module\Booking\Shared\Domain\Booking\DbContext\CarBidDbContextInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\AccommodationRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
@@ -25,6 +26,7 @@ class ServiceInfoDataFactory
         private readonly HotelAccommodationDataFactory $hotelAccommodationDataFactory,
         private readonly CarBidDataFactory $carBidDataFactory,
         private readonly BasicDetailsDataFactory $basicDetailsDataFactory,
+        private readonly CarBidDbContextInterface $carBidDbContext,
     ) {}
 
     /**
@@ -45,7 +47,8 @@ class ServiceInfoDataFactory
                     $services[] = $this->hotelAccommodationDataFactory->build($booking, $accommodation);
                 }
             } elseif (in_array($booking->serviceType(), ServiceTypeEnum::getTransferCases())) {
-                foreach ($details->carBids() as $carBid) {
+                $carBids = $this->carBidDbContext->getByBookingId($booking->id());
+                foreach ($carBids as $carBid) {
                     $services[] = $this->carBidDataFactory->build($booking, $carBid);
                 }
             } else {

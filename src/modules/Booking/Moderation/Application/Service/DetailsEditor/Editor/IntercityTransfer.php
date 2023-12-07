@@ -8,7 +8,6 @@ use Module\Booking\Shared\Domain\Booking\Factory\Details\IntercityTransferFactor
 use Module\Supplier\Moderation\Infrastructure\Models\Service as InfrastructureSupplierService;
 use Sdk\Booking\Contracts\Entity\DetailsInterface;
 use Sdk\Booking\ValueObject\BookingId;
-use Sdk\Booking\ValueObject\CarBidCollection;
 use Sdk\Booking\ValueObject\ServiceId;
 use Sdk\Booking\ValueObject\ServiceInfo;
 
@@ -16,8 +15,7 @@ class IntercityTransfer extends AbstractEditor implements EditorInterface
 {
     public function __construct(
         private readonly IntercityTransferFactoryInterface $detailsFactory
-    ) {
-    }
+    ) {}
 
     public function create(BookingId $bookingId, ServiceId $serviceId, array $detailsData): DetailsInterface
     {
@@ -30,7 +28,6 @@ class IntercityTransfer extends AbstractEditor implements EditorInterface
             $serviceInfo,
             (int)$supplierService->data['fromCityId'],
             (int)$supplierService->data['toCityId'],
-            new CarBidCollection([]),
             (bool)$supplierService->data['returnTripIncluded'],
             $detailsData['date'] ?? null,
         );

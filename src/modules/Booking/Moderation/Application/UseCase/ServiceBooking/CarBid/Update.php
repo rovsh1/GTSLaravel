@@ -5,32 +5,67 @@ declare(strict_types=1);
 namespace Module\Booking\Moderation\Application\UseCase\ServiceBooking\CarBid;
 
 use Module\Booking\Moderation\Application\Dto\CarBidDataDto;
-use Module\Booking\Moderation\Application\Service\CarBidUpdateHelper;
-use Sdk\Booking\ValueObject\CarBid;
-use Sdk\Booking\ValueObject\CarId;
+use Module\Booking\Moderation\Application\Exception\NotFoundServiceCancelConditionsException;
+use Module\Booking\Moderation\Application\Service\CarBidFactory;
+use Module\Booking\Moderation\Domain\Booking\Exception\NotFoundServiceCancelConditions;
+use Module\Booking\Shared\Domain\Booking\DbContext\CarBidDbContextInterface;
+use Module\Booking\Shared\Domain\Booking\Service\BookingUnitOfWorkInterface;
+use Sdk\Booking\Entity\CarBid;
+use Sdk\Booking\Event\TransferBooking\CarBidReplaced;
+use Sdk\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\CarBidId;
+use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class Update implements UseCaseInterface
 {
     public function __construct(
-        private readonly CarBidUpdateHelper $carBidUpdateHelper,
+        private readonly CarBidFactory $carBidFactory,
+        private readonly CarBidDbContextInterface $carBidDbContext,
+        private readonly BookingUnitOfWorkInterface $bookingUnitOfWork,
+        private readonly DomainEventDispatcherInterface $eventDispatcher,
     ) {}
 
-    public function execute(int $bookingId, string $carBidId, CarBidDataDto $carData): void
+    public function execute(int $bookingId, int $carBidId, CarBidDataDto $carData): void
     {
-        $this->carBidUpdateHelper->boot($bookingId, $carData->carId);
-        $details = $this->carBidUpdateHelper->details();
-        $carBid = new CarBid(
-            $carBidId,
-            new CarId($carData->carId),
-            $carData->carsCount,
-            $carData->passengersCount,
-            $carData->baggageCount,
-            $carData->babyCount,
-            $this->carBidUpdateHelper->prices()
-        );
+        $booking = $this->bookingUnitOfWork->findOrFail(new BookingId($bookingId));
+        $currentCarBid = $this->carBidDbContext->findOrFail(new CarBidId($carBidId));
 
-        $details->replaceCarBid($carBidId, $carBid);
-        $this->carBidUpdateHelper->commit();
+        $this->carBidFactory->fromRequest($carData);
+
+        $this->bookingUnitOfWork->touch($booking->id());
+
+        if ($currentCarBid->carId()->value() === $carBidId) {
+            $this->doUpdate($currentCarBid);
+        } else {
+            $this->doReplace($currentCarBid);
+        }
+
+        try {
+            //@todo проверить, что корректно отрабатывает
+            $this->bookingUnitOfWork->commit();
+        } catch (NotFoundServiceCancelConditions $e) {
+            throw new NotFoundServiceCancelConditionsException($e);
+        }
+    }
+
+    private function doUpdate(CarBid $currentCarBid): void
+    {
+        $isChanged = true;
+        if (!$isChanged) {
+            return;
+        }
+        $this->bookingUnitOfWork->persist($currentCarBid);
+    }
+
+    private function doReplace(CarBid $beforeCarBid): void
+    {
+        $this->bookingUnitOfWork->commiting(function () use ($beforeCarBid) {
+            $this->carBidDbContext->delete($beforeCarBid->id());
+            $carBid = $this->carBidFactory->create($beforeCarBid->bookingId());
+            $details = $this->bookingUnitOfWork->getDetails($beforeCarBid->bookingId());
+            //@todo обновление cancel conditions в листенере и отдельный трайкетч
+            $this->eventDispatcher->dispatch(new CarBidReplaced($details, $beforeCarBid, $carBid));
+        });
     }
 }

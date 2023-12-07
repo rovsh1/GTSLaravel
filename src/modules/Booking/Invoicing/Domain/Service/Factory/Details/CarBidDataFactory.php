@@ -8,13 +8,14 @@ use Illuminate\Support\Collection;
 use Module\Booking\Invoicing\Domain\Service\Dto\Service\PriceDto;
 use Module\Booking\Invoicing\Domain\Service\Dto\ServiceInfoDto;
 use Module\Booking\Invoicing\Domain\Service\Factory\BookingPeriodDataFactory;
+use Module\Booking\Invoicing\Domain\Service\Factory\GuestDataFactory;
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Service\Dto\DetailOptionDto;
 use Module\Supplier\Moderation\Application\Dto\CarDto;
 use Sdk\Booking\Contracts\Entity\DetailsInterface;
-use Sdk\Booking\ValueObject\CarBid;
+use Sdk\Booking\Entity\CarBid;
 use Sdk\Shared\Enum\CurrencyEnum;
 
 class CarBidDataFactory
@@ -26,6 +27,7 @@ class CarBidDataFactory
         private readonly SupplierAdapterInterface $supplierAdapter,
         private readonly DetailsRepositoryInterface $detailsRepository,
         private readonly BookingPeriodDataFactory $periodDataFactory,
+        private readonly GuestDataFactory $guestDataFactory,
     ) {}
 
     public function build(Booking $booking, CarBid $carBid): ServiceInfoDto
@@ -40,7 +42,7 @@ class CarBidDataFactory
             title: $details->serviceInfo()->title(),
             bookingPeriod: $bookingPeriod,
             detailOptions: $this->buildDetails($carBid, $details),
-            guests: [],//@todo гости из автомобилей,
+            guests: $this->guestDataFactory->build($carBid->guestIds()),
             price: $this->buildPrice($carBid, $booking->prices()->clientPrice()->currency(), $bookingPeriod->countDays),
         );
     }

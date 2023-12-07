@@ -28,6 +28,7 @@ abstract class ApplicationException extends \RuntimeException
     public const LEND_ORDER_TO_PAYMENT_INSUFFICIENT_FUNDS    = 1017;
     public const LEND_ORDER_INVALID_SUM_DECIMALS             = 1018;
     public const ORDER_WITHOUT_BOOKINGS                      = 1019;
+    public const BOOKING_CAR_BID_TOO_MANY_GUESTS             = 1020;
 
     private static array $errorsArray;
 

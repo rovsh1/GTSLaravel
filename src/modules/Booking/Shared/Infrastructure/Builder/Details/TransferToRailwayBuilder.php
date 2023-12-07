@@ -7,7 +7,6 @@ namespace Module\Booking\Shared\Infrastructure\Builder\Details;
 use Module\Booking\Shared\Infrastructure\Models\Details\Transfer;
 use Sdk\Booking\Entity\Details\TransferToRailway;
 use Sdk\Booking\ValueObject\BookingId;
-use Sdk\Booking\ValueObject\CarBidCollection;
 use Sdk\Booking\ValueObject\DetailsId;
 use Sdk\Booking\ValueObject\RailwayStationId;
 
@@ -25,7 +24,6 @@ class TransferToRailwayBuilder extends AbstractServiceDetailsBuilder
             trainNumber: $detailsData['trainNumber'],
             meetingTablet: $detailsData['meetingTablet'],
             departureDate: $details->date_start,
-            carBids: CarBidCollection::fromData($detailsData['carBids'])
         );
     }
 }

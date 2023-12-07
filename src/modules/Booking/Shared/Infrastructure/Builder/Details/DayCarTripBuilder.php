@@ -7,7 +7,6 @@ namespace Module\Booking\Shared\Infrastructure\Builder\Details;
 use Module\Booking\Shared\Infrastructure\Models\Details\Transfer;
 use Sdk\Booking\Entity\Details\DayCarTrip;
 use Sdk\Booking\ValueObject\BookingId;
-use Sdk\Booking\ValueObject\CarBidCollection;
 use Sdk\Booking\ValueObject\CityId;
 use Sdk\Booking\ValueObject\DetailsId;
 
@@ -24,7 +23,6 @@ class DayCarTripBuilder extends AbstractServiceDetailsBuilder
             cityId: new CityId($detailsData['cityId']),
             destinationsDescription: $detailsData['destinationsDescription'],
             departureDate: $details->date_start,
-            carBids: CarBidCollection::fromData($detailsData['carBids'])
         );
     }
 }

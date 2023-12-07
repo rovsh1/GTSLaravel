@@ -23,7 +23,6 @@ class CarRentWithDriverFactory extends AbstractServiceDetailsFactory implements 
         BookingId $bookingId,
         ServiceInfo $serviceInfo,
         int $cityId,
-        CarBidCollection $carBids,
         ?BookingPeriod $bookingPeriod,
     ): CarRentWithDriver {
         $model = Transfer::create([
@@ -34,7 +33,6 @@ class CarRentWithDriverFactory extends AbstractServiceDetailsFactory implements 
             'data' => [
                 'serviceInfo' => $this->serializeServiceInfo($serviceInfo),
                 'cityId' => $cityId,
-                'carBids' => $carBids->toData(),
             ]
         ]);
 

@@ -1,45 +1,40 @@
 <?php
 
-namespace Sdk\Booking\ValueObject;
+namespace Sdk\Booking\Entity;
 
-use Illuminate\Support\Str;
+use Sdk\Booking\Contracts\Entity\BookingPartInterface;
+use Sdk\Booking\Entity\Details\Concerns\HasGuestIdCollectionTrait;
+use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\CarBid\CarBidPrices;
-use Sdk\Shared\Contracts\Support\SerializableInterface;
+use Sdk\Booking\ValueObject\CarBidId;
+use Sdk\Booking\ValueObject\CarId;
+use Sdk\Booking\ValueObject\GuestIdCollection;
+use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 
-final class CarBid implements SerializableInterface
+final class CarBid extends AbstractAggregateRoot implements BookingPartInterface
 {
+    use HasGuestIdCollectionTrait;
+
     public function __construct(
-        private readonly string $id,
-        private readonly CarId $carId,
-        private readonly int $carsCount,
-        private readonly int $passengersCount,
-        private readonly int $baggageCount,
-        private readonly int $babyCount,
-        private readonly CarBidPrices $prices,
+        private readonly CarBidId $id,
+        private readonly BookingId $bookingId,
+        private CarId $carId,
+        private int $carsCount,
+        private int $passengersCount,
+        private int $baggageCount,
+        private int $babyCount,
+        private CarBidPrices $prices,
+        private GuestIdCollection $guestIds,
     ) {}
 
-    public static function create(
-        CarId $carId,
-        int $carsCount,
-        int $passengersCount,
-        int $baggageCount,
-        int $babyCount,
-        CarBidPrices $prices,
-    ): static {
-        return new static(
-            Str::random(6),
-            $carId,
-            $carsCount,
-            $passengersCount,
-            $baggageCount,
-            $babyCount,
-            $prices
-        );
-    }
-
-    public function id(): string
+    public function id(): CarBidId
     {
         return $this->id;
+    }
+
+    public function bookingId(): BookingId
+    {
+        return $this->bookingId;
     }
 
     public function carId(): CarId
@@ -86,25 +81,29 @@ final class CarBid implements SerializableInterface
     {
         return [
             'id' => $this->id,
+            'bookingId' => $this->bookingId,
             'carId' => $this->carId->value(),
             'carsCount' => $this->carsCount,
             'passengersCount' => $this->passengersCount,
             'baggageCount' => $this->baggageCount,
             'babyCount' => $this->babyCount,
-            'prices' => $this->prices->toData(),
+            'prices' => $this->prices->serialize(),
+            'guestIds' => $this->guestIds->serialize(),
         ];
     }
 
     public static function deserialize(array $payload): static
     {
         return new static(
-            $payload['id'],
+            new CarBidId($payload['id']),
+            new BookingId($payload['booking_id']),
             new CarId($payload['carId']),
             $payload['carsCount'],
             $payload['passengersCount'],
             $payload['baggageCount'],
             $payload['babyCount'],
-            CarBidPrices::fromData($payload['prices'])
+            CarBidPrices::deserialize($payload['prices']),
+            GuestIdCollection::deserialize($payload['guestIds']),
         );
     }
 }

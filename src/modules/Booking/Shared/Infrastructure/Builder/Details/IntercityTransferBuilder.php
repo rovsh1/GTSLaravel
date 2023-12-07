@@ -7,7 +7,6 @@ namespace Module\Booking\Shared\Infrastructure\Builder\Details;
 use Module\Booking\Shared\Infrastructure\Models\Details\Transfer;
 use Sdk\Booking\Entity\Details\IntercityTransfer;
 use Sdk\Booking\ValueObject\BookingId;
-use Sdk\Booking\ValueObject\CarBidCollection;
 use Sdk\Booking\ValueObject\CityId;
 use Sdk\Booking\ValueObject\DetailsId;
 
@@ -25,7 +24,6 @@ class IntercityTransferBuilder extends AbstractServiceDetailsBuilder
             toCityId: new CityId($detailsData['toCityId']),
             returnTripIncluded: $detailsData['returnTripIncluded'] ?? false,
             departureDate: $details->date_start,
-            carBids: CarBidCollection::fromData($detailsData['carBids'])
         );
     }
 }

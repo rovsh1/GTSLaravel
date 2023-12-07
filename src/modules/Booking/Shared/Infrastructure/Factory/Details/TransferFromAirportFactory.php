@@ -23,7 +23,6 @@ class TransferFromAirportFactory extends AbstractServiceDetailsFactory implement
         BookingId $bookingId,
         ServiceInfo $serviceInfo,
         int $airportId,
-        CarBidCollection $carBids,
         ?string $flightNumber,
         ?DateTimeInterface $arrivalDate,
         ?string $meetingTablet
@@ -37,7 +36,6 @@ class TransferFromAirportFactory extends AbstractServiceDetailsFactory implement
                 'airportId' => $airportId,
                 'flightNumber' => $flightNumber,
                 'meetingTablet' => $meetingTablet,
-                'carBids' => $carBids->toData(),
             ]
         ]);
 

@@ -7,6 +7,7 @@ namespace Module\Booking\Moderation\Application\UseCase\HotelBooking\Accommodati
 use Module\Booking\Moderation\Application\RequestDto\UpdateRoomRequestDto;
 use Module\Booking\Moderation\Application\Service\AccommodationChecker;
 use Module\Booking\Moderation\Application\Service\AccommodationFactory;
+use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Repository\AccommodationRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Service\BookingUnitOfWorkInterface;
 use Sdk\Booking\Entity\HotelAccommodation;
@@ -44,7 +45,7 @@ final class Update implements UseCaseInterface
         $this->accommodationFactory->fromRequest($requestDto);
 
         if ($currentAccommodation->roomInfo()->id() === $requestDto->roomId) {
-            $this->doUpdate($booking, $currentAccommodation);
+            $this->doUpdate($currentAccommodation);
         } else {
             $this->doReplace($booking, $currentAccommodation);
         }
@@ -53,7 +54,7 @@ final class Update implements UseCaseInterface
         $this->bookingUnitOfWork->commit();
     }
 
-    private function doUpdate($booking, HotelAccommodation $currentAccommodation): void
+    private function doUpdate(HotelAccommodation $currentAccommodation): void
     {
         $accommodationDetails = $this->accommodationFactory->buildDetails();
         if ($currentAccommodation->details()->isEqual($accommodationDetails)) {
@@ -64,7 +65,7 @@ final class Update implements UseCaseInterface
         $currentAccommodation->updateDetails($accommodationDetails);
     }
 
-    private function doReplace($booking, HotelAccommodation $beforeAccommodation): void
+    private function doReplace(Booking $booking, HotelAccommodation $beforeAccommodation): void
     {
         $this->bookingUnitOfWork->commiting(function () use ($booking, $beforeAccommodation) {
             $this->accommodationRepository->delete($beforeAccommodation->id());

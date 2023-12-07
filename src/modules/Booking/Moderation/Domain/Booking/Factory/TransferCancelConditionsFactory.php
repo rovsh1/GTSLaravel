@@ -23,6 +23,13 @@ class TransferCancelConditionsFactory
         private readonly SupplierAdapterInterface $supplierAdapter
     ) {}
 
+    /**
+     * @param int $serviceId
+     * @param CarBidCollection $carBids
+     * @param \DateTimeInterface $bookingDate
+     * @return CancelConditions|null
+     * @throws NotFoundServiceCancelConditions
+     */
     public function build(
         int $serviceId,
         CarBidCollection $carBids,

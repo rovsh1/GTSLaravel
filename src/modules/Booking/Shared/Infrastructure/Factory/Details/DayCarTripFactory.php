@@ -23,7 +23,6 @@ class DayCarTripFactory extends AbstractServiceDetailsFactory implements DayCarT
         BookingId $bookingId,
         ServiceInfo $serviceInfo,
         int $cityId,
-        CarBidCollection $carBids,
         ?string $destinationsDescription,
         ?DateTimeInterface $departureDate,
     ): DayCarTrip {
@@ -33,7 +32,6 @@ class DayCarTripFactory extends AbstractServiceDetailsFactory implements DayCarT
             'service_id' => $serviceInfo->id(),
             'data' => [
                 'serviceInfo' => $this->serializeServiceInfo($serviceInfo),
-                'carBids' => $carBids->toData(),
                 'cityId' => $cityId,
                 'destinationsDescription' => $destinationsDescription,
             ]

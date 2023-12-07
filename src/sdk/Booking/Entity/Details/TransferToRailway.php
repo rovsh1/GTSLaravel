@@ -6,13 +6,11 @@ namespace Sdk\Booking\Entity\Details;
 
 use DateTimeInterface;
 use Sdk\Booking\Contracts\Entity\TransferDetailsInterface;
-use Sdk\Booking\Entity\Details\Concerns\HasCarBidCollectionTrait;
 use Sdk\Booking\Entity\Details\Concerns\HasDepartureDateTrait;
 use Sdk\Booking\Entity\Details\Concerns\HasMeetingTabletTrait;
 use Sdk\Booking\Entity\Details\Concerns\HasTrainNumberTrait;
 use Sdk\Booking\Support\Entity\AbstractServiceDetails;
 use Sdk\Booking\ValueObject\BookingId;
-use Sdk\Booking\ValueObject\CarBidCollection;
 use Sdk\Booking\ValueObject\DetailsId;
 use Sdk\Booking\ValueObject\RailwayStationId;
 use Sdk\Booking\ValueObject\ServiceInfo;
@@ -23,7 +21,6 @@ final class TransferToRailway extends AbstractServiceDetails implements Transfer
 {
     use HasTrainNumberTrait;
     use HasDepartureDateTrait;
-    use HasCarBidCollectionTrait;
     use HasMeetingTabletTrait;
 
     public function __construct(
@@ -34,7 +31,6 @@ final class TransferToRailway extends AbstractServiceDetails implements Transfer
         private ?string $trainNumber,
         private ?string $meetingTablet,
         private ?DateTimeInterface $departureDate,
-        private CarBidCollection $carBids
     ) {
         parent::__construct($id, $bookingId, $serviceInfo);
     }
@@ -59,7 +55,6 @@ final class TransferToRailway extends AbstractServiceDetails implements Transfer
             'trainNumber' => $this->trainNumber,
             'meetingTablet' => $this->meetingTablet,
             'departureDate' => $this->departureDate?->getTimestamp(),
-            'carBids' => $this->carBids->toData(),
         ];
     }
 
@@ -73,7 +68,6 @@ final class TransferToRailway extends AbstractServiceDetails implements Transfer
             $payload['trainNumber'],
             $payload['meetingTablet'],
             $payload['departureDate'] ? DateTimeImmutableFactory::createFromTimestamp($payload['departureDate']) : null,
-            CarBidCollection::fromData($payload['guestIds'])
         );
     }
 }

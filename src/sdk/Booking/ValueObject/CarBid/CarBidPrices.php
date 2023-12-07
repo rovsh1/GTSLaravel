@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Sdk\Booking\ValueObject\CarBid;
 
+use Sdk\Shared\Contracts\Support\SerializableInterface;
 use Sdk\Shared\Enum\CurrencyEnum;
 
-class CarBidPrices
+class CarBidPrices implements SerializableInterface
 {
     public function __construct(
         private readonly CarBidPriceItem $supplierPrice,
@@ -31,7 +32,7 @@ class CarBidPrices
         return $this->clientPrice;
     }
 
-    public function toData(): array
+    public function serialize(): array
     {
         return [
             'supplierPrice' => $this->supplierPrice->serialize(),
@@ -39,11 +40,11 @@ class CarBidPrices
         ];
     }
 
-    public static function fromData(array $data): static
+    public static function deserialize(array $payload): static
     {
         return new static(
-            supplierPrice: CarBidPriceItem::deserialize($data['supplierPrice']),
-            clientPrice: CarBidPriceItem::deserialize($data['clientPrice']),
+            supplierPrice: CarBidPriceItem::deserialize($payload['supplierPrice']),
+            clientPrice: CarBidPriceItem::deserialize($payload['clientPrice']),
         );
     }
 

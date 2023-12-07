@@ -18,7 +18,6 @@ class IntercityTransferStorage extends AbstractStorage
                 'fromCityId' => $details->fromCityId()->value(),
                 'toCityId' => $details->toCityId()->value(),
                 'returnTripIncluded' => $details->isReturnTripIncluded(),
-                'carBids' => $details->carBids()->toData(),
             ]
         ]);
     }

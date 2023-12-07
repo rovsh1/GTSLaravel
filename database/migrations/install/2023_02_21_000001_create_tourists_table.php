@@ -32,6 +32,7 @@ return new class extends Migration {
 
         $this->upBookingHotelRoomGuests();
         $this->upBookingAirportGuests();
+        $this->upBookingCarBidGuests();
     }
 
     private function upBookingHotelRoomGuests(): void
@@ -78,8 +79,31 @@ return new class extends Migration {
         });
     }
 
+    private function upBookingCarBidGuests(): void
+    {
+        Schema::create('booking_car_bid_guests', function (Blueprint $table) {
+            $table->unsignedInteger('car_bid_id');
+            $table->unsignedInteger('guest_id');
+
+            $table->primary(['car_bid_id', 'guest_id']);
+
+            $table->foreign('car_bid_id')
+                ->references('id')
+                ->on('booking_car_bids')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+
+            $table->foreign('guest_id')
+                ->references('id')
+                ->on('order_guests')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+        });
+    }
+
     public function down(): void
     {
+        Schema::dropIfExists('booking_car_bid_guests');
         Schema::dropIfExists('booking_hotel_room_guests');
         Schema::dropIfExists('booking_airport_guests');
         Schema::dropIfExists('order_guests');

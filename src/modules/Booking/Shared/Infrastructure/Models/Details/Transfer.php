@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Module\Booking\Shared\Infrastructure\Models\Details;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Module\Booking\Shared\Infrastructure\Models\CarBid;
 use Sdk\Module\Database\Eloquent\Model;
 use Sdk\Shared\Enum\ServiceTypeEnum;
 
@@ -18,6 +20,8 @@ class Transfer extends Model
         'date_start',
         'date_end',
         'data',
+
+        'carBids',
     ];
 
     protected $casts = [
@@ -34,6 +38,15 @@ class Transfer extends Model
                 ->join('supplier_services', 'supplier_services.id', '=', 'booking_transfer_details.service_id')
                 ->addSelect('supplier_services.type as service_type');
         });
+    }
+
+    public function carBids(): HasMany
+    {
+        return $this->hasMany(
+            CarBid::class,
+            'booking_id',
+            'booking_id'
+        );
     }
 
     public function scopeWhereId(Builder $builder, int $id): void
