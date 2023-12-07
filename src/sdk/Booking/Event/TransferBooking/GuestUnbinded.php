@@ -6,10 +6,9 @@ use Sdk\Booking\Contracts\Event\BookingEventInterface;
 use Sdk\Booking\Entity\CarBid;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\GuestId;
-use Sdk\Module\Contracts\Event\IntegrationEventInterface;
 use Sdk\Shared\Event\IntegrationEventMessages;
 
-class GuestUnbinded implements BookingEventInterface, IntegrationEventInterface
+class GuestUnbinded implements BookingEventInterface
 {
     public function __construct(
         public readonly CarBid $carBid,

@@ -6,11 +6,9 @@ use Sdk\Booking\Contracts\Entity\DetailsInterface;
 use Sdk\Booking\Contracts\Event\PriceBecomeDeprecatedEventInterface;
 use Sdk\Booking\Support\Event\AbstractDetailsEvent;
 use Sdk\Booking\ValueObject\GuestId;
-use Sdk\Module\Contracts\Event\IntegrationEventInterface;
 use Sdk\Shared\Event\IntegrationEventMessages;
 
-class GuestBinded extends AbstractDetailsEvent implements PriceBecomeDeprecatedEventInterface,
-                                                          IntegrationEventInterface
+class GuestBinded extends AbstractDetailsEvent implements PriceBecomeDeprecatedEventInterface
 {
     public function __construct(
         DetailsInterface $details,

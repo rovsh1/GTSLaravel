@@ -8,9 +8,7 @@ use Sdk\Module\Contracts\Event\IntegrationEventMessage;
 
 class MessageSender
 {
-    private array $availableModules = [
-        'BookingEventSourcing'
-    ];
+    public function __construct(private readonly array $availableModules) {}
 
     public function send(Message $message): void
     {
@@ -25,7 +23,11 @@ class MessageSender
 
             $module->boot();
 
-            $module->dispatchEvent($event);
+            try {
+                $module->dispatchEvent($event);
+            } catch (\Throwable $e) {
+                dd($e);
+            }
         }
     }
 

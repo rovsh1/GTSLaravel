@@ -2,13 +2,12 @@
 
 namespace Module\Booking\EventSourcing\Application\Service\HistoryBuilder;
 
-use Module\Booking\EventSourcing\Application\Dto\EventDto;
 use Module\Booking\EventSourcing\Infrastructure\Model\BookingHistory;
 use Module\Booking\Shared\Application\Factory\BookingStatusDtoFactory;
 use Module\Booking\Shared\Domain\Booking\Service\BookingStatusStorageInterface;
 use Sdk\Booking\Enum\StatusEnum;
 
-class StatusDtoFactory extends AbstractDtoFactory implements DtoFactoryInterface
+class StatusDescriptor extends AbstractDescriptor implements DescriptorInterface
 {
     private readonly array $statusColors;
 
@@ -24,10 +23,9 @@ class StatusDtoFactory extends AbstractDtoFactory implements DtoFactoryInterface
         $this->statusColors = $colors;
     }
 
-    public function build(BookingHistory $history): EventDto
+    public function build(BookingHistory $history): DescriptionDto
     {
-        return $this->wrap(
-            $history,
+        return new DescriptionDto(
             $this->bookingStatusStorage->getName(StatusEnum::from($history->payload['status'])),
             $this->statusColors[$history->payload['status']] ?? null
         );

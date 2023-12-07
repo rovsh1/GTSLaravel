@@ -19,12 +19,14 @@ class IntegrationEventServiceProvider extends ServiceProvider
         IntegrationEventMessages::BOOKING_CREATED,
         IntegrationEventMessages::BOOKING_STATUS_UPDATED,
         IntegrationEventMessages::BOOKING_REQUEST_SENT,
+        IntegrationEventMessages::BOOKING_DETAILS_MODIFIED,
         IntegrationEventMessages::HOTEL_BOOKING_ACCOMMODATION_ADDED,
         IntegrationEventMessages::HOTEL_BOOKING_ACCOMMODATION_REMOVED,
         IntegrationEventMessages::HOTEL_BOOKING_ACCOMMODATION_DETAILS_EDITED,
         IntegrationEventMessages::HOTEL_BOOKING_ACCOMMODATION_REPLACED,
         IntegrationEventMessages::HOTEL_BOOKING_GUEST_ADDED,
         IntegrationEventMessages::HOTEL_BOOKING_GUEST_REMOVED,
+        IntegrationEventMessages::BOOKING_DELETED,
     ];
 
     protected string $changesListener = RegisterEventListener::class;
