@@ -102,20 +102,23 @@ onMounted(async () => {
 })
 </script>
 <template>
-  <Card>
+  <Card :exist-grid="true">
     <div>
       <div class="quicksearch-wrapper mt-3">
-        <input
-          ref="searchInput"
-          type="search"
-          class="form-control"
-          placeholder="Поиск"
-          autocomplete="off"
-          :value="searchQuery"
-          @input="handleSearchInput"
-        />
-        <button class="icon" type="submit" title="Найти">search</button>
+        <div class="quicksearch">
+          <input
+            ref="searchInput"
+            type="search"
+            class="form-control"
+            placeholder="Поиск"
+            autocomplete="off"
+            :value="searchQuery"
+            @input="handleSearchInput"
+          />
+          <button class="icon" type="submit" title="Найти">search</button>
+        </div>
       </div>
+
       <div class="position-relative">
         <OverlayLoading v-if="isLocalesFetching" />
         <table v-if="locales && locales.length" class="table table-striped mt-3">
@@ -276,8 +279,16 @@ onMounted(async () => {
   margin: 0;
 }
 
-.quicksearch-wrapper input {
-  width: 100%;
+.quicksearch-wrapper {
+  padding: 0 1rem;
+
+  .quicksearch {
+    position: relative;
+
+    input {
+      width: 100%;
+    }
+  }
 }
 
 .translate {
