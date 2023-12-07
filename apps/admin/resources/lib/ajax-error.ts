@@ -7,7 +7,7 @@ type UseFetchContextError = {
 }
 
 export const handleAjaxError = (errorCtx: UseFetchContextError): void => {
-  if (errorCtx.response?.status === 403) {
+  if (errorCtx.response?.status === 401) {
     location.href = `/login?url=${encodeURIComponent(location.pathname)}`
   } else {
     const message = errorCtx.data?.error || errorCtx.error.message
