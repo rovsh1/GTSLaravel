@@ -38,6 +38,7 @@ class LocaleDictionaryController extends Controller
             $values[$lang->code] = $data['value_' . $lang->code] ?? null;
         }
         $dictionary->storeValues($values);
+        $dictionary->touch();
 
         return response()->json([]);
     }

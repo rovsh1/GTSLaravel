@@ -58,12 +58,12 @@ class SyncTranslations implements UseCaseInterface
                 continue;
             }
 
-            $id = Dictionary::insertGetId([
+            $d = Dictionary::create([
                 'key' => $key
             ]);
 
             DB::table('r_locale_dictionary_values')->insert([
-                'dictionary_id' => $id,
+                'dictionary_id' => $d->id,
                 'language' => 'ru',
                 'value' => $value ?: $key
             ]);
