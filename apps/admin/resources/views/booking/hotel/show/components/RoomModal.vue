@@ -219,7 +219,7 @@ watch(() => props.opened, async (opened) => {
           :options="preparedRooms"
           required
           label="Номер"
-          :disabled="preparedRooms.length === 0"
+          :disabled="preparedRooms.length === 0 || hotelRoomsStore.isFetchAvailableRooms"
           disabled-placeholder="Нет доступных квот на заданный период"
           :value="formData.id"
           @change="(value, event) => {

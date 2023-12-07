@@ -1,5 +1,3 @@
-import { onMounted } from 'vue'
-
 import { defineStore } from 'pinia'
 import { z } from 'zod'
 
@@ -21,15 +19,12 @@ const { bookingID, hotelRooms } = requestInitialData('view-initial-data-hotel-bo
 }))
 
 export const useHotelRoomsStore = defineStore('booking-hotel-rooms', () => {
-  const { data: availableRooms, execute: fetchAvailableRooms } = useGetAvailableRoomsAPI({ bookingID })
-
-  onMounted(() => {
-    fetchAvailableRooms()
-  })
+  const { data: availableRooms, execute: fetchAvailableRooms, isFetching: isFetchAvailableRooms } = useGetAvailableRoomsAPI({ bookingID })
 
   return {
     availableRooms,
     fetchAvailableRooms,
+    isFetchAvailableRooms,
     hotelRooms,
   }
 })
