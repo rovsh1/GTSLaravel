@@ -3,8 +3,10 @@
 namespace Module\Booking\Moderation\Application\Service;
 
 use Module\Booking\Moderation\Application\Dto\CarBidDataDto;
+use Module\Booking\Moderation\Application\Exception\NotFoundServiceCancelConditionsException;
 use Module\Booking\Moderation\Application\Exception\NotFoundServicePriceException as NotFoundApplicationException;
 use Module\Booking\Moderation\Application\Exception\ServiceDateUndefinedException;
+use Module\Booking\Moderation\Domain\Booking\Exception\NotFoundServiceCancelConditions;
 use Module\Booking\Moderation\Domain\Booking\Service\TransferBooking\CarBidPriceBuilder;
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
@@ -38,6 +40,13 @@ class CarBidFactory
         $this->data = $request;
     }
 
+    /**
+     * @param BookingId $bookingId
+     * @return CarBid
+     * @throws EntityNotFoundException
+     * @throws ServiceDateUndefinedException
+     * @throws NotFoundServiceCancelConditions
+     */
     public function create(BookingId $bookingId): CarBid
     {
         $this->booking = $this->bookingUnitOfWork->findOrFail($bookingId);
@@ -61,13 +70,20 @@ class CarBidFactory
         );
     }
 
+    /**
+     * @return void
+     * @throws EntityNotFoundException
+     * @throws ServiceDateUndefinedException
+     * @throws NotFoundServiceCancelConditions
+     */
     private function validate(): void
     {
-        $this->ensureCarExists();
+        $this->ensureExistsCar();
         $this->ensureBookingServiceDateDefined();
+        $this->ensureExistsCarCancelConditions();
     }
 
-    private function ensureCarExists(): void
+    private function ensureExistsCar(): void
     {
         $carId = $this->data->carId;
         $car = $this->supplierAdapter->findCar($carId);
@@ -80,6 +96,18 @@ class CarBidFactory
     {
         if ($this->details->serviceDate() === null) {
             throw new ServiceDateUndefinedException();
+        }
+    }
+
+    private function ensureExistsCarCancelConditions(): void
+    {
+        $carCancelConditions = $this->supplierAdapter->getCarCancelConditions(
+            $this->details->serviceInfo()->id(),
+            $this->data->carId,
+            $this->details->serviceDate()
+        );
+        if ($carCancelConditions === null) {
+            throw new NotFoundServiceCancelConditionsException();
         }
     }
 

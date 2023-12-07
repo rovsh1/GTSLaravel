@@ -7,12 +7,9 @@ use Module\Booking\Shared\Domain\Booking\Listener\UpdateBookingCancelConditionsL
 use Module\Booking\Shared\Domain\Booking\Listener\UpdateHotelQuotaListener;
 use Module\Booking\Shared\Domain\Order\Event\OrderCancelled;
 use Module\Booking\Shared\Domain\Order\Listener\OrderCancelledListener;
+use Sdk\Booking\Contracts\Event\CarBidChangedInterface;
 use Sdk\Booking\Contracts\Event\PriceBecomeDeprecatedEventInterface;
 use Sdk\Booking\Contracts\Event\QuotaChangedEventInterface;
-use Sdk\Booking\Event\TransferBooking\CarBidAdded;
-use Sdk\Booking\Event\TransferBooking\CarBidRemoved;
-use Sdk\Booking\Event\TransferBooking\CarBidReplaced;
-use Sdk\Booking\Event\TransferBooking\CarBidUpdated;
 use Sdk\Module\Support\Providers\DomainEventServiceProvider as ServiceProvider;
 
 class DomainEventServiceProvider extends ServiceProvider
@@ -23,9 +20,6 @@ class DomainEventServiceProvider extends ServiceProvider
         PriceBecomeDeprecatedEventInterface::class => RecalculateBookingPricesListener::class,
         QuotaChangedEventInterface::class => UpdateHotelQuotaListener::class,
 
-        CarBidAdded::class => UpdateBookingCancelConditionsListener::class,
-        CarBidRemoved::class => UpdateBookingCancelConditionsListener::class,
-        CarBidUpdated::class => UpdateBookingCancelConditionsListener::class,
-        CarBidReplaced::class => UpdateBookingCancelConditionsListener::class,
+        CarBidChangedInterface::class => UpdateBookingCancelConditionsListener::class,
     ];
 }

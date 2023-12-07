@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Sdk\Booking\Entity;
 
 use Sdk\Booking\Contracts\Entity\BookingPartInterface;
+use Sdk\Booking\Entity\Details\Concerns\HasGuestIdCollectionTrait;
 use Sdk\Booking\Event\HotelBooking\AccommodationDetailsEdited;
 use Sdk\Booking\Event\HotelBooking\GuestBinded;
 use Sdk\Booking\Event\HotelBooking\GuestUnbinded;
@@ -20,6 +21,8 @@ use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 
 final class HotelAccommodation extends AbstractAggregateRoot implements BookingPartInterface
 {
+    use HasGuestIdCollectionTrait;
+
     public function __construct(
         private readonly AccommodationId $id,
         private readonly BookingId $bookingId,
@@ -63,36 +66,6 @@ final class HotelAccommodation extends AbstractAggregateRoot implements BookingP
     public function updatePrices(RoomPrices $prices): void
     {
         $this->prices = $prices;
-    }
-
-    public function guestIds(): GuestIdCollection
-    {
-        return $this->guestIds;
-    }
-
-    public function addGuest(GuestId $id): void
-    {
-        if ($this->guestIds->has($id)) {
-            throw new GuestAlreadyExists('Guest already exists');
-        }
-        $this->guestIds = new GuestIdCollection([...$this->guestIds->all(), $id]);
-        $this->pushEvent(new GuestBinded($this, $id));
-    }
-
-    public function removeGuest(GuestId $guestId): void
-    {
-        if (!$this->guestIds->has($guestId)) {
-            throw new GuestAlreadyExists('Guest not found');
-        }
-        $this->guestIds = new GuestIdCollection(
-            array_filter($this->guestIds->all(), fn($id) => !$guestId->isEqual($id))
-        );
-        $this->pushEvent(new GuestUnbinded($this, $guestId));
-    }
-
-    public function guestsCount(): int
-    {
-        return count($this->guestIds);
     }
 
     public function serialize(): array

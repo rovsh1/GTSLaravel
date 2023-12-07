@@ -4,7 +4,6 @@ namespace Module\Booking\Shared\Domain\Order\Listener;
 
 use Module\Booking\Shared\Domain\Order\Adapter\InvoiceAdapterInterface;
 use Module\Booking\Shared\Domain\Order\Event\OrderCancelled;
-use Module\Client\Invoicing\Application\Exception\InvoiceNotFoundException;
 use Sdk\Module\Contracts\Event\DomainEventInterface;
 use Sdk\Module\Contracts\Event\DomainEventListenerInterface;
 
@@ -18,10 +17,6 @@ class OrderCancelledListener implements DomainEventListenerInterface
     {
         assert($event instanceof OrderCancelled);
 
-        try {
-            $this->invoiceAdapter->cancelInvoice($event->order->id());
-        } catch (InvoiceNotFoundException $e) {
-            //@todo можно ли ловить эексепшены другого модуля?
-        }
+        $this->invoiceAdapter->cancelInvoice($event->order->id());
     }
 }

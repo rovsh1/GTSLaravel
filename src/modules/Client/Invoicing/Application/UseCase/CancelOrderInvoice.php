@@ -3,7 +3,6 @@
 namespace Module\Client\Invoicing\Application\UseCase;
 
 use Module\Client\Invoicing\Application\Exception\CancellationForbiddenException;
-use Module\Client\Invoicing\Application\Exception\InvoiceNotFoundException;
 use Module\Client\Invoicing\Domain\Invoice\Exception\InvalidOrderStatusToCancelInvoice;
 use Module\Client\Invoicing\Domain\Invoice\Repository\InvoiceRepositoryInterface;
 use Module\Client\Invoicing\Domain\Order\Order;
@@ -24,7 +23,9 @@ class CancelOrderInvoice implements UseCaseInterface
 
         $invoice = $this->invoiceRepository->findByOrderId($order->id());
         if ($invoice === null) {
-            throw new InvoiceNotFoundException();
+            //@todo может понадобится эксепшн?
+//            throw new InvoiceNotFoundException();
+            return;
         }
 
         try {

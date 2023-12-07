@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\UseCase\ServiceBooking\CarBid;
 
-use Module\Booking\Moderation\Application\Exception\NotFoundServiceCancelConditionsException;
-use Module\Booking\Moderation\Domain\Booking\Exception\NotFoundServiceCancelConditions;
 use Module\Booking\Shared\Domain\Booking\DbContext\CarBidDbContextInterface;
 use Module\Booking\Shared\Domain\Booking\Service\BookingUnitOfWorkInterface;
 use Sdk\Booking\Event\TransferBooking\CarBidRemoved;
@@ -34,12 +32,6 @@ class Remove implements UseCaseInterface
             $details = $this->bookingUnitOfWork->getDetails($currentCarBid->bookingId());
             $this->eventDispatcher->dispatch(new CarBidRemoved($details, $currentCarBid));
         });
-
-        try {
-            //@todo проверить, что корректно отрабатывает
-            $this->bookingUnitOfWork->commit();
-        } catch (NotFoundServiceCancelConditions $e) {
-            throw new NotFoundServiceCancelConditionsException($e);
-        }
+        $this->bookingUnitOfWork->commit();
     }
 }

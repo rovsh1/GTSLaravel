@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Moderation\Application\UseCase\ServiceBooking\CarBid;
 
 use Module\Booking\Moderation\Application\Dto\CarBidDataDto;
-use Module\Booking\Moderation\Application\Exception\NotFoundServiceCancelConditionsException;
 use Module\Booking\Moderation\Application\Service\CarBidFactory;
-use Module\Booking\Moderation\Domain\Booking\Exception\NotFoundServiceCancelConditions;
 use Module\Booking\Shared\Domain\Booking\DbContext\CarBidDbContextInterface;
 use Module\Booking\Shared\Domain\Booking\Service\BookingUnitOfWorkInterface;
 use Sdk\Booking\Entity\CarBid;
@@ -41,12 +39,7 @@ class Update implements UseCaseInterface
             $this->doReplace($currentCarBid);
         }
 
-        try {
-            //@todo проверить, что корректно отрабатывает
-            $this->bookingUnitOfWork->commit();
-        } catch (NotFoundServiceCancelConditions $e) {
-            throw new NotFoundServiceCancelConditionsException($e);
-        }
+        $this->bookingUnitOfWork->commit();
     }
 
     private function doUpdate(CarBid $currentCarBid): void
@@ -64,7 +57,6 @@ class Update implements UseCaseInterface
             $this->carBidDbContext->delete($beforeCarBid->id());
             $carBid = $this->carBidFactory->create($beforeCarBid->bookingId());
             $details = $this->bookingUnitOfWork->getDetails($beforeCarBid->bookingId());
-            //@todo обновление cancel conditions в листенере и отдельный трайкетч
             $this->eventDispatcher->dispatch(new CarBidReplaced($details, $beforeCarBid, $carBid));
         });
     }

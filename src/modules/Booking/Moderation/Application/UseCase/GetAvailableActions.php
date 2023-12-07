@@ -10,6 +10,7 @@ use Module\Booking\Moderation\Domain\Booking\Service\StatusRules\StatusTransitio
 use Module\Booking\Shared\Application\Factory\BookingStatusDtoFactory;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
+use Module\Booking\Shared\Domain\Order\Repository\OrderRepositoryInterface;
 use Sdk\Booking\Dto\StatusDto;
 use Sdk\Booking\Enum\StatusEnum;
 use Sdk\Booking\ValueObject\BookingId;
@@ -21,13 +22,16 @@ class GetAvailableActions implements UseCaseInterface
         private readonly StatusTransitionsFactory $statusTransitionsFactory,
         private readonly EditRules $editRules,
         private readonly BookingRepositoryInterface $repository,
+        private readonly OrderRepositoryInterface $orderRepository,
         private readonly BookingStatusDtoFactory $statusDtoFactory,
-    ) {
-    }
+    ) {}
 
     public function execute(int $bookingId): AvailableActionsDto
     {
         $booking = $this->repository->findOrFail(new BookingId($bookingId));
+        $order = $this->orderRepository->findOrFail($booking->orderId());
+        //@todo сервис ensureOrderInMOderation
+        $isOrderInModeration = $order->inModeration();
 
         $this->editRules->booking($booking);
 

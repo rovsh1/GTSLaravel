@@ -3,6 +3,9 @@
 namespace Sdk\Booking\Entity\Details\Concerns;
 
 use Sdk\Booking\Entity\CarBid;
+use Sdk\Booking\Entity\HotelAccommodation;
+use Sdk\Booking\Event\HotelBooking\GuestBinded as HotelAccommodationGuestBinded;
+use Sdk\Booking\Event\HotelBooking\GuestUnbinded as HotelAccommodationGuestUnbinded;
 use Sdk\Booking\Event\ServiceBooking\GuestBinded;
 use Sdk\Booking\Event\ServiceBooking\GuestUnbinded;
 use Sdk\Booking\Event\TransferBooking\GuestBinded as CarBidGuestBinded;
@@ -25,9 +28,13 @@ trait HasGuestIdCollectionTrait
         }
         $this->guestIds = new GuestIdCollection([...$this->guestIds->all(), $id]);
 
-        $event = $this instanceof CarBid
-            ? new CarBidGuestBinded($this, $id)
-            : new GuestBinded($this, $id);
+        if ($this instanceof HotelAccommodation) {
+            $event = new HotelAccommodationGuestBinded($this, $id);
+        } elseif ($this instanceof CarBid) {
+            $event = new CarBidGuestBinded($this, $id);
+        } else {
+            $event = new GuestBinded($this, $id);
+        }
 
         $this->pushEvent($event);
     }
@@ -41,9 +48,13 @@ trait HasGuestIdCollectionTrait
             array_filter($this->guestIds->all(), fn($id) => !$guestId->isEqual($id))
         );
 
-        $event = $this instanceof CarBid
-            ? new CarBidGuestUnbinded($this, $guestId)
-            : new GuestUnbinded($this, $guestId);
+        if ($this instanceof HotelAccommodation) {
+            $event = new HotelAccommodationGuestUnbinded($this, $guestId);
+        } elseif ($this instanceof CarBid) {
+            $event = new CarBidGuestUnbinded($this, $guestId);
+        } else {
+            $event = new GuestUnbinded($this, $guestId);
+        }
 
         $this->pushEvent($event);
     }

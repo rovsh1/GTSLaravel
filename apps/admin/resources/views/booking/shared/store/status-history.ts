@@ -24,7 +24,7 @@ export const useBookingStatusHistoryStore = defineStore('booking-status-history'
       return undefined
     }
 
-    return statusHistoryEvents.value[statusHistoryEvents.value.length - 1]
+    return statusHistoryEvents.value[0]
   })
 
   return {
