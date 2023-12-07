@@ -24,7 +24,6 @@ class TransferToRailwayFactory extends AbstractServiceDetailsFactory implements 
         ServiceInfo $serviceInfo,
         int $railwayStationId,
         int $cityId,
-        CarBidCollection $carBids,
         ?string $trainNumber,
         ?string $meetingTablet,
         ?DateTimeInterface $departureDate,
@@ -39,7 +38,6 @@ class TransferToRailwayFactory extends AbstractServiceDetailsFactory implements 
                 'cityId' => $cityId,
                 'trainNumber' => $trainNumber,
                 'meetingTablet' => $meetingTablet,
-                'carBids' => $carBids->toData(),
             ]
         ]);
 

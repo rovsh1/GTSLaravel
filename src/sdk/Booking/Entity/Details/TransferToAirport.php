@@ -6,14 +6,12 @@ namespace Sdk\Booking\Entity\Details;
 
 use DateTimeInterface;
 use Sdk\Booking\Contracts\Entity\TransferDetailsInterface;
-use Sdk\Booking\Entity\Details\Concerns\HasCarBidCollectionTrait;
 use Sdk\Booking\Entity\Details\Concerns\HasDepartureDateTrait;
 use Sdk\Booking\Entity\Details\Concerns\HasFlightNumberTrait;
 use Sdk\Booking\Entity\Details\Concerns\HasMeetingTabletTrait;
 use Sdk\Booking\Support\Entity\AbstractServiceDetails;
 use Sdk\Booking\ValueObject\AirportId;
 use Sdk\Booking\ValueObject\BookingId;
-use Sdk\Booking\ValueObject\CarBidCollection;
 use Sdk\Booking\ValueObject\DetailsId;
 use Sdk\Booking\ValueObject\ServiceInfo;
 use Sdk\Shared\Enum\ServiceTypeEnum;
@@ -23,7 +21,6 @@ final class TransferToAirport extends AbstractServiceDetails implements Transfer
 {
     use HasFlightNumberTrait;
     use HasDepartureDateTrait;
-    use HasCarBidCollectionTrait;
     use HasMeetingTabletTrait;
 
     public function __construct(
@@ -34,7 +31,6 @@ final class TransferToAirport extends AbstractServiceDetails implements Transfer
         private ?string $flightNumber,
         private ?string $meetingTablet,
         private ?DateTimeInterface $departureDate,
-        private CarBidCollection $carBids
     ) {
         parent::__construct($id, $bookingId, $serviceInfo);
     }
@@ -59,7 +55,6 @@ final class TransferToAirport extends AbstractServiceDetails implements Transfer
             'flightNumber' => $this->flightNumber,
             'meetingTablet' => $this->meetingTablet,
             'departureDate' => $this->departureDate?->getTimestamp(),
-            'carBids' => $this->carBids->toData(),
         ];
     }
 
@@ -73,7 +68,6 @@ final class TransferToAirport extends AbstractServiceDetails implements Transfer
             $payload['flightNumber'],
             $payload['meetingTablet'],
             $payload['departureDate'] ? DateTimeImmutableFactory::createFromTimestamp($payload['departureDate']) : null,
-            CarBidCollection::fromData($payload['guestIds'])
         );
     }
 }

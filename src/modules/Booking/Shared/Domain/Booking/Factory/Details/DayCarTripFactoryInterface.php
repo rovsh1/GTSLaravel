@@ -16,7 +16,6 @@ interface DayCarTripFactoryInterface
         BookingId $bookingId,
         ServiceInfo $serviceInfo,
         int $cityId,
-        CarBidCollection $carBids,
         ?string $destinationsDescription,
         ?DateTimeInterface $departureDate,
     ): DayCarTrip;

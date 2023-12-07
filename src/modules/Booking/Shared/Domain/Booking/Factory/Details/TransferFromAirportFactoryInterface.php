@@ -16,7 +16,6 @@ interface TransferFromAirportFactoryInterface
         BookingId $bookingId,
         ServiceInfo $serviceInfo,
         int $airportId,
-        CarBidCollection $carBids,
         ?string $flightNumber,
         ?DateTimeInterface $arrivalDate,
         ?string $meetingTablet

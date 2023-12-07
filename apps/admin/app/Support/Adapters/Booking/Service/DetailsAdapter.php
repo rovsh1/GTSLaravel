@@ -4,11 +4,6 @@ declare(strict_types=1);
 
 namespace App\Admin\Support\Adapters\Booking\Service;
 
-use Illuminate\Support\Arr;
-use Module\Booking\Moderation\Application\Dto\CarBidDataDto;
-use Module\Booking\Moderation\Application\UseCase\ServiceBooking\CarBid\Add;
-use Module\Booking\Moderation\Application\UseCase\ServiceBooking\CarBid\Remove;
-use Module\Booking\Moderation\Application\UseCase\ServiceBooking\CarBid\Update;
 use Module\Booking\Moderation\Application\UseCase\ServiceBooking\Guest\Bind;
 use Module\Booking\Moderation\Application\UseCase\ServiceBooking\Guest\Unbind;
 use Module\Booking\Moderation\Application\UseCase\ServiceBooking\UpdateDetailsField;
@@ -28,42 +23,5 @@ class DetailsAdapter
     public function unbindGuest(int $bookingId, int $guestId): void
     {
         app(Unbind::class)->execute($bookingId, $guestId);
-    }
-
-    public function addCarBid(int $bookingId, array $carData): void
-    {
-        app(Add::class)->execute(
-            $bookingId,
-            $this->buildCarBidDto($carData)
-        );
-    }
-
-    public function updateCarBid(int $bookingId, string $carBidId, array $carData): void
-    {
-        app(Update::class)->execute(
-            $bookingId,
-            $carBidId,
-            $this->buildCarBidDto($carData)
-        );
-    }
-
-    public function removeCarBid(int $bookingId, string $carBidId): void
-    {
-        app(Remove::class)->execute($bookingId, $carBidId);
-    }
-
-    private function buildCarBidDto(array $data): CarBidDataDto
-    {
-        if (!Arr::has($data, ['carId', 'carsCount', 'passengersCount', 'baggageCount', 'babyCount'])) {
-            throw new \InvalidArgumentException('Invalid car bid');
-        }
-
-        return new CarBidDataDto(
-            $data['carId'],
-            $data['carsCount'],
-            $data['passengersCount'],
-            $data['baggageCount'],
-            $data['babyCount'],
-        );
     }
 }

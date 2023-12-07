@@ -8,7 +8,6 @@ use Module\Booking\Shared\Domain\Booking\Factory\Details\CarRentWithDriverFactor
 use Module\Supplier\Moderation\Infrastructure\Models\Service as InfrastructureSupplierService;
 use Sdk\Booking\Contracts\Entity\DetailsInterface;
 use Sdk\Booking\ValueObject\BookingId;
-use Sdk\Booking\ValueObject\CarBidCollection;
 use Sdk\Booking\ValueObject\ServiceId;
 use Sdk\Booking\ValueObject\ServiceInfo;
 
@@ -16,8 +15,7 @@ class CarRentWithDriver extends AbstractEditor implements EditorInterface
 {
     public function __construct(
         private readonly CarRentWithDriverFactoryInterface $detailsFactory
-    ) {
-    }
+    ) {}
 
     public function create(BookingId $bookingId, ServiceId $serviceId, array $detailsData): DetailsInterface
     {
@@ -29,7 +27,6 @@ class CarRentWithDriver extends AbstractEditor implements EditorInterface
             $bookingId,
             $serviceInfo,
             (int)$supplierService->data['cityId'],
-            new CarBidCollection([]),
             null,
         );
     }

@@ -18,7 +18,6 @@ class TransferToRailwayStorage extends AbstractStorage
                 'railwayStationId' => $details->railwayStationId()->value(),
                 'trainNumber' => $details->trainNumber(),
                 'meetingTablet' => $details->meetingTablet(),
-                'carBids' => $details->carBids()->toData(),
             ]
         ]);
     }

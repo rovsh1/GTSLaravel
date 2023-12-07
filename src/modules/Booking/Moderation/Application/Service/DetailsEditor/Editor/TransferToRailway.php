@@ -8,7 +8,6 @@ use Module\Booking\Shared\Domain\Booking\Factory\Details\TransferToRailwayFactor
 use Module\Supplier\Moderation\Infrastructure\Models\Service as InfrastructureSupplierService;
 use Sdk\Booking\Entity\Details\TransferToRailway as Entity;
 use Sdk\Booking\ValueObject\BookingId;
-use Sdk\Booking\ValueObject\CarBidCollection;
 use Sdk\Booking\ValueObject\ServiceId;
 use Sdk\Booking\ValueObject\ServiceInfo;
 
@@ -16,8 +15,7 @@ class TransferToRailway extends AbstractEditor implements EditorInterface
 {
     public function __construct(
         private readonly TransferToRailwayFactoryInterface $detailsFactory,
-    ) {
-    }
+    ) {}
 
     public function create(BookingId $bookingId, ServiceId $serviceId, array $detailsData): Entity
     {
@@ -30,7 +28,6 @@ class TransferToRailway extends AbstractEditor implements EditorInterface
             $serviceInfo,
             (int)$supplierService->data['railwayStationId'],
             (int)$supplierService->data['cityId'],
-            new CarBidCollection([]),
             $detailsData['trainNumber'] ?? null,
             $detailsData['meetingTablet'] ?? null,
             $detailsData['date'] ?? null,

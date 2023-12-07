@@ -11,10 +11,6 @@ use Illuminate\Support\Facades\Facade;
  *
  * @method static void bindGuest(int $bookingId, int $guestId)
  * @method static void unbindGuest(int $bookingId, int $guestId)
- *
- * @method static void addCarBid(int $bookingId, array $carData)
- * @method static void updateCarBid(int $bookingId, string $carBidId, array $carData)
- * @method static void removeCarBid(int $bookingId, string $carBidId)
  */
 class DetailsAdapter extends Facade
 {

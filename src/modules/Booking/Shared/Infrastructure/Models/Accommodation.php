@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace Module\Booking\Shared\Infrastructure\Models;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Module\Booking\Shared\Infrastructure\Models\Concerns\HasGuestsTrait;
 use Sdk\Module\Database\Eloquent\Model;
 
 class Accommodation extends Model
 {
+    use HasGuestsTrait;
+
     protected $table = 'booking_hotel_accommodations';
 
     protected $fillable = [
@@ -26,8 +27,6 @@ class Accommodation extends Model
         'data' => 'array'
     ];
 
-    private array $savingGuestIds;
-
     protected static function booted()
     {
         static::addGlobalScope('default', function (Builder $builder) {
@@ -36,13 +35,7 @@ class Accommodation extends Model
                 ->join('bookings', 'bookings.id', '=', 'booking_hotel_accommodations.booking_id')
                 ->addSelect('bookings.order_id as booking_order_id');
         });
-
-        static::saved(function (self $model) {
-            if (isset($model->savingGuestIds)) {
-                $model->guests()->sync($model->savingGuestIds);
-                unset($model->savingGuestIds);
-            }
-        });
+        static::bootGuests();
     }
 
     public function scopeWhereBookingId(Builder $builder, int $id): void
@@ -55,25 +48,18 @@ class Accommodation extends Model
         $builder->where('booking_hotel_accommodations.id', $id);
     }
 
-    public function guests(): BelongsToMany
+    protected function getGuestsTable(): string
     {
-        return $this->belongsToMany(
-            Guest::class,
-            'booking_hotel_room_guests',
-            'accommodation_id',
-            'guest_id'
-        );
+        return 'booking_hotel_room_guests';
     }
 
-    public function guestIds(): Attribute
+    protected function getForeignPivotKey(): string
     {
-        return Attribute::make(
-            get: fn() => $this->guests()->pluck('guest_id')->toArray(),
-            set: function (array $guestIds) {
-                $this->savingGuestIds = $guestIds;
+        return 'accommodation_id';
+    }
 
-                return [];
-            }
-        );
+    protected function getRelatedPivotKey(): string
+    {
+        return 'guest_id';
     }
 }

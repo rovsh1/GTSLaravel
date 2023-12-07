@@ -6,11 +6,9 @@ namespace Sdk\Booking\Entity\Details;
 
 use DateTimeInterface;
 use Sdk\Booking\Contracts\Entity\TransferDetailsInterface;
-use Sdk\Booking\Entity\Details\Concerns\HasCarBidCollectionTrait;
 use Sdk\Booking\Entity\Details\Concerns\HasDepartureDateTrait;
 use Sdk\Booking\Support\Entity\AbstractServiceDetails;
 use Sdk\Booking\ValueObject\BookingId;
-use Sdk\Booking\ValueObject\CarBidCollection;
 use Sdk\Booking\ValueObject\CityId;
 use Sdk\Booking\ValueObject\DetailsId;
 use Sdk\Booking\ValueObject\ServiceInfo;
@@ -20,7 +18,6 @@ use Sdk\Shared\Support\DateTimeImmutableFactory;
 final class DayCarTrip extends AbstractServiceDetails implements TransferDetailsInterface
 {
     use HasDepartureDateTrait;
-    use HasCarBidCollectionTrait;
 
     public function __construct(
         DetailsId $id,
@@ -29,7 +26,6 @@ final class DayCarTrip extends AbstractServiceDetails implements TransferDetails
         private readonly CityId $cityId,
         private ?string $destinationsDescription,
         protected ?DateTimeInterface $departureDate,
-        protected CarBidCollection $carBids
     ) {
         parent::__construct($id, $bookingId, $serviceInfo);
     }
@@ -68,7 +64,6 @@ final class DayCarTrip extends AbstractServiceDetails implements TransferDetails
             'cityId' => $this->cityId->value(),
             'destinationsDescription' => $this->destinationsDescription,
             'departureDate' => $this->departureDate?->getTimestamp(),
-            'carBids' => $this->carBids->toData(),
         ];
     }
 
@@ -81,7 +76,6 @@ final class DayCarTrip extends AbstractServiceDetails implements TransferDetails
             new CityId($payload['cityId']),
             $payload['destinationsDescription'],
             $payload['departureDate'] ? DateTimeImmutableFactory::createFromTimestamp($payload['departureDate']) : null,
-            CarBidCollection::fromData($payload['guestIds'])
         );
     }
 }

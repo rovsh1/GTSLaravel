@@ -8,7 +8,6 @@ use Module\Booking\Shared\Infrastructure\Models\Details\Transfer;
 use Sdk\Booking\Entity\Details\CarRentWithDriver;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\BookingPeriod;
-use Sdk\Booking\ValueObject\CarBidCollection;
 use Sdk\Booking\ValueObject\CityId;
 use Sdk\Booking\ValueObject\DetailsId;
 
@@ -28,7 +27,6 @@ class CarRentWithDriverBuilder extends AbstractServiceDetailsBuilder
             bookingPeriod: $details->date_start !== null && $details->date_end !== null
                 ? new BookingPeriod($details->date_start, $details->date_end)
                 : null,
-            carBids: CarBidCollection::fromData($detailsData['carBids'])
         );
     }
 }

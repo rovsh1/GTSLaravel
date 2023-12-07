@@ -6,6 +6,7 @@ namespace Module\Booking\Shared\Infrastructure\Service;
 
 use Illuminate\Support\Facades\DB;
 use Module\Booking\Shared\Domain\Booking\Booking;
+use Module\Booking\Shared\Domain\Booking\DbContext\CarBidDbContextInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\AccommodationRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
@@ -14,6 +15,7 @@ use Module\Booking\Shared\Infrastructure\Service\UnitOfWork\BookingCommiter;
 use Module\Booking\Shared\Infrastructure\Service\UnitOfWork\IdentityMap;
 use Sdk\Booking\Contracts\Entity\BookingPartInterface;
 use Sdk\Booking\Contracts\Entity\DetailsInterface;
+use Sdk\Booking\Entity\CarBid;
 use Sdk\Booking\Entity\HotelAccommodation;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
@@ -30,6 +32,7 @@ class BookingUnitOfWork implements BookingUnitOfWorkInterface
         private readonly BookingCommiter $bookingCommiter,
         private readonly DetailsRepositoryInterface $detailsRepository,
         private readonly AccommodationRepositoryInterface $accommodationRepository,
+        private readonly CarBidDbContextInterface $carBidDbContext,
         private readonly DomainEventDispatcherInterface $domainEventDispatcher,
     ) {}
 
@@ -102,6 +105,8 @@ class BookingUnitOfWork implements BookingUnitOfWorkInterface
                 $this->detailsRepository->store($entity);
             } elseif ($entity instanceof HotelAccommodation) {
                 $this->accommodationRepository->store($entity);
+            } elseif ($entity instanceof CarBid) {
+                $this->carBidDbContext->store($entity);
             }
 
             $this->domainEventDispatcher->dispatch(...$entity->pullEvents());

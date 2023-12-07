@@ -3,6 +3,7 @@
 namespace Module\Booking\Shared\Providers;
 
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
+use Module\Booking\Shared\Domain\Booking\DbContext\CarBidDbContextInterface;
 use Module\Booking\Shared\Domain\Booking\Factory\Details\CarRentWithDriverFactoryInterface;
 use Module\Booking\Shared\Domain\Booking\Factory\Details\CIPMeetingInAirportFactoryInterface;
 use Module\Booking\Shared\Domain\Booking\Factory\Details\CIPSendoffInAirportFactoryInterface;
@@ -16,6 +17,7 @@ use Module\Booking\Shared\Domain\Booking\Factory\Details\TransferToAirportFactor
 use Module\Booking\Shared\Domain\Booking\Factory\Details\TransferToRailwayFactoryInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
 use Module\Booking\Shared\Infrastructure\Adapter\SupplierAdapter;
+use Module\Booking\Shared\Infrastructure\DbContext\CarBidDbContext;
 use Module\Booking\Shared\Infrastructure\Factory\Details\CarRentWithDriverFactory;
 use Module\Booking\Shared\Infrastructure\Factory\Details\CIPMeetingInAirportFactory;
 use Module\Booking\Shared\Infrastructure\Factory\Details\CIPSendoffInAirportFactory;
@@ -49,5 +51,6 @@ class DetailsServiceProvider extends ServiceProvider
         $this->app->singleton(DayCarTripFactoryInterface::class, DayCarTripFactory::class);
         $this->app->singleton(OtherServiceFactoryInterface::class, OtherServiceFactory::class);
         $this->app->singleton(SupplierAdapterInterface::class, SupplierAdapter::class);
+        $this->app->singleton(CarBidDbContextInterface::class, CarBidDbContext::class);
     }
 }

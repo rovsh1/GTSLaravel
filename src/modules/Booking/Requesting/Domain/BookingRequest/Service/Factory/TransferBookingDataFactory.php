@@ -10,12 +10,13 @@ use Module\Booking\Requesting\Domain\BookingRequest\Service\TemplateData\Transfe
 use Module\Booking\Requesting\Domain\BookingRequest\Service\TemplateDataInterface;
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
+use Module\Booking\Shared\Domain\Booking\DbContext\CarBidDbContextInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Service\DetailOptionsDataFactory;
+use Sdk\Booking\Entity\CarBid;
 use Sdk\Booking\Entity\Details\CarRentWithDriver;
 use Sdk\Booking\Enum\RequestTypeEnum;
 use Sdk\Booking\ValueObject\BookingPeriod;
-use Sdk\Booking\ValueObject\CarBid;
 use Sdk\Booking\ValueObject\CarBidCollection;
 use Sdk\Shared\Contracts\Service\TranslatorInterface;
 
@@ -26,6 +27,7 @@ class TransferBookingDataFactory
         private readonly DetailOptionsDataFactory $detailOptionsFactory,
         private readonly SupplierAdapterInterface $supplierAdapter,
         private readonly TranslatorInterface $translator,
+        private readonly CarBidDbContextInterface $carBidDbContext,
     ) {}
 
     public function build(Booking $booking, RequestTypeEnum $requestType): TemplateDataInterface
@@ -44,13 +46,15 @@ class TransferBookingDataFactory
             $bookingPeriodDto = $this->buildBookingPeriod($bookingDetails->bookingPeriod());
         }
 
+        $carBids = $this->carBidDbContext->getByBookingId($booking->id());
+
         return match ($requestType) {
             RequestTypeEnum::BOOKING,
             RequestTypeEnum::CHANGE,
             RequestTypeEnum::CANCEL => new BookingRequest(
                 $serviceDto,
                 $this->buildCars(
-                    $bookingDetails->carBids(),
+                    $carBids,
                     $bookingDetails->serviceInfo()->supplierId(),
                     $bookingPeriodDto?->countDays
                 ),

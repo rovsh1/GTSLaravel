@@ -17,7 +17,6 @@ interface TransferFromRailwayFactoryInterface
         ServiceInfo $serviceInfo,
         int $railwayStationId,
         int $cityId,
-        CarBidCollection $carBids,
         ?string $trainNumber,
         ?DateTimeInterface $arrivalDate,
         ?string $meetingTablet

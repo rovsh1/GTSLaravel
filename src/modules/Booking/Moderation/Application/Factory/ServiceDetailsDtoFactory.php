@@ -90,7 +90,7 @@ class ServiceDetailsDtoFactory
             $details->flightNumber(),
             $details->meetingTablet(),
             $details->departureDate()?->format(DATE_ATOM),
-            $this->carBidFactory->build($details->serviceInfo()->supplierId(), $details->carBids())
+            $this->carBidFactory->build($details),
         );
     }
 
@@ -106,7 +106,7 @@ class ServiceDetailsDtoFactory
             $details->flightNumber(),
             $details->meetingTablet(),
             $details->arrivalDate()?->format(DATE_ATOM),
-            $this->carBidFactory->build($details->serviceInfo()->supplierId(), $details->carBids())
+            $this->carBidFactory->build($details),
         );
     }
 
@@ -122,7 +122,7 @@ class ServiceDetailsDtoFactory
             $details->trainNumber(),
             $details->meetingTablet(),
             $details->departureDate()?->format(DATE_ATOM),
-            $this->carBidFactory->build($details->serviceInfo()->supplierId(), $details->carBids())
+            $this->carBidFactory->build($details),
         );
     }
 
@@ -138,7 +138,7 @@ class ServiceDetailsDtoFactory
             $details->trainNumber(),
             $details->meetingTablet(),
             $details->arrivalDate()?->format(DATE_ATOM),
-            $this->carBidFactory->build($details->serviceInfo()->supplierId(), $details->carBids())
+            $this->carBidFactory->build($details),
         );
     }
 
@@ -189,7 +189,7 @@ class ServiceDetailsDtoFactory
             $details->meetingAddress(),
             $details->meetingTablet(),
             $bookingPeriod,
-            $this->carBidFactory->build($details->serviceInfo()->supplierId(), $details->carBids())
+            $this->carBidFactory->build($details),
         );
     }
 
@@ -202,7 +202,7 @@ class ServiceDetailsDtoFactory
             $this->buildCityInfo($details->toCityId()->value()),
             $details->isReturnTripIncluded(),
             $details->departureDate()?->format(DATE_ATOM),
-            $this->carBidFactory->build($details->serviceInfo()->supplierId(), $details->carBids())
+            $this->carBidFactory->build($details),
         );
     }
 
@@ -214,7 +214,7 @@ class ServiceDetailsDtoFactory
             $this->buildCityInfo($details->cityId()->value()),
             $details->departureDate()?->format(DATE_ATOM),
             $details->destinationsDescription(),
-            $this->carBidFactory->build($details->serviceInfo()->supplierId(), $details->carBids())
+            $this->carBidFactory->build($details),
         );
     }
 

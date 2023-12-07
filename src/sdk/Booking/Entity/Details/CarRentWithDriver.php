@@ -7,13 +7,11 @@ namespace Sdk\Booking\Entity\Details;
 use DateTimeInterface;
 use Sdk\Booking\Contracts\Entity\TransferDetailsInterface;
 use Sdk\Booking\Entity\Details\Concerns\HasBookingPeriodTrait;
-use Sdk\Booking\Entity\Details\Concerns\HasCarBidCollectionTrait;
 use Sdk\Booking\Entity\Details\Concerns\HasMeetingAddressTrait;
 use Sdk\Booking\Entity\Details\Concerns\HasMeetingTabletTrait;
 use Sdk\Booking\Support\Entity\AbstractServiceDetails;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\BookingPeriod;
-use Sdk\Booking\ValueObject\CarBidCollection;
 use Sdk\Booking\ValueObject\CityId;
 use Sdk\Booking\ValueObject\DetailsId;
 use Sdk\Booking\ValueObject\ServiceInfo;
@@ -22,7 +20,6 @@ use Sdk\Shared\Enum\ServiceTypeEnum;
 final class CarRentWithDriver extends AbstractServiceDetails implements TransferDetailsInterface
 {
     use HasBookingPeriodTrait;
-    use HasCarBidCollectionTrait;
     use HasMeetingTabletTrait;
     use HasMeetingAddressTrait;
 
@@ -34,7 +31,6 @@ final class CarRentWithDriver extends AbstractServiceDetails implements Transfer
         private ?string $meetingAddress,
         private ?string $meetingTablet,
         protected ?BookingPeriod $bookingPeriod,
-        protected CarBidCollection $carBids
     ) {
         parent::__construct($id, $bookingId, $serviceInfo);
     }
@@ -59,7 +55,6 @@ final class CarRentWithDriver extends AbstractServiceDetails implements Transfer
             'meetingAddress' => $this->meetingAddress,
             'meetingTablet' => $this->meetingTablet,
             'bookingPeriod' => $this->bookingPeriod?->serialize(),
-            'carBids' => $this->carBids->toData(),
         ];
     }
 
@@ -73,7 +68,6 @@ final class CarRentWithDriver extends AbstractServiceDetails implements Transfer
             $payload['meetingAddress'],
             $payload['meetingTablet'],
             $payload['bookingPeriod'] ? BookingPeriod::deserialize($payload['bookingPeriod']) : null,
-            CarBidCollection::fromData($payload['guestIds'])
         );
     }
 

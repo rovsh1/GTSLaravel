@@ -16,7 +16,6 @@ interface CarRentWithDriverFactoryInterface
         BookingId $bookingId,
         ServiceInfo $serviceInfo,
         int $cityId,
-        CarBidCollection $carBids,
         ?BookingPeriod $bookingPeriod,
     ): CarRentWithDriver;
 }

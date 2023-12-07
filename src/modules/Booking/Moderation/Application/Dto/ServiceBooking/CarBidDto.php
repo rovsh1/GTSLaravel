@@ -9,11 +9,12 @@ use Module\Supplier\Moderation\Application\Dto\CarDto;
 class CarBidDto
 {
     public function __construct(
-        public readonly string $id,
+        public readonly int $id,
         public readonly CarDto $carInfo,
         public readonly int $carsCount,
         public readonly int $passengersCount,
         public readonly int $baggageCount,
         public readonly int $babyCount,
+        public readonly array $guestIds,
     ) {}
 }

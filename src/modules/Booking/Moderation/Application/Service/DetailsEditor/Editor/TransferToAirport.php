@@ -8,7 +8,6 @@ use Module\Booking\Shared\Domain\Booking\Factory\Details\TransferToAirportFactor
 use Module\Supplier\Moderation\Infrastructure\Models\Service as InfrastructureSupplierService;
 use Sdk\Booking\Entity\Details\TransferToAirport as Entity;
 use Sdk\Booking\ValueObject\BookingId;
-use Sdk\Booking\ValueObject\CarBidCollection;
 use Sdk\Booking\ValueObject\ServiceId;
 use Sdk\Booking\ValueObject\ServiceInfo;
 
@@ -16,8 +15,7 @@ class TransferToAirport extends AbstractEditor implements EditorInterface
 {
     public function __construct(
         private readonly TransferToAirportFactoryInterface $detailsFactory,
-    ) {
-    }
+    ) {}
 
     public function create(BookingId $bookingId, ServiceId $serviceId, array $detailsData): Entity
     {
@@ -29,7 +27,6 @@ class TransferToAirport extends AbstractEditor implements EditorInterface
             $bookingId,
             $serviceInfo,
             (int)$supplierService->data['airportId'],
-            new CarBidCollection([]),
             $detailsData['flightNumber'] ?? null,
             $detailsData['meetingTablet'] ?? null,
             $detailsData['date'] ?? null,

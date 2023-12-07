@@ -16,7 +16,6 @@ class DayCarTripStorage extends AbstractStorage
             'booking_transfer_details.data' => [
                 'serviceInfo' => $this->serializeServiceInfo($details->serviceInfo()),
                 'cityId' => $details->cityId()->value(),
-                'carBids' => $details->carBids()->toData(),
                 'destinationsDescription' => $details->destinationsDescription(),
             ]
         ]);

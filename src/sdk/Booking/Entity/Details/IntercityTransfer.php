@@ -6,11 +6,9 @@ namespace Sdk\Booking\Entity\Details;
 
 use DateTimeInterface;
 use Sdk\Booking\Contracts\Entity\TransferDetailsInterface;
-use Sdk\Booking\Entity\Details\Concerns\HasCarBidCollectionTrait;
 use Sdk\Booking\Entity\Details\Concerns\HasDepartureDateTrait;
 use Sdk\Booking\Support\Entity\AbstractServiceDetails;
 use Sdk\Booking\ValueObject\BookingId;
-use Sdk\Booking\ValueObject\CarBidCollection;
 use Sdk\Booking\ValueObject\CityId;
 use Sdk\Booking\ValueObject\DetailsId;
 use Sdk\Booking\ValueObject\ServiceInfo;
@@ -20,7 +18,6 @@ use Sdk\Shared\Support\DateTimeImmutableFactory;
 final class IntercityTransfer extends AbstractServiceDetails implements TransferDetailsInterface
 {
     use HasDepartureDateTrait;
-    use HasCarBidCollectionTrait;
 
     public function __construct(
         DetailsId $id,
@@ -30,7 +27,6 @@ final class IntercityTransfer extends AbstractServiceDetails implements Transfer
         private readonly CityId $toCityId,
         private readonly bool $returnTripIncluded,
         protected ?DateTimeInterface $departureDate,
-        protected CarBidCollection $carBids
     ) {
         parent::__construct($id, $bookingId, $serviceInfo);
     }
@@ -65,7 +61,6 @@ final class IntercityTransfer extends AbstractServiceDetails implements Transfer
             'toCityId' => $this->toCityId->value(),
             'returnTripIncluded' => $this->returnTripIncluded,
             'departureDate' => $this->departureDate?->getTimestamp(),
-            'carBids' => $this->carBids->toData(),
         ];
     }
 
@@ -79,7 +74,6 @@ final class IntercityTransfer extends AbstractServiceDetails implements Transfer
             new CityId($payload['toCityId']),
             $payload['returnTripIncluded'],
             $payload['departureDate'] ? DateTimeImmutableFactory::createFromTimestamp($payload['departureDate']) : null,
-            CarBidCollection::fromData($payload['guestIds'])
         );
     }
 }

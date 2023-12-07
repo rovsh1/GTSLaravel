@@ -3,16 +3,18 @@
 namespace Module\Booking\Pricing\Domain\Booking\Service;
 
 use Module\Booking\Shared\Domain\Booking\Booking;
+use Module\Booking\Shared\Domain\Booking\DbContext\CarBidDbContextInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
+use Sdk\Booking\Entity\CarBid;
 use Sdk\Booking\Entity\Details\CarRentWithDriver;
 use Sdk\Booking\ValueObject\BookingPriceItem;
 use Sdk\Booking\ValueObject\BookingPrices;
-use Sdk\Booking\ValueObject\CarBid;
 
 class TransferServicePriceCalculator implements PriceCalculatorInterface
 {
     public function __construct(
-        private readonly DetailsRepositoryInterface $detailsRepository
+        private readonly DetailsRepositoryInterface $detailsRepository,
+        private readonly CarBidDbContextInterface $carBidDbContext,
     ) {
     }
 
@@ -31,9 +33,9 @@ class TransferServicePriceCalculator implements PriceCalculatorInterface
 
             return $data;
         };
-        ['clientPriceAmount' => $clientPriceAmount, 'supplierPriceAmount' => $supplierPriceAmount] = collect(
-            $details->carBids()->all()
-        )
+
+        $carBids = $this->carBidDbContext->getByBookingId($booking->id());
+        ['clientPriceAmount' => $clientPriceAmount, 'supplierPriceAmount' => $supplierPriceAmount] = collect($carBids->all())
             ->reduce($reducer, ['clientPriceAmount' => 0, 'supplierPriceAmount' => 0]);
 
         return new BookingPrices(
