@@ -1,9 +1,9 @@
 <?php
 
-namespace Module\Booking\Moderation\Domain\Booking\Service\HotelBooking\QuotaManager\ProcessingMethod;
+namespace Module\Booking\Shared\Domain\Booking\Service\HotelQuotation\ProcessingMethod;
 
-use Module\Booking\Moderation\Domain\Booking\Service\HotelBooking\QuotaManager\QuotaProcessingMethodInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
+use Module\Booking\Shared\Domain\Booking\Service\HotelQuotation\QuotaProcessingMethodInterface;
 use Sdk\Booking\Entity\Details\HotelBooking;
 
 class Request implements QuotaProcessingMethodInterface

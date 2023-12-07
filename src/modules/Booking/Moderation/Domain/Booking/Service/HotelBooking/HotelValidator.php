@@ -13,8 +13,6 @@ use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
 class HotelValidator
 {
-
-
     public function __construct(
         private readonly HotelAdapterInterface $hotelAdapter
     ) {}

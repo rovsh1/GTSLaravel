@@ -1,10 +1,10 @@
 <?php
 
-namespace Module\Booking\Moderation\Domain\Booking\Service\HotelBooking\QuotaManager;
+namespace Module\Booking\Shared\Domain\Booking\Service\HotelQuotation;
 
-use Module\Booking\Moderation\Domain\Booking\Service\HotelBooking\QuotaManager\ProcessingMethod\Quota;
-use Module\Booking\Moderation\Domain\Booking\Service\HotelBooking\QuotaManager\ProcessingMethod\Request;
-use Module\Booking\Moderation\Domain\Booking\Service\HotelBooking\QuotaManager\ProcessingMethod\Site;
+use Module\Booking\Shared\Domain\Booking\Service\HotelQuotation\ProcessingMethod\Quota;
+use Module\Booking\Shared\Domain\Booking\Service\HotelQuotation\ProcessingMethod\Request;
+use Module\Booking\Shared\Domain\Booking\Service\HotelQuotation\ProcessingMethod\Site;
 use Sdk\Booking\Enum\QuotaProcessingMethodEnum;
 use Sdk\Module\Contracts\Support\ContainerInterface;
 

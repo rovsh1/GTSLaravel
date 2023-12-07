@@ -3,10 +3,10 @@
 namespace Module\Booking\Shared\Domain\Booking\Listener;
 
 use Module\Booking\Moderation\Application\Exception\HotelDetailsExpectedException;
-use Module\Booking\Moderation\Domain\Booking\Service\HotelBooking\QuotaManager\QuotaProcessingMethodFactory;
-use Module\Booking\Shared\Domain\Booking\Event\HotelBooking\QuotaChangedEventInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\Service\HotelQuotation\QuotaProcessingMethodFactory;
+use Sdk\Booking\Contracts\Event\QuotaChangedEventInterface;
 use Sdk\Booking\Entity\Details\HotelBooking;
 use Sdk\Module\Contracts\Event\DomainEventInterface;
 use Sdk\Module\Contracts\Event\DomainEventListenerInterface;
