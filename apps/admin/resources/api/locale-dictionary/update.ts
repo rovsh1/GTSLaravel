@@ -16,7 +16,7 @@ type UpdateLocaleDictionaryPayload = {
 export const useUpdateLocaleDictionary = (props: MaybeRef<UpdateLocaleDictionaryPayload | null>) =>
   useAdminAPI(props, () =>
     '/locale-dictionary/update')
-    .post(computed<string>(() => JSON.stringify(
+    .put(computed<string>(() => JSON.stringify(
       getNullableRef<UpdateLocaleDictionaryPayload, any>(
         props,
         (payload: UpdateLocaleDictionaryPayload): any => ({

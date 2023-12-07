@@ -37,6 +37,7 @@ watch(isOpened, (opened) => {
 <template>
   <BaseDialog
     class="statusHistoryDialog"
+    :auto-width="true"
     :opened="isOpened as boolean"
     :loading="isFetching"
     @close="$emit('close')"
@@ -54,7 +55,7 @@ watch(isOpened, (opened) => {
       <tbody>
         <tr v-for="(statusEvent, idx) in statusHistoryEvents" :key="idx">
           <td>
-            <span :class="`badge rounded-pill text-bg-${statusEvent.color} px-2`">
+            <span :class="`badge rounded-pill text-bg-${statusEvent.color} px-2`" class="event-badge">
               {{ statusEvent.event }}
             </span>
           </td>
@@ -72,7 +73,7 @@ watch(isOpened, (opened) => {
 
 <style>
 :root .statusHistoryDialog {
-  --dialog-width: 50rem;
+  min-width: 50rem;
 }
 </style>
 
@@ -92,5 +93,9 @@ watch(isOpened, (opened) => {
     border-radius: 50%;
     background-color: black;
   }
+}
+
+.event-badge {
+  white-space: nowrap;
 }
 </style>
