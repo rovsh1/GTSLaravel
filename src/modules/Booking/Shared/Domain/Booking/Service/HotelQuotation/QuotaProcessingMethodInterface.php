@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Booking\Moderation\Domain\Booking\Service\HotelBooking\QuotaManager;
+namespace Module\Booking\Shared\Domain\Booking\Service\HotelQuotation;
 
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Sdk\Booking\Entity\Details\HotelBooking;

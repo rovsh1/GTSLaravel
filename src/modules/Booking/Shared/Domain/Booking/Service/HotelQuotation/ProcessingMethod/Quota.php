@@ -1,12 +1,12 @@
 <?php
 
-namespace Module\Booking\Moderation\Domain\Booking\Service\HotelBooking\QuotaManager\ProcessingMethod;
+namespace Module\Booking\Shared\Domain\Booking\Service\HotelQuotation\ProcessingMethod;
 
 use Carbon\CarbonPeriod;
-use Module\Booking\Moderation\Domain\Booking\Service\HotelBooking\QuotaManager\QuotaProcessingMethodInterface;
 use Module\Booking\Shared\Domain\Booking\Adapter\HotelQuotaAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Repository\AccommodationRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\Service\HotelQuotation\QuotaProcessingMethodInterface;
 use Module\Hotel\Quotation\Application\Dto\BookingRoomDto;
 use Module\Hotel\Quotation\Application\RequestDto\BookRequestDto;
 use Module\Hotel\Quotation\Application\RequestDto\ReserveRequestDto;
