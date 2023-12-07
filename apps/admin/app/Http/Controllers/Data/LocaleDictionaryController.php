@@ -5,6 +5,7 @@ namespace App\Admin\Http\Controllers\Data;
 use App\Admin\Components\Factory\Prototype;
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Models\Reference\Dictionary;
+use App\Admin\Support\Facades\Languages;
 use App\Admin\Support\Facades\Layout;
 use App\Admin\Support\Facades\Prototypes;
 use App\Admin\Support\View\Layout as LayoutContract;
@@ -32,7 +33,11 @@ class LocaleDictionaryController extends Controller
     {
         $data = $request->post();
         $dictionary = Dictionary::findByKey($data['key']);
-        $dictionary->storeValues($data);
+        $values = [];
+        foreach (Languages::all() as $lang) {
+            $values[$lang->code] = $data['value_' . $lang->code] ?? null;
+        }
+        $dictionary->storeValues($values);
 
         return response()->json([]);
     }

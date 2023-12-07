@@ -11,9 +11,20 @@ class Dictionary extends \Module\Support\LocaleTranslator\Model\Dictionary
     public function storeValues(array $values): void
     {
         foreach (Languages::all() as $language) {
-            $value = $values[$language->code] ?? null;
-            DB::table($this->valuesTable)
-                ->updateOrInsert(['dictionary_id' => $this->id, 'language' => $language->code], ['value' => $value]);
+            if (empty($values[$language->code])) {
+                DB::table($this->valuesTable)
+                    ->where('dictionary_id', $this->id)
+                    ->where('language', $language->code)
+                    ->delete();
+            } else {
+                DB::table($this->valuesTable)
+                    ->updateOrInsert([
+                        'dictionary_id' => $this->id,
+                        'language' => $language->code
+                    ], [
+                        'value' => $values[$language->code]
+                    ]);
+            }
         }
     }
 

@@ -6,8 +6,8 @@ use App\Shared\Components\Locale\Language;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static array all()
- * @method static array map(callable $fn)
+ * @method static Language[] all()
+ * @method static Language[] map(callable $fn)
  * @method static Language default()
  * @method static Language get(string $code)
  * @method static bool has(string $code)
