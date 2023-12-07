@@ -4,6 +4,7 @@ namespace App\Admin\Exceptions;
 
 use App\Admin\Support\Facades\AppContext;
 use App\Admin\Support\Facades\Layout;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
@@ -119,6 +120,7 @@ class Handler extends ExceptionHandler
         return match (true) {
             $e instanceof NotFoundHttpException, $e instanceof NotFoundExceptionInterface => 404,
             $e instanceof HttpException => $e->getStatusCode(),
+            $e instanceof AuthenticationException => 401,
             default => $e->status ?? 500
         };
     }
