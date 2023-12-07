@@ -33,7 +33,7 @@ class Update implements UseCaseInterface
 
         $this->bookingUnitOfWork->touch($booking->id());
 
-        if ($currentCarBid->carId()->value() === $carBidId) {
+        if ($currentCarBid->carId()->value() === $carData->carId) {
             $this->doUpdate($currentCarBid);
         } else {
             $this->doReplace($currentCarBid);
