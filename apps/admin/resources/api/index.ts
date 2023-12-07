@@ -3,10 +3,9 @@ import { computed, unref } from 'vue'
 import { AfterFetchContext, createFetch, MaybeRef, useFetch, UseFetchOptions } from '@vueuse/core'
 import qs from 'qs'
 
+import { handleAjaxError } from '~lib/ajax-error'
 import { ADMIN_API_URL } from '~lib/env'
 import { getNullableRef, RefGetter } from '~lib/vue'
-
-import { showToast } from '~components/Bootstrap/BootstrapToast'
 
 // @example "2021-10-05T14:55:20.000000Z"
 export type DateResponse = string
@@ -38,13 +37,7 @@ const useAPI = (base: string) => <T>(
         }
       },
       onFetchError: (ctx) => {
-        const message = ctx.data?.error || ctx.error.message
-        showToast({
-          title: 'Ошибка',
-          description: message,
-        }, {
-          type: 'danger',
-        })
+        handleAjaxError(ctx)
         return ctx
       },
     },
