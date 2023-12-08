@@ -11,7 +11,7 @@ class VoucherDto
 {
     public function __construct(
         public readonly CarbonImmutable $createdAt,
-        public readonly FileDto $file
-    ) {
-    }
+        public readonly FileDto $file,
+        public readonly ?CarbonImmutable $sendAt,
+    ) {}
 }

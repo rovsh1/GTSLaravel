@@ -1,6 +1,6 @@
 import { MaybeRef } from '@vueuse/core'
 
-import { DateResponse, useAdminAPI } from '~api'
+import { BaseResponse, DateResponse, useAdminAPI } from '~api'
 import { FileResponse } from '~api/hotel/images'
 import { OrderID } from '~api/order/models'
 
@@ -8,13 +8,14 @@ export interface OrderVoucherPayload {
   orderID: OrderID
 }
 
-export interface OrderVoucher {
+export type OrderVoucher = {
   createdAt: DateResponse
+  sendAt: DateResponse | null
   file: FileResponse
 }
 
-export interface OrderVoucherCreateResponse {
-  isExternalNumberRequired: boolean
+export interface OrderVoucherSendResponse extends BaseResponse {
+
 }
 
 export const createOrderVoucher = (props: MaybeRef<OrderVoucherPayload>) =>
@@ -24,7 +25,7 @@ export const createOrderVoucher = (props: MaybeRef<OrderVoucherPayload>) =>
     { immediate: true },
   )
     .post('', 'application/json')
-    .json<OrderVoucherCreateResponse>()
+    .json<OrderVoucher>()
 
 export const sendOrderVoucher = (props: MaybeRef<OrderVoucherPayload>) =>
   useAdminAPI(
@@ -33,4 +34,4 @@ export const sendOrderVoucher = (props: MaybeRef<OrderVoucherPayload>) =>
     { immediate: true },
   )
     .post('', 'application/json')
-    .json<OrderVoucherCreateResponse>()
+    .json<OrderVoucherSendResponse>()

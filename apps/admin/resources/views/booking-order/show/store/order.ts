@@ -1,4 +1,4 @@
-import { nextTick, onMounted, ref } from 'vue'
+import { nextTick, onMounted, Ref, ref } from 'vue'
 
 import { defineStore, storeToRefs } from 'pinia'
 import { z } from 'zod'
@@ -17,7 +17,7 @@ import {
 } from '~api/order'
 import { useGetOrderGuestsAPI } from '~api/order/guest'
 import { useOrderAvailableActionsAPI } from '~api/order/status'
-import { createOrderVoucher, sendOrderVoucher } from '~api/order/voucher'
+import { createOrderVoucher, OrderVoucher, sendOrderVoucher } from '~api/order/voucher'
 
 import { showConfirmDialog } from '~lib/confirm-dialog'
 import { requestInitialData } from '~lib/initial-data'
@@ -92,11 +92,12 @@ export const useOrderStore = defineStore('booking-order', () => {
     bookingManagerId.value = Number(managerId)
   }
 
-  const createVoucher = async () => {
+  const createVoucher = async (): Promise<Ref<OrderVoucher>> => {
     isVoucherFetching.value = true
-    await createOrderVoucher({ orderID })
-    refreshOrder()
+    const { data: voucher } = await createOrderVoucher({ orderID })
+    nextTick(refreshOrder)
     isVoucherFetching.value = false
+    return voucher as Ref<OrderVoucher>
   }
 
   const sendVoucher = async () => {
