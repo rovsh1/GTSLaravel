@@ -55,6 +55,7 @@ const handleVoucherSend = async () => {
           <span v-else class="date align-left ml-1"> не отправялся клиенту</span>
         </div>
       </div>
+
       <div class="d-flex gap-2">
         <a
           v-if="availableActions?.canSendVoucher"
@@ -67,6 +68,7 @@ const handleVoucherSend = async () => {
           <InlineIcon icon="mail" />
         </a>
         <a
+          v-if="availableActions?.canCreateVoucher"
           v-tooltip="'Скачать'"
           href="#"
           class="btn-download"
@@ -76,6 +78,7 @@ const handleVoucherSend = async () => {
           <InlineIcon icon="download" />
         </a>
         <a
+          v-if="availableActions?.canCreateVoucher"
           v-tooltip="'Открыть'"
           href="#"
           class="btn-download"
