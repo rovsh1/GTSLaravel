@@ -6,6 +6,7 @@ import { BookingOtherDetails } from '~resources/views/booking/services/show/comp
 import InfoBlock from '~resources/views/booking/shared/components/InfoBlock/InfoBlock.vue'
 import { useBookingStore } from '~resources/views/booking/shared/store/booking'
 
+import EditableDateInput from '~components/Editable/EditableDateInput.vue'
 import EditableTextInput from '~components/Editable/EditableTextInput.vue'
 
 const bookingStore = useBookingStore()
@@ -25,6 +26,16 @@ const handleChangeDetails = async (field: string, value: any) => {
     <InfoBlock>
       <table class="table-params">
         <tbody>
+          <tr>
+            <th>Дата</th>
+            <td>
+              <EditableDateInput
+                :value="bookingDetails?.date"
+                :can-edit="isEditableStatus"
+                @change="value => handleChangeDetails('date', value)"
+              />
+            </td>
+          </tr>
           <tr>
             <th>Примечание</th>
             <td>
