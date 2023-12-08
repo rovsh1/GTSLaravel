@@ -12,6 +12,16 @@ final class AvailableActionsDto
         public readonly bool $canEditExternalNumber,
         public readonly bool $canChangeRoomPrice,
         public readonly bool $canCopy,
-    ) {
+    ) {}
+
+    public static function notAllowed(): static
+    {
+        return new static(
+            [],
+            false,
+            false,
+            false,
+            false,
+        );
     }
 }

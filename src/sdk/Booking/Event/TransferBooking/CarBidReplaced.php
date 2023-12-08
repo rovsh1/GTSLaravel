@@ -2,30 +2,19 @@
 
 namespace Sdk\Booking\Event\TransferBooking;
 
-use Sdk\Booking\Contracts\Event\CarBidChangedInterface;
+use Sdk\Booking\Contracts\Event\CarBidEventInterface;
 use Sdk\Booking\Entity\CarBid;
-use Sdk\Shared\Event\IntegrationEventMessages;
+use Sdk\Booking\ValueObject\BookingId;
 
-class CarBidReplaced extends AbstractCarBidEvent implements CarBidChangedInterface
+class CarBidReplaced implements CarBidEventInterface
 {
     public function __construct(
-        CarBid $carBid,
         public readonly CarBid $carBidBefore,
-    ) {
-        parent::__construct($carBid);
-    }
+        public readonly CarBid $carBidAfter,
+    ) {}
 
-    public function integrationEvent(): string
+    public function bookingId(): BookingId
     {
-        return IntegrationEventMessages::TRANSFER_BOOKING_CAR_BID_REPLACED;
-    }
-
-    public function integrationPayload(): array
-    {
-        return [
-            'bookingId' => $this->bookingId()->value(),
-            'before' => $this->carBidBefore->serialize(),
-            'after' => $this->carBid->serialize()
-        ];
+        return $this->carBidBefore->bookingId();
     }
 }

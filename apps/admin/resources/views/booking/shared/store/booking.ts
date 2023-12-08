@@ -43,7 +43,7 @@ export const useBookingStore = defineStore('booking', () => {
   const { data: booking, execute: fetchBooking } = useGetBookingAPI({ bookingID })
   const { data: markupSettings, execute: fetchMarkupSettings } = useHotelMarkupSettingsAPI(hotelID ? { hotelID } : null)
   const { data: availableActions, execute: fetchAvailableActions, isFetching: isAvailableActionsFetching } = useBookingAvailableActionsAPI({ bookingID })
-  const { isFetching: isRecalculatePrice, execute: recalculateBookingPrice } = useRecalculateBookingPriceAPI({ bookingID })
+  const { isFetching: isRecalculateBookingPrice, execute: recalculateBookingPrice } = useRecalculateBookingPriceAPI({ bookingID })
   const { fetchStatusHistory } = useBookingStatusHistoryStore()
   const bookingStatusesStore = useBookingStatusesStore()
   const { fetchStatuses } = bookingStatusesStore
@@ -51,8 +51,6 @@ export const useBookingStore = defineStore('booking', () => {
 
   const isStatusUpdateFetching = ref(false)
   const bookingManagerId = ref(manager.id)
-
-  const isRecalculateBookingPrice = computed<boolean>(() => isRecalculatePrice.value)
 
   const existRooms = computed<boolean>(() => Boolean(booking.value?.details?.roomBookings))
   const isEmptyRoomsGuests = computed<boolean>(() => Boolean(booking.value?.details?.roomBookings.find((room: HotelRoomBooking) => room.guestIds.length === 0)))

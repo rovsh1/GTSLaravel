@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+
+import { useBookingStore } from '~resources/views/booking/shared/store/booking'
+
 import { Currency } from '~api/models'
 
 import { formatPrice } from '~lib/price'
@@ -21,6 +25,10 @@ defineEmits<{
   (event: 'clickChangePenalty'): void
 }>()
 
+const bookingStore = useBookingStore()
+
+const isEditable = computed(() => bookingStore.availableActions?.isEditable || false)
+
 </script>
 
 <template>
@@ -30,13 +38,13 @@ defineEmits<{
     <div v-if="currency">
       {{ amountTitle }}: {{ formatPrice(amountValue, currency.sign) }}
     </div>
-    <a href="#" @click.prevent="$emit('clickChangePrice')">Изменить</a>
+    <a v-if="isEditable" href="#" @click.prevent="$emit('clickChangePrice')">Изменить</a>
 
     <div v-if="needShowPenalty && currency">
       <div>
         {{ penaltyTitle }}: {{ formatPrice((penaltyValue || 0), currency.sign) }}
       </div>
-      <a href="#" @click.prevent="$emit('clickChangePenalty')">Изменить</a>
+      <a v-if="isEditable" href="#" @click.prevent="$emit('clickChangePenalty')">Изменить</a>
     </div>
   </div>
 </template>

@@ -4,10 +4,10 @@ namespace App\Shared\Support\Module\Monolith;
 
 use App\Shared\Contracts\Module\ModuleAdapterInterface;
 use Sdk\Module\Contracts\Api\ApiInterface;
-use Sdk\Module\Contracts\Event\IntegrationEventMessage;
 use Sdk\Module\Contracts\Event\IntegrationEventSubscriberInterface;
 use Sdk\Module\Contracts\ModuleInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
+use Sdk\Module\Event\IntegrationEventMessage;
 
 class ModuleAdapter implements ModuleAdapterInterface
 {

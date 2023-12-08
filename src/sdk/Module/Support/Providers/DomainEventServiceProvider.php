@@ -9,6 +9,8 @@ class DomainEventServiceProvider extends ServiceProvider
 {
     protected array $listen = [];
 
+    protected array $listeners = [];
+
     public function register(): void
     {
         $this->app->resolving(DomainEventDispatcherInterface::class, function ($domainEventDispatcher) {
@@ -25,6 +27,16 @@ class DomainEventServiceProvider extends ServiceProvider
                 }
             } else {
                 $domainEventDispatcher->listen($eventClass, $listeners);
+            }
+        }
+
+        foreach ($this->listeners as $listener => $events) {
+            if (is_array($events)) {
+                foreach ($events as $event) {
+                    $domainEventDispatcher->listen($event, $listener);
+                }
+            } else {
+                $domainEventDispatcher->listen($events, $listener);
             }
         }
     }

@@ -17,6 +17,7 @@ use Sdk\Booking\ValueObject\GuestIdCollection;
 use Sdk\Booking\ValueObject\LegalId;
 use Sdk\Booking\ValueObject\OrderId;
 use Sdk\Shared\ValueObject\Money;
+use Sdk\Shared\ValueObject\Timestamps;
 
 class OrderMapper
 {
@@ -45,6 +46,10 @@ class OrderMapper
                 source: $model->source,
                 creatorId: new CreatorId($model->creator_id),
             ),
+            new Timestamps(
+                createdAt: $model->created_at->toImmutable(),
+                updatedAt: $model->updated_at->toImmutable(),
+            )
         );
     }
 

@@ -16,6 +16,8 @@ class StatusTransitionRules
         $this->addTransition(OrderStatusEnum::IN_PROGRESS, OrderStatusEnum::WAITING_INVOICE);
         $this->addTransition(OrderStatusEnum::IN_PROGRESS, OrderStatusEnum::CANCELLED);
 
+        $this->addTransition(OrderStatusEnum::WAITING_INVOICE, OrderStatusEnum::IN_PROGRESS);
+
         $this->addTransition(OrderStatusEnum::INVOICED, OrderStatusEnum::CANCELLED);
     }
 

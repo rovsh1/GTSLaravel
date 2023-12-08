@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import RequestBlock from '~resources/views/booking/shared/components/RequestBlock.vue'
 import { useOrderStore } from '~resources/views/booking-order/show/store/order'
 
 import { OrderAvailableActionsResponse } from '~api/order/status'
@@ -18,15 +17,20 @@ const availableActions = computed<OrderAvailableActionsResponse | null>(() => or
 
 const orderVoucher = computed<OrderVoucher | null>(() => orderStore.order?.voucher || null)
 
-const download = async (): Promise<void> => {
-  if (!orderVoucher.value?.file) {
+const handleDownload = async (): Promise<void> => {
+  const voucher = await orderStore.createVoucher()
+  if (!voucher.value.file) {
     return
   }
-  await downloadFile(orderVoucher.value.file.url, orderVoucher.value.file.name)
+  await downloadFile(voucher.value.file.url, voucher.value.file.name)
 }
 
-const handleVoucherCreate = async () => {
-  await orderStore.createVoucher()
+const handleOpen = async () => {
+  const voucher = await orderStore.createVoucher()
+  if (!voucher.value.file) {
+    return
+  }
+  window.open(voucher.value.file.url, 'blank')
 }
 
 const handleVoucherSend = async () => {
@@ -43,13 +47,15 @@ const handleVoucherSend = async () => {
 
 <template>
   <div class="order-voucher">
-    <div v-if="orderVoucher" class="d-flex flex-row justify-content-between w-100 py-1">
+    <div class="d-flex flex-row justify-content-between w-100 py-1">
       <div class="d-flex align-items-center">
         <div>
           Ваучер
-          <span class="date align-left ml-1"> от {{ formatDateTime(orderVoucher.createdAt) }}</span>
+          <span v-if="orderVoucher?.sendAt" class="date align-left ml-1"> отправлен клиенту {{ formatDateTime(orderVoucher?.sendAt) }}</span>
+          <span v-else class="date align-left ml-1"> не отправялся клиенту</span>
         </div>
       </div>
+
       <div class="d-flex gap-2">
         <a
           v-if="availableActions?.canSendVoucher"
@@ -62,31 +68,26 @@ const handleVoucherSend = async () => {
           <InlineIcon icon="mail" />
         </a>
         <a
+          v-if="availableActions?.canCreateVoucher"
           v-tooltip="'Скачать'"
           href="#"
           class="btn-download"
           aria-label="Скачать"
-          @click.prevent="download"
+          @click.prevent="handleDownload"
         >
           <InlineIcon icon="download" />
         </a>
+        <a
+          v-if="availableActions?.canCreateVoucher"
+          v-tooltip="'Открыть'"
+          href="#"
+          class="btn-download"
+          aria-label="Открыть"
+          @click.prevent="handleOpen"
+        >
+          <InlineIcon icon="open_in_new" />
+        </a>
       </div>
     </div>
-  </div>
-
-  <div v-if="!orderVoucher">
-    <RequestBlock
-      v-if="availableActions?.canCreateVoucher"
-      text="При необходимости клиенту можно сформировать ваучер"
-      button-text="Сформировать ваучер"
-      variant="success"
-      :loading="orderStore.isVoucherFetching"
-      @click="handleVoucherCreate"
-    />
-    <RequestBlock
-      v-else
-      :show-button="false"
-      text="Нет сформированных ваучеров"
-    />
   </div>
 </template>

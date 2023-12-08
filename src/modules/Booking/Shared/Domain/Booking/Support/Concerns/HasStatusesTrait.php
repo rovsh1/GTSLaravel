@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Domain\Booking\Support\Concerns;
 
-use Module\Booking\Shared\Domain\Booking\Event\Status\BookingCancelled;
-use Module\Booking\Shared\Domain\Booking\Event\Status\BookingCancelledFee;
-use Module\Booking\Shared\Domain\Booking\Event\Status\BookingCancelledNoFee;
-use Module\Booking\Shared\Domain\Booking\Event\Status\BookingConfirmed;
-use Module\Booking\Shared\Domain\Booking\Event\Status\BookingNotConfirmed;
-use Module\Booking\Shared\Domain\Booking\Event\Status\BookingProcessing;
-use Module\Booking\Shared\Domain\Booking\Event\Status\BookingWaitingCancellation;
-use Module\Booking\Shared\Domain\Booking\Event\Status\BookingWaitingConfirmation;
-use Module\Booking\Shared\Domain\Booking\Event\Status\BookingWaitingProcessing;
 use Sdk\Booking\Enum\StatusEnum;
+use Sdk\Booking\Event\Status\BookingCancelled;
+use Sdk\Booking\Event\Status\BookingCancelledFee;
+use Sdk\Booking\Event\Status\BookingCancelledNoFee;
+use Sdk\Booking\Event\Status\BookingConfirmed;
+use Sdk\Booking\Event\Status\BookingNotConfirmed;
+use Sdk\Booking\Event\Status\BookingProcessing;
+use Sdk\Booking\Event\Status\BookingWaitingCancellation;
+use Sdk\Booking\Event\Status\BookingWaitingConfirmation;
+use Sdk\Booking\Event\Status\BookingWaitingProcessing;
 use Sdk\Booking\ValueObject\BookingPriceItem;
 use Sdk\Booking\ValueObject\BookingPrices;
 

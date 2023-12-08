@@ -18,6 +18,7 @@ use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 use Sdk\Shared\Enum\CurrencyEnum;
 use Sdk\Shared\Enum\Order\OrderStatusEnum;
 use Sdk\Shared\ValueObject\Money;
+use Sdk\Shared\ValueObject\Timestamps;
 
 final class Order extends AbstractAggregateRoot implements EntityInterface
 {
@@ -33,7 +34,8 @@ final class Order extends AbstractAggregateRoot implements EntityInterface
         private readonly CarbonImmutable $createdAt,
         private readonly GuestIdCollection $guestIds,
         private readonly Money $clientPrice,
-        private readonly Context $context
+        private readonly Context $context,
+        private readonly Timestamps $timestamps,
     ) {
     }
 
@@ -106,5 +108,10 @@ final class Order extends AbstractAggregateRoot implements EntityInterface
     public function setVoucher(?Voucher $voucher): void
     {
         $this->voucher = $voucher;
+    }
+
+    public function timestamps(): Timestamps
+    {
+        return $this->timestamps;
     }
 }

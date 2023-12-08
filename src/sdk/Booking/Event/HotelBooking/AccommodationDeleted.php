@@ -2,11 +2,15 @@
 
 namespace Sdk\Booking\Event\HotelBooking;
 
+use Sdk\Booking\Contracts\Event\PriceBecomeDeprecatedEventInterface;
 use Sdk\Booking\Contracts\Event\QuotaChangedEventInterface;
 use Sdk\Booking\Entity\HotelAccommodation;
-use Sdk\Shared\Event\IntegrationEventMessages;
+use Sdk\Booking\IntegrationEvent\HotelBooking\AccommodationDeleted as IntegrationEvent;
+use Sdk\Module\Contracts\Event\HasIntegrationEventInterface;
 
-class AccommodationDeleted extends AbstractAccommodationEvent implements QuotaChangedEventInterface
+class AccommodationDeleted extends AbstractAccommodationEvent implements QuotaChangedEventInterface,
+                                                                         PriceBecomeDeprecatedEventInterface,
+                                                                         HasIntegrationEventInterface
 {
     public function __construct(
         HotelAccommodation $accommodation,
@@ -14,16 +18,13 @@ class AccommodationDeleted extends AbstractAccommodationEvent implements QuotaCh
         parent::__construct($accommodation);
     }
 
-    public function integrationEvent(): string
+    public function integrationEvent(): IntegrationEvent
     {
-        return IntegrationEventMessages::HOTEL_BOOKING_ACCOMMODATION_REMOVED;
-    }
-
-    public function integrationPayload(): array
-    {
-        return [
-            'bookingId' => $this->bookingId()->value(),
-            'accommodation' => $this->accommodation->serialize()
-        ];
+        return new IntegrationEvent(
+            $this->bookingId()->value(),
+            $this->accommodation->id()->value(),
+            $this->accommodation->roomInfo()->id(),
+            $this->accommodation->roomInfo()->name(),
+        );
     }
 }

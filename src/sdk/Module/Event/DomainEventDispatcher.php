@@ -4,7 +4,7 @@ namespace Sdk\Module\Event;
 
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\Event\DomainEventInterface;
-use Sdk\Module\Contracts\Event\IntegrationEventInterface;
+use Sdk\Module\Contracts\Event\HasIntegrationEventInterface;
 use Sdk\Module\Contracts\Event\IntegrationEventPublisherInterface;
 use Sdk\Module\Contracts\Support\ContainerInterface;
 
@@ -15,8 +15,7 @@ class DomainEventDispatcher implements DomainEventDispatcherInterface
     public function __construct(
         private readonly ContainerInterface $container,
         private readonly IntegrationEventPublisherInterface $integrationEventPublisher,
-    ) {
-    }
+    ) {}
 
     public function listen(string $eventClass, string $listenerClass): void
     {
@@ -43,7 +42,7 @@ class DomainEventDispatcher implements DomainEventDispatcherInterface
 //        $this->dispatchApplicationListener($event);
 
         foreach ($this->listeners as $eventClass => $listeners) {
-            if ($event::class === $eventClass || is_subclass_of($event, $eventClass)) {
+            if (is_a($event, $eventClass)) {
                 $this->dispatchListeners($event, $listeners);
             }
         }
@@ -72,7 +71,10 @@ class DomainEventDispatcher implements DomainEventDispatcherInterface
 
     private function publish(DomainEventInterface ...$events): void
     {
-        $integrationEvents = array_filter($events, fn($e) => $e instanceof IntegrationEventInterface);
+        $integrationEvents = array_map(
+            fn(HasIntegrationEventInterface $e) => $e->integrationEvent(),
+            array_filter($events, fn($e) => $e instanceof HasIntegrationEventInterface)
+        );
         $this->integrationEventPublisher->publish(...$integrationEvents);
     }
 }
