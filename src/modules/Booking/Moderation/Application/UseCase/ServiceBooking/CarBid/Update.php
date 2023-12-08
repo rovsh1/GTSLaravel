@@ -31,24 +31,24 @@ class Update implements UseCaseInterface
 
         $this->carBidFactory->fromRequest($carData);
 
-        $this->bookingUnitOfWork->touch($booking->id());
-
         if ($currentCarBid->carId()->value() === $carData->carId) {
             $this->doUpdate($currentCarBid);
         } else {
             $this->doReplace($currentCarBid);
         }
 
+        $this->bookingUnitOfWork->touch($booking->id());
         $this->bookingUnitOfWork->commit();
     }
 
     private function doUpdate(CarBid $currentCarBid): void
     {
-        $isChanged = true;
-        if (!$isChanged) {
+        $newDetails = $this->carBidFactory->buildDetails();
+        if ($currentCarBid->details()->isEqual($newDetails)) {
             return;
         }
         $this->bookingUnitOfWork->persist($currentCarBid);
+        $currentCarBid->updateDetails($newDetails);
     }
 
     private function doReplace(CarBid $beforeCarBid): void
@@ -56,8 +56,7 @@ class Update implements UseCaseInterface
         $this->bookingUnitOfWork->commiting(function () use ($beforeCarBid) {
             $this->carBidDbContext->delete($beforeCarBid->id());
             $carBid = $this->carBidFactory->create($beforeCarBid->bookingId());
-            $details = $this->bookingUnitOfWork->getDetails($beforeCarBid->bookingId());
-            $this->eventDispatcher->dispatch(new CarBidReplaced($details, $beforeCarBid, $carBid));
+            $this->eventDispatcher->dispatch(new CarBidReplaced($carBid, $beforeCarBid));
         });
     }
 }

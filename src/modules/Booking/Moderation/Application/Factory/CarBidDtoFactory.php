@@ -36,10 +36,10 @@ class CarBidDtoFactory
         return $carBids->map(fn(CarBid $carBid) => new CarBidDto(
             id: $carBid->id()->value(),
             carInfo: $this->getSupplierCar($details->serviceInfo()->supplierId(), $carBid->carId()->value()),
-            carsCount: $carBid->carsCount(),
-            passengersCount: $carBid->passengersCount(),
-            baggageCount: $carBid->baggageCount(),
-            babyCount: $carBid->babyCount(),
+            carsCount: $carBid->details()->carsCount(),
+            passengersCount: $carBid->details()->passengersCount(),
+            baggageCount: $carBid->details()->baggageCount(),
+            babyCount: $carBid->details()->babyCount(),
             guestIds: $carBid->guestIds()->serialize()
         ));
     }

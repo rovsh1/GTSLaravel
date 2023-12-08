@@ -29,8 +29,7 @@ class Add implements UseCaseInterface
         $this->bookingUnitOfWork->touch($booking->id());
         $this->bookingUnitOfWork->commiting(function () use ($booking) {
             $carBid = $this->carBidFactory->create($booking->id());
-            $details = $this->bookingUnitOfWork->getDetails($booking->id());
-            $this->eventDispatcher->dispatch(new CarBidAdded($details, $carBid));
+            $this->eventDispatcher->dispatch(new CarBidAdded($carBid));
         });
         $this->bookingUnitOfWork->commit();
     }

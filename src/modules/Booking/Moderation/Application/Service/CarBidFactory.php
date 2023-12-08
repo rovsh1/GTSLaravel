@@ -17,6 +17,7 @@ use Module\Supplier\Moderation\Domain\Supplier\ValueObject\CarId;
 use Sdk\Booking\Contracts\Entity\TransferDetailsInterface;
 use Sdk\Booking\Entity\CarBid;
 use Sdk\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\CarBid\CarBidDetails;
 use Sdk\Booking\ValueObject\CarBid\CarBidPrices;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
@@ -62,11 +63,18 @@ class CarBidFactory
         return $this->carBidDbContext->create(
             bookingId: $this->booking->id(),
             carId: new CarId($data->carId),
-            carsCount: $data->carsCount,
-            babyCount: $data->babyCount,
-            passengersCount: $data->passengersCount,
-            baggageCount: $data->baggageCount,
+            details: $this->buildDetails(),
             prices: $prices,
+        );
+    }
+
+    public function buildDetails(): CarBidDetails
+    {
+        return new CarBidDetails(
+            carsCount: $this->data->carsCount,
+            babyCount: $this->data->babyCount,
+            passengersCount: $this->data->passengersCount,
+            baggageCount: $this->data->baggageCount,
         );
     }
 

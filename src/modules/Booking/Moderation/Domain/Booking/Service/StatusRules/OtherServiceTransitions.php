@@ -8,8 +8,8 @@ final class OtherServiceTransitions extends AbstractTransitions implements Statu
 {
     protected function configure(): void
     {
-        $this->addTransition(StatusEnum::CREATED, StatusEnum::CANCELLED);
         $this->addTransition(StatusEnum::CREATED, StatusEnum::PROCESSING);
+        $this->addTransition(StatusEnum::CREATED, StatusEnum::CANCELLED);
         $this->addTransition(StatusEnum::PROCESSING, StatusEnum::CONFIRMED);
         $this->addTransition(StatusEnum::CONFIRMED, StatusEnum::PROCESSING);
         $this->addTransition(StatusEnum::CONFIRMED, StatusEnum::CANCELLED);

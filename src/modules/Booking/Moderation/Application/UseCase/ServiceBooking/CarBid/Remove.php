@@ -29,8 +29,7 @@ class Remove implements UseCaseInterface
 
         $this->bookingUnitOfWork->commiting(function () use ($currentCarBid) {
             $this->carBidDbContext->delete($currentCarBid->id());
-            $details = $this->bookingUnitOfWork->getDetails($currentCarBid->bookingId());
-            $this->eventDispatcher->dispatch(new CarBidRemoved($details, $currentCarBid));
+            $this->eventDispatcher->dispatch(new CarBidRemoved($currentCarBid));
         });
         $this->bookingUnitOfWork->commit();
     }

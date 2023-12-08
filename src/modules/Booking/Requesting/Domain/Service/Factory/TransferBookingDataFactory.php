@@ -72,10 +72,10 @@ class TransferBookingDataFactory
         return $carBids->map(fn(CarBid $carBid) => new CarDto(
             $carsIndexedById[$carBid->carId()->value()]->mark,
             $carsIndexedById[$carBid->carId()->value()]->model,
-            $carBid->carsCount(),
-            $carBid->passengersCount(),
-            $carBid->baggageCount(),
-            $carBid->babyCount(),
+            $carBid->details()->carsCount(),
+            $carBid->details()->passengersCount(),
+            $carBid->details()->baggageCount(),
+            $carBid->details()->babyCount(),
             new CarPriceDto(
                 $carBid->prices()->supplierPrice()->valuePerCar(),
                 $carBid->supplierPriceValue(),

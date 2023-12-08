@@ -23,7 +23,7 @@ class UpdateBookingCancelConditionsListener implements DomainEventListenerInterf
         assert($event instanceof CarBidChangedInterface);
 
         $booking = $this->bookingUnitOfWork->findOrFail($event->bookingId());
-        $details = $event->details;
+        $details = $this->bookingUnitOfWork->getDetails($event->bookingId());
         if (!$details instanceof TransferDetailsInterface) {
             return;
         }

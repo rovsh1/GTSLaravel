@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Module\Booking\Shared\Infrastructure\Models\CarBid as Model;
 use Sdk\Booking\Entity\CarBid;
 use Sdk\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\CarBid\CarBidDetails;
 use Sdk\Booking\ValueObject\CarBid\CarBidPrices;
 use Sdk\Booking\ValueObject\CarBidCollection;
 use Sdk\Booking\ValueObject\CarBidId;
@@ -22,10 +23,12 @@ class CarBidMapper
             new CarBidId($model->id),
             new BookingId($model->booking_id),
             new CarId($model->supplier_car_id),
-            $model->cars_count,
-            $model->passengers_count,
-            $model->baggage_count,
-            $model->baby_count,
+            new CarBidDetails(
+                $model->cars_count,
+                $model->passengers_count,
+                $model->baggage_count,
+                $model->baby_count,
+            ),
             CarBidPrices::deserialize($model->prices),
             GuestIdCollection::deserialize($model->guestIds)
         );

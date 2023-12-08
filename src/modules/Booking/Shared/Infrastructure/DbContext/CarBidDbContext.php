@@ -10,6 +10,7 @@ use Module\Booking\Shared\Infrastructure\Models\CarBid as Model;
 use Module\Supplier\Moderation\Domain\Supplier\ValueObject\CarId;
 use Sdk\Booking\Entity\CarBid;
 use Sdk\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\CarBid\CarBidDetails;
 use Sdk\Booking\ValueObject\CarBid\CarBidPrices;
 use Sdk\Booking\ValueObject\CarBidCollection;
 use Sdk\Booking\ValueObject\CarBidId;
@@ -49,10 +50,10 @@ class CarBidDbContext implements CarBidDbContextInterface
 
         $model->update([
             'supplier_car_id' => $carBid->carId()->value(),
-            'cars_count' => $carBid->carsCount(),
-            'passengers_count' => $carBid->passengersCount(),
-            'baggage_count' => $carBid->baggageCount(),
-            'baby_count' => $carBid->babyCount(),
+            'cars_count' => $carBid->details()->carsCount(),
+            'passengers_count' => $carBid->details()->passengersCount(),
+            'baggage_count' => $carBid->details()->baggageCount(),
+            'baby_count' => $carBid->details()->babyCount(),
             'prices' => $carBid->prices()->serialize(),
             'guestIds' => $carBid->guestIds()->serialize(),
         ]);
@@ -66,19 +67,16 @@ class CarBidDbContext implements CarBidDbContextInterface
     public function create(
         BookingId $bookingId,
         CarId $carId,
-        int $carsCount,
-        int $passengersCount,
-        int $baggageCount,
-        int $babyCount,
+        CarBidDetails $details,
         CarBidPrices $prices
     ): CarBid {
         $model = Model::create([
             'booking_id' => $bookingId->value(),
             'supplier_car_id' => $carId->value(),
-            'cars_count' => $carsCount,
-            'passengers_count' => $passengersCount,
-            'baggage_count' => $baggageCount,
-            'baby_count' => $babyCount,
+            'cars_count' => $details->carsCount(),
+            'passengers_count' => $details->passengersCount(),
+            'baggage_count' => $details->baggageCount(),
+            'baby_count' => $details->babyCount(),
             'prices' => $prices->serialize(),
         ]);
 

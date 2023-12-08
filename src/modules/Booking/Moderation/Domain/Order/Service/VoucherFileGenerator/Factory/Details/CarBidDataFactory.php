@@ -67,7 +67,7 @@ class CarBidDataFactory
             : $carBid->clientPriceValue() * $daysCount;
 
         return new PriceDto(
-            $carBid->carsCount(),
+            $carBid->details()->carsCount(),
             $carBid->clientPriceValue(),
             $total,
             $currency->name,

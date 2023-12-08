@@ -4,7 +4,9 @@ namespace Sdk\Booking\Entity;
 
 use Sdk\Booking\Contracts\Entity\BookingPartInterface;
 use Sdk\Booking\Entity\Details\Concerns\HasGuestIdCollectionTrait;
+use Sdk\Booking\Event\TransferBooking\CarBidDetailsEdited;
 use Sdk\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\CarBid\CarBidDetails;
 use Sdk\Booking\ValueObject\CarBid\CarBidPrices;
 use Sdk\Booking\ValueObject\CarBidId;
 use Sdk\Booking\ValueObject\CarId;
@@ -19,10 +21,7 @@ final class CarBid extends AbstractAggregateRoot implements BookingPartInterface
         private readonly CarBidId $id,
         private readonly BookingId $bookingId,
         private CarId $carId,
-        private int $carsCount,
-        private int $passengersCount,
-        private int $baggageCount,
-        private int $babyCount,
+        private CarBidDetails $details,
         private CarBidPrices $prices,
         private GuestIdCollection $guestIds,
     ) {}
@@ -42,24 +41,15 @@ final class CarBid extends AbstractAggregateRoot implements BookingPartInterface
         return $this->carId;
     }
 
-    public function carsCount(): int
+    public function details(): CarBidDetails
     {
-        return $this->carsCount;
+        return $this->details;
     }
 
-    public function passengersCount(): int
+    public function updateDetails(CarBidDetails $details): void
     {
-        return $this->passengersCount;
-    }
-
-    public function baggageCount(): int
-    {
-        return $this->baggageCount;
-    }
-
-    public function babyCount(): int
-    {
-        return $this->babyCount;
+        $this->pushEvent(new CarBidDetailsEdited($this, $this->details));
+        $this->details = $details;
     }
 
     public function prices(): CarBidPrices
@@ -69,12 +59,12 @@ final class CarBid extends AbstractAggregateRoot implements BookingPartInterface
 
     public function supplierPriceValue(): float
     {
-        return $this->prices->supplierPrice()->valuePerCar() * $this->carsCount;
+        return $this->prices->supplierPrice()->valuePerCar() * $this->details->carsCount();
     }
 
     public function clientPriceValue(): float
     {
-        return $this->prices->clientPrice()->valuePerCar() * $this->carsCount;
+        return $this->prices->clientPrice()->valuePerCar() * $this->details->carsCount();
     }
 
     public function serialize(): array
@@ -83,10 +73,7 @@ final class CarBid extends AbstractAggregateRoot implements BookingPartInterface
             'id' => $this->id,
             'bookingId' => $this->bookingId,
             'carId' => $this->carId->value(),
-            'carsCount' => $this->carsCount,
-            'passengersCount' => $this->passengersCount,
-            'baggageCount' => $this->baggageCount,
-            'babyCount' => $this->babyCount,
+            'details' => $this->details->serialize(),
             'prices' => $this->prices->serialize(),
             'guestIds' => $this->guestIds->serialize(),
         ];
@@ -98,10 +85,7 @@ final class CarBid extends AbstractAggregateRoot implements BookingPartInterface
             new CarBidId($payload['id']),
             new BookingId($payload['booking_id']),
             new CarId($payload['carId']),
-            $payload['carsCount'],
-            $payload['passengersCount'],
-            $payload['baggageCount'],
-            $payload['babyCount'],
+            CarBidDetails::deserialize($payload['details']),
             CarBidPrices::deserialize($payload['prices']),
             GuestIdCollection::deserialize($payload['guestIds']),
         );

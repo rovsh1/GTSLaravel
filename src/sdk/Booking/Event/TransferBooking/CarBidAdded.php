@@ -2,19 +2,16 @@
 
 namespace Sdk\Booking\Event\TransferBooking;
 
-use Sdk\Booking\Contracts\Entity\DetailsInterface;
 use Sdk\Booking\Contracts\Event\CarBidChangedInterface;
 use Sdk\Booking\Entity\CarBid;
-use Sdk\Booking\Support\Event\AbstractDetailsEvent;
 use Sdk\Shared\Event\IntegrationEventMessages;
 
-class CarBidAdded extends AbstractDetailsEvent implements CarBidChangedInterface
+class CarBidAdded extends AbstractCarBidEvent implements CarBidChangedInterface
 {
     public function __construct(
-        DetailsInterface $details,
-        public readonly CarBid $carBid,
+        CarBid $carBid,
     ) {
-        parent::__construct($details);
+        parent::__construct($carBid);
     }
 
     public function integrationEvent(): string
