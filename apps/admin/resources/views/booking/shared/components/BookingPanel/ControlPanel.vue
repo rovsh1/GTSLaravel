@@ -35,6 +35,7 @@ const { recalculatePrice } = bookingStore
     <OverlayLoading v-if="bookingStore.isRecalculateBookingPrice" />
     <template #actions>
       <BootstrapButton
+        v-if="bookingStore.availableActions?.isEditable || false"
         label="Пересчитать"
         size="small"
         severity="secondary"

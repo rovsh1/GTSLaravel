@@ -52,9 +52,7 @@ class CopyBooking implements UseCaseInterface
         $editor = $this->detailsEditorFactory->build($newBooking->serviceType());
         if ($details instanceof HotelBooking) {
             $editor->create($newBooking->id(), new ServiceId($details->hotelInfo()->id()), [
-                'period' => new CarbonPeriod(
-                    $details->bookingPeriod()->dateFrom(), $details->bookingPeriod()->dateTo()
-                ),
+                'period' => new CarbonPeriod($details->bookingPeriod()->dateFrom(), $details->bookingPeriod()->dateTo()),
                 'quota_processing_method' => $details->quotaProcessingMethod()->value,
             ]);
         } else {
