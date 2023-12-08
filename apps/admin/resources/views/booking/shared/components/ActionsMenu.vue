@@ -14,10 +14,10 @@ if (isInitialDataExists('view-initial-data-service-booking')) {
   initialDataKey = 'view-initial-data-service-booking'
 }
 
-const { editUrl, deleteUrl, bookingID } = requestInitialData(initialDataKey, z.object({
+const { editUrl, deleteUrl, timelineUrl } = requestInitialData(initialDataKey, z.object({
   editUrl: z.string().nullable(),
   deleteUrl: z.string().nullable(),
-  bookingID: z.number().nullable(),
+  timelineUrl: z.string().optional(),
 }))
 
 const bookingStore = useBookingStore()
@@ -40,6 +40,7 @@ const handleDelete = () => {
 <template>
   <div class="dropdown menu-actions-wrapper">
     <div
+      v-if="canEdit || canCopy || timelineUrl"
       id="menu-actions"
       class="btn btn-menu"
       href="#"
@@ -51,8 +52,8 @@ const handleDelete = () => {
     </div>
 
     <ul class="dropdown-menu" aria-labelledby="menu-actions" data-popper-placement="bottom-start">
-      <li v-if="bookingID">
-        <a class="dropdown-item" :href="'/hotel-booking/' + bookingID + '/timeline'">
+      <li v-if="timelineUrl">
+        <a class="dropdown-item" :href="timelineUrl">
           <i class="icon">history</i>
           История брони
         </a>
