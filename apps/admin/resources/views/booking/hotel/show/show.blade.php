@@ -16,6 +16,7 @@
             'hotelRooms' => $hotelRooms,
             'order' => $order,
             'currencies' => $currencies,
+            'timelineUrl' => $timelineUrl,
             'editUrl' => $editUrl,
             'deleteUrl' => $deleteUrl,
             'manager' => $manager,

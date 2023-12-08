@@ -151,6 +151,7 @@ class BookingController extends Controller
                 'currencies' => Currency::get(),
                 'manager' => $this->administratorRepository->get($id),
                 'creator' => Administrator::find($booking->creatorId),
+                'timelineUrl' => $this->route('timeline', $id),
                 'editUrl' => $this->isAllowed('update') ? $this->route('edit', $id) : null,
                 'deleteUrl' => $this->isAllowed('delete') ? $this->route('destroy', $id) : null,
                 'hotelRooms' => RoomResource::collection(Room::whereHotelId($hotelId)->get())
