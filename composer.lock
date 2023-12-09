@@ -636,16 +636,16 @@
         },
         {
             "name": "gsdk/filemanager",
-            "version": "1.2.0",
+            "version": "1.2.1",
             "source": {
                 "type": "git",
                 "url": "git@gitlab.com:gsdk/filemanager.git",
-                "reference": "1d5aa2a1d9d5ef4705d1aa163be15ed47e7c180f"
+                "reference": "66fd4c402eb2ac83df4f6e2c86c92d3b88628f06"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://gitlab.com/api/v4/projects/gsdk%2Ffilemanager/repository/archive.zip?sha=1d5aa2a1d9d5ef4705d1aa163be15ed47e7c180f",
-                "reference": "1d5aa2a1d9d5ef4705d1aa163be15ed47e7c180f",
+                "url": "https://gitlab.com/api/v4/projects/gsdk%2Ffilemanager/repository/archive.zip?sha=66fd4c402eb2ac83df4f6e2c86c92d3b88628f06",
+                "reference": "66fd4c402eb2ac83df4f6e2c86c92d3b88628f06",
                 "shasum": ""
             },
             "require": {
@@ -673,7 +673,7 @@
                 "gsdk",
                 "meta"
             ],
-            "time": "2023-12-09T11:00:47+00:00"
+            "time": "2023-12-09T11:16:09+00:00"
         },
         {
             "name": "gsdk/form",
