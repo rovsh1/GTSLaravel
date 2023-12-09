@@ -28,6 +28,7 @@ export default defineConfig(({ command }) => ({
         'resources/assets/jquery.ts',
         'resources/assets/tinymce.js',
         'resources/assets/tinymce-content.scss',
+        'resources/views/administration/journal/access-group-form.ts',
         'resources/views/administration/access-group-form/access-group-form.ts',
         'resources/views/administration/access-group-form/access-group-form.scss',
         'resources/views/auth/login/login.scss',

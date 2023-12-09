@@ -1,5 +1,0 @@
-import '~resources/views/main'
-
-$(() => {
-
-});

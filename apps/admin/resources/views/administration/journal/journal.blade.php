@@ -5,5 +5,5 @@
 @endsection
 
 @section('scripts')
-    @vite('resources/views/administration/journal/journal.js')
+    @vite('resources/views/administration/journal/journal.ts')
 @endsection
