@@ -3,10 +3,9 @@ import { onMounted } from 'vue'
 import { defineStore } from 'pinia'
 
 import { OrderStatusResponse } from '~resources/api/order/models'
+import useLocalStorageCache from '~resources/lib/locale-storage-cache/locale-storage-cache'
 
 import { useOrderStatusesAPI } from '~api/order/status'
-
-import useLocalStorageCache from '~lib/locale-storage-cache/index'
 
 export const useOrderStatusesStore = defineStore('order-statuses', () => {
   const { data: dataFromStorage, existData, saveToLocalStorage } = useLocalStorageCache('order-statuses')

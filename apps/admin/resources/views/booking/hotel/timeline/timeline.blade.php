@@ -33,14 +33,12 @@
                                             <div class="actions d-flex gap-2">
                                                 <div class="payload d-flex align-items-center">
                                                     <div class="btn-data-content"
-                                                        data-modal-title="Опиание"
                                                         data-content="{{ json_encode($event->payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}">
                                                         <i class="icon">description</i>
                                                     </div>
                                                 </div>
                                                 <div class="context d-flex align-items-center">
                                                     <div class="btn-data-content"
-                                                        data-modal-title="Информация"
                                                         data-content="{{ json_encode($event->context, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}">
                                                         <i class="icon">info</i>
                                                     </div>
