@@ -9,10 +9,16 @@ use Illuminate\Support\Facades\Auth;
 
 class JournalLoggerListener
 {
-    private array $skipAttributes = [
+    private array $ignoredAttributes = [
         'remember_token',
         'updated_at',
         'created_at'
+    ];
+
+    private array $ignoredModels = [];
+
+    private array $ignoredNamespaces = [
+        '	Module\\Booking\\Shared\\Infrastructure\\Models\\'
     ];
 
     public function __construct(
@@ -21,7 +27,7 @@ class JournalLoggerListener
 
     public function handle(string $event, $data): void
     {
-        if (!Auth::check() || $this->isSkipChanges($data[0])) {
+        if (!Auth::check() || $this->isChangesIgnored($data[0])) {
             return;
         }
 
@@ -38,10 +44,20 @@ class JournalLoggerListener
         $this->changesRegistrator->register($changes);
     }
 
-    private function isSkipChanges($model): bool
+    private function isChangesIgnored($model): bool
     {
+        if (in_array($model::class, $this->ignoredModels)) {
+            return true;
+        }
+
+        foreach ($this->ignoredNamespaces as $ns) {
+            if (str_starts_with($model::class, $ns)) {
+                return true;
+            }
+        }
+
         $changes = $model->getChanges();
-        foreach ($this->skipAttributes as $key) {
+        foreach ($this->ignoredAttributes as $key) {
             unset($changes[$key]);
         }
 

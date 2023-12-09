@@ -33,7 +33,7 @@ class QueueRepository implements QueueRepositoryInterface
             'payload' => $mail->serialize(),
             'priority' => $priority,
             'status' => $mail->status()->value,
-            'context' => $this->applicationContext->toArray($context ?? [])
+            'context' => $this->applicationContext->toArray()
         ]);
     }
 

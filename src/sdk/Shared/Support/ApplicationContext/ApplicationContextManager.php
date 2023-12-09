@@ -38,11 +38,10 @@ class ApplicationContextManager implements ApplicationContextInterface
         return $this->data['requestId'];
     }
 
-    public function toArray(array $extra = []): array
+    public function toArray(): array
     {
         return array_merge($this->data, [
-            'timezone' => date_default_timezone_get(),
-            'extra' => $extra
+            'timezone' => date_default_timezone_get()
         ]);
     }
 

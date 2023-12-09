@@ -21,7 +21,6 @@ class IntegrationEventSerializer
         return $payload;
     }
 
-
     public function deserialize(string $eventClass, array $payload): IntegrationEventInterface
     {
         $attributes = [];
