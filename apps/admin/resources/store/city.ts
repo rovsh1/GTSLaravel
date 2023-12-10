@@ -2,9 +2,9 @@ import { onMounted } from 'vue'
 
 import { defineStore } from 'pinia'
 
-import { CityResponse, useCitySearchAPI } from '~api/city'
+import useLocalStorageCache from '~resources/lib/locale-storage-cache/locale-storage-cache'
 
-import useLocalStorageCache from '~lib/locale-storage-cache/index'
+import { CityResponse, useCitySearchAPI } from '~api/city'
 
 export const useCityStore = defineStore('city', () => {
   const { data: dataFromStorage, existData, saveToLocalStorage } = useLocalStorageCache('cities')

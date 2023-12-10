@@ -12,7 +12,6 @@ Route::group([], __DIR__ . '/administrator.php');
 Route::group([], __DIR__ . '/mail.php');
 Route::group([], __DIR__ . '/hotel.php');
 Route::group([], __DIR__ . '/supplier.php');
-Route::group([], __DIR__ . '/file-manager.php');
 Route::group([], __DIR__ . '/city.php');
 Route::group([], __DIR__ . '/client.php');
 Route::group([], __DIR__ . '/country.php');

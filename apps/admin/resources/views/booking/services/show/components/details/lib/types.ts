@@ -43,6 +43,7 @@ export type BookingTransferToRailwayDetails = BaseBookingDetails & {
 
 export type BookingOtherDetails = BaseBookingDetails & {
   description?: string
+  date?: string
 }
 
 export type BookingPeriod = {

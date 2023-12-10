@@ -2,9 +2,9 @@ import { onMounted } from 'vue'
 
 import { defineStore } from 'pinia'
 
-import { CountryResponse, useCountrySearchAPI } from '~api/country'
+import useLocalStorageCache from '~resources/lib/locale-storage-cache/locale-storage-cache'
 
-import useLocalStorageCache from '~lib/locale-storage-cache/index'
+import { CountryResponse, useCountrySearchAPI } from '~api/country'
 
 export const useCountryStore = defineStore('country', () => {
   const { data: dataFromStorage, existData, saveToLocalStorage } = useLocalStorageCache('countries')

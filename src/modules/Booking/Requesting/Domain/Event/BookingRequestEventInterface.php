@@ -2,9 +2,13 @@
 
 namespace Module\Booking\Requesting\Domain\Event;
 
+use Module\Booking\Requesting\Domain\Entity\BookingRequest;
 use Sdk\Booking\Contracts\Event\BookingEventInterface;
-use Sdk\Module\Contracts\Event\IntegrationEventInterface;
+use Sdk\Module\Contracts\Event\HasIntegrationEventInterface;
 
-interface BookingRequestEventInterface extends BookingEventInterface, IntegrationEventInterface
+/**
+ * @property BookingRequest $request
+ */
+interface BookingRequestEventInterface extends BookingEventInterface, HasIntegrationEventInterface
 {
 }

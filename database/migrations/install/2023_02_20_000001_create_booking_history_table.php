@@ -8,6 +8,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('booking_history', function (Blueprint $table) {
+            $table->id();
             $table->unsignedInteger('booking_id');
             $table->string('group');
             $table->json('payload')->nullable();

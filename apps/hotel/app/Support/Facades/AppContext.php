@@ -27,7 +27,7 @@ use Sdk\Shared\Enum\SourceEnum;
  * @method static void setErrorCode(int $code)
  * @method static FormBuilder|null submittedForm()
  * @method static void setSubmittedForm(FormBuilder $form)
- * @method static array toArray(array $extra = [])
+ * @method static array toArray()
  *
  * @see ApplicationContextInterface
  * @see ContextManager

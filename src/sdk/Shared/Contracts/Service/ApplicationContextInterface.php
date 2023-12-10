@@ -49,5 +49,5 @@ interface ApplicationContextInterface
 
     public function setErrorCode(int $code): void;
 
-    public function toArray(array $extra = []): array;
+    public function toArray(): array;
 }

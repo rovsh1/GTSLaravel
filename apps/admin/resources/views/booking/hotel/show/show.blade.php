@@ -16,6 +16,7 @@
             'hotelRooms' => $hotelRooms,
             'order' => $order,
             'currencies' => $currencies,
+            'timelineUrl' => $timelineUrl,
             'editUrl' => $editUrl,
             'deleteUrl' => $deleteUrl,
             'manager' => $manager,
@@ -28,7 +29,6 @@
     <div class="content-header">
         <div class="title">{{ $title }}</div>
         <div id="booking-actions-menu"></div>
-        <div id="booking-copy-button"></div>
         <div class="flex-grow-1"></div>
     </div>
 

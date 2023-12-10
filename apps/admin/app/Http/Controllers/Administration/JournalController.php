@@ -6,7 +6,6 @@ use App\Admin\Components\Factory\Prototype;
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Services\JournalLogger\EventTypeEnum;
 use App\Admin\Support\Facades\Breadcrumb;
-use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Format;
 use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Facades\Layout;
@@ -34,7 +33,7 @@ class JournalController extends Controller
         $grid->data($this->buildQuery($grid->getSearchCriteria()));
 
         return Layout::title($this->prototype->title('index'))
-            ->view('default.grid.grid', [
+            ->view('administration.journal.journal', [
                 'quicksearch' => $grid->getQuicksearch(),
                 'searchForm' => $grid->getSearchForm(),
                 'grid' => $grid,

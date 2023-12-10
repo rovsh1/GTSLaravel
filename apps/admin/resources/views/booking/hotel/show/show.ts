@@ -3,7 +3,6 @@ import { createPinia } from 'pinia'
 import ActionsMenu from '~resources/views/booking/shared/components/ActionsMenu.vue'
 import ControlPanel from '~resources/views/booking/shared/components/BookingPanel/ControlPanel.vue'
 import CancelConditions from '~resources/views/booking/shared/components/CancelConditions.vue'
-import CopyButton from '~resources/views/booking/shared/components/CopyButton.vue'
 import EditableManager from '~resources/views/booking/shared/components/EditableManager.vue'
 import EditableNote from '~resources/views/booking/shared/components/EditableNote.vue'
 
@@ -24,12 +23,6 @@ createVueInstance({
 createVueInstance({
   rootComponent: ControlPanel,
   rootContainer: '#booking-control-panel',
-  plugins: [pinia],
-})
-
-createVueInstance({
-  rootComponent: CopyButton,
-  rootContainer: '#booking-copy-button',
   plugins: [pinia],
 })
 

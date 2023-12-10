@@ -3,10 +3,9 @@ import { onMounted } from 'vue'
 import { defineStore } from 'pinia'
 
 import { Currency } from '~resources/api/models'
+import useLocalStorageCache from '~resources/lib/locale-storage-cache/locale-storage-cache'
 
 import { useCurrencyGetAPI } from '~api/currency'
-
-import useLocalStorageCache from '~lib/locale-storage-cache/index'
 
 export const useCurrencyStore = defineStore('currency', () => {
   const { data: dataFromStorage, existData, saveToLocalStorage } = useLocalStorageCache('currencies')

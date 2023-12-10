@@ -14,13 +14,20 @@ if (isInitialDataExists('view-initial-data-service-booking')) {
   initialDataKey = 'view-initial-data-service-booking'
 }
 
-const { editUrl, deleteUrl } = requestInitialData(initialDataKey, z.object({
+const { editUrl, deleteUrl, timelineUrl } = requestInitialData(initialDataKey, z.object({
   editUrl: z.string().nullable(),
   deleteUrl: z.string().nullable(),
+  timelineUrl: z.string().optional(),
 }))
 
 const bookingStore = useBookingStore()
 const canEdit = computed(() => Boolean(bookingStore?.availableActions?.isEditable))
+
+const canCopy = computed(() => bookingStore.availableActions?.canCopy || false)
+
+const handleCopyBooking = () => {
+  bookingStore.copy()
+}
 
 const handleDelete = () => {
   if (!deleteUrl) {
@@ -33,7 +40,7 @@ const handleDelete = () => {
 <template>
   <div class="dropdown menu-actions-wrapper">
     <div
-      v-if="canEdit"
+      v-if="canEdit || canCopy || timelineUrl"
       id="menu-actions"
       class="btn btn-menu"
       href="#"
@@ -45,18 +52,32 @@ const handleDelete = () => {
     </div>
 
     <ul class="dropdown-menu" aria-labelledby="menu-actions" data-popper-placement="bottom-start">
-      <li v-if="editUrl">
-        <a class="dropdown-item" :href="editUrl">
-          <i class="icon">edit</i>
-          Редактировать
+      <li v-if="timelineUrl">
+        <a class="dropdown-item" :href="timelineUrl">
+          <i class="icon">history</i>
+          История брони
         </a>
       </li>
-      <li v-if="deleteUrl">
-        <a class="dropdown-item" href="#" @click.prevent="handleDelete">
-          <i class="icon">delete</i>
-          Удалить
+      <template v-if="canCopy">
+        <a class="dropdown-item" href="#" @click.prevent="handleCopyBooking">
+          <i class="icon">content_copy</i>
+          Копировать
         </a>
-      </li>
+      </template>
+      <template v-if="canEdit">
+        <li v-if="editUrl">
+          <a class="dropdown-item" :href="editUrl">
+            <i class="icon">edit</i>
+            Редактировать
+          </a>
+        </li>
+        <li v-if="deleteUrl">
+          <a class="dropdown-item" href="#" @click.prevent="handleDelete">
+            <i class="icon">delete</i>
+            Удалить
+          </a>
+        </li>
+      </template>
     </ul>
   </div>
 </template>
