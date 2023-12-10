@@ -45,6 +45,11 @@ final class Other extends AbstractServiceDetails implements DetailsInterface
         return $this->date;
     }
 
+    public function setDate(?DateTimeInterface $date): void
+    {
+        $this->date = $date;
+    }
+
     public function serialize(): array
     {
         return [
