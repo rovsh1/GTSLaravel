@@ -24,7 +24,7 @@ class BookingDbContext implements BookingDbContextInterface
 {
     public function __construct(
         private readonly BookingMapper $bookingMapper,
-        private readonly ApplicationContextInterface $context
+        private readonly ApplicationContextInterface $context,
     ) {}
 
     public function find(BookingId $id): ?Booking

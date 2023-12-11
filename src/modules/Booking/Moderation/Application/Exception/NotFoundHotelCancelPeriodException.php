@@ -6,7 +6,7 @@ namespace Module\Booking\Moderation\Application\Exception;
 
 use Sdk\Shared\Exception\ApplicationException;
 
-final class NotFoundHotelCancelPeriod extends ApplicationException
+final class NotFoundHotelCancelPeriodException extends ApplicationException
 {
     protected $code = self::BOOKING_NOT_FOUND_HOTEL_CANCEL_PERIOD;
 }

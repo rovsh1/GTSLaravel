@@ -2,30 +2,24 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Moderation\Application\Support\UseCase;
+namespace Module\Booking\Moderation\Application\Service;
 
 use Module\Booking\Moderation\Application\RequestDto\CreateBookingRequestDto;
 use Module\Booking\Shared\Domain\Order\DbContext\OrderDbContextInterface;
+use Module\Booking\Shared\Domain\Order\Order;
 use Module\Booking\Shared\Domain\Shared\Adapter\AdministratorAdapterInterface;
 use Sdk\Booking\ValueObject\ClientId;
 use Sdk\Booking\ValueObject\CreatorId;
-use Sdk\Booking\ValueObject\OrderId;
-use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
-abstract class AbstractCreateBooking implements UseCaseInterface
+class OrderFactory
 {
     public function __construct(
         private readonly OrderDbContextInterface $orderDbContext,
-        protected readonly AdministratorAdapterInterface $administratorAdapter
+        private readonly AdministratorAdapterInterface $administratorAdapter
     ) {}
 
-    protected function getOrderIdFromRequest(CreateBookingRequestDto $request): OrderId
+    public function createFromBookingRequest(CreateBookingRequestDto $request): Order
     {
-        $orderId = $request->orderId;
-        if (null !== $orderId) {
-            return new OrderId($orderId);
-        }
-
         $order = $this->orderDbContext->create(
             new ClientId($request->clientId),
             $request->currency,
@@ -35,6 +29,6 @@ abstract class AbstractCreateBooking implements UseCaseInterface
         $this->administratorAdapter->setOrderAdministrator($order->id(), $request->administratorId);
 
         //@todo ивенты созданного заказа
-        return $order->id();
+        return $order;
     }
 }

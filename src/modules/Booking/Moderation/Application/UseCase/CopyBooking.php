@@ -13,9 +13,11 @@ use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
 use Module\Booking\Shared\Domain\Shared\Adapter\AdministratorAdapterInterface;
 use Sdk\Booking\Entity\Details\HotelBooking;
+use Sdk\Booking\Event\BookingCreated;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\BookingPrices;
 use Sdk\Booking\ValueObject\ServiceId;
+use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
@@ -28,8 +30,8 @@ class CopyBooking implements UseCaseInterface
         private readonly DetailsRepositoryInterface $detailsRepository,
         private readonly AdministratorAdapterInterface $administratorAdapter,
         private readonly BookingDtoFactory $bookingDtoFactory,
-    ) {
-    }
+        private readonly DomainEventDispatcherInterface $eventDispatcher,
+    ) {}
 
     public function execute(int $id): BookingDto
     {
@@ -63,6 +65,8 @@ class CopyBooking implements UseCaseInterface
         if ($administrator !== null) {
             $this->administratorAdapter->setBookingAdministrator($newBooking->id(), $administrator->id);
         }
+
+        $this->eventDispatcher->dispatch(new BookingCreated($booking));
 
         return $this->bookingDtoFactory->createFromEntity($newBooking);
     }

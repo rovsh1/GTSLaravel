@@ -2,6 +2,7 @@
 
 namespace Module\Booking\Shared\Providers;
 
+use Module\Booking\Shared\Domain\Booking\Listener\CalculateOtherServiceBookingPricesListener;
 use Module\Booking\Shared\Domain\Booking\Listener\RecalculateBookingPricesListener;
 use Module\Booking\Shared\Domain\Booking\Listener\UpdateBookingCancelConditionsListener;
 use Module\Booking\Shared\Domain\Booking\Listener\UpdateHotelQuotaListener;
@@ -16,6 +17,7 @@ use Module\Booking\Shared\Domain\Order\Listener\OrderCancelledListener;
 use Sdk\Booking\Contracts\Event\CarBidEventInterface;
 use Sdk\Booking\Contracts\Event\PriceBecomeDeprecatedEventInterface;
 use Sdk\Booking\Contracts\Event\QuotaChangedEventInterface;
+use Sdk\Booking\Event\BookingCreated;
 use Sdk\Booking\Event\HotelBooking\GuestBinded as AccommodationGuestBinded;
 use Sdk\Booking\Event\HotelBooking\GuestUnbinded as AccommodationGuestUnbinded;
 use Sdk\Booking\Event\ServiceBooking\GuestBinded as AirportGuestBinded;
@@ -27,6 +29,8 @@ use Sdk\Shared\Support\ServiceProvider\DomainEventServiceProvider as ServiceProv
 class DomainEventServiceProvider extends ServiceProvider
 {
     protected array $listen = [
+        BookingCreated::class => CalculateOtherServiceBookingPricesListener::class,
+
         OrderCancelled::class => OrderCancelledListener::class,
 
         PriceBecomeDeprecatedEventInterface::class => RecalculateBookingPricesListener::class,

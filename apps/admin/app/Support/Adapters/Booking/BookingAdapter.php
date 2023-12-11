@@ -14,7 +14,6 @@ use Module\Booking\Moderation\Application\UseCase\DeleteBooking;
 use Module\Booking\Moderation\Application\UseCase\GetAvailableActions as ModerationActions;
 use Module\Booking\Moderation\Application\UseCase\GetBooking;
 use Module\Booking\Moderation\Application\UseCase\GetStatuses;
-use Module\Booking\Moderation\Application\UseCase\HotelBooking\CreateBooking as CreateHotelBooking;
 use Module\Booking\Moderation\Application\UseCase\UpdateNote;
 use Module\Booking\Moderation\Application\UseCase\UpdateStatus;
 use Module\Booking\Requesting\Application\UseCase\GetAvailableActions as RequestingActions;
@@ -49,6 +48,7 @@ class BookingAdapter
                 legalId: $legalId,
                 currency: $currency,
                 serviceId: $serviceId,
+                hotelId: null,
                 administratorId: $managerId,
                 creatorId: $creatorId,
                 orderId: $orderId,
@@ -69,12 +69,13 @@ class BookingAdapter
         ?array $detailsData,
         ?string $note = null
     ) {
-        return app(CreateHotelBooking::class)->execute(
+        return app(CreateBooking::class)->execute(
             new CreateBookingRequestDto(
                 clientId: $clientId,
                 legalId: $legalId,
                 currency: $currency,
-                serviceId: $hotelId,
+                serviceId: null,
+                hotelId: $hotelId,
                 administratorId: $managerId,
                 creatorId: $creatorId,
                 orderId: $orderId,

@@ -4,67 +4,19 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\UseCase;
 
-use Module\Booking\Moderation\Application\Exception\NotFoundServiceCancelConditionsException;
 use Module\Booking\Moderation\Application\RequestDto\CreateBookingRequestDto;
-use Module\Booking\Moderation\Application\Service\DetailsEditor\DetailsEditorFactory;
-use Module\Booking\Moderation\Application\Support\UseCase\AbstractCreateBooking;
-use Module\Booking\Moderation\Domain\Booking\Factory\CancelConditionsFactory;
-use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
-use Module\Booking\Shared\Domain\Booking\DbContext\BookingDbContextInterface;
-use Module\Booking\Shared\Domain\Order\DbContext\OrderDbContextInterface;
-use Module\Booking\Shared\Domain\Shared\Adapter\AdministratorAdapterInterface;
-use Sdk\Booking\ValueObject\BookingPrices;
-use Sdk\Booking\ValueObject\CreatorId;
-use Sdk\Booking\ValueObject\ServiceId;
-use Sdk\Module\Foundation\Exception\EntityNotFoundException;
-use Sdk\Shared\Enum\CurrencyEnum;
-use Sdk\Shared\Enum\ServiceTypeEnum;
+use Module\Booking\Moderation\Application\Service\BookingFactory;
+use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
-class CreateBooking extends AbstractCreateBooking
+class CreateBooking implements UseCaseInterface
 {
     public function __construct(
-        OrderDbContextInterface $orderDbContext,
-        AdministratorAdapterInterface $administratorAdapter,
-        private readonly BookingDbContextInterface $bookingDbContext,
-        private readonly SupplierAdapterInterface $supplierAdapter,
-        private readonly CancelConditionsFactory $cancelConditionsFactory,
-        private readonly DetailsEditorFactory $detailsEditorFactory,
-    ) {
-        parent::__construct($orderDbContext, $administratorAdapter);
-    }
+        private readonly BookingFactory $bookingFactory,
+    ) {}
 
     public function execute(CreateBookingRequestDto $request): int
     {
-        $service = $this->supplierAdapter->findService($request->serviceId);
-        if ($service === null) {
-            throw new EntityNotFoundException('Service not found');
-        }
-        $orderId = $this->getOrderIdFromRequest($request);
-        $orderCurrency = $request->currency;
-        if ($orderCurrency === null) {
-            throw new EntityNotFoundException('Currency not found');
-        }
-        $cancelConditions = $this->cancelConditionsFactory->build(
-            new ServiceId($service->id),
-            $service->type,
-            $request->detailsData['date'] ?? null
-        );
-        $isTransferServiceBooking = in_array($service->type, ServiceTypeEnum::getTransferCases());
-        if ($cancelConditions === null && !$isTransferServiceBooking) {
-            throw new NotFoundServiceCancelConditionsException();
-        }
-        $booking = $this->bookingDbContext->create(
-            orderId: $orderId,
-            creatorId: new CreatorId($request->creatorId),
-            prices: BookingPrices::createEmpty(CurrencyEnum::UZS, $orderCurrency),//@todo netto валюта
-            cancelConditions: $cancelConditions,
-            serviceType: $service->type,
-            note: $request->note,
-        );
-        $editor = $this->detailsEditorFactory->build($booking->serviceType());
-        $editor->create($booking->id(), new ServiceId($request->serviceId), $request->detailsData);
-
-        $this->administratorAdapter->setBookingAdministrator($booking->id(), $request->administratorId);
+        $booking = $this->bookingFactory->create($request);
 
         return $booking->id()->value();
     }
