@@ -52,16 +52,6 @@ class OrderDbContext implements OrderDbContextInterface
         return $this->orderMapper->fromModel($model);
     }
 
-    /**
-     * @param int $id
-     * @return Order
-     * @throws EntityNotFoundException
-     */
-    public function findOrFail(OrderId $id): Order
-    {
-        return $this->find($id) ?? throw new EntityNotFoundException("Order[{$id->value()}] not found");
-    }
-
 
     /**
      * @return Order[]

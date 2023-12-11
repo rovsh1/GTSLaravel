@@ -18,13 +18,6 @@ interface OrderDbContextInterface
     public function find(OrderId $id): ?Order;
 
     /**
-     * @param int $id
-     * @return Order
-     * @throws EntityNotFoundException
-     */
-    public function findOrFail(OrderId $id): Order;
-
-    /**
      * @return Order[]
      */
     public function getActiveOrders(int|null $clientId): array;

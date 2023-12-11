@@ -10,6 +10,7 @@ use Module\Booking\Moderation\Domain\Order\Exception\OrderHasBookingInProgress;
 use Module\Booking\Moderation\Domain\Order\Exception\OrderWithoutBookings;
 use Module\Booking\Moderation\Domain\Order\Service\StatusUpdater;
 use Module\Booking\Shared\Domain\Order\DbContext\OrderDbContextInterface;
+use Module\Booking\Shared\Domain\Order\Repository\OrderRepositoryInterface;
 use Sdk\Booking\ValueObject\OrderId;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
@@ -18,6 +19,7 @@ use Sdk\Shared\Enum\Order\OrderStatusEnum;
 class UpdateStatus implements UseCaseInterface
 {
     public function __construct(
+        private readonly OrderRepositoryInterface $orderRepository,
         private readonly OrderDbContextInterface $orderDbContext,
         private readonly StatusUpdater $statusUpdater,
         private readonly DomainEventDispatcherInterface $eventDispatcher,
@@ -26,7 +28,7 @@ class UpdateStatus implements UseCaseInterface
     public function execute(int $orderId, int $statusId): void
     {
         $statusEnum = OrderStatusEnum::from($statusId);
-        $order = $this->orderDbContext->findOrFail(new OrderId($orderId));
+        $order = $this->orderRepository->findOrFail(new OrderId($orderId));
 
         try {
             $this->statusUpdater->update($order, $statusEnum);
