@@ -5,15 +5,11 @@
 @endsection
 
 @section('scripts')
-    @vite('resources/views/booking/services/form/form.ts')
-@endsection
+    {!! Js::variables([
+        'bookingID' => $model->id ?? null,
+    ], 'service-booking') !!}
 
-@section('head-end')
-    <script>
-      window['view-initial-data-service-booking'] = {{ Js::from([
-            'bookingID' => $model->id ?? null,
-        ]) }}
-    </script>
+    @vite('resources/views/booking/services/form/form.ts')
 @endsection
 
 @section('content')

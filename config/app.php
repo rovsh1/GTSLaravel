@@ -204,7 +204,7 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        // 'ExampleClass' => App\Example\ExampleClass::class,
+        'Js' => \App\Shared\Support\Js::class
     ])->toArray(),
 
 ];

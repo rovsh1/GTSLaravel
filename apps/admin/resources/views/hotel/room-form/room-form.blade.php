@@ -5,6 +5,10 @@
 @endsection
 
 @section('scripts')
+    {!! Js::variables([
+        'bedTypes' => $bedTypes,
+    ], 'hotel') !!}
+
     @vite('resources/views/hotel/room-form/room-form.ts')
 @endsection
 

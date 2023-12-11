@@ -1,21 +1,15 @@
 @extends('layouts.main')
 
-@section('head-end')
-    <script id="hotel-settings-initial-data">
-      window['view-initial-data-hotel-settings'] = {{
-            Js::from([
-                'hotelID' => $model->id,
-                'contract' => $contract,
-            ])
-        }}
-    </script>
-@endsection
-
 @section('styles')
     @vite('resources/views/hotel/settings/settings.scss')
 @endsection
 
 @section('scripts')
+    {!! Js::variables([
+            'hotelID' => $model->id,
+            'contract' => $contract,
+    ], 'hotel-settings') !!}
+
     @vite('resources/views/hotel/settings/settings.ts')
 @endsection
 

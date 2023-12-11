@@ -48,13 +48,6 @@ class LayoutBuilder
         return $this;
     }
 
-    public function addJsVariable(string $name, mixed $value): static
-    {
-//        $this->meta->add(Meta::metaName($name, htmlspecialchars(is_string($value) ? $value : json_encode($value))));
-
-        return $this;
-    }
-
     public function title(string $title): static
     {
         $this->meta->title($title);

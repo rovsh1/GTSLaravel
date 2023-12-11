@@ -1,22 +1,18 @@
 @extends('layouts.main')
 
 @section('styles')
-    @vite('resources/views/booking/services/show/show.scss')
-@endsection
+    {!! Js::variables([
+        'bookingID' => $bookingId,
+        'manager' => $manager,
+        'order' => $order,
+        'currencies' => $currencies,
+        // 'timelineUrl' => $timelineUrl,
+        'editUrl' => $editUrl,
+        'deleteUrl' => $deleteUrl,
+        'isOtherServiceBooking' => $isOtherServiceBooking,
+    ], 'service-booking') !!}
 
-@section('head-end')
-    <script>
-      window['view-initial-data-service-booking'] = {{ Js::from([
-            'bookingID' => $bookingId,
-            'manager' => $manager,
-            'order' => $order,
-            'currencies' => $currencies,
-            // 'timelineUrl' => $timelineUrl,
-            'editUrl' => $editUrl,
-            'deleteUrl' => $deleteUrl,
-            'isOtherServiceBooking' => $isOtherServiceBooking,
-        ]) }}
-    </script>
+    @vite('resources/views/booking/services/show/show.scss')
 @endsection
 
 @section('scripts')

@@ -1,19 +1,15 @@
 @extends('layouts.main')
 
 @section('styles')
-    @vite('resources/views/booking-order/show/show.scss')
-@endsection
-
-@section('head-end')
-    <script>
-      window['view-initial-data-booking-order'] = {{ Js::from([
+    {!! Js::variables([
             'orderID' => $orderId,
             'manager' => $manager,
             'serviceBookingCreate' => $serviceBookingCreate,
             'hotelBookingCreate' => $hotelBookingCreate,
             'clientID' => $client->id,
-        ]) }}
-    </script>
+    ], 'booking-order') !!}
+
+    @vite('resources/views/booking-order/show/show.scss')
 @endsection
 
 @section('scripts')

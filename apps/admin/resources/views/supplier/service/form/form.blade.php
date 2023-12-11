@@ -5,19 +5,15 @@
 @endsection
 
 @section('scripts')
-    @vite('resources/views/supplier/service/form/form.ts')
-@endsection
+    {!! Js::variables([
+        'supplier' => $supplier,
+        'airports' => $airports,
+        'cities' => $cities,
+        'cancelUrl' => $cancelUrl,
+        'service' => $service ?? null,
+    ], 'supplier-service') !!}
 
-@section('head-end')
-    <script>
-      window['view-initial-data-supplier-service'] = {{ Js::from([
-            'supplier' => $supplier,
-            'airports' => $airports,
-            'cities' => $cities,
-            'cancelUrl' => $cancelUrl,
-            'service' => $service ?? null,
-        ]) }}
-    </script>
+    @vite('resources/views/supplier/service/form/form.ts')
 @endsection
 
 @section('content')

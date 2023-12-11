@@ -1,18 +1,14 @@
 @extends('layouts.main')
 
 @section('styles')
-    @vite('resources/views/hotel/prices/prices.scss')
-@endsection
+    {!! Js::variables([
+        'hotelID' => $hotel->id,
+        'seasons' => $seasons,
+        'priceRates' => $priceRates,
+        'rooms' => $rooms
+    ], 'hotel-prices') !!}
 
-@section('head-end')
-    <script >
-      window['view-initial-data-hotel-prices'] = {{ Js::from([
-            'hotelID' => $hotel->id,
-            'seasons' => $seasons,
-            'priceRates' => $priceRates,
-            'rooms' => $rooms
-      ]) }}
-    </script>
+    @vite('resources/views/hotel/prices/prices.scss')
 @endsection
 
 @section('scripts')

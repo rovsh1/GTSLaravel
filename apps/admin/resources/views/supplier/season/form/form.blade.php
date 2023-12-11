@@ -5,17 +5,14 @@
 @endsection
 
 @section('scripts')
+    {!! Js::variables([
+        'seasonID' => $seasonId,
+        'seasons' => $seasons,
+    ], 'supplier-seasons') !!}
+
     @vite('resources/views/supplier/season/form/form.ts')
 @endsection
 
-@section('head-end')
-    <script>
-      window['view-initial-data-supplier-seasons'] = {{ Js::from([
-            'seasonID' => $seasonId,
-            'seasons' => $seasons,
-        ]) }}
-    </script>
-@endsection
 @section('content')
     <x-ui.content-title/>
 

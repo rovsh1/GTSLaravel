@@ -24,6 +24,7 @@ class Html
                 $html .= ' ' . $k;
             }
         }
+
         return $html;
     }
 

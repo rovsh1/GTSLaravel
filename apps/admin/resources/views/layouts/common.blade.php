@@ -10,6 +10,5 @@
     <body class="{{ Layout::bodyClass() }}">
         @yield('layout__content')
         @yield('scripts')
-        {!! \App\Admin\Support\Facades\JsVariables::render() !!}
     </body>
 </html>

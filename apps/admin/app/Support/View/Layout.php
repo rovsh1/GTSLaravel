@@ -2,7 +2,6 @@
 
 namespace App\Admin\Support\View;
 
-use App\Admin\Support\Facades\JsVariables;
 use Gsdk\Meta\Meta;
 use Gsdk\Meta\MetaCollection;
 use Illuminate\Contracts\View\View;
@@ -45,15 +44,6 @@ class Layout
     public function data(array $data): static
     {
         $this->viewData = array_merge($this->viewData, $data);
-
-        return $this;
-    }
-
-    public function addJsVariable(string $name, mixed $value): static
-    {
-        JsVariables::add($name, $value);
-
-        $this->meta->add(Meta::metaName($name, htmlspecialchars(is_string($value) ? $value : json_encode($value))));
 
         return $this;
     }

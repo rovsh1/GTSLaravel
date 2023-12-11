@@ -5,24 +5,20 @@
 @endsection
 
 @section('scripts')
-    @vite('resources/views/booking/hotel/show/show.ts')
-@endsection
+    {!! Js::variables([
+        'bookingID' => $bookingId,
+        'hotelID' => $hotelId,
+        'hotelRooms' => $hotelRooms,
+        'order' => $order,
+        'currencies' => $currencies,
+        'timelineUrl' => $timelineUrl,
+        'editUrl' => $editUrl,
+        'deleteUrl' => $deleteUrl,
+        'manager' => $manager,
+        'isOtherServiceBooking' => false,
+    ], 'hotel-booking') !!}
 
-@section('head-end')
-    <script>
-      window['view-initial-data-hotel-booking'] = {{ Js::from([
-            'bookingID' => $bookingId,
-            'hotelID' => $hotelId,
-            'hotelRooms' => $hotelRooms,
-            'order' => $order,
-            'currencies' => $currencies,
-            'timelineUrl' => $timelineUrl,
-            'editUrl' => $editUrl,
-            'deleteUrl' => $deleteUrl,
-            'manager' => $manager,
-            'isOtherServiceBooking' => false,
-        ]) }}
-    </script>
+    @vite('resources/views/booking/hotel/show/show.ts')
 @endsection
 
 @section('content')

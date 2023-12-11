@@ -25,9 +25,7 @@ use Illuminate\Http\Request;
 
 class RoomController extends Controller
 {
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function index(Request $request, Hotel $hotel): LayoutContract
     {
@@ -154,10 +152,10 @@ class RoomController extends Controller
 
     private function formLayout($form): LayoutContract
     {
-        return Layout::addJsVariable('bed_types', BedType::get()->map(fn($r) => ['id' => $r->id, 'name' => $r->name]))
-            ->view('hotel.room-form.room-form', [
-                'form' => $form
-            ]);
+        return Layout::view('hotel.room-form.room-form', [
+            'form' => $form,
+            'bedTypes' => BedType::get()->map(fn($r) => ['id' => $r->id, 'name' => $r->name])
+        ]);
     }
 
     private function hotel(Hotel $hotel): void

@@ -1,16 +1,10 @@
 @extends('default.form.form')
 
-@section('head-end')
-    <script id="hotel-season-edit-initial-data">
-        window['view-initial-data-hotel-season-edit'] = {{
-            Js::from([
-                'hotelID' => $hotel->id,
-                'seasonID' => $season->id,
-            ])
-        }}
-    </script>
-@endsection
-
 @section('scripts')
+    {!! Js::variables([
+            'hotelID' => $hotel->id,
+            'seasonID' => $season->id,
+    ], 'hotel-season-edit') !!}
+
     @vite('resources/views/hotel/season/edit.ts')
 @endsection

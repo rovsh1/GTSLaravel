@@ -5,14 +5,10 @@
 @endsection
 
 @section('scripts')
-    @vite('resources/views/client/user/main/main.ts')
-@endsection
+    {!! Js::variables([
+        'createUserUrl' => $createUserUrl,
+        'searchUserUrl' => $searchUserUrl,
+    ], 'client-user') !!}
 
-@section('head-end')
-    <script>
-      window['view-initial-data-client-user'] = {{ Js::from([
-            'createUserUrl' => $createUserUrl,
-            'searchUserUrl' => $searchUserUrl,
-        ]) }}
-    </script>
+    @vite('resources/views/client/user/main/main.ts')
 @endsection

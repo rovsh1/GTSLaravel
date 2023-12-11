@@ -5,15 +5,11 @@
 @endsection
 
 @section('scripts')
-    @vite('resources/views/booking/hotel/form/form.ts')
-@endsection
+    {!! Js::variables([
+        'bookingID' => $model->id ?? null,
+    ], 'hotel-booking') !!}
 
-@section('head-end')
-    <script>
-      window['view-initial-data-hotel-booking'] = {{ Js::from([
-            'bookingID' => $model->id ?? null,
-        ]) }}
-    </script>
+    @vite('resources/views/booking/hotel/form/form.ts')
 @endsection
 
 @section('content')
@@ -22,7 +18,8 @@
     <div class="content-body">
         <div class="card card-form">
             <div class="card-body">
-                <form action="{{ $form->action }}" method="{{ strtoupper($form->method) === 'GET' ? 'GET' : 'POST' }}" enctype="multipart/form-data">
+                <form action="{{ $form->action }}" method="{{ strtoupper($form->method) === 'GET' ? 'GET' : 'POST' }}"
+                      enctype="multipart/form-data">
                     <div class="form-group">{!! $form !!}</div>
 
                     <div class="form-buttons">

@@ -55,12 +55,6 @@ class HotelController extends AbstractPrototypeController
         return parent::index()->view('hotel.main.main');
     }
 
-    public function show(int $id): LayoutContract
-    {
-        return parent::show($id)
-            ->addJsVariable('hotel-landmark-base-route', route('hotels.landmark.store', $this->model));
-    }
-
     public function edit(int $id): LayoutContract
     {
         return parent::edit($id)
@@ -123,12 +117,20 @@ class HotelController extends AbstractPrototypeController
     {
         $coordinates = isset($this->model) ? $this->model->coordinates : null;
 
-        return Form::select('supplier_id', ['label' => 'Поставщик', 'required' => true, 'emptyItem' => '', 'items' => Supplier::get()])
+        return Form::select('supplier_id', [
+            'label' => 'Поставщик',
+            'required' => true,
+            'emptyItem' => '',
+            'items' => Supplier::get()
+        ])
             ->city('city_id', ['label' => 'Город', 'required' => true, 'emptyItem' => ''])
             ->select('type_id', ['label' => 'Тип отеля', 'required' => true, 'emptyItem' => '', 'items' => Type::get()])
             ->currency('currency', ['label' => 'Валюта', 'required' => true, 'emptyItem' => ''])
-            ->enum('visibility', ['label' => __('label.visibility'), 'emptyItem' => '', 'enum' => VisibilityEnum::class]
-            )
+            ->enum('visibility', [
+                'label' => __('label.visibility'),
+                'emptyItem' => '',
+                'enum' => VisibilityEnum::class
+            ])
             ->text('name', ['label' => 'Наименование', 'required' => true])
             ->enum('rating', ['label' => 'Категория', 'emptyItem' => '', 'enum' => RatingEnum::class])
             ->enum('status', ['label' => 'Статус', 'emptyItem' => '', 'enum' => StatusEnum::class])
@@ -197,6 +199,8 @@ class HotelController extends AbstractPrototypeController
             'usersGrid' => $this->getUsersGrid(),
             'landmarkGrid' => $this->getLandmarkGrid(),
             'landmarkUrl' => $isUpdateAllowed ? route('hotels.landmark.create', ['hotel' => $this->model]) : null,
+
+            'hotelLandmarkBaseRoute' => route('hotels.landmark.store', $this->model)
         ];
     }
 
