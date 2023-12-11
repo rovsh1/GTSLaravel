@@ -5,7 +5,6 @@
 
         @vite('resources/assets/jquery.ts')
         @yield('styles')
-        @yield('head-end')
     </head>
     <body>
         @yield('layout__content')

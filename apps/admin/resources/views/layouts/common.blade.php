@@ -5,7 +5,6 @@
 
         @vite('resources/assets/jquery.ts')
         @yield('styles')
-        @yield('head-end')
     </head>
     <body class="{{ Layout::bodyClass() }}">
         @yield('layout__content')
