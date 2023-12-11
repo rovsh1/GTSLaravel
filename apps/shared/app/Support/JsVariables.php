@@ -23,9 +23,11 @@ class JsVariables implements Htmlable
         }
 
         return '<script>'
+            . 'window["view-initial-data"] = ' . Js::from($this->values) . ';'
+            //@todo remove
             . 'window["view-initial-data' . (!empty($this->namespace) ? "-$this->namespace" : '') . '"] = '
-            . Js::from($this->values)
-            . ';</script>';
+            . Js::from($this->values) . ';'
+            . '</script>';
     }
 
     public function __toString()

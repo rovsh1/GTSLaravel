@@ -9,6 +9,7 @@
         // 'timelineUrl' => $timelineUrl,
         'editUrl' => $editUrl,
         'deleteUrl' => $deleteUrl,
+        'isHotelBooking' => false,
         'isOtherServiceBooking' => $isOtherServiceBooking,
     ], 'service-booking') !!}
 

@@ -15,6 +15,7 @@
         'editUrl' => $editUrl,
         'deleteUrl' => $deleteUrl,
         'manager' => $manager,
+        'isHotelBooking' => true,
         'isOtherServiceBooking' => false,
     ], 'hotel-booking') !!}
 
