@@ -52,7 +52,6 @@ const [isShowRoomModal, toggleRoomModal] = useToggle()
 const [isShowRoomPriceModal, toggleRoomPriceModal] = useToggle()
 
 const { bookingID, hotelID } = requestInitialData(
-  'view-initial-data-hotel-booking',
   z.object({
     hotelID: z.number(),
     bookingID: z.number(),

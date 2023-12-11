@@ -1,10 +1,20 @@
+import { z } from 'zod'
+
 import { editableTable } from '~resources/js/app/support/editable-table'
 import { createHotelSwitcher } from '~resources/lib/hotel-switcher/hotel-switcher'
 import initServicesModal from '~resources/views/hotel/_modals/services-modal'
 import initUsabilitiesModal from '~resources/views/hotel/_modals/usabilities-modal'
 
+import { requestInitialData } from '~lib/initial-data'
+
 import '~resources/views/main'
 import '~resources/js/app/components/card-contacts'
+
+const { hotelLandmarkBaseRoute } = requestInitialData(
+  z.object({
+    hotelLandmarkBaseRoute: z.string().optional(),
+  }),
+)
 
 $(document)
   .ready((): void => {
@@ -66,7 +76,7 @@ $(document)
 
     editableTable({
       $table: $('#hotel-landmark-grid'),
-      route: window.get_meta_content('hotel-landmark-base-route'),
+      route: hotelLandmarkBaseRoute,
       canEdit: false,
     })
 

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 withDefaults(defineProps<{
-  existGrid: boolean
+  existGrid?: boolean
 }>(), {
   existGrid: false,
 })

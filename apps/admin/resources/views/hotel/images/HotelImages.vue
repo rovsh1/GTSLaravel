@@ -24,7 +24,7 @@ import { useHotelImagesUploadAPI } from '~api/hotel/images/upload'
 import { HotelRoom, useHotelRoomAPI } from '~api/hotel/room'
 import { useHotelRoomsListWithAttachedImageAPI } from '~api/hotel/rooms-image'
 
-import { injectInitialData } from '~lib/vue'
+import { requestInitialData } from '~lib/initial-data'
 
 import BaseDialog from '~components/BaseDialog.vue'
 import BaseLayout from '~components/BaseLayout.vue'
@@ -37,7 +37,7 @@ import OverlayLoading from '~components/OverlayLoading.vue'
 
 import UploadDialog from './components/UploadDialog.vue'
 
-const { hotelID } = injectInitialData(z.object({
+const { hotelID } = requestInitialData(z.object({
   hotelID: z.number(),
 }))
 

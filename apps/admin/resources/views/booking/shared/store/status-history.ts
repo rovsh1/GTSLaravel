@@ -5,14 +5,9 @@ import { z } from 'zod'
 
 import { BookingStatusHistoryResponse, useBookingStatusHistoryAPI } from '~api/booking/status'
 
-import { isInitialDataExists, requestInitialData, ViewInitialDataKey } from '~lib/initial-data'
+import { requestInitialData } from '~lib/initial-data'
 
-let initialDataKey: ViewInitialDataKey = 'view-initial-data-hotel-booking'
-if (isInitialDataExists('view-initial-data-service-booking')) {
-  initialDataKey = 'view-initial-data-service-booking'
-}
-
-const { bookingID } = requestInitialData(initialDataKey, z.object({
+const { bookingID } = requestInitialData(z.object({
   bookingID: z.number(),
 }))
 

@@ -13,7 +13,7 @@ import { requestInitialData } from '~lib/initial-data'
 
 import ActionsMenu, { Action } from '~components/ActionsMenu.vue'
 
-const { serviceBookingCreate, hotelBookingCreate, clientID } = requestInitialData('view-initial-data-booking-order', z.object({
+const { serviceBookingCreate, hotelBookingCreate, clientID } = requestInitialData(z.object({
   serviceBookingCreate: z.string(),
   hotelBookingCreate: z.string(),
   clientID: z.number(),

@@ -5,7 +5,7 @@ import { useGetAvailableRoomsAPI } from '~api/booking/hotel/rooms'
 
 import { requestInitialData } from '~lib/initial-data'
 
-const { bookingID, hotelRooms } = requestInitialData('view-initial-data-hotel-booking', z.object({
+const { bookingID, hotelRooms } = requestInitialData(z.object({
   bookingID: z.number(),
   hotelRooms: z.array(
     z.object({

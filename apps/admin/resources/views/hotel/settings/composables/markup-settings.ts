@@ -12,7 +12,6 @@ import {
 import { requestInitialData } from '~lib/initial-data'
 
 const { hotelID } = requestInitialData(
-  'view-initial-data-hotel-settings',
   z.object({
     hotelID: z.number(),
   }),

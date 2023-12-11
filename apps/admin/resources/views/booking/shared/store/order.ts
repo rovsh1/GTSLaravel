@@ -6,15 +6,9 @@ import { z } from 'zod'
 import { Currency } from '~api/models'
 import { useGetOrderGuestsAPI } from '~api/order/guest'
 
-import { isInitialDataExists, requestInitialData, ViewInitialDataKey } from '~lib/initial-data'
-
-let initialDataKey: ViewInitialDataKey = 'view-initial-data-hotel-booking'
-if (isInitialDataExists('view-initial-data-service-booking')) {
-  initialDataKey = 'view-initial-data-service-booking'
-}
+import { requestInitialData } from '~lib/initial-data'
 
 const { order, currencies } = requestInitialData(
-  initialDataKey,
   z.object({
     order: z.object({
       id: z.number(),

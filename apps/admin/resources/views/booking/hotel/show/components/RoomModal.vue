@@ -38,7 +38,6 @@ const emit = defineEmits<{
 }>()
 
 const { bookingID, hotelID } = requestInitialData(
-  'view-initial-data-hotel-booking',
   z.object({
     bookingID: z.number(),
     hotelID: z.number(),

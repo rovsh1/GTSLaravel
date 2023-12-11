@@ -21,19 +21,13 @@ import { UpdateBookingPrice, updateBookingPrice, useRecalculateBookingPriceAPI }
 import { useBookingAvailableActionsAPI } from '~api/booking/status'
 import { useHotelMarkupSettingsAPI } from '~api/hotel/markup-settings'
 
-import { isInitialDataExists, requestInitialData, ViewInitialDataKey } from '~lib/initial-data'
+import { requestInitialData } from '~lib/initial-data'
 
-let isHotelBooking = true
-let initialDataKey: ViewInitialDataKey = 'view-initial-data-hotel-booking'
-if (isInitialDataExists('view-initial-data-service-booking')) {
-  isHotelBooking = false
-  initialDataKey = 'view-initial-data-service-booking'
-}
-
-const { bookingID, manager, hotelID, isOtherServiceBooking } = requestInitialData(initialDataKey, z.object({
+const { bookingID, manager, hotelID, isOtherServiceBooking, isHotelBooking } = requestInitialData(z.object({
   hotelID: z.number().optional(),
   bookingID: z.number(),
   isOtherServiceBooking: z.boolean(),
+  isHotelBooking: z.boolean(),
   manager: z.object({
     id: z.number(),
   }),

@@ -16,7 +16,7 @@ import { createVueInstance } from '~lib/vue'
 
 import '~resources/views/main'
 
-const { bookingID } = requestInitialData('view-initial-data-service-booking', z.object({
+const { bookingID } = requestInitialData(z.object({
   bookingID: z.number().nullable(),
 }))
 

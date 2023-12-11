@@ -1,3 +1,16 @@
+import { z } from 'zod'
+
+import { requestInitialData } from '~lib/initial-data'
+
+const { bedTypes } = requestInitialData(
+  z.object({
+    bedTypes: z.array(z.object({
+      id: z.number(),
+      name: z.string(),
+    })),
+  }),
+)
+
 interface IBedData {
   id: number
   type_id: number
@@ -35,17 +48,17 @@ export default function bootBeds($container: JQuery) {
     return html
   }
 
-  const nums: ISelectList[] = []//
+  const nums: ISelectList[] = []
   for (let i = 1; i <= 12; i++) {
     nums[nums.length] = { id: i, name: i.toString() }
   }
-  const bedTypes: IBedType[] = window.get_meta_content('bed_types', true)
+  const bedTypesOptions: IBedType[] = bedTypes
 
   const addBed = function (data: IBedData | null) {
     const name = `data[beds][${I}]`
     const $item = $('<div class="item"></div>').appendTo($itemsInner)
     const $idInput = $(`<input type="hidden" name="${name}[id]" />`).appendTo($item)
-    const $typeSelect = $(getSelect(bedTypes, `${name}[type_id]`, 'bed-type', 'Выберите тип')).appendTo($item)
+    const $typeSelect = $(getSelect(bedTypesOptions, `${name}[type_id]`, 'bed-type', 'Выберите тип')).appendTo($item)
     $('<span class="m">x</span>').appendTo($item)
     const $numsSelect = $(getSelect(nums, `${name}[beds_number]`, 'bed-nums', 'Выберите кол-во спальных мест')).appendTo($item)
     const $sizeInput = $(getTextInput(`${name}[beds_size]`, 'Размер: ', 'beds_size'))

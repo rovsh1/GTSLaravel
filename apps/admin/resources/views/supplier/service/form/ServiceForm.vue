@@ -27,7 +27,7 @@ function boolTransformator(value: any) {
   return !!value
 }
 
-const { service, cancelUrl, supplier } = requestInitialData('view-initial-data-supplier-service', z.object({
+const { service, cancelUrl, supplier } = requestInitialData(z.object({
   supplier: z.object({
     id: z.number(),
     name: z.string(),

@@ -15,7 +15,6 @@ import { requestInitialData } from '~lib/initial-data'
 import SelectComponent from '~components/SelectComponent.vue'
 
 const { bookingID } = requestInitialData(
-  'view-initial-data-hotel-booking',
   z.object({
     bookingID: z.number(),
   }),

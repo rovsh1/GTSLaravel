@@ -14,7 +14,7 @@ import {
 import { showConfirmDialog } from '~lib/confirm-dialog'
 import { requestInitialData } from '~lib/initial-data'
 
-const { orderID } = requestInitialData('view-initial-data-booking-order', z.object({
+const { orderID } = requestInitialData(z.object({
   orderID: z.number(),
 }))
 

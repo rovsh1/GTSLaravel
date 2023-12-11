@@ -9,7 +9,7 @@ import { requestInitialData } from '~lib/initial-data'
 
 import SelectComponent from '~components/SelectComponent.vue'
 
-const { cities } = requestInitialData('view-initial-data-supplier-service', z.object({
+const { cities } = requestInitialData(z.object({
   cities: z.array(z.object({
     id: z.number(),
     name: z.string(),

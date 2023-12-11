@@ -16,7 +16,7 @@ import { requestInitialData } from '~lib/initial-data'
 
 import PricesTable from './PricesTable.vue'
 
-const { seasons, services, cars, supplierId, currencies } = requestInitialData('view-initial-data-supplier', z.object({
+const { seasons, services, cars, supplierId, currencies } = requestInitialData(z.object({
   supplierId: z.number(),
   seasons: z.array(z.object({
     id: z.number(),

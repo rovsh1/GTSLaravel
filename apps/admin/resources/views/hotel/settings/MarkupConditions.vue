@@ -14,7 +14,6 @@ import { requestInitialData } from '~lib/initial-data'
 import EditableCell from '~components/Editable/EditableNumberInput.vue'
 
 const { hotelID } = requestInitialData(
-  'view-initial-data-hotel-settings',
   z.object({
     hotelID: z.number(),
   }),

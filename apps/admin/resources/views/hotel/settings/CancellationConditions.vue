@@ -28,7 +28,6 @@ import { useEditableModal } from './composables/editable-modal'
 import { useMarkupSettingsStore } from './composables/markup-settings'
 
 const { hotelID, contract } = requestInitialData(
-  'view-initial-data-hotel-settings',
   z.object({
     hotelID: z.number(),
     contract: z.object({
