@@ -38,7 +38,7 @@ return [
     'SourceEnum::API' => 'API',
     'SourceEnum::CONSOLE' => 'Крон',
 
-    'ServiceTypeEnum.DAY_CAR_TRIP' => 'Однодневная поездка',
+    'ServiceTypeEnum::DAY_CAR_TRIP' => 'Однодневная поездка',
     'ServiceTypeEnum::INTERCITY_TRANSFER' => 'Междугородный трансфер',
     'ServiceTypeEnum::CAR_RENT_WITH_DRIVER' => 'Аренда авто с водителем',
     'ServiceTypeEnum::TRANSFER_TO_RAILWAY' => 'Трансфер до ж/д вокзала',
@@ -112,6 +112,5 @@ return [
 //    'Module\Booking\Shared\Domain\Shared\Event\Status\BookingWaitingConfirmation' => 'Ожидает подтверждения',
 //    'Module\Booking\Shared\Domain\Shared\Event\Status\BookingWaitingCancellation' => 'Ожидает аннулирования',
 //    'Module\Booking\Shared\Domain\Shared\Event\Status\BookingWaitingProcessing' => 'Ожидает обработки',
-]; 
- 
- 
+];
+
