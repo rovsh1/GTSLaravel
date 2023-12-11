@@ -46,6 +46,7 @@ export const useOrderStore = defineStore('booking-order', () => {
     await Promise.all([
       fetchAvailableActions(),
       fetchOrder(),
+      fetchGuests(),
       fetchBookings(),
     ])
   }

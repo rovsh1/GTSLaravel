@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Moderation\Domain\Booking\Service;
+namespace Module\Booking\Moderation\Application\Middleware;
 
 use Module\Booking\Moderation\Domain\Booking\Exception\OrderModeratingNotAllowed;
 use Module\Booking\Shared\Domain\Booking\Booking;
@@ -10,7 +10,7 @@ use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Order\Repository\OrderRepositoryInterface;
 use Sdk\Booking\Contracts\Entity\BookingPartInterface;
 
-class CheckOrderInModeratingMiddleware
+class EnsureBookingEditableMiddleware
 {
     public function __construct(
         private readonly OrderRepositoryInterface $orderRepository,

@@ -8,11 +8,11 @@ export interface ShowDialogResponse {
   toggleClose:ToggleCloseFunction
 }
 
-export const showConfirmDialog = (message: string, buttonClass: string = 'btn-primary'): Promise<ShowDialogResponse> => new Promise((resolve): void => {
+export const showConfirmDialog = (message: string, buttonClass: string = 'btn-primary', title: string = 'Подтверждение'): Promise<ShowDialogResponse> => new Promise((resolve): void => {
   const $form = $(`<form method="post"><p>${message}</p></form>`)
 
   window.WindowDialog({
-    title: 'Подтверждение',
+    title,
     html: $form,
     buttons: [{ text: 'Подтвердить', cls: `btn ${buttonClass}`, handler: 'submit' }, 'cancel'],
     beforeSubmit: (form: any, closeHandler: ToggleCloseFunction, toggleLoading: ToggleLoadingFunction) => {

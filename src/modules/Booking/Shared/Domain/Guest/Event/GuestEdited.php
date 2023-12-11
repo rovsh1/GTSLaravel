@@ -8,7 +8,7 @@ use Module\Booking\Shared\Domain\Order\Event\OrderGuestEventInterface;
 use Sdk\Booking\ValueObject\GuestId;
 use Sdk\Module\Contracts\Event\DomainEventInterface;
 
-class GuestDeleted implements DomainEventInterface, OrderGuestEventInterface
+class GuestEdited implements DomainEventInterface, OrderGuestEventInterface
 {
     public function __construct(
         public readonly GuestId $guestId,

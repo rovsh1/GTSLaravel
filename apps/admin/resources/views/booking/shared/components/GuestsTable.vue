@@ -1,12 +1,14 @@
 <script setup lang="ts">
 
-import { computed } from 'vue'
+import { computed, nextTick } from 'vue'
 
 import { getGenderName } from '~resources/views/booking/shared/lib/constants'
 import EditTableRowButton from '~resources/views/hotel/settings/components/EditTableRowButton.vue'
 
 import { CountryResponse } from '~api/country'
 import { Guest } from '~api/order/guest'
+
+import { showConfirmDialog } from '~lib/confirm-dialog'
 
 const props = withDefaults(defineProps<{
   guestIds?: number[]
@@ -21,7 +23,7 @@ const props = withDefaults(defineProps<{
   canDeleteGuest: true,
 })
 
-defineEmits<{
+const emit = defineEmits<{
   (event: 'edit', guest: Guest): void
   (event: 'delete', guest: Guest): void
 }>()
@@ -34,6 +36,17 @@ const getCountryName = (id: number): string | undefined =>
 const guests = computed(
   () => props.orderGuests.filter((guest) => props.guestIds && props.guestIds.includes(guest.id)),
 )
+
+const handleEditGuest = async (guest: Guest) => {
+  const message = 'Изменение гостя заказа приведет к возврату всех броней с этим гостем в рабочий статус.'
+  const { result: isConfirmed, toggleLoading, toggleClose } = await showConfirmDialog(message, 'btn-danger', 'Редактирование гостя')
+  if (!isConfirmed) {
+    return
+  }
+  toggleLoading()
+  emit('edit', guest)
+  nextTick(toggleClose)
+}
 
 </script>
 
@@ -61,7 +74,7 @@ const guests = computed(
             <EditTableRowButton
               :can-edit="canEditGuest"
               :can-delete="canDeleteGuest"
-              @edit="$emit('edit', guest)"
+              @edit="handleEditGuest(guest)"
               @delete="$emit('delete', guest)"
             />
           </td>

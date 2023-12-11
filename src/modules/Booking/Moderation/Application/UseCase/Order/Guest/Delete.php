@@ -20,8 +20,9 @@ class Delete implements UseCaseInterface
     public function execute(int $id): void
     {
         $guestId = new GuestId($id);
-        $this->guestRepository->delete($guestId);
-
+        //@hack сначала кидаю ивент, потом удаляю, т.к. смена статуса броней внутри ивента
         $this->eventDispatcher->dispatch(new GuestDeleted($guestId));
+
+        $this->guestRepository->delete($guestId);
     }
 }

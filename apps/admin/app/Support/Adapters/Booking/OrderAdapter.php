@@ -63,8 +63,8 @@ class OrderAdapter
         int $gender,
         bool $isAdult,
         int|null $age
-    ): bool {
-        return app(Update::class)->execute(
+    ): void {
+        app(Update::class)->execute(
             new UpdateGuestDto(
                 guestId: $guestId,
                 fullName: $fullName,

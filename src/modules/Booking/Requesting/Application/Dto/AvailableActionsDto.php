@@ -12,14 +12,4 @@ final class AvailableActionsDto
         public readonly bool $canSendCancellationRequest,
         public readonly bool $canSendChangeRequest,
     ) {}
-
-    public static function notAllowed(): static
-    {
-        return new static(
-            false,
-            false,
-            false,
-            false,
-        );
-    }
 }

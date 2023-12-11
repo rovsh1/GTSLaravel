@@ -8,6 +8,7 @@ use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\DbContext\BookingDbContextInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Sdk\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\GuestId;
 use Sdk\Booking\ValueObject\OrderId;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 use Sdk\Shared\Support\RepositoryInstances;
@@ -52,6 +53,16 @@ class BookingRepository implements BookingRepositoryInterface
     {
         //@todo use instances
         return $this->bookingDbContext->getByOrderId($orderId);
+    }
+
+    /**
+     * @param GuestId $guestId
+     * @return Booking[]
+     */
+    public function getByGuestId(GuestId $guestId): array
+    {
+        //@todo use instances
+        return $this->bookingDbContext->getByGuestId($guestId);
     }
 
     public function findOrFail(BookingId $id): Booking

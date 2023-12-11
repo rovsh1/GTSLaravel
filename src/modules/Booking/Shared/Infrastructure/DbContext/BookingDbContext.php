@@ -14,6 +14,7 @@ use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\BookingPrices;
 use Sdk\Booking\ValueObject\CancelConditions;
 use Sdk\Booking\ValueObject\CreatorId;
+use Sdk\Booking\ValueObject\GuestId;
 use Sdk\Booking\ValueObject\OrderId;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 use Sdk\Shared\Contracts\Service\ApplicationContextInterface;
@@ -44,6 +45,17 @@ class BookingDbContext implements BookingDbContextInterface
     public function getByOrderId(OrderId $orderId): array
     {
         $models = BookingModel::whereOrderId($orderId->value())->get();
+
+        return $models->map(fn(BookingModel $booking) => $this->bookingMapper->fromModel($booking))->all();
+    }
+
+    /**
+     * @param GuestId $guestId
+     * @return Booking[]
+     */
+    public function getByGuestId(GuestId $guestId): array
+    {
+        $models = BookingModel::whereHasGuestId($guestId->value())->get();
 
         return $models->map(fn(BookingModel $booking) => $this->bookingMapper->fromModel($booking))->all();
     }

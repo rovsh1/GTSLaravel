@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Infrastructure\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Query\Builder as Query;
 use Module\Booking\Shared\Infrastructure\Models\Details\Airport;
 use Module\Booking\Shared\Infrastructure\Models\Details\Hotel;
 use Module\Booking\Shared\Infrastructure\Models\Details\Other;
@@ -85,6 +87,32 @@ class Booking extends Model
             ServiceTypeEnum::HOTEL_BOOKING => $this->hotelDetails(),
             ServiceTypeEnum::OTHER_SERVICE => $this->otherDetails(),
         };
+    }
+
+    public function scopeWhereHasGuestId(Builder $builder, int $guestId): void
+    {
+        $builder->whereExists(function (Query $query) use ($guestId) {
+            $query->selectRaw(1)
+                ->from('booking_hotel_room_guests')
+                ->where('guest_id', $guestId)
+                ->whereRaw(
+                    'EXISTS(SELECT 1 FROM booking_hotel_accommodations WHERE bookings.id = booking_hotel_accommodations.booking_id AND booking_hotel_room_guests.accommodation_id = booking_hotel_accommodations.id)'
+                );
+        })
+            ->orWhereExists(function (Query $query) use ($guestId) {
+                $query->selectRaw(1)
+                    ->from('booking_car_bid_guests')
+                    ->where('guest_id', $guestId)
+                    ->whereRaw(
+                        'EXISTS(SELECT 1 FROM booking_car_bids WHERE bookings.id = booking_car_bids.booking_id AND booking_car_bid_guests.car_bid_id = booking_car_bids.id)'
+                    );
+            })
+            ->orWhereExists(function (Query $query) use ($guestId) {
+                $query->selectRaw(1)
+                    ->from('booking_airport_guests')
+                    ->where('guest_id', $guestId)
+                    ->whereColumn('booking_airport_guests.booking_id','bookings.id');
+            });
     }
 
     private function airportDetails(): HasOne

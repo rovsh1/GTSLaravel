@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, MaybeRef, ref, unref, watch } from 'vue'
+import { computed, MaybeRef, nextTick, ref, unref, watch } from 'vue'
 
 import { storeToRefs } from 'pinia'
 
@@ -12,7 +12,9 @@ import { GuestFormData } from '~resources/views/booking/shared/lib/data-types'
 import { useOrderStore } from '~resources/views/booking-order/show/store/order'
 import { useEditableModal } from '~resources/views/hotel/settings/composables/editable-modal'
 
-import { addOrderGuest, updateOrderGuest } from '~api/order/guest'
+import { addOrderGuest, deleteOrderGuest, updateOrderGuest } from '~api/order/guest'
+
+import { showConfirmDialog } from '~lib/confirm-dialog'
 
 import IconButton from '~components/IconButton.vue'
 
@@ -35,8 +37,7 @@ const modalSettings = {
       payload.orderId = orderId.value
       const response = await addOrderGuest(payload)
       isSuccessesRequest = !!response.data.value?.id || false
-      await orderStore.fetchOrder()
-      await orderStore.fetchGuests()
+      await orderStore.refreshOrder()
       return isSuccessesRequest
     },
   },
@@ -48,8 +49,7 @@ const modalSettings = {
       const payload = { guestId: preparedRequest.id, ...preparedRequest }
       payload.orderId = orderId.value
       const response = await updateOrderGuest(payload)
-      await orderStore.fetchOrder()
-      await orderStore.fetchGuests()
+      await orderStore.refreshOrder()
       return response.data.value?.success || false
     },
   },
@@ -77,6 +77,18 @@ watch(editableGuest, (value) => {
   guestForm.value = value
 })
 
+const handleDeleteGuest = async (guestId: number) => {
+  const message = 'Удаление гостя из заказа приведет к возврату всех броней с этим гостем в рабочий статус.'
+  const { result: isConfirmed, toggleLoading, toggleClose } = await showConfirmDialog(message, 'btn-danger', 'Удаление гостя')
+  if (!isConfirmed) {
+    return
+  }
+  toggleLoading()
+  await deleteOrderGuest({ guestId, orderId: orderId.value as number })
+  nextTick(orderStore.refreshOrder)
+  nextTick(toggleClose)
+}
+
 </script>
 
 <template>
@@ -98,9 +110,7 @@ watch(editableGuest, (value) => {
         <IconButton
           v-if="isEditableStatus"
           icon="add"
-          @click="() => {
-            openAddGuestModal()
-          }"
+          @click="() => openAddGuestModal()"
         />
       </div>
     </template>
@@ -108,13 +118,11 @@ watch(editableGuest, (value) => {
     <GuestsTable
       v-if="countries"
       :can-edit="isEditableStatus"
-      :can-edit-guest="false"
       :guest-ids="orderGuestsIds"
       :order-guests="orderGuests || []"
       :countries="countries"
-      @edit="(guest) => {
-        openEditGuestModal(guest.id, guest)
-      }"
+      @edit="(guest) => openEditGuestModal(guest.id, guest)"
+      @delete="(guest) => handleDeleteGuest(guest.id)"
     />
   </InfoBlock>
 </template>

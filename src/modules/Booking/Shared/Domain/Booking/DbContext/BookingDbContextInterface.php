@@ -9,6 +9,7 @@ use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\BookingPrices;
 use Sdk\Booking\ValueObject\CancelConditions;
 use Sdk\Booking\ValueObject\CreatorId;
+use Sdk\Booking\ValueObject\GuestId;
 use Sdk\Booking\ValueObject\OrderId;
 use Sdk\Shared\Enum\ServiceTypeEnum;
 
@@ -28,6 +29,12 @@ interface BookingDbContextInterface
      * @return Booking[]
      */
     public function getByOrderId(OrderId $orderId): array;
+
+    /**
+     * @param GuestId $guestId
+     * @return Booking[]
+     */
+    public function getByGuestId(GuestId $guestId): array;
 
     public function find(BookingId $id): ?Booking;
 
