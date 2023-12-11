@@ -57,8 +57,9 @@ class BookingFactory
             ? $this->processHotelBooking($request)
             : $this->processServiceBooking($request);
 
+        $serviceOrHotelId = new ServiceId($request->hotelId ?? $request->serviceId);
         $editor = $this->detailsEditorFactory->build($booking->serviceType());
-        $editor->create($booking->id(), new ServiceId($request->serviceId), $request->detailsData);
+        $editor->create($booking->id(), $serviceOrHotelId, $request->detailsData);
 
         $this->administratorAdapter->setBookingAdministrator($booking->id(), $request->administratorId);
 
@@ -76,7 +77,7 @@ class BookingFactory
      */
     private function processHotelBooking(CreateBookingRequestDto $request): Booking
     {
-        $markupSettings = $this->hotelAdapter->getMarkupSettings($request->serviceId);
+        $markupSettings = $this->hotelAdapter->getMarkupSettings($request->hotelId);
         $bookingPeriod = $request->detailsData['period'] ?? null;
         if ($bookingPeriod === null) {
             throw new \RuntimeException('Undefined booking period');
@@ -141,10 +142,10 @@ class BookingFactory
     /**
      * @param ServiceDto $service
      * @param array $details
-     * @return CancelConditions
+     * @return CancelConditions|null
      * @throws NotFoundServiceCancelConditionsException
      */
-    private function buildServiceCancelConditions(ServiceDto $service, array $details): CancelConditions
+    private function buildServiceCancelConditions(ServiceDto $service, array $details): ?CancelConditions
     {
         $cancelConditions = $this->cancelConditionsFactory->build(
             new ServiceId($service->id),
