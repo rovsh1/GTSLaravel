@@ -17,7 +17,7 @@
         'manager' => $manager,
         'isHotelBooking' => true,
         'isOtherServiceBooking' => false,
-    ], 'hotel-booking') !!}
+    ]) !!}
 
     @vite('resources/views/booking/hotel/show/show.ts')
 @endsection

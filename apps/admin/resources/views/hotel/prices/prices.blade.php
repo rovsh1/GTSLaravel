@@ -6,7 +6,7 @@
         'seasons' => $seasons,
         'priceRates' => $priceRates,
         'rooms' => $rooms
-    ], 'hotel-prices') !!}
+    ]) !!}
 
     @vite('resources/views/hotel/prices/prices.scss')
 @endsection

@@ -7,7 +7,7 @@
 @section('scripts')
     {!! Js::variables([
         'bookingID' => $model->id ?? null,
-    ], 'hotel-booking') !!}
+    ]) !!}
 
     @vite('resources/views/booking/hotel/form/form.ts')
 @endsection

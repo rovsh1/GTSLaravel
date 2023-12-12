@@ -5,7 +5,7 @@
         'supplierId' => $provider->id,
         'services' => $services,
         'seasons' => $seasons,
-    ], 'supplier') !!}
+    ]) !!}
 
     @vite('resources/views/supplier/service/cancel-conditions/service/index.ts')
 @endsection

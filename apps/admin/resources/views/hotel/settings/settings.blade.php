@@ -8,7 +8,7 @@
     {!! Js::variables([
             'hotelID' => $model->id,
             'contract' => $contract,
-    ], 'hotel-settings') !!}
+    ]) !!}
 
     @vite('resources/views/hotel/settings/settings.ts')
 @endsection
