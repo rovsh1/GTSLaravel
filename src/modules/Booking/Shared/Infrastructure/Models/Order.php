@@ -67,7 +67,7 @@ class Order extends Model
         $otherDatesQuery = "SELECT MIN(date) AS earliest_date, MAX(date) AS latest_date FROM booking_other_details WHERE {$orderIdCondition}";
         $datesQuery = "({$hotelDatesQuery} UNION {$transferDatesQuery} UNION {$airportDatesQuery} UNION {$otherDatesQuery}) as dates";
 
-        /** @var \stdClass $dates */
+        /** @var \stdClass|null $dates */
         $dates = DB::query()
             ->selectRaw('MIN(earliest_date) AS earliest_date')
             ->selectRaw('MAX(latest_date) AS latest_date')
