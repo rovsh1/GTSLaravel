@@ -6,6 +6,7 @@ namespace Module\Booking\Shared\Infrastructure\Mapper;
 
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Collection;
+use Module\Booking\Moderation\Domain\Order\ValueObject\OrderPeriod;
 use Module\Booking\Moderation\Domain\Order\ValueObject\Voucher;
 use Module\Booking\Shared\Domain\Order\Order;
 use Module\Booking\Shared\Infrastructure\Models\Order as Model;
@@ -29,6 +30,14 @@ class OrderMapper
             ? Voucher::deserialize($model->voucher)
             : null;
 
+        $period = $model->getPeriod() !== null
+            ? new OrderPeriod(
+                $model->getPeriod()->getStartDate()->toDateTimeImmutable(),
+                $model->getPeriod()->getEndDate()->toDateTimeImmutable(),
+            )
+            : null;
+
+
         return new Order(
             new OrderId($model->id),
             $model->currency,
@@ -36,6 +45,7 @@ class OrderMapper
             $model->legal_id !== null ? new LegalId($model->legal_id) : null,
             $model->status,
             $voucher,
+            $period,
             new CarbonImmutable($model->created_at),
             new GuestIdCollection($guestIds),
             new Money(

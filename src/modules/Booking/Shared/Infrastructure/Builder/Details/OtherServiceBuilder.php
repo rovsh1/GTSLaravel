@@ -14,14 +14,12 @@ class OtherServiceBuilder extends AbstractServiceDetailsBuilder
 {
     public function build(Model $details): Other
     {
-        $date = $details->data['date'] ?? null;
-
         return new Other(
             id: new DetailsId($details->id),
             bookingId: new BookingId($details->booking_id),
             serviceInfo: $this->buildServiceInfo($details->data['serviceInfo']),
             description: $details->data['description'],
-            date: $date !== null ? DateTimeImmutable::createFromTimestamp($date) : null,
+            date: $details->date,
         );
     }
 }

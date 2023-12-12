@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Module\Booking\Moderation\Application\Dto;
 
 use Carbon\CarbonImmutable;
-use Carbon\CarbonPeriodImmutable;
 use Sdk\Booking\Dto\StatusDto;
 use Sdk\Shared\Dto\MoneyDto;
 use Sdk\Shared\Enum\SourceEnum;
@@ -24,6 +23,6 @@ class OrderDto
         public readonly MoneyDto $clientPrice,
         public readonly SourceEnum $source,
         public readonly ?VoucherDto $voucher,
-        public readonly ?CarbonPeriodImmutable $period,
+        public readonly ?OrderPeriodDto $period,
     ) {}
 }

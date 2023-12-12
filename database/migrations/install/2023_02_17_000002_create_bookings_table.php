@@ -135,6 +135,7 @@ return new class extends Migration {
             $table->increments('id');
             $table->unsignedInteger('booking_id')->unique();
             $table->unsignedInteger('service_id');
+            $table->timestamp('date')->nullable();
             $table->json('data');
             $table->timestamps();
 

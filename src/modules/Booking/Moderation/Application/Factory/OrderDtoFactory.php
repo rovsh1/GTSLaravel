@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Moderation\Application\Factory;
 
 use Module\Booking\Moderation\Application\Dto\OrderDto;
+use Module\Booking\Moderation\Application\Dto\OrderPeriodDto;
 use Module\Booking\Shared\Domain\Order\Order;
 use Sdk\Booking\ValueObject\GuestId;
 use Sdk\Shared\Contracts\Service\TranslatorInterface;
@@ -40,7 +41,7 @@ class OrderDtoFactory
             ),
             $entity->context()->source(),
             $voucherDto,
-            null,
+            $entity->period() !== null ? OrderPeriodDto::fromDomain($entity->period()) : null,
         );
     }
 

@@ -14,10 +14,12 @@ class Other extends Model
     protected $fillable = [
         'booking_id',
         'service_id',
+        'date',
         'data',
     ];
 
     protected $casts = [
+        'date' => 'datetime',
         'data' => 'array',
     ];
 

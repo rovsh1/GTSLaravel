@@ -13,9 +13,7 @@ use Sdk\Booking\ValueObject\ServiceInfo;
 
 class OtherServiceFactory extends AbstractServiceDetailsFactory implements OtherServiceFactoryInterface
 {
-    public function __construct(private readonly OtherServiceBuilder $builder)
-    {
-    }
+    public function __construct(private readonly OtherServiceBuilder $builder) {}
 
     public function create(
         BookingId $bookingId,
@@ -26,10 +24,10 @@ class OtherServiceFactory extends AbstractServiceDetailsFactory implements Other
         $model = Model::create([
             'booking_id' => $bookingId->value(),
             'service_id' => $serviceInfo->id(),
+            'date' => $date,
             'data' => [
                 'serviceInfo' => $this->serializeServiceInfo($serviceInfo),
                 'description' => $description,
-                'date' => $date?->getTimestamp(),
             ]
         ]);
 

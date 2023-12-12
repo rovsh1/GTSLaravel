@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Shared\Domain\Order;
 
 use Carbon\CarbonImmutable;
+use Module\Booking\Moderation\Domain\Order\ValueObject\OrderPeriod;
 use Module\Booking\Moderation\Domain\Order\ValueObject\Voucher;
 use Module\Booking\Shared\Domain\Order\Event\ClientChanged;
 use Module\Booking\Shared\Domain\Order\Support\Concerns\HasStatusesTrait;
@@ -31,6 +32,7 @@ final class Order extends AbstractAggregateRoot implements EntityInterface
         private ?LegalId $legalId,
         private OrderStatusEnum $status,
         private ?Voucher $voucher,
+        private readonly ?OrderPeriod $period,
         private readonly CarbonImmutable $createdAt,
         private readonly GuestIdCollection $guestIds,
         private readonly Money $clientPrice,
@@ -113,5 +115,10 @@ final class Order extends AbstractAggregateRoot implements EntityInterface
     public function timestamps(): Timestamps
     {
         return $this->timestamps;
+    }
+
+    public function period(): ?OrderPeriod
+    {
+        return $this->period;
     }
 }
