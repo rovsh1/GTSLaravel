@@ -5,7 +5,7 @@ import { requestInitialData } from '~lib/initial-data'
 
 import '~resources/views/main'
 
-const { seasonID, seasons } = requestInitialData('view-initial-data-supplier-seasons', z.object({
+const { seasonID, seasons } = requestInitialData(z.object({
   seasonID: z.number().nullable(),
   seasons: z.array(z.object({
     id: z.number(),

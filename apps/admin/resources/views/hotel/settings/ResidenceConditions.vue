@@ -28,7 +28,6 @@ import { requestInitialData } from '~lib/initial-data'
 import { showToast } from '~components/Bootstrap/BootstrapToast'
 
 const { hotelID } = requestInitialData(
-  'view-initial-data-hotel-settings',
   z.object({
     hotelID: z.number(),
   }),

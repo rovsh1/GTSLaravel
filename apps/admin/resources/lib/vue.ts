@@ -1,11 +1,6 @@
-import { ComponentOptions, createApp, h, inject, Plugin, Ref, unref } from 'vue'
+import { ComponentOptions, createApp, h, Plugin, Ref, unref } from 'vue'
 
-import { ZodObject, ZodRawShape } from 'zod/lib/types'
-
-import { parseInitialData } from '~lib/initial-data'
 import { installFloatingVue } from '~lib/tooltip/install-tooltip'
-
-const initialDataKey = 'initial'
 
 type CreateVueInstanceParams = {
   rootComponent: ComponentOptions
@@ -20,16 +15,9 @@ export const createVueInstance = (params: CreateVueInstanceParams) => {
     throw new Error('Root container not found')
   }
 
-  const initialData = rootContainerElement
-    .getAttribute(`data-vue-${initialDataKey}`)
-
   const app = createApp({
     render: () => h(rootComponent),
   })
-
-  app.provide(initialDataKey, initialData === null
-    ? {}
-    : JSON.parse(initialData))
 
   installFloatingVue(app)
 
@@ -40,9 +28,6 @@ export const createVueInstance = (params: CreateVueInstanceParams) => {
 
   return app
 }
-
-export const injectInitialData = <T extends ZodRawShape>(schema: ZodObject<T>) =>
-  parseInitialData(schema, inject(initialDataKey))
 
 export type RefGetter<T, R> = (data: T) => R
 

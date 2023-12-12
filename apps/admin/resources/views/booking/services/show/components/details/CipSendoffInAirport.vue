@@ -28,7 +28,7 @@ import EditableTextInput from '~components/Editable/EditableTextInput.vue'
 import EditableTimeInput from '~components/Editable/EditableTimeInput.vue'
 import IconButton from '~components/IconButton.vue'
 
-const { bookingID } = requestInitialData('view-initial-data-service-booking', z.object({
+const { bookingID } = requestInitialData(z.object({
   bookingID: z.number(),
 }))
 

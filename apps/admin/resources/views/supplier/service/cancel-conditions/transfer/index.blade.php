@@ -6,7 +6,7 @@
         'services' => $services,
         'cars' => $cars,
         'seasons' => $seasons,
-    ], 'supplier') !!}
+    ]) !!}
 
     @vite('resources/views/supplier/service/cancel-conditions/transfer/index.ts')
 @endsection

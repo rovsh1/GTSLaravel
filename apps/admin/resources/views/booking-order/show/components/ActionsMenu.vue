@@ -9,7 +9,7 @@ import { useOrderStore } from '~resources/views/booking-order/show/store/order'
 import { useDeleteWithConfirm } from '~lib/delete-dialog'
 import { requestInitialData } from '~lib/initial-data'
 
-const { editUrl, deleteUrl } = requestInitialData('view-initial-data-booking-order', z.object({
+const { editUrl, deleteUrl } = requestInitialData(z.object({
   editUrl: z.string().optional(),
   deleteUrl: z.string().optional(),
 }))

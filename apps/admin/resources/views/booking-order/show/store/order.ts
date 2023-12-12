@@ -22,7 +22,7 @@ import { createOrderVoucher, OrderVoucher, sendOrderVoucher } from '~api/order/v
 import { showConfirmDialog } from '~lib/confirm-dialog'
 import { requestInitialData } from '~lib/initial-data'
 
-const { orderID, manager } = requestInitialData('view-initial-data-booking-order', z.object({
+const { orderID, manager } = requestInitialData(z.object({
   orderID: z.number(),
   manager: z.object({
     id: z.number(),

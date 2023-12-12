@@ -16,7 +16,7 @@ import ServicePricesBlock from './ServicePricesBlock.vue'
 
 import { useCancelConditions } from '../composables/cancel-conditions'
 
-const { seasons, services, cars, supplierId } = requestInitialData('view-initial-data-supplier', z.object({
+const { seasons, services, cars, supplierId } = requestInitialData(z.object({
   supplierId: z.number(),
   seasons: z.array(z.object({
     id: z.number(),

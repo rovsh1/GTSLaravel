@@ -7,7 +7,7 @@
             'serviceBookingCreate' => $serviceBookingCreate,
             'hotelBookingCreate' => $hotelBookingCreate,
             'clientID' => $client->id,
-    ], 'booking-order') !!}
+    ]) !!}
 
     @vite('resources/views/booking-order/show/show.scss')
 @endsection

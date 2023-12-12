@@ -8,7 +8,7 @@
     {!! Js::variables([
         'seasonID' => $seasonId,
         'seasons' => $seasons,
-    ], 'supplier-seasons') !!}
+    ]) !!}
 
     @vite('resources/views/supplier/season/form/form.ts')
 @endsection

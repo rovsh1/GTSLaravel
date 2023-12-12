@@ -7,7 +7,7 @@ import { requestInitialData } from '~lib/initial-data'
 
 import '~resources/views/main'
 
-const { createUserUrl, searchUserUrl } = requestInitialData('view-initial-data-client-user', z.object({
+const { createUserUrl, searchUserUrl } = requestInitialData(z.object({
   createUserUrl: z.string(),
   searchUserUrl: z.string(),
 }))

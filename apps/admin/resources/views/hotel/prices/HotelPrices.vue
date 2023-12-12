@@ -15,7 +15,6 @@ import EmptyData from '~components/EmptyData.vue'
 import HotelPricesTable from './components/HotelPricesTable.vue'
 
 const { hotelID, rooms, seasons } = requestInitialData(
-  'view-initial-data-hotel-prices',
   z.object({
     hotelID: z.number(),
     rooms: z.array(z.object({

@@ -11,7 +11,7 @@
         'cities' => $cities,
         'cancelUrl' => $cancelUrl,
         'service' => $service ?? null,
-    ], 'supplier-service') !!}
+    ]) !!}
 
     @vite('resources/views/supplier/service/form/form.ts')
 @endsection

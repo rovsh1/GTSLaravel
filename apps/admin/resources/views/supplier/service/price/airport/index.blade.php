@@ -7,7 +7,7 @@
         'services' => $services,
         'seasons' => $seasons,
         'currencies' => $currencies
-    ], 'supplier') !!}
+    ]) !!}
 
     @vite('resources/views/supplier/service/price/airport/index.ts')
 @endsection

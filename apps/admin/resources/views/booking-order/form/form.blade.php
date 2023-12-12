@@ -7,7 +7,7 @@
 @section('scripts')
     {!! Js::variables([
         'orderId' => $model->id ?? null,
-    ], 'booking-order') !!}
+    ]) !!}
 
     @vite('resources/views/booking-order/form/form.ts')
 @endsection

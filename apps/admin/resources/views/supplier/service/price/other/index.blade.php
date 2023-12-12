@@ -6,7 +6,7 @@
         'services' => $services,
         'seasons' => $seasons,
         'currencies' => $currencies
-    ], 'supplier') !!}
+    ]) !!}
 
     @vite('resources/views/supplier/service/price/other/index.ts')
 @endsection

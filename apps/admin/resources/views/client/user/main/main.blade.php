@@ -8,7 +8,7 @@
     {!! Js::variables([
         'createUserUrl' => $createUserUrl,
         'searchUserUrl' => $searchUserUrl,
-    ], 'client-user') !!}
+    ]) !!}
 
     @vite('resources/views/client/user/main/main.ts')
 @endsection

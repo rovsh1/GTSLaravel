@@ -10,7 +10,6 @@ import { getNullableRef } from '~lib/vue'
 import '~resources/views/main'
 
 const { hotelID, seasonID } = requestInitialData(
-  'view-initial-data-hotel-season-edit',
   z.object({
     hotelID: z.number(),
     seasonID: z.optional(z.number()),

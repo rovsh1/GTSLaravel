@@ -12,7 +12,7 @@ import { HotelResponse, useHotelGetAPI } from '~api/hotel/get'
 import { useHotelQuotasAPI } from '~api/hotel/quotas/list'
 import { UseHotelRooms, useHotelRoomsListAPI } from '~api/hotel/rooms'
 
-import { injectInitialData } from '~lib/vue'
+import { requestInitialData } from '~lib/initial-data'
 
 import BaseDialog from '~components/BaseDialog.vue'
 import BaseLayout from '~components/BaseLayout.vue'
@@ -28,7 +28,7 @@ import { Day, getRoomQuotas, Month, RoomQuota } from './components/lib'
 import { QuotasStatusUpdatePayload } from './components/lib/types'
 import { defaultFiltersPayload, FiltersPayload } from './components/QuotasFilters/lib'
 
-const { hotelID } = injectInitialData(z.object({
+const { hotelID } = requestInitialData(z.object({
   hotelID: z.number(),
 }))
 const openingDayMenuRoomId = ref<number | null>(null)

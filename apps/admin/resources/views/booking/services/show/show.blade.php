@@ -11,7 +11,7 @@
         'deleteUrl' => $deleteUrl,
         'isHotelBooking' => false,
         'isOtherServiceBooking' => $isOtherServiceBooking,
-    ], 'service-booking') !!}
+    ]) !!}
 
     @vite('resources/views/booking/services/show/show.scss')
 @endsection

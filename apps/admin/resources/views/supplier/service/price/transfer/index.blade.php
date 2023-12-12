@@ -7,7 +7,7 @@
         'cars' => $cars,
         'seasons' => $seasons,
         'currencies' => $currencies
-    ], 'supplier') !!}
+    ]) !!}
 
     @vite('resources/views/supplier/service/price/transfer/index.ts')
 @endsection
