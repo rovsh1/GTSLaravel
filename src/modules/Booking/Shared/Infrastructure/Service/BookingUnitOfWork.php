@@ -13,6 +13,7 @@ use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Service\BookingUnitOfWorkInterface;
 use Module\Booking\Shared\Infrastructure\Service\UnitOfWork\BookingCommiter;
 use Module\Booking\Shared\Infrastructure\Service\UnitOfWork\IdentityMap;
+use Module\Booking\Shared\Infrastructure\Service\UnitOfWork\OrderCommiter;
 use Sdk\Booking\Contracts\Entity\BookingPartInterface;
 use Sdk\Booking\Contracts\Entity\DetailsInterface;
 use Sdk\Booking\Entity\CarBid;
@@ -30,6 +31,7 @@ class BookingUnitOfWork implements BookingUnitOfWorkInterface
         private readonly IdentityMap $identityMap,
         private readonly BookingRepositoryInterface $bookingRepository,
         private readonly BookingCommiter $bookingCommiter,
+        private readonly OrderCommiter $orderCommiter,
         private readonly DetailsRepositoryInterface $detailsRepository,
         private readonly AccommodationRepositoryInterface $accommodationRepository,
         private readonly CarBidDbContextInterface $carBidDbContext,

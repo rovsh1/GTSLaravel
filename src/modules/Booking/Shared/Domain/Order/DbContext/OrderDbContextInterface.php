@@ -23,4 +23,6 @@ interface OrderDbContextInterface
     public function getActiveOrders(int|null $clientId): array;
 
     public function store(Order $order): void;
+
+    public function touch(OrderId $id): void;
 }

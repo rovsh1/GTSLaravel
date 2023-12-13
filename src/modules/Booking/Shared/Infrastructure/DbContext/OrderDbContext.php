@@ -79,4 +79,9 @@ class OrderDbContext implements OrderDbContextInterface
             'voucher' => $order->voucher()?->serialize(),
         ]);
     }
+
+    public function touch(OrderId $id): void
+    {
+        Model::find($id->value())->touch();
+    }
 }
