@@ -4,35 +4,35 @@ namespace Sdk\Shared\Support;
 
 class RepositoryInstances
 {
-    private array $entities = [];
+    private static array $entities = [];
 
     public function add(mixed $id, mixed $entity): void
     {
-        $this->entities[(string)$id] = $entity;
+        self::$entities[(string)$id] = $entity;
     }
 
     public function has(mixed $id): bool
     {
-        return isset($this->entities[(string)$id]);
+        return isset(self::$entities[(string)$id]);
     }
 
     public function get(mixed $id): mixed
     {
-        return $this->entities[(string)$id] ?? null;
+        return self::$entities[(string)$id] ?? null;
     }
 
     public function remove(mixed $id): void
     {
-        unset($this->entities[(string)$id]);
+        unset(self::$entities[(string)$id]);
     }
 
     public function all(): array
     {
-        return $this->entities;
+        return self::$entities;
     }
 
     public function clear(): void
     {
-        $this->entities = [];
+        self::$entities = [];
     }
 }

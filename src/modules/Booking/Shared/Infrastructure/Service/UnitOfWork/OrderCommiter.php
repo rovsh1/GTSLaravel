@@ -3,9 +3,7 @@
 namespace Module\Booking\Shared\Infrastructure\Service\UnitOfWork;
 
 use Module\Booking\Shared\Domain\Order\DbContext\OrderDbContextInterface;
-use Module\Booking\Shared\Domain\Order\Order;
 use Sdk\Booking\ValueObject\OrderId;
-use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 
 class OrderCommiter
 {
@@ -16,7 +14,6 @@ class OrderCommiter
 
     public function __construct(
         private readonly OrderDbContextInterface $orderDbContext,
-        private readonly DomainEventDispatcherInterface $domainEventDispatcher,
     ) {}
 
     public function touch(OrderId $orderId): void
@@ -26,19 +23,10 @@ class OrderCommiter
         }
     }
 
-    public function store(Order $order): void
-    {
-        $this->updatedEntitiesFlags[$order->id()->value()] = true;
-        $this->orderDbContext->store($order);
-        $this->domainEventDispatcher->dispatch(...$order->pullEvents());
-    }
-
     public function finish(): void
     {
         foreach ($this->updatedEntitiesFlags as $id => $flag) {
-            if (false === $flag) {
-                $this->orderDbContext->touch(new OrderId($id));
-            }
+            $this->orderDbContext->touch(new OrderId($id));
         }
 
         $this->updatedEntitiesFlags = [];

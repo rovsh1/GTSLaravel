@@ -62,6 +62,8 @@ class BookingUnitOfWork implements BookingUnitOfWorkInterface
     public function touch(BookingId $bookingId): void
     {
         $this->bookingCommiter->touch($bookingId);
+        $booking = $this->bookingRepository->findOrFail($bookingId);
+        $this->orderCommiter->touch($booking->orderId());
     }
 
     public function commiting(\Closure $callback): void
@@ -82,6 +84,7 @@ class BookingUnitOfWork implements BookingUnitOfWorkInterface
         $this->commitLoop();
 
         $this->bookingCommiter->finish();
+        $this->orderCommiter->finish();
 
         DB::commit();
 
