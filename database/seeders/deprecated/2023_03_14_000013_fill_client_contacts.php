@@ -22,11 +22,22 @@ return new class extends Migration {
                     'updated_at' => now(),
                 ]);
             } catch (\Throwable $e) {
-                if($r->client_id == 6){
-                    \Log::warning('client_contacts', ['err' => $e]);
-                }
                 //@todo hack пропускаем клиентов с ошибками. На тесте какая то проблема с инсертом из-за городов
             }
+
+            if (app()->environment('prod', 'production')) {
+                return;
+            }
+            //@hack для тестов Бахтиера (с прода почему-то не переносится)
+            DB::table('client_contacts')->insert([
+                'client_id' => 6,
+                'type' => \Sdk\Shared\Enum\ContactTypeEnum::EMAIL->value,
+                'value' => 'testust2354@mail.ru',
+                'description' => 'testust2354@mail.ru',
+                'is_main' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
         }
     }
 
