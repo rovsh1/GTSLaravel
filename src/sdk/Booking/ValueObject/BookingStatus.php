@@ -10,13 +10,13 @@ use Sdk\Shared\Contracts\Support\SerializableInterface;
 class BookingStatus implements SerializableInterface
 {
     private readonly StatusEnum $value;
-    private readonly ?string $reason;
+    private readonly ?string $notConfirmedReason;
 
-    private function __construct(StatusEnum $value, ?string $reason)
+    public function __construct(StatusEnum $value, ?string $notConfirmedReason)
     {
-        $this->validate($value, $reason);
+        $this->validate($value, $notConfirmedReason);
         $this->value = $value;
-        $this->reason = $reason;
+        $this->notConfirmedReason = $notConfirmedReason;
     }
 
     public static function createFromEnum(StatusEnum $status)
@@ -24,9 +24,9 @@ class BookingStatus implements SerializableInterface
         return new static($status, null);
     }
 
-    public static function createNotConfirmed(string $reason)
+    public static function createNotConfirmed(string $notConfirmedReason)
     {
-        return new static(StatusEnum::NOT_CONFIRMED, $reason);
+        return new static(StatusEnum::NOT_CONFIRMED, $notConfirmedReason);
     }
 
     public function value(): StatusEnum
@@ -36,7 +36,7 @@ class BookingStatus implements SerializableInterface
 
     public function reason(): ?string
     {
-        return $this->reason;
+        return $this->notConfirmedReason;
     }
 
     private function validate(StatusEnum $status, ?string $reason): void
@@ -50,7 +50,7 @@ class BookingStatus implements SerializableInterface
     {
         return [
             'value' => $this->value->value,
-            'reason' => $this->reason
+            'notConfirmedReason' => $this->notConfirmedReason
         ];
     }
 
@@ -58,7 +58,7 @@ class BookingStatus implements SerializableInterface
     {
         return new static(
             StatusEnum::from($payload['value']),
-            $payload['reason'],
+            $payload['notConfirmedReason'],
         );
     }
 }

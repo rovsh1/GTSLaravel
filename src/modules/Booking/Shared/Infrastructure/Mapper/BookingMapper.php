@@ -22,10 +22,7 @@ class BookingMapper
             id: new BookingId($booking->id),
             orderId: new OrderId($booking->order_id),
             serviceType: $booking->service_type,
-            status: BookingStatus::deserialize([
-                'value' => $booking->status->value,
-                'reason' => $booking->status_reason
-            ]),
+            status: new BookingStatus($booking->status, $booking->status_reason),
             prices: $this->buildBookingPrices($booking),
             cancelConditions: $booking->cancel_conditions !== null
                 ? CancelConditions::deserialize($booking->cancel_conditions)
