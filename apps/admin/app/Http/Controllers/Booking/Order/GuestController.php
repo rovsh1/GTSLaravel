@@ -9,6 +9,7 @@ use App\Admin\Http\Requests\Order\Guest\AddRequest;
 use App\Admin\Http\Requests\Order\Guest\UpdateRequest;
 use App\Admin\Support\Facades\Booking\Hotel\AccommodationAdapter;
 use App\Admin\Support\Facades\Booking\OrderAdapter;
+use App\Admin\Support\Facades\Booking\Service\CarBidAdapter;
 use App\Admin\Support\Facades\Booking\Service\DetailsAdapter;
 use App\Shared\Http\Responses\AjaxResponseInterface;
 use App\Shared\Http\Responses\AjaxSuccessResponse;
@@ -36,15 +37,11 @@ class GuestController extends Controller
                 age: $request->getAge()
             );
             if ($request->hotelBookingId() !== null) {
-                AccommodationAdapter::bindGuest(
-                    $request->hotelBookingId(),
-                    $request->hotelBookingRoomId(),
-                    $guest->id
-                );
-            }
-
-            if ($request->airportBookingId() !== null) {
+                AccommodationAdapter::bindGuest($request->hotelBookingId(), $request->hotelBookingRoomId(), $guest->id);
+            } elseif ($request->airportBookingId() !== null) {
                 DetailsAdapter::bindGuest($request->airportBookingId(), $guest->id);
+            } elseif ($request->carBidBookingId() !== null) {
+                CarBidAdapter::bindGuest($request->carBidBookingId(), $request->carBidId(), $guest->id);
             }
 
             return $guest;

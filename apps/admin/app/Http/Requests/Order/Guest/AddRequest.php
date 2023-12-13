@@ -18,6 +18,9 @@ class AddRequest extends FormRequest
             'hotelBookingId' => ['nullable', 'numeric'],
             'hotelBookingRoomId' => ['required_with:hotelBookingId', 'numeric'],
             'airportBookingId' => ['nullable', 'numeric'],
+
+            'carBidBookingId' => ['nullable', 'numeric'],
+            'carBidId' => ['required_with:carBidBookingId', 'numeric'],
         ];
     }
 
@@ -43,21 +46,31 @@ class AddRequest extends FormRequest
 
     public function getAge(): ?int
     {
-        return $this->post('age');
+        return $this->integer('age', null);
     }
 
     public function hotelBookingId(): ?int
     {
-        return $this->post('hotelBookingId');
+        return $this->integer('hotelBookingId', null);
     }
 
     public function hotelBookingRoomId(): ?int
     {
-        return $this->post('hotelBookingRoomId');
+        return $this->integer('hotelBookingRoomId', null);
     }
 
     public function airportBookingId(): ?int
     {
-        return $this->post('airportBookingId');
+        return $this->integer('airportBookingId', null);
+    }
+
+    public function carBidBookingId(): ?int
+    {
+        return $this->integer('carBidBookingId', null);
+    }
+
+    public function carBidId(): ?int
+    {
+        return $this->integer('carBidId', null);
     }
 }
