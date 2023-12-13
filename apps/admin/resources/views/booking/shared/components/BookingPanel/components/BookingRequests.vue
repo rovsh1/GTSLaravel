@@ -35,22 +35,25 @@ const existCars = computed<boolean>(() => bookingStore.existCars)
 const existRooms = computed<boolean>(() => bookingStore.existRooms)
 
 const isGuestsFilled = computed<boolean>(() => !bookingStore.isEmptyGuests)
-const isCarsFilled = computed<boolean>(() => !bookingStore.isEmptyCars)
 
 const isRoomsFilled = computed<boolean>(() => !bookingStore.isEmptyRooms)
 const isRoomsGuestsFilled = computed<boolean>(() => !bookingStore.isEmptyRoomsGuests)
 
-const isRequestableData = computed(() => (existCars.value && isCarsFilled.value) || (existGuests.value && isGuestsFilled.value)
+const isCarsFilled = computed<boolean>(() => !bookingStore.isEmptyCars)
+const isCarsGuestsFilled = computed<boolean>(() => !bookingStore.isEmptyCarsGuests)
+
+const isRequestableData = computed(() => (existGuests.value && isGuestsFilled.value)
   || (existRooms.value && isRoomsFilled.value && isRoomsGuestsFilled.value)
+  || (existCars.value && isCarsFilled.value && isCarsGuestsFilled.value)
   || (!existCars.value && !existRooms.value && !existGuests.value))
 
 const requestableDataText = computed(() => {
-  if (existCars.value && !isCarsFilled.value) {
-    return 'о автомобилях'
-  } if (existGuests.value && !isGuestsFilled.value) {
+  if (existGuests.value && !isGuestsFilled.value) {
     return 'о гостях'
   } if (existRooms.value && (!isRoomsFilled.value || !isRoomsGuestsFilled.value)) {
     return 'по номерам и гостям '
+  } if (existCars.value && (!isCarsFilled.value || !isCarsGuestsFilled.value)) {
+    return 'по автомобилям и гостям '
   }
   return ''
 })

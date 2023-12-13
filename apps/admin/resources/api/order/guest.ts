@@ -26,6 +26,8 @@ export interface AddOrderGuestPayload {
   hotelBookingId?: number
   hotelBookingRoomId?: number
   airportBookingId?: number
+  carBidBookingId?: number
+  carBidId?: number
 }
 
 export interface UpdateOrderGuestPayload {
@@ -70,6 +72,8 @@ export const addOrderGuest = (props: MaybeRef<AddOrderGuestPayload | null>) =>
           hotelBookingId: payload.hotelBookingId,
           hotelBookingRoomId: payload.hotelBookingRoomId,
           airportBookingId: payload.airportBookingId,
+          carBidBookingId: payload.carBidBookingId,
+          carBidId: payload.carBidId,
         }),
       ),
     )), 'application/json')

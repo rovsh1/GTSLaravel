@@ -34,6 +34,7 @@ export type CarBid = {
   passengersCount: number
   baggageCount: number
   babyCount: number
+  guestIds: number[]
 }
 
 export interface BookingDetailsType {

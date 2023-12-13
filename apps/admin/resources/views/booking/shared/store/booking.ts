@@ -9,6 +9,7 @@ import { useBookingStatusHistoryStore } from '~resources/views/booking/shared/st
 
 import { HotelRoomBooking } from '~api/booking/hotel/details'
 import {
+  CarBid,
   copyBooking,
   updateBookingDetails as executeUpdateDetails,
   updateBookingStatus,
@@ -51,6 +52,7 @@ export const useBookingStore = defineStore('booking', () => {
   const isEmptyRooms = computed<boolean>(() => booking.value?.details?.roomBookings.length === 0)
 
   const existCars = computed<boolean>(() => Boolean(booking.value?.details?.carBids))
+  const isEmptyCarsGuests = computed<boolean>(() => Boolean(booking.value?.details?.carBids.find((car: CarBid) => car.guestIds.length === 0)))
   const isEmptyCars = computed<boolean>(() => Boolean(booking.value?.details?.carBids?.length === 0))
 
   const existGuests = computed<boolean>(() => Boolean(booking.value?.details?.guestIds))
@@ -139,6 +141,7 @@ export const useBookingStore = defineStore('booking', () => {
     fetchStatuses,
     changeStatus,
     existCars,
+    isEmptyCarsGuests,
     isEmptyCars,
     existGuests,
     isEmptyGuests,

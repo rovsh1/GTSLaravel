@@ -20,7 +20,7 @@ export type BookingTransferFromAirportDetails = BaseBookingDetails & {
   meetingTablet?: string
   flightNumber?: string
   arrivalDate?: string
-  carBids?: CarBid[]
+  carBids: CarBid[]
 }
 
 export type BookingTransferFromRailwayDetails = BaseBookingDetails & {
