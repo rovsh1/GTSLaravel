@@ -67,7 +67,7 @@ class CommonDataFactory
 
         return new BookingDto(
             number: $booking->id()->value(),
-            status: $this->statusStorage->getName($booking->status()),
+            status: $this->statusStorage->getName($booking->status()->value()),
             createdAt: $booking->timestamps()->createdAt()->format('d.m.Y H:i:s'),
             updatedAt: $booking->timestamps()->updatedAt()->format('d.m.Y H:i:s'),
             clientPrice: new BookingPriceDto(

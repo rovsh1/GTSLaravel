@@ -4,13 +4,14 @@ import { computed, unref } from 'vue'
 import { MaybeRef } from '@vueuse/core'
 
 import { BookingStatusResponse } from '~api/booking/models'
+import { StatusSettings } from '~api/booking/status'
 
 import ButtonLoadingSpinner from '~components/ButtonLoadingSpinner.vue'
 
 const props = defineProps<{
-  modelValue: BookingStatusResponse
-  statuses: MaybeRef<BookingStatusResponse[]>
-  availableStatuses: MaybeRef<BookingStatusResponse[] | null>
+  modelValue: BookingStatusResponse | StatusSettings
+  statuses: MaybeRef<StatusSettings[]>
+  availableStatuses: MaybeRef<StatusSettings[] | null>
   isLoading?: MaybeRef<boolean>
 }>()
 
@@ -25,7 +26,7 @@ const label = computed<string | undefined>(() => props.modelValue.name)
 
 const statusClass = computed<string>(() => (props.modelValue.color ? `text-bg-${props.modelValue.color}` : 'text-bg-secondary'))
 
-const availableStatuses = computed<BookingStatusResponse[] | null>(() => unref(props.availableStatuses))
+const availableStatuses = computed<StatusSettings[] | null>(() => unref(props.availableStatuses))
 
 const existStatuses = computed<string>(() => (availableStatuses.value && availableStatuses.value?.length > 0 ? 'dropdown-toggle' : ''))
 

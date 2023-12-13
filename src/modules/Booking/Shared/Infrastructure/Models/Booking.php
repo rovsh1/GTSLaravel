@@ -22,6 +22,8 @@ use Sdk\Shared\Enum\SourceEnum;
  * Module\Booking\Transfer\Infrastructure\Models\Booking
  *
  * @property int $id
+ * @property StatusEnum $status
+ * @property string|null $status_reason
  * @property ServiceTypeEnum $service_type
  * @property float $client_price
  * @property CurrencyEnum $client_currency
@@ -47,6 +49,7 @@ class Booking extends Model
         'order_id',
         'service_type',
         'status',
+        'status_reason',
         'source',
         'creator_id',
         'client_price',

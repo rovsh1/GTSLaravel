@@ -8,10 +8,10 @@ use Carbon\CarbonImmutable;
 use Module\Booking\Moderation\Application\Dto\Details\CancelConditionsDto;
 use Module\Booking\Moderation\Application\Dto\ServiceBooking\ServiceTypeDto;
 use Module\Booking\Moderation\Application\Factory\BookingPriceDtoFactory;
+use Module\Booking\Moderation\Application\Factory\BookingStatusDtoFactory;
 use Module\Booking\Moderation\Application\ResponseDto\OrderBookingDto;
 use Module\Booking\Moderation\Application\ResponseDto\OrderBookingPeriodDto;
 use Module\Booking\Moderation\Application\ResponseDto\OrderBookingServiceInfoDto;
-use Module\Booking\Shared\Application\Factory\BookingStatusDtoFactory;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
@@ -46,7 +46,7 @@ class GetOrderBookings implements UseCaseInterface
 
             return new OrderBookingDto(
                 id: $booking->id()->value(),
-                status: $this->statusDtoFactory->get($booking->status()),
+                status: $this->statusDtoFactory->build($booking->status()),
                 orderId: $booking->orderId()->value(),
                 createdAt: $booking->timestamps()->createdAt(),
                 creatorId: $booking->context()->creatorId()->value(),

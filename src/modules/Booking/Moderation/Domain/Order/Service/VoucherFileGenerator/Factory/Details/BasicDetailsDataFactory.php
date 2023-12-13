@@ -52,7 +52,7 @@ class BasicDetailsDataFactory
                 ? $this->guestDataFactory->build($details->guestIds())
                 : [],
             price: $this->buildPrice($booking),
-            status: $booking->status()->name,//@todo статус
+            status: $booking->status()->value()->name,//@todo статус
             cancelConditions: $this->cancelConditionsDataFactory->build($booking->cancelConditions()),
         );
     }

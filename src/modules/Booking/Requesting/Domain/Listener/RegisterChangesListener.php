@@ -37,6 +37,6 @@ class RegisterChangesListener implements IntegrationEventListenerInterface
 
     private function isActualStatus(Booking $booking): bool
     {
-        return $booking->status() === StatusEnum::NOT_CONFIRMED;
+        return $booking->status()->value() === StatusEnum::NOT_CONFIRMED;
     }
 }

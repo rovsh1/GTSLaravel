@@ -75,7 +75,8 @@ class BookingDbContext implements BookingDbContextInterface
         $clientPrice = $booking->prices()->clientPrice();
         $supplierPrice = $booking->prices()->supplierPrice();
         BookingModel::whereId($booking->id()->value())->update([
-            'status' => $booking->status(),
+            'status' => $booking->status()->value(),
+            'status_reason' => $booking->status()->reason(),
             'note' => $booking->note(),
             'client_price' => $clientPrice->calculatedValue(),
             'client_manual_price' => $clientPrice->manualValue(),

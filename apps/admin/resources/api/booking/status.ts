@@ -1,10 +1,16 @@
 import { MaybeRef } from '@vueuse/core'
 
 import { DateResponse, useAdminAPI } from '~api'
-import { BookingStatusResponse } from '~api/booking/models'
+import { StatusID } from '~api/booking/models'
+
+export interface StatusSettings {
+  id: StatusID
+  name: string
+  color: string
+}
 
 export interface BookingAvailableActionsResponse {
-  statuses: BookingStatusResponse[]
+  statuses: StatusSettings[]
   isEditable: boolean
   isRequestable: boolean
   canSendBookingRequest: boolean
@@ -40,7 +46,7 @@ export interface BookingStatusHistoryPayload {
 export const useBookingStatusesAPI = (props?: any) =>
   useAdminAPI(props, () => '/service-booking/status/list')
     .get()
-    .json<BookingStatusResponse[]>()
+    .json<StatusSettings[]>()
 
 export const useBookingAvailableActionsAPI = (props: MaybeRef<BookingAvailableStatusesPayload | null>) =>
   useAdminAPI(props, ({ bookingID }) =>

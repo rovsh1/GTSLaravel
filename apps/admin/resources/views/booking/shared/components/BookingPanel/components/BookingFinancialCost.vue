@@ -5,18 +5,16 @@ import { useToggle } from '@vueuse/core'
 
 import { useCurrencyStore } from '~resources/store/currency'
 import AmountBlock from '~resources/views/booking/shared/components/AmountBlock.vue'
+import BookingStatusReason
+  from '~resources/views/booking/shared/components/BookingPanel/components/BookingStatusReason.vue'
 import PriceModal from '~resources/views/booking/shared/components/PriceModal.vue'
 import { useBookingStore } from '~resources/views/booking/shared/store/booking'
-import { useBookingStatusHistoryStore } from '~resources/views/booking/shared/store/status-history'
 
 import { ProfitItem } from '~api/booking/models'
 import { Currency } from '~api/models'
 
 import { formatPrice } from '~lib/price'
 
-const statusHistoryStore = useBookingStatusHistoryStore()
-
-const lastHistoryItem = computed(() => statusHistoryStore.lastHistoryItem)
 const [isNetPriceModalOpened, toggleNetPriceModal] = useToggle<boolean>(false)
 const [isGrossPriceModalOpened, toggleGrossPriceModal] = useToggle<boolean>(false)
 const [isNetPenaltyModalOpened, toggleNetPenaltyModal] = useToggle<boolean>(false)
@@ -150,18 +148,6 @@ const handleSaveHoPenalty = async (value: number | undefined) => {
       }}
     </div>
 
-    <div v-if="lastHistoryItem && lastHistoryItem?.payload?.reason" class="mt-2 alert-warning" role="alert">
-      {{ lastHistoryItem.payload.reason }}
-    </div>
+    <BookingStatusReason />
   </div>
 </template>
-
-<style lang="scss" scoped>
-.alert-warning {
-  padding: 0.438rem 9.75rem 0.438rem 1rem;
-  border-radius: 4px;
-  background: #fff4de;
-  color: black;
-}
-
-</style>

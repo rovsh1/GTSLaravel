@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->unsignedInteger('order_id');
             $table->unsignedTinyInteger('service_type');
             $table->unsignedTinyInteger('status');
+            $table->string('status_reason')->nullable();
             $table->string('source');
             $table->unsignedInteger('creator_id');
 

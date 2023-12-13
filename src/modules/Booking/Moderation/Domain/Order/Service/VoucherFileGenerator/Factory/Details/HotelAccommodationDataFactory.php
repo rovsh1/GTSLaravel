@@ -58,7 +58,7 @@ class HotelAccommodationDataFactory
             price: $this->buildPrice($booking->prices()->clientPrice()->currency(), $accommodation),
             externalNumber: $details->externalNumber()?->number(),
             cancelConditions: $this->cancelConditionsDataFactory->build($booking->cancelConditions()),
-            status: $booking->status()->name,//@todo статус
+            status: $booking->status()->value()->name,//@todo статус
         );
     }
 

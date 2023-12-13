@@ -6,15 +6,14 @@ import { useExternalNumber } from '~resources/views/booking/shared/composables/e
 import { useBookingStore } from '~resources/views/booking/shared/store/booking'
 import { useBookingStatusHistoryStore } from '~resources/views/booking/shared/store/status-history'
 
-import { BookingStatusResponse } from '~api/booking/models'
-import { BookingAvailableActionsResponse } from '~api/booking/status'
+import { BookingAvailableActionsResponse, StatusSettings } from '~api/booking/status'
 
 const statusHistoryStore = useBookingStatusHistoryStore()
 const { fetchStatusHistory } = statusHistoryStore
 const bookingStore = useBookingStore()
 
 const booking = computed(() => bookingStore.booking)
-const statuses = computed<BookingStatusResponse[] | null>(() => bookingStore.statuses)
+const statuses = computed<StatusSettings[] | null>(() => bookingStore.statuses)
 const availableActions = computed<BookingAvailableActionsResponse | null>(() => bookingStore.availableActions)
 const isAvailableActionsFetching = computed<boolean>(() => bookingStore.isAvailableActionsFetching)
 const isStatusUpdateFetching = computed(() => bookingStore.isStatusUpdateFetching)

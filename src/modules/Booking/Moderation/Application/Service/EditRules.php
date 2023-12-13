@@ -28,7 +28,7 @@ final class EditRules
 
     public function isEditable(): bool
     {
-        return $this->order->inModeration() && in_array($this->booking->status(), [
+        return $this->order->inModeration() && in_array($this->booking->status()->value(), [
                 StatusEnum::CREATED,
                 StatusEnum::PROCESSING,
                 StatusEnum::WAITING_PROCESSING,
@@ -38,12 +38,12 @@ final class EditRules
 
     public function canEditExternalNumber(): bool
     {
-        return !$this->isOtherService() && $this->booking->status() === StatusEnum::CONFIRMED;
+        return !$this->isOtherService() && $this->booking->status()->value() === StatusEnum::CONFIRMED;
     }
 
     public function canChangeRoomPrice(): bool
     {
-        return $this->isHotelBooking() && in_array($this->booking->status(), [
+        return $this->isHotelBooking() && in_array($this->booking->status()->value(), [
                 StatusEnum::CREATED,
                 StatusEnum::PROCESSING,
                 StatusEnum::WAITING_PROCESSING,
@@ -66,7 +66,7 @@ final class EditRules
             return [];
         }
 
-        return $statusTransitions->getAvailableTransitions($this->booking->status());
+        return $statusTransitions->getAvailableTransitions($this->booking->status()->value());
     }
 
     private function isHotelBooking(): bool
