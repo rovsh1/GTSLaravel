@@ -8,7 +8,7 @@ use App\Admin\Models\Hotel\Room;
 use Module\Hotel\Moderation\Domain\Hotel\Exception\Room\PriceRateNotFound;
 use Module\Hotel\Moderation\Domain\Hotel\Exception\Room\RoomNotFound;
 use Module\Hotel\Moderation\Infrastructure\Models\Price\Group;
-use Module\Hotel\Moderation\Infrastructure\Models\Room\PriceRate;
+use Module\Hotel\Moderation\Infrastructure\Models\PriceRate;
 use Module\Hotel\Moderation\Infrastructure\Models\Season;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 

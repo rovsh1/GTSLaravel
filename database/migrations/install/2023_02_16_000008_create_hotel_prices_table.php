@@ -18,11 +18,18 @@ return new class extends Migration {
         Schema::create('hotel_price_rates', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('hotel_id');
+            $table->unsignedInteger('meal_plan_id')->nullable();
 
             $table->foreign('hotel_id')
                 ->references('id')
                 ->on('hotels')
                 ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+
+            $table->foreign('meal_plan_id')
+                ->references('id')
+                ->on('r_hotel_meal_plans')
+                ->restrictOnDelete()
                 ->cascadeOnUpdate();
         });
 

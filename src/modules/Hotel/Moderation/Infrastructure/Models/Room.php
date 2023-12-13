@@ -4,7 +4,6 @@ namespace Module\Hotel\Moderation\Infrastructure\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Module\Hotel\Moderation\Infrastructure\Models\Room\Bed;
-use Module\Hotel\Moderation\Infrastructure\Models\Room\PriceRate;
 use Sdk\Module\Database\Eloquent\HasTranslations;
 use Sdk\Module\Database\Eloquent\Model;
 

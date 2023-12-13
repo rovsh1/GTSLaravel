@@ -92,6 +92,15 @@ return [
     'Hotel\\RatingEnum::FOUR' => '✯ ✯ ✯ ✯',
     'Hotel\\RatingEnum::FIVE' => '✯ ✯ ✯ ✯ ✯',
 
+    'Hotel\\MealPlanTypeEnum::UNKNOWN' => 'Не предлагается',
+    'Hotel\\MealPlanTypeEnum::ALL_INCLUSIVE' => 'Всё включено',
+    'Hotel\\MealPlanTypeEnum::BUFFET_BREAKFAST' => 'Завтрак (шведский стол)',
+    'Hotel\\MealPlanTypeEnum::CONTINENTAL_BREAKFAST' => 'Континентальный завтрак',
+    'Hotel\\MealPlanTypeEnum::ENGLISH_BREAKFAST' => 'Английский завтрак',
+    'Hotel\\MealPlanTypeEnum::FULL_BOARD' => 'Полный пансион',
+    'Hotel\\MealPlanTypeEnum::HALF_BOARD' => 'Полупансион',
+    'Hotel\\MealPlanTypeEnum::BREAKFAST' => 'Завтрак',
+
     'Module\Client\Payment\Domain\Payment\ValueObject\PaymentStatusEnum::NOT_PAID' => 'Не распределен',
     'Module\Client\Payment\Domain\Payment\ValueObject\PaymentStatusEnum::PARTIAL_PAID' => 'Частично распределен',
     'Module\Client\Payment\Domain\Payment\ValueObject\PaymentStatusEnum::PAID' => 'Распределен',

@@ -7,6 +7,7 @@ use App\Admin\Http\Controllers\Controller;
 use App\Admin\Http\Requests\Hotel\PriceRate\SearchRequest;
 use App\Admin\Http\Resources\PriceRate as PriceRateResource;
 use App\Admin\Models\Hotel\Hotel;
+use App\Admin\Models\Hotel\MealPlan;
 use App\Admin\Models\Hotel\PriceRate;
 use App\Admin\Models\Hotel\Room;
 use App\Admin\Support\Facades\Acl;
@@ -104,6 +105,7 @@ class RateController extends Controller
             ->hidden('hotel_id', ['value' => $hotelId])
             ->localeText('name', ['label' => 'Наименование', 'required' => true])
             ->localeTextarea('description', ['label' => 'Описание', 'required' => true])
+            ->select('meal_plan_id', ['label' => 'Питание', 'emptyItem' => '', 'items' => MealPlan::get(), 'required' => true])
             ->select(
                 'room_ids',
                 ['label' => 'Комнаты', 'multiple' => true, 'items' => Room::whereHotelId($hotelId)->get()]
@@ -119,7 +121,8 @@ class RateController extends Controller
                     ['hotel' => $hotelId, 'rate' => $rate->id]
                 )
             )
-            ->text('name', ['text' => 'Наименование', 'order' => true]);
+            ->text('name', ['text' => 'Наименование', 'order' => true])
+            ->text('meal_plan_name', ['text' => 'Питание']);
     }
 
     private function hotel(Hotel $hotel): void

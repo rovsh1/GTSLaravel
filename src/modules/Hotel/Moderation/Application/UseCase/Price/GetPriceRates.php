@@ -28,6 +28,7 @@ class GetPriceRates implements UseCaseInterface
             $priceRate->id,
             $priceRate->name,
             $priceRate->description,
+            $priceRate->mealPlan?->name(),
         ), $priceRates);
     }
 }

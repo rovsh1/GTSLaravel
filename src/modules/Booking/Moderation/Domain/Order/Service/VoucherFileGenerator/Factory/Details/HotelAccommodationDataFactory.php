@@ -117,7 +117,7 @@ class HotelAccommodationDataFactory
             DetailOptionDto::createText('Время выезда', $checkOutTime),
             DetailOptionDto::createNumber('Ночей', $details->bookingPeriod()->nightsCount()),
             DetailOptionDto::createText('Номер', $accommodation->roomInfo()->name()),
-            DetailOptionDto::createText('Питание', $priceRate?->name),
+            DetailOptionDto::createText('Питание', $priceRate?->mealPlan),
             DetailOptionDto::createText('Примечание', $accommodation->details()->guestNote()),
         ]);
     }

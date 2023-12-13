@@ -2,46 +2,25 @@
 
 namespace App\Admin\Models\Hotel;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Sdk\Module\Database\Eloquent\HasTranslations;
-use Sdk\Module\Database\Eloquent\Model;
 
-/**
- * @property int $id
- * @property int $hotel_id
- * @property string $name
- * @property string $description
- * @property int[] $room_ids
- * @method static \Illuminate\Database\Eloquent\Builder|PriceRate whereHotelId(int $value)
- */
-class PriceRate extends Model
+class PriceRate extends \Module\Hotel\Moderation\Infrastructure\Models\PriceRate
 {
-    use HasTranslations;
-
-    public $timestamps = false;
-
-    protected $table = 'hotel_price_rates';
-
-    protected $translatable = ['name', 'description'];
-
     private array $savingRoomIds;
 
     protected $fillable = [
         'hotel_id',
         'name',
         'description',
+        'meal_plan_id',
+
         'room_ids',
     ];
 
     public static function booted()
     {
-        static::addGlobalScope('default', function (Builder $builder) {
-            $builder
-                ->addSelect('hotel_price_rates.*')
-                ->joinTranslations();
-        });
+        parent::booted();
 
         static::saved(function (self $model): void {
             if (isset($model->savingRoomIds)) {

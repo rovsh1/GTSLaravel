@@ -6,21 +6,25 @@ namespace Module\Hotel\Moderation\Application\Factory;
 
 use Module\Hotel\Moderation\Application\Dto\PriceRateDto;
 use Module\Hotel\Moderation\Application\Dto\RoomDto;
+use Module\Hotel\Moderation\Domain\Hotel\Entity\PriceRate;
 use Module\Hotel\Moderation\Domain\Hotel\Entity\Room;
 
 class RoomDtoFactory
 {
     public function fromRoom(Room $entity): RoomDto
     {
+        $priceRates = array_map(fn(PriceRate $r) => new PriceRateDto(
+            id: $r->id,
+            name: $r->name,
+            description: $r->description,
+            mealPlan: $r->mealPlan?->name()
+        ), $entity->priceRates);
+
         return new RoomDto(
             $entity->id->value(),
             $entity->hotelId->value(),
             $entity->name,
-            array_map(fn($r) => new PriceRateDto(
-                id: $r->id,
-                name: $r->name,
-                description: $r->description
-            ), $entity->priceRates),
+            $priceRates,
             $entity->guestsCount,
             $entity->roomsCount,
         );
