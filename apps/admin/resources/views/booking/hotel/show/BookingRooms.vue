@@ -137,6 +137,7 @@ const modalSettings = {
       const payload = { guestId: preparedRequest.id, ...preparedRequest }
       payload.orderId = orderId.value
       const response = await updateOrderGuest(payload)
+      await bookingStore.fetchBooking()
       await orderStore.fetchGuests()
       return response.data.value?.success || false
     },

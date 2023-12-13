@@ -13,7 +13,7 @@ $(() => {
 
   $('.payload .btn-data-content').on('click', (e: any) => {
     e.preventDefault()
-    showModal('Опиание', e.currentTarget as HTMLElement)
+    showModal('Описание', e.currentTarget as HTMLElement)
   })
 
   $('.context .btn-data-content').on('click', (e: any) => {
