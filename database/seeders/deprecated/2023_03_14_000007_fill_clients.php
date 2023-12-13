@@ -39,21 +39,20 @@ return new class extends Migration {
             }
 
             try {
-                DB::table('clients')
-                    ->insert([
-                        'id' => $r->id,
-                        'city_id' => $r->city_id,
-                        'currency' => CurrencyEnum::fromId($r->currency_id)->value,
-                        'type' => $r->type,
-                        'residency' => $residency,
-                        'name' => $r->name,
-                        'description' => $r->description,
-                        'status' => $r->status,
-                        'is_b2b' => (bool)$r->is_b2b,
-                        'markup_group_id' => self::BASE_MARKUP_GROUP_ID,
-                        'created_at' => $r->created,
-                        'updated_at' => $r->updated
-                    ]);
+                DB::table('clients')->insert([
+                    'id' => $r->id,
+                    'city_id' => $r->city_id,
+                    'currency' => CurrencyEnum::fromId($r->currency_id)->value,
+                    'type' => $r->type,
+                    'residency' => $residency,
+                    'name' => $r->name,
+                    'description' => $r->description,
+                    'status' => $r->status,
+                    'is_b2b' => (bool)$r->is_b2b,
+                    'markup_group_id' => self::BASE_MARKUP_GROUP_ID,
+                    'created_at' => $r->created,
+                    'updated_at' => $r->updated
+                ]);
             } catch (\Throwable $e) {
                 //@todo hack пропускаем клиентов с ошибками. На тесте какая то проблема с инсертом из-за городов
             }
