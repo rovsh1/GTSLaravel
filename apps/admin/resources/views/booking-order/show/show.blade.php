@@ -48,7 +48,11 @@
                             </tr>
                             <tr>
                                 <th>Период</th>
-                                <td>{{ Format::period(new \Carbon\CarbonPeriod($model->period->dateFrom, $model->period->dateTo)) }}</td>
+                                @if($model->period !== null)
+                                    <td>{{ Format::period(new \Carbon\CarbonPeriod($model->period->dateFrom, $model->period->dateTo)) }}</td>
+                                @else
+                                    <td>-</td>
+                                @endif
                             </tr>
                             <tr>
                                 <th>Менеджер</th>
