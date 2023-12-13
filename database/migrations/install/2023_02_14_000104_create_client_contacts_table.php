@@ -13,7 +13,7 @@ return new class extends Migration {
             $table->unsignedTinyInteger('type');
             $table->string('value');
             $table->string('description')->nullable();
-            $table->unsignedTinyInteger('is_main')->default(false);
+            $table->boolean('is_main')->default(false);
             $table->timestamps();
 
             $table->foreign('client_id')
