@@ -132,7 +132,7 @@ class HotelController extends AbstractPrototypeController
                 'enum' => VisibilityEnum::class
             ])
             ->text('name', ['label' => 'Наименование', 'required' => true])
-            ->enum('rating', ['label' => 'Категория', 'emptyItem' => '', 'enum' => RatingEnum::class])
+            ->rating('rating', ['label' => 'Категория', 'emptyItem' => ''])
             ->enum('status', ['label' => 'Статус', 'emptyItem' => '', 'enum' => StatusEnum::class])
             ->text('address', ['label' => 'Адрес', 'required' => true])
             ->coordinates('coordinates', ['label' => 'Координаты', 'required' => true, 'value' => $coordinates])

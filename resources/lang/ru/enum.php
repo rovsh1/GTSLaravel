@@ -86,12 +86,6 @@ return [
     'Hotel\\VisibilityEnum::PUBLIC' => 'Для всех',
     'Hotel\\VisibilityEnum::B2B' => 'B2B',
 
-    'Hotel\\RatingEnum::ONE' => '✯',
-    'Hotel\\RatingEnum::TWO' => '✯ ✯',
-    'Hotel\\RatingEnum::THREE' => '✯ ✯ ✯',
-    'Hotel\\RatingEnum::FOUR' => '✯ ✯ ✯ ✯',
-    'Hotel\\RatingEnum::FIVE' => '✯ ✯ ✯ ✯ ✯',
-
     'Hotel\\MealPlanTypeEnum::UNKNOWN' => 'Не предлагается',
     'Hotel\\MealPlanTypeEnum::ALL_INCLUSIVE' => 'Всё включено',
     'Hotel\\MealPlanTypeEnum::BUFFET_BREAKFAST' => 'Завтрак (шведский стол)',

@@ -36,6 +36,7 @@ use Throwable;
  * @method self language(string $name, array $options = [])
  * @method self numRange(string $name, array $options = [])
  * @method self image(string $name, array $options = [])
+ * @method self rating(string $name, array $options = [])
  * @method self bookingServiceType(string $name, array $options = [])
  * @method self hiddenMultiSelect(string $name, array $options = [])
  */
