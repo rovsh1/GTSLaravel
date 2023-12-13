@@ -36,6 +36,7 @@ class GuestController extends Controller
                 gender: $request->getGender(),
                 age: $request->getAge()
             );
+
             if ($request->hotelBookingId() !== null) {
                 AccommodationAdapter::bindGuest($request->hotelBookingId(), $request->hotelBookingRoomId(), $guest->id);
             } elseif ($request->airportBookingId() !== null) {
