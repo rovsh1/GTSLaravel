@@ -22,6 +22,9 @@ return new class extends Migration {
                     'updated_at' => now(),
                 ]);
             } catch (\Throwable $e) {
+                if($r->client_id == 6){
+                    \Log::warning('client_contacts', ['err' => $e]);
+                }
                 //@todo hack пропускаем клиентов с ошибками. На тесте какая то проблема с инсертом из-за городов
             }
         }
