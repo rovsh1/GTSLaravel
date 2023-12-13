@@ -57,8 +57,7 @@ class PaymentController extends AbstractPrototypeController
     {
         return Form::name('data')
             ->setOption('enctype', 'multipart/form-data')
-            ->client('client_id', ['label' => 'Клиент', 'required' => true, 'emptyItem' => '', 'onlyWithOrders' => true]
-            )
+            ->client('client_id', ['label' => 'Клиент', 'required' => true, 'emptyItem' => '', 'onlyWithOrders' => true])
             ->text('invoice_number', ['label' => 'Номер счет-фактуры', 'required' => true])
             ->date('issue_date', ['label' => 'Дата выставления', 'required' => true])
             ->date('payment_date', ['label' => 'Дата оплаты', 'required' => true])
