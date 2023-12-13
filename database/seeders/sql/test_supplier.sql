@@ -77,6 +77,42 @@ VALUES (1, 1, 1, 1, 'UZS', '20000.00', '[{\"amount\":30000,\"currency\":\"UZS\"}
        (23, 2, 6, 1, 'UZS', '150000.00', '[{\"amount\":200000,\"currency\":\"UZS\"},{\"amount\":20,\"currency\":\"USD\"}]'),
        (24, 2, 6, 2, 'UZS', '200000.00', '[{\"amount\":240000,\"currency\":\"UZS\"},{\"amount\":24,\"currency\":\"USD\"}]');
 
+INSERT INTO `supplier_car_cancel_conditions` (`id`, `season_id`, `service_id`, `car_id`, `data`)
+VALUES (1, 1, 1, 1 ,'{"noCheckInMarkup":{"percent":5},"dailyMarkups":[{"percent":15,"daysCount":3}]}'),
+       (2, 1, 1, 2 ,'{"noCheckInMarkup":{"percent":5},"dailyMarkups":[{"percent":15,"daysCount":3}]}'),
+       (3, 2, 1, 1 ,'{"noCheckInMarkup":{"percent":2},"dailyMarkups":[{"percent":10,"daysCount":1}]}'),
+       (4, 2, 1, 2 ,'{"noCheckInMarkup":{"percent":2},"dailyMarkups":[{"percent":10,"daysCount":1}]}'),
+
+       (5, 1, 2, 1 ,'{"noCheckInMarkup":{"percent":5},"dailyMarkups":[{"percent":15,"daysCount":3}]}'),
+       (6, 1, 2, 2 ,'{"noCheckInMarkup":{"percent":5},"dailyMarkups":[{"percent":15,"daysCount":3}]}'),
+       (7, 2, 2, 1 ,'{"noCheckInMarkup":{"percent":2},"dailyMarkups":[{"percent":10,"daysCount":1}]}'),
+       (8, 2, 2, 2 ,'{"noCheckInMarkup":{"percent":2},"dailyMarkups":[{"percent":10,"daysCount":1}]}'),
+
+       (9, 1, 3, 1 ,'{"noCheckInMarkup":{"percent":5},"dailyMarkups":[{"percent":15,"daysCount":3}]}'),
+       (10, 1, 3, 2 ,'{"noCheckInMarkup":{"percent":5},"dailyMarkups":[{"percent":15,"daysCount":3}]}'),
+       (11, 2, 3, 1 ,'{"noCheckInMarkup":{"percent":2},"dailyMarkups":[{"percent":10,"daysCount":1}]}'),
+       (12, 2, 3, 2 ,'{"noCheckInMarkup":{"percent":2},"dailyMarkups":[{"percent":10,"daysCount":1}]}'),
+
+       (13, 1, 4, 1 ,'{"noCheckInMarkup":{"percent":5},"dailyMarkups":[{"percent":15,"daysCount":3}]}'),
+       (14, 1, 4, 2 ,'{"noCheckInMarkup":{"percent":5},"dailyMarkups":[{"percent":15,"daysCount":3}]}'),
+       (15, 2, 4, 1 ,'{"noCheckInMarkup":{"percent":2},"dailyMarkups":[{"percent":10,"daysCount":1}]}'),
+       (16, 2, 4, 2 ,'{"noCheckInMarkup":{"percent":2},"dailyMarkups":[{"percent":10,"daysCount":1}]}'),
+
+       (17, 1, 5, 1 ,'{"noCheckInMarkup":{"percent":5},"dailyMarkups":[{"percent":15,"daysCount":3}]}'),
+       (18, 1, 5, 2 ,'{"noCheckInMarkup":{"percent":5},"dailyMarkups":[{"percent":15,"daysCount":3}]}'),
+       (19, 2, 5, 1 ,'{"noCheckInMarkup":{"percent":2},"dailyMarkups":[{"percent":10,"daysCount":1}]}'),
+       (20, 2, 5, 2 ,'{"noCheckInMarkup":{"percent":2},"dailyMarkups":[{"percent":10,"daysCount":1}]}'),
+
+       (21, 1, 6, 1 ,'{"noCheckInMarkup":{"percent":5},"dailyMarkups":[{"percent":15,"daysCount":3}]}'),
+       (22, 1, 6, 2 ,'{"noCheckInMarkup":{"percent":5},"dailyMarkups":[{"percent":15,"daysCount":3}]}'),
+       (23, 2, 6, 1 ,'{"noCheckInMarkup":{"percent":2},"dailyMarkups":[{"percent":10,"daysCount":1}]}'),
+       (24, 2, 6, 2 ,'{"noCheckInMarkup":{"percent":2},"dailyMarkups":[{"percent":10,"daysCount":1}]}'),
+
+       (25, 1, 7, 1 ,'{"noCheckInMarkup":{"percent":5},"dailyMarkups":[{"percent":15,"daysCount":3}]}'),
+       (26, 1, 7, 2 ,'{"noCheckInMarkup":{"percent":5},"dailyMarkups":[{"percent":15,"daysCount":3}]}'),
+       (27, 2, 7, 1 ,'{"noCheckInMarkup":{"percent":2},"dailyMarkups":[{"percent":10,"daysCount":1}]}'),
+       (28, 2, 7, 2 ,'{"noCheckInMarkup":{"percent":2},"dailyMarkups":[{"percent":10,"daysCount":1}]}');
+
 INSERT INTO `supplier_airport_prices` (`id`, `season_id`, `service_id`, `currency`, `price_net`, `prices_gross`)
 VALUES (1, 1, 8, 'UZS', '20000.00', '[{\"amount\":30000,\"currency\":\"UZS\"},{\"amount\":30,\"currency\":\"USD\"}]'),
        (2, 2, 8, 'UZS', '30000.00', '[{\"amount\":40000,\"currency\":\"UZS\"},{\"amount\":40,\"currency\":\"USD\"}]'),
@@ -86,3 +122,11 @@ VALUES (1, 1, 8, 'UZS', '20000.00', '[{\"amount\":30000,\"currency\":\"UZS\"},{\
 INSERT INTO `supplier_other_prices` (`id`, `season_id`, `service_id`, `currency`, `price_net`, `prices_gross`)
 VALUES (1, 1, 10, 'UZS', '20000.00', '[{\"amount\":30000,\"currency\":\"UZS\"},{\"amount\":30,\"currency\":\"USD\"}]'),
        (2, 2, 10, 'UZS', '30000.00', '[{\"amount\":40000,\"currency\":\"UZS\"},{\"amount\":40,\"currency\":\"USD\"}]');
+
+INSERT INTO `supplier_service_cancel_conditions` (`id`, `season_id`, `service_id`, `data`)
+VALUES (1, 1, 8, '{"noCheckInMarkup":{"percent":5},"dailyMarkups":[{"percent":15,"daysCount":3}]}'),
+       (2, 2, 8, '{"noCheckInMarkup":{"percent":2},"dailyMarkups":[{"percent":10,"daysCount":1}]}'),
+       (3, 1, 9, '{"noCheckInMarkup":{"percent":5},"dailyMarkups":[{"percent":15,"daysCount":3}]}'),
+       (4, 2, 9, '{"noCheckInMarkup":{"percent":2},"dailyMarkups":[{"percent":10,"daysCount":1}]}'),
+       (5, 1, 10, '{"noCheckInMarkup":{"percent":5},"dailyMarkups":[{"percent":15,"daysCount":3}]}'),
+       (6, 2, 10, '{"noCheckInMarkup":{"percent":2},"dailyMarkups":[{"percent":10,"daysCount":1}]}');

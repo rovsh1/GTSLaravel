@@ -33,6 +33,11 @@ return new class extends Migration {
                 }
             }
 
+            //@hack для тестов Бахтиера
+            if ($r->name === 'test_b2b') {
+                $residency = ResidencyEnum::ALL;
+            }
+
             try {
                 DB::table('clients')
                     ->insert([
