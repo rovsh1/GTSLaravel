@@ -10,12 +10,12 @@ trait StatusesFlagsTrait
 {
     public function isConfirmed(): bool
     {
-        return $this->status === StatusEnum::CONFIRMED;
+        return $this->status->value() === StatusEnum::CONFIRMED;
     }
 
     public function isCancelled(): bool
     {
-        return in_array($this->status, [
+        return in_array($this->status->value(), [
             StatusEnum::CANCELLED,
             StatusEnum::CANCELLED_FEE,
             StatusEnum::CANCELLED_NO_FEE,
@@ -33,6 +33,6 @@ trait StatusesFlagsTrait
 
     public function isDeleted(): bool
     {
-        return $this->status == StatusEnum::DELETED;
+        return $this->status->value() == StatusEnum::DELETED;
     }
 }

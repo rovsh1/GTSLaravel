@@ -12,6 +12,7 @@ use Sdk\Booking\Event\BookingDeleted;
 use Sdk\Booking\Event\PriceUpdated;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\BookingPrices;
+use Sdk\Booking\ValueObject\BookingStatus;
 use Sdk\Booking\ValueObject\CancelConditions;
 use Sdk\Booking\ValueObject\Context;
 use Sdk\Booking\ValueObject\OrderId;
@@ -28,7 +29,7 @@ class Booking extends AbstractAggregateRoot
         private readonly BookingId $id,
         private readonly OrderId $orderId,
         private readonly ServiceTypeEnum $serviceType,
-        private StatusEnum $status,
+        private BookingStatus $status,
         private BookingPrices $prices,
         private ?CancelConditions $cancelConditions,
         private ?string $note,
@@ -112,7 +113,7 @@ class Booking extends AbstractAggregateRoot
             'id' => $this->id->value(),
             'orderId' => $this->orderId->value(),
             'serviceType' => $this->serviceType->value,
-            'status' => $this->status->value,
+            'status' => $this->status->serialize(),
             'prices' => $this->prices->serialize(),
             'cancelConditions' => $this->cancelConditions?->serialize(),
             'note' => $this->note,
@@ -127,11 +128,11 @@ class Booking extends AbstractAggregateRoot
             id: new BookingId($payload['id']),
             orderId: new OrderId($payload['orderId']),
             serviceType: ServiceTypeEnum::from($payload['serviceType']),
-            status: StatusEnum::from($payload['status']),
+            status: BookingStatus::deserialize($payload['status']),
             prices: BookingPrices::deserialize($payload['prices']),
-            cancelConditions: $payload['cancelConditions'] ? CancelConditions::deserialize(
-                $payload['cancelConditions']
-            ) : null,
+            cancelConditions: $payload['cancelConditions']
+                ? CancelConditions::deserialize($payload['cancelConditions'])
+                : null,
             note: $payload['note'],
             context: Context::deserialize($payload['context']),
             timestamps: Timestamps::deserialize($payload['timestamps'])

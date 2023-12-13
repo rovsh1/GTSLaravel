@@ -16,10 +16,11 @@ use Sdk\Booking\Event\Status\BookingWaitingConfirmation;
 use Sdk\Booking\Event\Status\BookingWaitingProcessing;
 use Sdk\Booking\ValueObject\BookingPriceItem;
 use Sdk\Booking\ValueObject\BookingPrices;
+use Sdk\Booking\ValueObject\BookingStatus;
 
 trait HasStatusesTrait
 {
-    public function status(): StatusEnum
+    public function status(): BookingStatus
     {
         return $this->status;
     }
@@ -53,7 +54,9 @@ trait HasStatusesTrait
 //        if ($this->type() === BookingTypeEnum::HOTEL && empty($reason)) {
 //            throw new \InvalidArgumentException('Not confirmed reason can\'t be empty');
 //        }
-        $this->setStatus(StatusEnum::NOT_CONFIRMED);
+
+//        $this->setStatus(StatusEnum::NOT_CONFIRMED);
+        $this->status = BookingStatus::createNotConfirmed($reason);
         $this->pushEvent(new BookingNotConfirmed($this, $reason));
     }
 
@@ -113,6 +116,6 @@ trait HasStatusesTrait
 
     protected function setStatus(StatusEnum $status): void
     {
-        $this->status = $status;
+        $this->status = BookingStatus::createFromEnum($status);
     }
 }

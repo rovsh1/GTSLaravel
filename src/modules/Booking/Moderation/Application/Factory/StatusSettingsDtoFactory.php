@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Shared\Application\Factory;
+namespace Module\Booking\Moderation\Application\Factory;
 
 use Module\Booking\Shared\Domain\Booking\Service\BookingStatusStorageInterface;
 use Sdk\Booking\Dto\StatusDto;
 use Sdk\Booking\Enum\StatusEnum;
 
-class BookingStatusDtoFactory
+class StatusSettingsDtoFactory
 {
     public function __construct(
         private readonly BookingStatusStorageInterface $statusStorage

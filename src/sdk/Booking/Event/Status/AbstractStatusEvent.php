@@ -12,6 +12,10 @@ abstract class AbstractStatusEvent extends AbstractBookingEvent implements Booki
 {
     public function integrationEvent(): StatusUpdated
     {
-        return new StatusUpdated($this->booking->id()->value(), $this->booking->status());
+        return new StatusUpdated(
+            $this->booking->id()->value(),
+            $this->booking->status()->value(),
+            $this->booking->status()->reason()
+        );
     }
 }

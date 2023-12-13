@@ -48,7 +48,7 @@ class Quota implements QuotaProcessingMethodInterface
     private function isBookingConfirmed(Booking $booking): bool
     {
         //@todo надо перенести в рулзы
-        return $booking->status() === StatusEnum::CONFIRMED;
+        return $booking->status()->value() === StatusEnum::CONFIRMED;
     }
 
     private function isBookingCancelled(Booking $booking): bool

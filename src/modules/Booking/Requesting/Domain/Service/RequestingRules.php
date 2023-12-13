@@ -49,22 +49,22 @@ final class RequestingRules
     {
         return !$this->isOtherService()
             && $this->order->inModeration()
-            && in_array($this->booking->status(), self::REQUESTABLE_STATUSES);
+            && in_array($this->booking->status()->value(), self::REQUESTABLE_STATUSES);
     }
 
     public function canSendCancellationRequest(): bool
     {
-        return $this->isBookingRequestable() && $this->booking->status() === StatusEnum::CONFIRMED;
+        return $this->isBookingRequestable() && $this->booking->status()->value() === StatusEnum::CONFIRMED;
     }
 
     public function canSendBookingRequest(): bool
     {
-        return $this->isBookingRequestable() && $this->booking->status() === StatusEnum::PROCESSING;
+        return $this->isBookingRequestable() && $this->booking->status()->value() === StatusEnum::PROCESSING;
     }
 
     public function canSendChangeRequest(): bool
     {
-        return $this->isBookingRequestable() && in_array($this->booking->status(), [
+        return $this->isBookingRequestable() && in_array($this->booking->status()->value(), [
                 StatusEnum::WAITING_PROCESSING,
                 StatusEnum::NOT_CONFIRMED
             ]);

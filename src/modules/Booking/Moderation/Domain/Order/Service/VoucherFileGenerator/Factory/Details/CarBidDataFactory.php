@@ -45,7 +45,7 @@ class CarBidDataFactory
             detailOptions: $this->buildDetails($carBid, $details),
             guests: $this->guestDataFactory->build($carBid->guestIds()),
             price: $this->buildPrice($carBid, $booking->prices()->clientPrice()->currency(), $bookingPeriod->countDays),
-            status: $booking->status()->name,//@todo статус
+            status: $booking->status()->value()->name,//@todo статус
             cancelConditions: $this->cancelConditionsDataFactory->build($booking->cancelConditions()),
         );
     }

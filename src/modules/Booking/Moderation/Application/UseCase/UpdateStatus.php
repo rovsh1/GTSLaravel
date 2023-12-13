@@ -81,7 +81,7 @@ class UpdateStatus implements UseCaseInterface
     {
         $statusTransitions = $this->statusTransitionsFactory->build($booking->serviceType());
 
-        if (!$statusTransitions->canTransit($booking->status(), $statusTo)) {
+        if (!$statusTransitions->canTransit($booking->status()->value(), $statusTo)) {
             throw new InvalidStatusTransition("Can't change status for booking [{$booking->id()->value()}]]");
         }
     }

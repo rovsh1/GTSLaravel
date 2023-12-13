@@ -18,7 +18,7 @@ final class BookingNotConfirmed extends AbstractStatusEvent
     {
         return new StatusUpdated(
             $this->booking->id()->value(),
-            $this->booking->status(),
+            $this->booking->status()->value(),
             $this->reason,
         );
     }

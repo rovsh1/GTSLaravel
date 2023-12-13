@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Module\Booking\Moderation\Application\UseCase;
 
 use Module\Booking\Moderation\Application\Dto\AvailableActionsDto;
+use Module\Booking\Moderation\Application\Factory\StatusSettingsDtoFactory;
 use Module\Booking\Moderation\Application\Service\EditRules;
-use Module\Booking\Shared\Application\Factory\BookingStatusDtoFactory;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Sdk\Booking\Dto\StatusDto;
@@ -19,7 +19,7 @@ class GetAvailableActions implements UseCaseInterface
     public function __construct(
         private readonly EditRules $editRules,
         private readonly BookingRepositoryInterface $repository,
-        private readonly BookingStatusDtoFactory $statusDtoFactory,
+        private readonly StatusSettingsDtoFactory $statusSettingsDtoFactory,
     ) {}
 
     public function execute(int $bookingId): AvailableActionsDto
@@ -45,7 +45,7 @@ class GetAvailableActions implements UseCaseInterface
     private function buildAvailableStatuses(): array
     {
         return array_map(
-            fn(StatusEnum $s) => $this->statusDtoFactory->get($s),
+            fn(StatusEnum $s) => $this->statusSettingsDtoFactory->get($s),
             $this->editRules->getAvailableStatusTransitions()
         );
     }

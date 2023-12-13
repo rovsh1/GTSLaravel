@@ -7,6 +7,7 @@ use Module\Booking\Shared\Infrastructure\Models\Booking as BookingModel;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\BookingPriceItem;
 use Sdk\Booking\ValueObject\BookingPrices;
+use Sdk\Booking\ValueObject\BookingStatus;
 use Sdk\Booking\ValueObject\CancelConditions;
 use Sdk\Booking\ValueObject\Context;
 use Sdk\Booking\ValueObject\CreatorId;
@@ -21,7 +22,10 @@ class BookingMapper
             id: new BookingId($booking->id),
             orderId: new OrderId($booking->order_id),
             serviceType: $booking->service_type,
-            status: $booking->status,
+            status: BookingStatus::deserialize([
+                'value' => $booking->status->value,
+                'reason' => $booking->status_reason
+            ]),
             prices: $this->buildBookingPrices($booking),
             cancelConditions: $booking->cancel_conditions !== null
                 ? CancelConditions::deserialize($booking->cancel_conditions)

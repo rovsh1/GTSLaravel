@@ -9,6 +9,7 @@ export type BookingStatusResponse = {
   id: StatusID
   name: string
   color: string
+  reason: string | null
 }
 
 export type CurrencyDto = {

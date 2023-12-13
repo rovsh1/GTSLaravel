@@ -7,7 +7,6 @@ namespace Module\Booking\Moderation\Application\Factory;
 use Module\Booking\Moderation\Application\Dto\Details\CancelConditionsDto;
 use Module\Booking\Moderation\Application\Dto\ServiceBooking\BookingDto;
 use Module\Booking\Moderation\Application\Dto\ServiceBooking\ServiceTypeDto;
-use Module\Booking\Shared\Application\Factory\BookingStatusDtoFactory;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
 use Sdk\Shared\Contracts\Service\TranslatorInterface;
@@ -28,7 +27,7 @@ class BookingDtoFactory
 
         return new BookingDto(
             id: $booking->id()->value(),
-            status: $this->statusDtoFactory->get($booking->status()),
+            status: $this->statusDtoFactory->build($booking->status()),
             orderId: $booking->orderId()->value(),
             createdAt: $booking->timestamps()->createdAt(),
             creatorId: $booking->context()->creatorId()->value(),
