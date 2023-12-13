@@ -37,7 +37,7 @@ class Bind implements UseCaseInterface
     {
         $expectedGuestCount = $carBid->guestIds()->count() + 1;
         //@todo перенести валидацию в сервис
-        $allPassengers = $carBid->details()->babyCount() + $carBid->details()->passengersCount();
+        $allPassengers = $carBid->details()->carsCount() * ($carBid->details()->babyCount() + $carBid->details()->passengersCount());
         if ($expectedGuestCount > $allPassengers) {
             throw new TooManyCarBidGuestsException();
         }

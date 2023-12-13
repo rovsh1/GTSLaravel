@@ -46,31 +46,31 @@ class AddRequest extends FormRequest
 
     public function getAge(): ?int
     {
-        return $this->integer('age', null);
+        return $this->post('age');
     }
 
     public function hotelBookingId(): ?int
     {
-        return $this->integer('hotelBookingId', null);
+        return $this->post('hotelBookingId');
     }
 
     public function hotelBookingRoomId(): ?int
     {
-        return $this->integer('hotelBookingRoomId', null);
+        return $this->post('hotelBookingRoomId');
     }
 
     public function airportBookingId(): ?int
     {
-        return $this->integer('airportBookingId', null);
+        return $this->post('airportBookingId');
     }
 
     public function carBidBookingId(): ?int
     {
-        return $this->integer('carBidBookingId', null);
+        return $this->post('carBidBookingId');
     }
 
     public function carBidId(): ?int
     {
-        return $this->integer('carBidId', null);
+        return $this->post('carBidId');
     }
 }
