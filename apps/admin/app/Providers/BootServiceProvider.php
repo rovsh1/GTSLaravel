@@ -9,9 +9,6 @@ use Sdk\Shared\Enum\SourceEnum;
 
 class BootServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
     public function register(): void
     {
         $this->app->register(AclServiceProvider::class);
@@ -21,11 +18,9 @@ class BootServiceProvider extends ServiceProvider
         $this->app->register(FormatServiceProvider::class);
         $this->app->register(ViewServiceProvider::class);
         $this->app->register(JournalLoggerServiceProvider::class);
+        $this->app->register(HorizonServiceProvider::class);
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
         AppContext::setSource(SourceEnum::ADMIN);
