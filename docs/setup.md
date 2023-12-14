@@ -106,14 +106,14 @@ They can be found in `database/migrations/install/2023_03_12_000003_fill_default
     ```
     # Conf Example /etc/supervisor/conf.d/gts.conf
    
-    [program:gts-integrationEvents]
+    [program:gts-horizon]
     process_name=%(program_name)s_%(process_num)02d
-    command=/usr/bin/php8.1 -dxdebug.remote_autostart=1 /var/www/sites/gotostans.com/artisan queue:work --queue=integrationEvent
+    command=/usr/bin/php8.1 -dxdebug.remote_autostart=1 /var/www/sites/gotostans.com/artisan horizon
     user=www-data
     autostart=true
     autorestart=true
     redirect_stderr=true
-    stdout_logfile=/var/www/sites/gotostans.com/storage/logs/laravel.log
+    stdout_logfile=/var/www/sites/gotostans.com/storage/logs/horizon.log
     ```
 
 2. restart service

@@ -9,17 +9,10 @@ class MailConnector implements ConnectorInterface
 {
     public function __construct(
         private readonly QueueManagerInterface $mailManager
-    ) {
-    }
+    ) {}
 
     public function connect(array $config)
     {
-        return new MailQueue(
-            $this->mailManager,
-            //$config['table'],
-            $config['queue'],
-            $config['retry_after'] ?? 60,
-            $config['after_commit'] ?? null
-        );
+        return new MailQueue($this->mailManager);
     }
 }

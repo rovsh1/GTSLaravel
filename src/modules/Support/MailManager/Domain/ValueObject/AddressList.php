@@ -75,7 +75,7 @@ final class AddressList implements \Iterator, SerializableInterface
         return $this->toArray();
     }
 
-    public static function deserialize(array $payload): AddressList
+    public static function deserialize(array $payload): static
     {
         return new AddressList($payload);
     }

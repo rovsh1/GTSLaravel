@@ -130,7 +130,7 @@ final class Mail implements SerializableInterface
         ];
     }
 
-    public static function deserialize(array $payload): Mail
+    public static function deserialize(array $payload): static
     {
         return new Mail(
             new MailId($payload['id']),

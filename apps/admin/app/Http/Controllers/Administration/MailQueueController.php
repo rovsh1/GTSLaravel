@@ -65,15 +65,11 @@ class MailQueueController extends Controller
             ])
             ->text('payload', [
                 'text' => 'Данные',
-                'renderer' => fn($r, $t) => '<div class="icon" title="' . htmlspecialchars(
-                        json_encode($t, JSON_PRETTY_PRINT)
-                    ) . '">description</div>'
+                'renderer' => fn($r) => self::printJson('description', $r->payload)
             ])
             ->text('context', [
                 'text' => 'Контекст',
-                'renderer' => fn($r, $t) => '<div class="icon" title="' . htmlspecialchars(
-                        json_encode($t, JSON_PRETTY_PRINT)
-                    ) . '">description</div>'
+                'renderer' => fn($r) => self::printJson('info', $r->context)
             ])
             ->date('created_at', ['text' => 'Создан', 'format' => 'datetime', 'order' => true])
             ->actions([
@@ -81,5 +77,14 @@ class MailQueueController extends Controller
                 'actions' => []
             ])
             ->orderBy('created_at', 'desc');
+    }
+
+    private static function printJson(string $icon, array|null $data): string
+    {
+        $str = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+
+        return '<div class="btn-data-content" data-content="' . htmlspecialchars($str) . '">'
+            . '<i class="icon">' . $icon . '</i>'
+            . '</div>';
     }
 }

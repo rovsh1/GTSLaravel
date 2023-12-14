@@ -9,12 +9,6 @@ use Module\Support\MailManager\Domain\Service\MailerInterface;
 
 class Mailer implements MailerInterface
 {
-    public function __construct(
-        //private readonly MailManager $mailer
-    )
-    {
-    }
-
     public function send(Mail $message): void
     {
         $mailerMessage = new Mailable();
@@ -23,6 +17,5 @@ class Mailer implements MailerInterface
         $mailerMessage->html($message->body()->value());
 
         $sentMessage = LaravelMail::send($mailerMessage);
-//        $this->logger->log($mail);
     }
 }
