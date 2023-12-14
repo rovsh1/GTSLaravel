@@ -30,7 +30,7 @@ abstract class AbstractEditor
         }
         if ($valueType === BookingPeriod::class && $value !== null) {
             $dateFrom = new DateTime($value['dateFrom']);
-            $dateTo = new DateTime($value['dateFrom']);
+            $dateTo = new DateTime($value['dateTo']);
             $preparedValue = new BookingPeriod($dateFrom, $dateTo);
         }
         $details->$setterMethod($preparedValue);
