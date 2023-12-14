@@ -2,8 +2,8 @@
 
 namespace Sdk\Shared\Contracts\Adapter;
 
-use Module\Support\FileStorage\Application\Dto\FileInfoDto;
 use Sdk\Shared\Dto\FileDto;
+use Sdk\Shared\Dto\FileInfoDto;
 
 interface FileStorageAdapterInterface
 {

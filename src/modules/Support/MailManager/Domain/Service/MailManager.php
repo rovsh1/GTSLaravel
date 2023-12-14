@@ -2,46 +2,24 @@
 
 namespace Module\Support\MailManager\Domain\Service;
 
+use Illuminate\Support\Facades\Log;
 use Module\Support\MailManager\Domain\Entity\Mail;
 use Module\Support\MailManager\Domain\Storage\QueueStorageInterface;
 use Module\Support\MailManager\Domain\ValueObject\MailId;
 use Throwable;
 
-class QueueManager implements QueueManagerInterface
+class MailManager implements MailManagerInterface
 {
     public function __construct(
         private readonly MailerInterface $mailer,
         private readonly QueueStorageInterface $queueStorage,
-    ) {
-    }
+    ) {}
 
-    public function size(): int
+    public function sendSync(Mail $mailMessage): void
     {
-        return $this->queueStorage->waitingCount();
-    }
-
-    public function pop(): ?Mail
-    {
-        return $this->queueStorage->findWaiting();
-    }
-
-    public function sendSync(Mail $mailMessage, array $context = null): void
-    {
-        $this->queueStorage->push($mailMessage, 0, $context);
+        $this->queueStorage->push($mailMessage, 0);
 
         $this->sendWaitingMessage($mailMessage);
-    }
-
-    public function push(Mail $mailMessage, int $priority = 0, array $context = null): void
-    {
-        $this->queueStorage->push($mailMessage, $priority, $context);
-    }
-
-    public function resendMessage(MailId $uuid): void
-    {
-        $message = $this->queueStorage->find($uuid);
-
-        $this->sendWaitingMessage($message);
     }
 
     public function sendWaitingMessages(): void
@@ -61,21 +39,17 @@ class QueueManager implements QueueManagerInterface
         } catch (Throwable $exception) {
             $mailMessage->setFailedStatus($exception);
             $this->queueStorage->store($mailMessage);
-
-            return;
+            throw $exception;
         }
 
         $mailMessage->setSentStatus();
         $this->queueStorage->store($mailMessage);
     }
 
-    public function retry(MailId $uuid): void
+    public function resendMessage(MailId $uuid): void
     {
-        $this->queueStorage->retry($uuid);
-    }
+        $message = $this->queueStorage->find($uuid);
 
-    public function retryAll(): void
-    {
-        $this->queueStorage->retryAll();
+        $this->sendWaitingMessage($message);
     }
 }

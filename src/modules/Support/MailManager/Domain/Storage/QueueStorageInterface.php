@@ -9,7 +9,7 @@ interface QueueStorageInterface
 {
     public function find(MailId $uuid): ?Mail;
 
-    public function push(Mail $mail, int $priority = 0, array $context = null): void;
+    public function push(Mail $mail, int $priority = 0): void;
 
     public function retry(MailId $uuid): void;
 

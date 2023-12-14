@@ -19,7 +19,7 @@ final class Mail implements SerializableInterface
 
     private AddressList $bcc;
 
-    private Attachments $attachments;
+    private readonly Attachments $attachments;
 
     private array $tags = [];
 
@@ -28,15 +28,16 @@ final class Mail implements SerializableInterface
     public function __construct(
         private readonly MailId $id,
         private QueueMailStatusEnum $status,
-        private AddressList $to,
+        private readonly AddressList $to,
         private string $subject,
-        private MailBody $body,
+        private readonly MailBody $body,
+        Attachments $attachments = null,
     ) {
         $this->from = new AddressList();
         $this->replyTo = new AddressList();
         $this->cc = new AddressList();
         $this->bcc = new AddressList();
-        $this->attachments = new Attachments();
+        $this->attachments = $attachments ?? new Attachments([]);
     }
 
     public function id(): MailId
@@ -126,7 +127,7 @@ final class Mail implements SerializableInterface
             'replyTo' => $this->replyTo->serialize(),
             'cc' => $this->cc->serialize(),
             'bcc' => $this->bcc->serialize(),
-            //'attachments' => $this->attachments,
+            'attachments' => $this->attachments->serialize(),
         ];
     }
 
@@ -138,6 +139,7 @@ final class Mail implements SerializableInterface
             AddressList::deserialize($payload['to']),
             $payload['subject'],
             new MailBody($payload['body']),
+            Attachments::deserialize($payload['attachments'])
 //            AddressList::deserialize($payload['from']),
 //            AddressList::deserialize($payload['replyTo']),
 //            AddressList::deserialize($payload['cc']),

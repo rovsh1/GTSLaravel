@@ -43,4 +43,9 @@ class Queue extends Base implements QueueContract
 
         return new Job($this->messageSender, Message::deserialize($payload));
     }
+
+    public function readyNow($queue = null)
+    {
+        return (int)$this->connection->lLen(self::QUEUE);
+    }
 }

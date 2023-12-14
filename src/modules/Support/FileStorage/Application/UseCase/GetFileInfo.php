@@ -2,11 +2,11 @@
 
 namespace Module\Support\FileStorage\Application\UseCase;
 
-use Module\Support\FileStorage\Application\Dto\FileInfoDto;
 use Module\Support\FileStorage\Application\Service\FileReader;
 use Module\Support\FileStorage\Domain\Service\PathGeneratorInterface;
 use Module\Support\FileStorage\Domain\Service\UrlGeneratorInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
+use Sdk\Shared\Dto\FileInfoDto;
 
 class GetFileInfo implements UseCaseInterface
 {

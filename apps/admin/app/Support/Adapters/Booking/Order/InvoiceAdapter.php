@@ -10,7 +10,7 @@ use Module\Client\Invoicing\Application\UseCase\CreateInvoice;
 use Module\Client\Invoicing\Application\UseCase\GetDocumentFileInfo;
 use Module\Client\Invoicing\Application\UseCase\GetOrderInvoice;
 use Module\Client\Invoicing\Application\UseCase\SendInvoiceToClient;
-use Module\Support\FileStorage\Application\Dto\FileInfoDto;
+use Sdk\Shared\Dto\FileInfoDto;
 
 class InvoiceAdapter
 {

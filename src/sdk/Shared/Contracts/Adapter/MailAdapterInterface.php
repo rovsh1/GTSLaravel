@@ -2,11 +2,11 @@
 
 namespace Sdk\Shared\Contracts\Adapter;
 
-use Sdk\Shared\Dto\Mail\SendMessageRequestDto;
+use Sdk\Shared\Dto\Mail\MailMessageDto;
 
 interface MailAdapterInterface
 {
-    public function send(SendMessageRequestDto $requestDto): void;
+    public function send(MailMessageDto $messageDto): void;
 
-    public function sendTo(string $to, string $subject, string $body): void;
+    public function sendTo(string $to, string $subject, string $body, array $attachments = []): void;
 }

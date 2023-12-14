@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Support\FileStorage\Application\Dto;
+namespace Sdk\Shared\Dto;
 
 class FileInfoDto
 {

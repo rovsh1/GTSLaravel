@@ -4,13 +4,13 @@ namespace Module\Support\MailManager\Infrastructure\Queue;
 
 use Illuminate\Contracts\Queue\Job as JobContract;
 use Module\Support\MailManager\Domain\Entity\Mail;
-use Module\Support\MailManager\Domain\Service\QueueManagerInterface;
+use Module\Support\MailManager\Domain\Service\MailManagerInterface;
 use Module\Support\MailManager\Domain\ValueObject\QueueMailStatusEnum;
 
 class MailJob implements JobContract
 {
     public function __construct(
-        private readonly QueueManagerInterface $mailManager,
+        private readonly MailManagerInterface $mailManager,
         private readonly Mail $queueMessage
     ) {
     }

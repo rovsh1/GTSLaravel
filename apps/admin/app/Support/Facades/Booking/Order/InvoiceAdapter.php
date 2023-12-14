@@ -6,7 +6,7 @@ namespace App\Admin\Support\Facades\Booking\Order;
 
 use Illuminate\Support\Facades\Facade;
 use Module\Client\Invoicing\Application\Dto\InvoiceDto;
-use Module\Support\FileStorage\Application\Dto\FileInfoDto;
+use Sdk\Shared\Dto\FileInfoDto;
 
 /**
  * @method static InvoiceDto create(int $orderId)

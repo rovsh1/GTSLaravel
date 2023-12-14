@@ -25,7 +25,7 @@ class QueueStorage implements QueueStorageInterface
         return $this->entityFromModel(Model::find($uuid));
     }
 
-    public function push(Mail $mail, int $priority = 0, array $context = null): void
+    public function push(Mail $mail, int $priority = 0): void
     {
         Model::create([
             'uuid' => $mail->id()->value(),

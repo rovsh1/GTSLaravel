@@ -3,7 +3,6 @@
 namespace Module\Support\FileStorage\Infrastructure\Repository;
 
 use Exception;
-use Module\Support\FileStorage\Application\Dto\FileInfoDto;
 use Module\Support\FileStorage\Domain\Entity\File;
 use Module\Support\FileStorage\Domain\Repository\StorageRepositoryInterface;
 use Module\Support\FileStorage\Domain\Service\PathGeneratorInterface;

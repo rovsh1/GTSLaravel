@@ -14,6 +14,7 @@ use App\Shared\Support\Facades\MailAdapter;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Module\Support\MailManager\Infrastructure\Model\QueueMessage;
+use Sdk\Shared\Dto\FileDto;
 
 class MailQueueController extends Controller
 {
@@ -49,7 +50,14 @@ class MailQueueController extends Controller
         MailAdapter::sendTo(
             $request->query('to', 'test@gts.com'),
             'Test message',
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc egestas vulputate turpis in ornare. Fusce quam urna, vulputate ac condimentum sed, facilisis quis enim. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vel pulvinar magna. Quisque euismod, lacus sit amet pulvinar fringilla, arcu magna faucibus ligula, ac ultrices nunc odio in orci. Cras dapibus venenatis pellentesque. Vestibulum fermentum sapien massa, a convallis mauris fermentum vel. Sed et rutrum lacus. Quisque velit metus, pharetra vitae massa sit amet, euismod posuere lacus. Praesent feugiat porttitor lorem quis vehicula. Nam ut urna enim. Nullam eu sem odio. Quisque sapien odio, cursus at fringilla et, tristique at leo.'
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc egestas vulputate turpis in ornare. Fusce quam urna, vulputate ac condimentum sed, facilisis quis enim. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vel pulvinar magna. Quisque euismod, lacus sit amet pulvinar fringilla, arcu magna faucibus ligula, ac ultrices nunc odio in orci. Cras dapibus venenatis pellentesque. Vestibulum fermentum sapien massa, a convallis mauris fermentum vel. Sed et rutrum lacus. Quisque velit metus, pharetra vitae massa sit amet, euismod posuere lacus. Praesent feugiat porttitor lorem quis vehicula. Nam ut urna enim. Nullam eu sem odio. Quisque sapien odio, cursus at fringilla et, tristique at leo.',
+            [
+//                new FileDto(
+//                    'cac4c13561456e339e71e532fd864c5c',
+//                    'Screenshot%202023-08-02%20165250.png',
+//                    'http://www.gts.local/file/ca/c4/cac4c13561456e339e71e532fd864c5c/Screenshot%202023-08-02%20165250.png'
+//                )
+            ]
         );
 
         return response()->json(['status' => 'ok']);

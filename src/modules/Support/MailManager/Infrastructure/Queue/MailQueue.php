@@ -4,18 +4,20 @@ namespace Module\Support\MailManager\Infrastructure\Queue;
 
 use Illuminate\Contracts\Queue\Queue as QueueContract;
 use Illuminate\Queue\Queue;
-use Module\Support\MailManager\Domain\Service\QueueManagerInterface;
+use Module\Support\MailManager\Domain\Service\MailManagerInterface;
+use Module\Support\MailManager\Domain\Storage\QueueStorageInterface;
 
 class MailQueue extends Queue implements QueueContract
 {
     public function __construct(
-        private readonly QueueManagerInterface $queueManager
+        private readonly MailManagerInterface $queueManager,
+        private readonly QueueStorageInterface $queueStorage,
     ) {
     }
 
     public function size($queue = null)
     {
-        return $this->queueManager->size();
+        return $this->queueStorage->waitingCount();
     }
 
     public function push($job, $data = '', $queue = null)
@@ -32,11 +34,16 @@ class MailQueue extends Queue implements QueueContract
 
     public function pop($queue = null)
     {
-        $queueMessage = $this->queueManager->pop();
+        $queueMessage = $this->queueStorage->findWaiting();
         if (!$queueMessage) {
             return null;
         }
 
         return new MailJob($this->queueManager, $queueMessage);
+    }
+
+    public function readyNow($queue = null)
+    {
+        return $this->queueStorage->waitingCount();
     }
 }

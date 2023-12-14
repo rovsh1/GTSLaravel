@@ -3,26 +3,25 @@
 namespace Module\Support\MailManager\Application\UseCase;
 
 use Module\Support\MailManager\Application\Factory\MailMessageFactory;
-use Module\Support\MailManager\Domain\Service\QueueManagerInterface;
+use Module\Support\MailManager\Domain\Storage\QueueStorageInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
-use Sdk\Shared\Dto\Mail\SendMessageRequestDto;
+use Sdk\Shared\Dto\Mail\MailMessageDto;
 
 class SendMessage implements UseCaseInterface
 {
     public function __construct(
-        private readonly QueueManagerInterface $mailManager,
-    ) {
-    }
+        private readonly QueueStorageInterface $queueStorage,
+    ) {}
 
-    public function execute(SendMessageRequestDto $requestDto): string
+    public function execute(MailMessageDto $messageDto): string
     {
-        $message = MailMessageFactory::fromDto($requestDto->message);
+        $message = MailMessageFactory::fromDto($messageDto);
 
-        if ($requestDto->async) {
-            $this->mailManager->push($message, $priority = 0, $requestDto->context);
-        } else {
-            $this->mailManager->sendSync($message, $requestDto->context);
-        }
+//        if ($requestDto->async) {
+        $this->queueStorage->push($message, $priority = 0);
+//        } else {
+//            $this->mailManager->sendSync($message);
+//        }
 
         return $message->id()->value();
     }
