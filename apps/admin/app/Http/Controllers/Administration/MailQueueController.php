@@ -10,6 +10,9 @@ use App\Admin\Support\Facades\Layout;
 use App\Admin\Support\Facades\Prototypes;
 use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Layout as LayoutContract;
+use App\Shared\Support\Facades\MailAdapter;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Module\Support\MailManager\Infrastructure\Model\QueueMessage;
 
 class MailQueueController extends Controller
@@ -26,12 +29,10 @@ class MailQueueController extends Controller
         Breadcrumb::prototype($this->prototype);
 
         $grid = $this->gridFactory();
-//throw new \Exception('asd');
-//        MailAdapter::sendTo('s16121986@yandex.ru', 'dd', 'eerr');
         $data = QueueMessage::query()
             ->orderBy('priority', 'desc')
             ->orderBy('created_at', 'desc');
-        //$query = $this->repository->queryWithCriteria($grid->getSearchCriteria());
+
         $grid->data($data);
 
         return Layout::title($this->prototype->title('index'))
@@ -41,6 +42,17 @@ class MailQueueController extends Controller
                 'grid' => $grid,
                 'paginator' => $grid->getPaginator()
             ]);
+    }
+
+    public function sendTest(Request $request): JsonResponse
+    {
+        MailAdapter::sendTo(
+            $request->query('to', 'test@gts.com'),
+            'Test message',
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc egestas vulputate turpis in ornare. Fusce quam urna, vulputate ac condimentum sed, facilisis quis enim. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vel pulvinar magna. Quisque euismod, lacus sit amet pulvinar fringilla, arcu magna faucibus ligula, ac ultrices nunc odio in orci. Cras dapibus venenatis pellentesque. Vestibulum fermentum sapien massa, a convallis mauris fermentum vel. Sed et rutrum lacus. Quisque velit metus, pharetra vitae massa sit amet, euismod posuere lacus. Praesent feugiat porttitor lorem quis vehicula. Nam ut urna enim. Nullam eu sem odio. Quisque sapien odio, cursus at fringilla et, tristique at leo.'
+        );
+
+        return response()->json(['status' => 'ok']);
     }
 
     protected function gridFactory(): GridContract
