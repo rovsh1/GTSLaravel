@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\Service\DetailsEditor\Editor;
 
-use Carbon\CarbonPeriod;
 use DateTime;
 use DateTimeInterface;
 use Illuminate\Support\Str;
@@ -30,7 +29,9 @@ abstract class AbstractEditor
             }
         }
         if ($valueType === BookingPeriod::class && $value !== null) {
-            $preparedValue = BookingPeriod::fromCarbon(new CarbonPeriod($value['dateFrom'], $value['dateTo']));
+            $dateFrom = new DateTime($value['dateFrom']);
+            $dateTo = new DateTime($value['dateFrom']);
+            $preparedValue = new BookingPeriod($dateFrom, $dateTo);
         }
         $details->$setterMethod($preparedValue);
     }
