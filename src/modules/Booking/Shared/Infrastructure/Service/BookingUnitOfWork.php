@@ -23,12 +23,13 @@ use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 
 class BookingUnitOfWork implements BookingUnitOfWorkInterface
 {
+    private static IdentityMap $identityMap;
+
     private bool $commitState = false;
 
     private array $commitCallbacks = [];
 
     public function __construct(
-        private readonly IdentityMap $identityMap,
         private readonly BookingRepositoryInterface $bookingRepository,
         private readonly BookingCommiter $bookingCommiter,
         private readonly OrderCommiter $orderCommiter,
@@ -36,7 +37,9 @@ class BookingUnitOfWork implements BookingUnitOfWorkInterface
         private readonly AccommodationRepositoryInterface $accommodationRepository,
         private readonly CarBidDbContextInterface $carBidDbContext,
         private readonly DomainEventDispatcherInterface $domainEventDispatcher,
-    ) {}
+    ) {
+        self::$identityMap = new IdentityMap();
+    }
 
     public function findOrFail(BookingId $bookingId): Booking
     {
@@ -56,7 +59,7 @@ class BookingUnitOfWork implements BookingUnitOfWorkInterface
 
     public function persist(Booking|BookingPartInterface $entity): void
     {
-        $this->identityMap->add($entity);
+        self::$identityMap->add($entity);
     }
 
     public function touch(BookingId $bookingId): void
@@ -88,14 +91,14 @@ class BookingUnitOfWork implements BookingUnitOfWorkInterface
 
         DB::commit();
 
-        $this->identityMap->reset();
+        self::$identityMap->reset();
         $this->commitState = false;
     }
 
     private function commitLoop(): void
     {
-        while ($entity = $this->identityMap->shift()) {
-            if (!$this->identityMap->isChanged($entity)) {
+        while ($entity = self::$identityMap->shift()) {
+            if (!self::$identityMap->isChanged($entity)) {
                 continue;
             }
 
@@ -121,7 +124,7 @@ class BookingUnitOfWork implements BookingUnitOfWorkInterface
             $callback();
         }
 
-        if (!$this->identityMap->isEmpty()) {
+        if (!self::$identityMap->isEmpty()) {
             $this->commitLoop();
         }
     }

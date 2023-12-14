@@ -7,9 +7,9 @@ use Sdk\Booking\Contracts\Entity\BookingPartInterface;
 
 class IdentityMap
 {
-    private static array $identityMap = [];
+    private array $identityMap = [];
 
-    private static array $originalData = [];
+    private array $originalData = [];
 
     public function add(Booking|BookingPartInterface $entity): void
     {
@@ -17,31 +17,31 @@ class IdentityMap
         if (isset($this->identityMap[$id])) {
             return;
         }
-        self::$identityMap[$id] = $entity;
-        self::$originalData[$id] = $entity->serialize();
+        $this->identityMap[$id] = $entity;
+        $this->originalData[$id] = $entity->serialize();
     }
 
     public function shift(): Booking|BookingPartInterface|null
     {
-        return array_shift(self::$identityMap);
+        return array_shift($this->identityMap);
     }
 
     public function isEmpty(): bool
     {
-        return empty(self::$identityMap);
+        return empty($this->identityMap);
     }
 
     public function reset(): void
     {
-        self::$identityMap = [];
-        self::$originalData = [];
+        $this->identityMap = [];
+        $this->originalData = [];
     }
 
     public function isChanged(Booking|BookingPartInterface $entity): bool
     {
         $id = $this->entityId($entity);
 
-        return json_encode(self::$originalData[$id]) !== json_encode($entity->serialize());
+        return json_encode($this->originalData[$id]) !== json_encode($entity->serialize());
     }
 
     private function entityId(Booking|BookingPartInterface $entity): string
