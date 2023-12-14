@@ -8,13 +8,13 @@ use Illuminate\Support\Facades\DB;
 
 trait HasTranslations
 {
-    protected $translationLocale;
+    protected string $translationLocale;
 
-    protected $translationData;
+    protected array $translationData;
 
-    protected $translationAttributes;
+    protected array $translationAttributes = [];
 
-    public static function bootHasTranslations()
+    public static function bootHasTranslations(): void
     {
         //static::addGlobalTranslationScope();
         static::saved(function ($model) { $model->saveTranslations(); });
@@ -75,7 +75,7 @@ trait HasTranslations
 
     public function getTranslationData(): array
     {
-        if (null !== $this->translationData) {
+        if (isset($this->translationData)) {
             return $this->translationData;
         }
 
@@ -146,7 +146,7 @@ trait HasTranslations
         return $this;
     }
 
-    public function removeTranslations()
+    public function removeTranslations(): void
     {
         $q = DB::table($this->getTranslationTable())
             ->where('translatable_id', $this->id);
