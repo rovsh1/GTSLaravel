@@ -57,7 +57,7 @@ const localValue = computed<Date | undefined>({
 })
 
 const localTime = computed<string | undefined>(() =>
-  (props.value ? DateTime.fromISO(props.value, { zone: 'utc' }).toFormat('HH:mm') : '00:00'))
+  (props.value ? DateTime.fromISO(props.value).toFormat('HH:mm') : '00:00'))
 
 const displayValue = computed(() => {
   if (!localValue.value) {

@@ -9,7 +9,7 @@ export const parseAPIDate = (date: DateResponse): DateTime => DateTime.fromISO(d
 export const parseAPIDateToJSDate = (date: DateResponse): Date => DateTime.fromISO(date).toJSDate()
 
 export const parseAPIDateAndSetDefaultTime = (date: DateResponse): DateTime =>
-  DateTime.fromISO(date, { zone: 'utc' }).set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
+  DateTime.fromISO(date).set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
 
 export const formatDateToAPIDate = (date: Date): APIDate => DateTime
   .fromJSDate(date).toFormat('yyyy-LL-dd')

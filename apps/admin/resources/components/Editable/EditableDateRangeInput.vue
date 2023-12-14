@@ -62,7 +62,7 @@ const localValue = computed<[Date, Date] | undefined>({
   },
 })
 
-const localTime = computed<string | undefined>(() => (props.value ? DateTime.fromISO(props.value.dateFrom, { zone: 'utc' }).toFormat('HH:mm') : '00:00'))
+const localTime = computed<string | undefined>(() => (props.value ? DateTime.fromISO(props.value.dateFrom).toFormat('HH:mm') : '00:00'))
 
 const displayValue = computed(() => {
   if (!localValue.value) {
@@ -169,5 +169,4 @@ const onClickOutsideHandler = () => {
 .editable-input {
   width: 5rem;
 }
-
 </style>

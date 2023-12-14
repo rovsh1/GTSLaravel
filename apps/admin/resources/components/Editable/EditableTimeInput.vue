@@ -48,7 +48,7 @@ const localValue = computed<string>({
     if (isChanged.value) {
       return editedValue.value || ''
     }
-    return props.value ? DateTime.fromISO(props.value, { zone: 'utc' }).toFormat('HH:mm') : ''
+    return props.value ? DateTime.fromISO(props.value).toFormat('HH:mm') : ''
   },
   set: (value: string) => {
     editedValue.value = value
