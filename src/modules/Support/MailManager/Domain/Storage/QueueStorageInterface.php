@@ -1,11 +1,11 @@
 <?php
 
-namespace Module\Support\MailManager\Domain\Repository;
+namespace Module\Support\MailManager\Domain\Storage;
 
 use Module\Support\MailManager\Domain\Entity\Mail;
 use Module\Support\MailManager\Domain\ValueObject\MailId;
 
-interface QueueRepositoryInterface
+interface QueueStorageInterface
 {
     public function find(MailId $uuid): ?Mail;
 

@@ -1,16 +1,16 @@
 <?php
 
-namespace Module\Support\MailManager\Infrastructure\Repository;
+namespace Module\Support\MailManager\Infrastructure\Storage;
 
 use Illuminate\Support\Facades\DB;
 use Module\Support\MailManager\Domain\Entity\Mail;
-use Module\Support\MailManager\Domain\Repository\QueueRepositoryInterface;
+use Module\Support\MailManager\Domain\Storage\QueueStorageInterface;
 use Module\Support\MailManager\Domain\ValueObject\MailId;
 use Module\Support\MailManager\Domain\ValueObject\QueueMailStatusEnum;
 use Module\Support\MailManager\Infrastructure\Model\QueueMessage as Model;
 use Sdk\Shared\Contracts\Service\ApplicationContextInterface;
 
-class QueueRepository implements QueueRepositoryInterface
+class QueueStorage implements QueueStorageInterface
 {
     public const EXPIRED_DATES = '-14 days';
     public const MAX_ATTEMPTS  = 3;
