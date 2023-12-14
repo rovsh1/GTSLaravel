@@ -32,6 +32,13 @@ fi
 # Start the cron service.
 service cron start
 
+# Start the supervisor service.
+service supervisor start
+supervisorctl reread
+supervisorctl update
+supervisorctl start all
+
+
 # Toggle xdebug
 if [ "true" == "$XDEBUG" ] && [ ! -f /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini ]; then
   # Remove PHP_IDE_CONFIG from cron file so we do not duplicate it when adding below
