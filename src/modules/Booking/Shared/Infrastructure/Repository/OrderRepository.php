@@ -13,18 +13,18 @@ use Sdk\Shared\Support\RepositoryInstances;
 
 class OrderRepository implements OrderRepositoryInterface
 {
-    private RepositoryInstances $instances;
+    private static RepositoryInstances $instances;
 
     public function __construct(
         private readonly OrderDbContext $orderDbContext,
     ) {
-        $this->instances = new RepositoryInstances();
+        self::$instances = new RepositoryInstances();
     }
 
     public function find(OrderId $id): ?Order
     {
-        if ($this->instances->has($id)) {
-            return $this->instances->get($id);
+        if (self::$instances->has($id)) {
+            return self::$instances->get($id);
         }
 
         $order = $this->orderDbContext->find($id);
@@ -32,7 +32,7 @@ class OrderRepository implements OrderRepositoryInterface
             return null;
         }
 
-        $this->instances->add($order->id(), $order);
+        self::$instances->add($order->id(), $order);
 
         return $order;
     }

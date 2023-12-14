@@ -15,19 +15,19 @@ use Sdk\Shared\Support\RepositoryInstances;
 
 class DetailsRepository implements DetailsRepositoryInterface
 {
-    private RepositoryInstances $instances;
+    private static RepositoryInstances $instances;
 
     public function __construct(
         private readonly DetailsBuilderFactory $detailsBuilderFactory,
         private readonly DetailsStorageFactory $detailsStorageFactory,
     ) {
-        $this->instances = new RepositoryInstances();
+        self::$instances = new RepositoryInstances();
     }
 
     public function find(BookingId $id): ?DetailsInterface
     {
-        if ($this->instances->has($id)) {
-            return $this->instances->get($id);
+        if (self::$instances->has($id)) {
+            return self::$instances->get($id);
         }
 
         $model = Model::find($id->value());
@@ -36,7 +36,7 @@ class DetailsRepository implements DetailsRepositoryInterface
         }
 
         $details = $this->build($model->details);
-        $this->instances->add($id, $details);
+        self::$instances->add($id, $details);
 
         return $details;
     }
@@ -48,7 +48,7 @@ class DetailsRepository implements DetailsRepositoryInterface
 
     public function get(): array
     {
-        return $this->instances->all();
+        return self::$instances->all();
     }
 
     public function store(DetailsInterface $details): void

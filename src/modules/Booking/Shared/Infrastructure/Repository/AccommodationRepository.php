@@ -19,19 +19,19 @@ use Sdk\Shared\Support\RepositoryInstances;
 
 class AccommodationRepository implements AccommodationRepositoryInterface
 {
-    private RepositoryInstances $instances;
+    private static RepositoryInstances $instances;
 
     private array $bookingMapping = [];
 
     public function __construct()
     {
-        $this->instances = new RepositoryInstances();
+        self::$instances = new RepositoryInstances();
     }
 
     public function find(AccommodationId $id): ?HotelAccommodation
     {
-        if ($this->instances->has($id)) {
-            return $this->instances->get($id);
+        if (self::$instances->has($id)) {
+            return self::$instances->get($id);
         }
 
         $model = Model::find($id);
@@ -65,7 +65,7 @@ class AccommodationRepository implements AccommodationRepositoryInterface
 
     public function get(): array
     {
-        return $this->instances->all();
+        return self::$instances->all();
     }
 
     public function create(
@@ -100,7 +100,7 @@ class AccommodationRepository implements AccommodationRepositoryInterface
 
     public function delete(AccommodationId $id): void
     {
-        $this->instances->remove($id);
+        self::$instances->remove($id);
 
         Model::whereId($id->value())->delete();
     }
@@ -139,7 +139,7 @@ class AccommodationRepository implements AccommodationRepositoryInterface
             prices: RoomPrices::deserialize($data['price'])
         );
 
-        $this->instances->add($accommodation->id(), $accommodation);
+        self::$instances->add($accommodation->id(), $accommodation);
 
         return $accommodation;
     }

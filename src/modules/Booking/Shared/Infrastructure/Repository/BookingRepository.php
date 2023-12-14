@@ -15,28 +15,28 @@ use Sdk\Shared\Support\RepositoryInstances;
 
 class BookingRepository implements BookingRepositoryInterface
 {
-    private RepositoryInstances $instances;
+    private static RepositoryInstances $instances;
 
     public function __construct(
         private readonly BookingDbContextInterface $bookingDbContext
     ) {
-        $this->instances = new RepositoryInstances();
+        self::$instances = new RepositoryInstances();
     }
 
     public function add(Booking $booking): void
     {
-        $this->instances->add($booking->id(), $booking);
+        self::$instances->add($booking->id(), $booking);
     }
 
     public function get(): array
     {
-        return $this->instances->all();
+        return self::$instances->all();
     }
 
     public function find(BookingId $id): ?Booking
     {
-        if ($this->instances->has($id)) {
-            return $this->instances->get($id);
+        if (self::$instances->has($id)) {
+            return self::$instances->get($id);
         }
 
         $booking = $this->bookingDbContext->find($id);
@@ -44,7 +44,7 @@ class BookingRepository implements BookingRepositoryInterface
             return null;
         }
 
-        $this->instances->add($booking->id(), $booking);
+        self::$instances->add($booking->id(), $booking);
 
         return $booking;
     }
