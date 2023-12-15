@@ -27,7 +27,7 @@ class ModuleServiceProvider extends ServiceProvider
         'BookingShared' => 'Booking/Shared',
         'SupplierModeration' => 'Supplier/Moderation',
         'CurrencyRate' => 'Generic/CurrencyRate',
-        'Notification' => 'Generic/Notification',
+//        'Notification' => 'Generic/Notification',
         'FileStorage' => 'Support/FileStorage',
         'MailManager' => 'Support/MailManager',
         'IntegrationEventBus' => 'Support/IntegrationEventBus',

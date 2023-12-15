@@ -35,6 +35,11 @@ class SitemapBuilder
                 $menus[] = $menu;
             }
         }
+
+        if ($this->acl->isSuperuser()) {
+            $this->addSuperAdminItems($menu);
+        }
+
         return $menus;
     }
 
@@ -70,7 +75,10 @@ class SitemapBuilder
     private function makeGroup($category, $group): Group
     {
         $menuGroup = new Group($group);
-        $prototypes = array_filter($this->prototypes->all(), fn($p) => $p->category === $category && $p->group === $group);
+        $prototypes = array_filter(
+            $this->prototypes->all(),
+            fn($p) => $p->category === $category && $p->group === $group
+        );
         $this->sortPrototypes($prototypes);
         foreach ($prototypes as $prototype) {
             $item = $this->makeItem($prototype);
@@ -78,6 +86,7 @@ class SitemapBuilder
                 $menuGroup->addItem($item);
             }
         }
+
         return $menuGroup;
     }
 
@@ -104,5 +113,17 @@ class SitemapBuilder
                 return $a->config('priority') > $b->config('priority') ? -1 : 1;
             }
         });
+    }
+
+    private function addSuperAdminItems(CategoryMenu $menu): void
+    {
+        $menuGroup = new Group('additional');
+        $menuGroup->addItem(new Item([
+            'key' => 'horizon',
+            'url' => route('horizon.index'),
+            'text' => 'Horizon dashboard',
+            'icon' => 'horizon'
+        ]));
+        $menu->addGroup($menuGroup);
     }
 }
