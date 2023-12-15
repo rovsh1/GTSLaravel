@@ -43,7 +43,6 @@ class Factory extends Facade
     public const GROUP_ADDITIONAL = 'additional';
     public const GROUP_ADDITIONAL_SERVICES = 'additional-services';
     public const GROUP_REFERENCE = 'reference';
-    public const GROUP_NOTIFICATION = 'notification';
 
     protected static $cached = false;
 
