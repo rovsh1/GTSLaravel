@@ -3,6 +3,7 @@
 namespace App\Shared;
 
 use App\Shared\Contracts\Module\ModuleAdapterInterface;
+use App\Shared\Providers\HorizonServiceProvider;
 use App\Shared\Support\Module\ModulesManager;
 use App\Shared\Support\Module\Monolith\UseCaseWrapper;
 use Sdk\Module\Contracts\Api\ApiInterface;
@@ -20,6 +21,13 @@ class Application extends \Illuminate\Foundation\Application
 
 //        $this->useStoragePath($this->basePath('storage'));
 //        $this->useDatabasePath($this->basePath('database'));
+    }
+
+    public function registerConfiguredProviders(): void
+    {
+        //Приходиться переопределять провайдер чтобы изменить путь для assets
+        $this->register(HorizonServiceProvider::class);
+        parent::registerConfiguredProviders();
     }
 
     public function usePackagePath(string $path): void
