@@ -27,7 +27,7 @@ function boolTransformator(value: any) {
   return !!value
 }
 
-const { service, cancelUrl, supplier } = requestInitialData(z.object({
+const { service, cancelUrl, supplier, titles } = requestInitialData(z.object({
   supplier: z.object({
     id: z.number(),
     name: z.string(),
@@ -46,6 +46,11 @@ const { service, cancelUrl, supplier } = requestInitialData(z.object({
     }).nullable(),
   }).nullable(),
   cancelUrl: z.string(),
+  titles: z.object({
+    ru: z.string(),
+    en: z.string().nullable(),
+    uz: z.string().nullable(),
+  }),
 }))
 
 type ServiceFormData = {

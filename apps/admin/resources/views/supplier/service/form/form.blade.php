@@ -11,6 +11,7 @@
         'cities' => $cities,
         'cancelUrl' => $cancelUrl,
         'service' => $service ?? null,
+        'titles' => $titles ?? null,
     ]) !!}
 
     @vite('resources/views/supplier/service/form/form.ts')

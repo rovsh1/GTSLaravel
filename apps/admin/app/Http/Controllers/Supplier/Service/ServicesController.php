@@ -97,7 +97,8 @@ class ServicesController extends Controller
                 'service' => $service,
                 'supplier' => SupplierResource::make($provider),
                 'airports' => Airport::collection($provider->airports()->get()),
-                'cities' => City::collection($provider->cities()->get())
+                'cities' => City::collection($provider->cities()->get()),
+                'titles' => $service->getTranslations('title'),
             ]);
     }
 
