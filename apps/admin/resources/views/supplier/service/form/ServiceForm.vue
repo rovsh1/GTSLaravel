@@ -47,9 +47,9 @@ const { service, cancelUrl, supplier, titles } = requestInitialData(z.object({
   }).nullable(),
   cancelUrl: z.string(),
   titles: z.object({
-    ru: z.string(),
-    en: z.string().nullable(),
-    uz: z.string().nullable(),
+    ru: z.string().nullable().optional(),
+    en: z.string().nullable().optional(),
+    uz: z.string().nullable().optional(),
   }).nullable(),
 }))
 
@@ -84,10 +84,10 @@ const serviceFormData = reactive<ServiceFormData>({
 })
 
 const isValidForm = computed(() => !!serviceFormData.titles.ru
-&& !!serviceFormData.titles.en
-&& !!serviceFormData.titles.uz
-&& !!serviceFormData.type
-&& !!serviceFormData.details)
+  && !!serviceFormData.titles.en
+  && !!serviceFormData.titles.uz
+  && !!serviceFormData.type
+  && !!serviceFormData.details)
 
 const setDetailsComponentByServiceType = (typeId: number | undefined) => {
   serviceFormData.type = typeId
