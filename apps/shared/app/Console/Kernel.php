@@ -6,13 +6,12 @@ use Illuminate\Console\Application as Artisan;
 use Illuminate\Console\Command;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-use Sdk\Module\Foundation\Console\Commands\MakeModule;
 use Sdk\Module\Services\NamespaceReader;
 
 class Kernel extends ConsoleKernel
 {
     protected $commands = [
-        MakeModule::class,
+        //
     ];
 
     /**
