@@ -13,7 +13,7 @@ use Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Factory\
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\Service\Dto\DetailOptionDto;
+use Module\Shared\Support\Dto\DetailOptionDto;
 use Sdk\Booking\Contracts\Entity\DetailsInterface;
 use Sdk\Booking\Entity\CarBid;
 use Sdk\Shared\Enum\CurrencyEnum;
@@ -34,13 +34,15 @@ class CarBidDataFactory
     public function build(Booking $booking, CarBid $carBid): ServiceInfoDto
     {
         $details = $this->detailsRepository->findOrFail($booking->id());
+        $service = $this->supplierAdapter->findService($details->serviceInfo()->id());
         $cars = $this->supplierAdapter->getSupplierCars($details->serviceInfo()->supplierId());
+
         $this->carsIndexedById = collect($cars)->keyBy('id');
 
         $bookingPeriod = $this->periodDataFactory->build($details);
 
         return new ServiceInfoDto(
-            title: $details->serviceInfo()->title(),
+            title: $service->title,
             bookingPeriod: $bookingPeriod,
             detailOptions: $this->buildDetails($carBid, $details),
             guests: $this->guestDataFactory->build($carBid->guestIds()),

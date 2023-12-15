@@ -8,6 +8,9 @@ return [
     'Client\\TypeEnum::PHYSICAL' => 'Физическое лицо',
     'Client\\TypeEnum::LEGAL_ENTITY' => 'Юридическое лицо',
 
+    'Client\\LanguageEnum::RU' => 'Русский',
+    'Client\\LanguageEnum::EN' => 'Английский',
+
     'Client\\StatusEnum::ACTIVE' => 'Активный',
     'Client\\StatusEnum::BLOCKED' => 'Заблокирован',
     'Client\\StatusEnum::ARCHIVE' => 'Архив',

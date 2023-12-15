@@ -9,8 +9,9 @@ use Module\Booking\Invoicing\Domain\Service\Dto\Service\PriceDto;
 use Module\Booking\Invoicing\Domain\Service\Dto\ServiceInfoDto;
 use Module\Booking\Invoicing\Domain\Service\Factory\BookingPeriodDataFactory;
 use Module\Booking\Invoicing\Domain\Service\Factory\GuestDataFactory;
+use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
-use Module\Booking\Shared\Domain\Booking\Service\Dto\DetailOptionDto;
+use Module\Shared\Support\Dto\DetailOptionDto;
 use Sdk\Booking\Contracts\Entity\DetailsInterface;
 use Sdk\Booking\Entity\Details\CarRentWithDriver;
 use Sdk\Booking\Entity\Details\CIPMeetingInAirport;
@@ -36,14 +37,15 @@ class BasicDetailsDataFactory
         private readonly CityAdapterInterface $cityAdapter,
         private readonly BookingPeriodDataFactory $bookingPeriodDataFactory,
         private readonly GuestDataFactory $guestDataFactory,
+        private readonly SupplierAdapterInterface $supplierAdapter,
     ) {}
 
     public function build(Booking $booking, DetailsInterface $details): ServiceInfoDto
     {
-        $serviceTitle = $details->serviceInfo()->title();
+        $service = $this->supplierAdapter->findService($details->serviceInfo()->id());
 
         return new ServiceInfoDto(
-            title: $serviceTitle,
+            title: $service->title,
             bookingPeriod: $this->bookingPeriodDataFactory->build($details),
             detailOptions: $this->buildDetails($details),
             guests: method_exists($details, 'guestIds')

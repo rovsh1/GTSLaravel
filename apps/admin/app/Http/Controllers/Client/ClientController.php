@@ -26,6 +26,7 @@ use Gsdk\Format\View\ParamsTable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Sdk\Shared\Enum\Client\LanguageEnum;
 use Sdk\Shared\Enum\Client\ResidencyEnum;
 use Sdk\Shared\Enum\Client\StatusEnum;
 use Sdk\Shared\Enum\Client\TypeEnum;
@@ -174,6 +175,7 @@ class ClientController extends AbstractPrototypeController
             ->text('currency_name', 'Валюта')
             ->text('markup_group_name', 'Группа наценки')
             ->enum('residency', 'Тип цены', ResidencyEnum::class)
+            ->enum('language', 'Язык', LanguageEnum::class)
             ->text('administrator_name', 'Менеджер')
             ->data($this->model);
     }
@@ -216,6 +218,10 @@ class ClientController extends AbstractPrototypeController
             ->enum(
                 'residency',
                 ['label' => 'Тип цены', 'enum' => ResidencyEnum::class, 'required' => true, 'emptyItem' => '']
+            )
+            ->enum(
+                'language',
+                ['label' => 'Язык', 'enum' => LanguageEnum::class, 'required' => true, 'emptyItem' => '']
             )
             ->select('markup_group_id', [
                 'label' => 'Группа наценки',

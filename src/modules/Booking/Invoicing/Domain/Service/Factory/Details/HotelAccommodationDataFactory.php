@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace Module\Booking\Invoicing\Domain\Service\Factory\Details;
 
 use Illuminate\Support\Collection;
-use Module\Booking\Invoicing\Domain\Service\Dto\Service\DetailOptionDto;
 use Module\Booking\Invoicing\Domain\Service\Dto\Service\PriceDto;
 use Module\Booking\Invoicing\Domain\Service\Dto\ServiceInfoDto;
 use Module\Booking\Invoicing\Domain\Service\Factory\BookingPeriodDataFactory;
 use Module\Booking\Invoicing\Domain\Service\Factory\GuestDataFactory;
+use Module\Booking\Shared\Domain\Booking\Adapter\HotelRoomAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
+use Module\Shared\Support\Dto\DetailOptionDto;
 use Sdk\Booking\Entity\Details\HotelBooking;
 use Sdk\Booking\Entity\HotelAccommodation;
 use Sdk\Booking\ValueObject\HotelBooking\Condition;
@@ -22,6 +23,7 @@ class HotelAccommodationDataFactory
     public function __construct(
         private readonly DetailsRepositoryInterface $detailsRepository,
         private readonly BookingPeriodDataFactory $bookingPeriodDataFactory,
+        private readonly HotelRoomAdapterInterface $hotelRoomAdapter,
         private readonly GuestDataFactory $guestDataFactory,
     ) {}
 
@@ -29,7 +31,7 @@ class HotelAccommodationDataFactory
     {
         /** @var HotelBooking $details */
         $details = $this->detailsRepository->findOrFail($booking->id());
-        $serviceTitle = "Отель: {$details->hotelInfo()->name()}";
+        $serviceTitle = __('Отель: :hotel', ['hotel' => $details->hotelInfo()->name()]);
 
         return new ServiceInfoDto(
             title: $serviceTitle,
@@ -44,11 +46,13 @@ class HotelAccommodationDataFactory
     {
         $checkInTime = $accommodation->details()->earlyCheckIn() !== null
             ? $this->buildConditionDetailOption($accommodation->details()->earlyCheckIn())
-            : "с {$details->hotelInfo()->checkInTime()->value()}";
+            : __('с :time', ['time' => $details->hotelInfo()->checkInTime()->value()]);
 
         $checkOutTime = $accommodation->details()->lateCheckOut() !== null
             ? $this->buildConditionDetailOption($accommodation->details()->lateCheckOut())
-            : "до {$details->hotelInfo()->checkOutTime()->value()}";
+            : __('до :time', ['time' => $details->hotelInfo()->checkOutTime()->value()]);
+
+        $room = $this->hotelRoomAdapter->findById($accommodation->roomInfo()->id());
 
         return collect([
             DetailOptionDto::createDate('Дата заезда', $details->bookingPeriod()->dateFrom()),
@@ -56,13 +60,16 @@ class HotelAccommodationDataFactory
             DetailOptionDto::createDate('Дата выезда', $details->bookingPeriod()->dateTo()),
             DetailOptionDto::createText('Время выезда', $checkOutTime),
             DetailOptionDto::createNumber('Ночей', $details->bookingPeriod()->nightsCount()),
-            DetailOptionDto::createText('Номер', $accommodation->roomInfo()->name()),
+            DetailOptionDto::createText('Номер', $room->name),
         ]);
     }
 
     private function buildConditionDetailOption(Condition $condition): string
     {
-        $timePeriod = "с {$condition->timePeriod()->from()} по {$condition->timePeriod()->to()}";
+        $timePeriod = __(
+            'с :from по :to',
+            ['from' => $condition->timePeriod()->from(), 'to' => $condition->timePeriod()->to()],
+        );
         $markup = " (+{$condition->priceMarkup()->value()}%)";
 
         return "{$timePeriod} {$markup}";

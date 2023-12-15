@@ -20,17 +20,17 @@ class BookingStatusesSeeder extends Seeder
         DB::table('booking_status_settings')->insert([
             $this->wrap(StatusEnum::DRAFT, [
                 'name_ru' => 'Черновик',
-                'name_en' => null,
+                'name_en' => 'Draft',
                 'color' => 'secondary',
             ]),
             $this->wrap(StatusEnum::CREATED, [
                 'name_ru' => 'Новая',
-                'name_en' => null,
+                'name_en' => 'New',
                 'color' => 'danger',
             ]),
             $this->wrap(StatusEnum::PROCESSING, [
                 'name_ru' => 'В работе',
-                'name_en' => null,
+                'name_en' => 'Processing',
                 'color' => 'warning',
             ]),
             $this->wrap(StatusEnum::CANCELLED, [
@@ -40,12 +40,12 @@ class BookingStatusesSeeder extends Seeder
             ]),
             $this->wrap(StatusEnum::CONFIRMED, [
                 'name_ru' => 'Подтверждена',
-                'name_en' => null,
+                'name_en' => 'Confirmed',
                 'color' => 'success',
             ]),
             $this->wrap(StatusEnum::NOT_CONFIRMED, [
                 'name_ru' => 'Не подтверждена',
-                'name_en' => null,
+                'name_en' => 'Not confirmed',
                 'color' => 'secondary',
             ]),
             $this->wrap(StatusEnum::CANCELLED_NO_FEE, [
@@ -82,44 +82,44 @@ class BookingStatusesSeeder extends Seeder
             //order statuses
             $this->wrap(OrderStatusEnum::IN_PROGRESS, [
                 'name_ru' => 'В работе',
-                'name_en' => null,
+                'name_en' => 'In progress',
                 'color' => 'danger',
             ]),
             $this->wrap(OrderStatusEnum::WAITING_INVOICE, [
                 'name_ru' => 'Ожидание инвойса',
-                'name_en' => null,
+                'name_en' => 'Waiting invoice',
                 'color' => 'warning',
             ]),
             $this->wrap(OrderStatusEnum::INVOICED, [
                 'name_ru' => 'Инвойс выставлен',
-                'name_en' => null,
+                'name_en' => 'Invoiced',
                 'color' => 'info',
             ]),
             $this->wrap(OrderStatusEnum::PARTIAL_PAID, [
                 'name_ru' => 'Частично оплачен',
-                'name_en' => null,
+                'name_en' => 'Partial paid',
                 'color' => 'success',
                 'created_at' => now(),
                 'updated_at' => now(),
             ]),
             $this->wrap(OrderStatusEnum::PAID, [
                 'name_ru' => 'Оплачен',
-                'name_en' => null,
+                'name_en' => 'Paid',
                 'color' => 'success',
             ]),
             $this->wrap(OrderStatusEnum::CANCELLED, [
                 'name_ru' => 'Отменен без оплаты',
-                'name_en' => null,
+                'name_en' => 'Cancelled',
                 'color' => 'secondary',
             ]),
             $this->wrap(OrderStatusEnum::REFUND_FEE, [
                 'name_ru' => 'Возврат со штрафом',
-                'name_en' => null,
+                'name_en' => 'Refund fee',
                 'color' => 'secondary',
             ]),
             $this->wrap(OrderStatusEnum::REFUND_NO_FEE, [
                 'name_ru' => 'Возврат без штрафа',
-                'name_en' => null,
+                'name_en' => 'Refund no fee',
                 'color' => 'secondary',
             ]),
         ]);

@@ -42,16 +42,16 @@
                 <table class="text-align-right">
                     <tbody>
                     <tr>
-                        <td class="title">ВАУЧЕР №{{ $voucher->number }}</td>
+                        <td class="title">{{ __('ВАУЧЕР №:number', ['number' => $voucher->number]) }}</td>
                     </tr>
                     <tr>
-                        <td>Дата создания: {{ $voucher->createdAt }}</td>
+                        <td>{{ __('Дата создания: :date', ['date' => $voucher->createdAt]) }}</td>
                     </tr>
                     <tr>
                         <td>{{$company->name}}</td>
                     </tr>
                     <tr>
-                        <td>Тел: {{$company->phone}}</td>
+                        <td>{{ __('Тел: :phone', ['phone'=>$company->phone]) }}</td>
                     </tr>
                     <tr>
                         <td>E-mail: {{$company->email}}</td>
@@ -85,13 +85,13 @@
                             <table>
                                 <tbody>
                                 <tr>
-                                    <td>Менеджер: <b>{{ $manager->fullName }}</b></td>
+                                    {{ __('Менеджер ') }}: <b>{{ $manager->fullName }}</b>
                                 </tr>
                                 <tr>
                                     <td>E-mail: {{ $manager->email }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Мобильный номер: {{ $manager->phone }}</td>
+                                    <td>{{ __('Мобильный номер: :phone', ['phone' => $manager->phone]) }}</td>
                                 </tr>
                                 </tbody>
                             </table>

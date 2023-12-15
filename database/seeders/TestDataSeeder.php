@@ -83,8 +83,8 @@ class TestDataSeeder extends Seeder
 //            ['supplier_id' => $testSupplierId, 'inn' => '12345678', 'director_full_name' => 'John Doe']
 //        ]);
 //
-        $this->seedTransferSupplierData($testSupplierId, $supplierSeasonId);
-        $this->seedAirportSupplierData($testSupplierId, $supplierSeasonId);
+//        $this->seedTransferSupplierData($testSupplierId, $supplierSeasonId);
+//        $this->seedAirportSupplierData($testSupplierId, $supplierSeasonId);
     }
 
     private function seedTransferSupplierData(int $supplierId, int $seasonId): void
@@ -96,21 +96,18 @@ class TestDataSeeder extends Seeder
 
         $service1Id = DB::table('supplier_services')->insertGetId([
             'supplier_id' => $supplierId,
-            'title' => 'Трансфер из аэропорта Ташкента',
             'type' => ServiceTypeEnum::TRANSFER_FROM_AIRPORT,
             'data' => json_encode(['airportId' => 1])
         ]);
 
         $service2Id = DB::table('supplier_services')->insertGetId([
             'supplier_id' => $supplierId,
-            'title' => 'Трансфер в аэропорт Ташкента',
             'type' => ServiceTypeEnum::TRANSFER_TO_AIRPORT,
             'data' => json_encode(['airportId' => 1])
         ]);
 
         $service3Id = DB::table('supplier_services')->insertGetId([
             'supplier_id' => $supplierId,
-            'title' => 'Аренда авто на пол дня в Ташкенте',
             'type' => ServiceTypeEnum::CAR_RENT_WITH_DRIVER,
             'data' => json_encode(['cityId' => 1]),
         ]);
@@ -127,28 +124,24 @@ class TestDataSeeder extends Seeder
 
         $service4Id = DB::table('supplier_services')->insertGetId([
             'supplier_id' => $supplierId,
-            'title' => 'Трансфер в ЖД вокзала Ташкент',
             'type' => ServiceTypeEnum::TRANSFER_TO_RAILWAY,
             'data' => json_encode(['railwayStationId' => $railwayStationId, 'cityId' => 1]),
         ]);
 
         $service5Id = DB::table('supplier_services')->insertGetId([
             'supplier_id' => $supplierId,
-            'title' => 'Трансфер из ЖД вокзала Ташкент',
             'type' => ServiceTypeEnum::TRANSFER_FROM_RAILWAY,
             'data' => json_encode(['railwayStationId' => $railwayStationId, 'cityId' => 1]),
         ]);
 
         $service6Id = DB::table('supplier_services')->insertGetId([
             'supplier_id' => $supplierId,
-            'title' => 'Трасфер Ташкент-Самарканд',
             'type' => ServiceTypeEnum::INTERCITY_TRANSFER,
             'data' => json_encode(['fromCityId' => 1, 'toCityId' => 4, 'returnTripIncluded' => true]),
         ]);
 
         $service7Id = DB::table('supplier_services')->insertGetId([
             'supplier_id' => $supplierId,
-            'title' => 'Однодневная поездка в горы',
             'type' => ServiceTypeEnum::DAY_CAR_TRIP,
             'data' => json_encode(['cityId' => 1]),
         ]);
@@ -271,14 +264,12 @@ class TestDataSeeder extends Seeder
 
         $service1Id = DB::table('supplier_services')->insertGetId([
             'supplier_id' => $supplierId,
-            'title' => 'CIP Встреча Аэропорт Ташкент',
             'type' => ServiceTypeEnum::CIP_MEETING_IN_AIRPORT,
             'data' => json_encode(['airportId' => 1])
         ]);
 
         $service2Id = DB::table('supplier_services')->insertGetId([
             'supplier_id' => $supplierId,
-            'title' => 'CIP Проводы Аэропорт Ташкент',
             'type' => ServiceTypeEnum::CIP_SENDOFF_IN_AIRPORT,
             'data' => json_encode(['airportId' => 1])
         ]);

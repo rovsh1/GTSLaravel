@@ -33,6 +33,6 @@ class CancelConditionsDataFactory
 
     private function getHumanCancelPeriodType(int $cancelPeriodType): string
     {
-        return $cancelPeriodType === CancelPeriodTypeEnum::FULL_PERIOD->value ? 'За весь период' : 'За первую ночь';
+        return $cancelPeriodType === CancelPeriodTypeEnum::FULL_PERIOD->value ? __('За весь период') : __('За первую ночь');
     }
 }

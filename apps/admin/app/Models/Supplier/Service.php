@@ -27,6 +27,7 @@ class Service extends \Module\Supplier\Moderation\Infrastructure\Models\Service
         static::addGlobalScope('default', function (Builder $builder) {
             $builder->orderBy('name')
                 ->addSelect('supplier_services.*')
+                ->joinTranslations()
                 ->join('suppliers', 'suppliers.id', '=', 'supplier_services.supplier_id')
                 ->addSelect('suppliers.name as provider_name');
         });

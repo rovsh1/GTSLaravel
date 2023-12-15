@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->string('name', 100);
             $table->char('zipcode', 6)->nullable();
             $table->string('address');
+            $table->string('address_en')->nullable();
             $table->double('address_lat', 11, 8)->nullable();
             $table->double('address_lon', 11, 8)->nullable();
             $table->integer('city_distance')->nullable();

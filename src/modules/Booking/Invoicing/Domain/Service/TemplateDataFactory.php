@@ -33,15 +33,15 @@ class TemplateDataFactory
     public function build(OrderId $orderId): array
     {
         $order = $this->orderRepository->findOrFail($orderId);
-        $services = $this->serviceInfoDataFactory->build($orderId);
+        $services = $this->serviceInfoDataFactory->build($order->id());
 
         return [
             'order' => $this->buildOrderDto($order),
             'services' => $services,
             'company' => $this->getCompanyRequisites(),
-            'manager' => $this->buildOrderManagerDto($orderId),
+            'manager' => $this->buildOrderManagerDto($order->id()),
             'client' => $this->buildClientDto($order->clientId()),
-            'invoice' => $this->buildInvoiceDto($orderId, now(), $services),
+            'invoice' => $this->buildInvoiceDto($order->id(), now(), $services),
         ];
     }
 
@@ -55,7 +55,7 @@ class TemplateDataFactory
     {
         /** @var float $totalAmount */
         $totalAmount = collect($services)->reduce(
-            fn(float $value, ServiceInfoDto $serviceInfoDto) => $value + $serviceInfoDto->price->amount,
+            fn(float $value, ServiceInfoDto $serviceInfoDto) => $value + $serviceInfoDto->price->total,
             0
         );
         /** @var float $totalPenalty */
@@ -78,12 +78,14 @@ class TemplateDataFactory
     private function buildClientDto(ClientId $clientId): ClientDto
     {
         $client = $this->clientAdapter->find($clientId->value());
+        $clientContract = $this->clientAdapter->findContract($clientId->value());
 
         return new ClientDto(
             $client->name,
             $client->phone,
             $client->email,
             $client->address,
+            $clientContract?->number,
         );
     }
 

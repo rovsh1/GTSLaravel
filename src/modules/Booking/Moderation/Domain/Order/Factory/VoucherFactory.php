@@ -8,19 +8,24 @@ namespace Module\Booking\Moderation\Domain\Order\Factory;
 use Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\FileGenerator;
 use Module\Booking\Moderation\Domain\Order\ValueObject\Voucher;
 use Module\Booking\Shared\Domain\Order\Order;
+use Module\Booking\Shared\Domain\Shared\Service\ClientLocaleContext;
 use Sdk\Booking\ValueObject\OrderId;
 use Sdk\Shared\ValueObject\File;
 
 class VoucherFactory
 {
     public function __construct(
-        private readonly FileGenerator $fileGenerator
+        private readonly FileGenerator $fileGenerator,
+        private readonly ClientLocaleContext $clientLocaleDecorator,
     ) {}
 
     public function build(Order $order): Voucher
     {
         $orderId = $order->id();
-        $fileDto = $this->fileGenerator->generate($this->getFilename($orderId), $orderId);
+        $fileDto = $this->clientLocaleDecorator->executeInClientLocale(
+            $order->clientId(),
+            fn() => $this->fileGenerator->generate($this->getFilename($orderId), $orderId)
+        );
 
         return new Voucher(
             now()->toDateTimeImmutable(),

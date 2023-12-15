@@ -135,6 +135,7 @@ class HotelController extends AbstractPrototypeController
             ->rating('rating', ['label' => 'Категория', 'emptyItem' => ''])
             ->enum('status', ['label' => 'Статус', 'emptyItem' => '', 'enum' => StatusEnum::class])
             ->text('address', ['label' => 'Адрес', 'required' => true])
+            ->text('address_en', ['label' => 'Адрес (EN)', 'required' => true])
             ->coordinates('coordinates', ['label' => 'Координаты', 'required' => true, 'value' => $coordinates])
             ->text('zipcode', ['label' => 'Индекс']);
     }

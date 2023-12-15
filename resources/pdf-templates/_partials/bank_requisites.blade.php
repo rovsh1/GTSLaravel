@@ -11,7 +11,7 @@
             </tr>
             <tr>
                 <td width="158">
-                    <p><em>Бенефициар:</em></p>
+                    <p><em>{{ __('Бенефициар') }}:</em></p>
                 </td>
                 <td width="559">
                     <p><strong>ООО «GOTOSTANS»</strong></p>
@@ -19,7 +19,7 @@
             </tr>
             <tr>
                 <td width="158">
-                    <p><em>Адрес:</em></p>
+                    <p><em>{{ __('Адрес') }}:</em></p>
                 </td>
                 <td width="559">
                     <p><strong>д.104A, ул. Кичик Бешегоч, Ташкент, 100015, Узбекистан</strong></p>
@@ -27,7 +27,7 @@
             </tr>
             <tr>
                 <td width="158">
-                    <p><em>Тел:</em></p>
+                    <p><em>{{ __('Тел') }}:</em></p>
                 </td>
                 <td width="559">
                     <p><strong>(998 78) 1209012</strong></p>
@@ -43,7 +43,7 @@
             </tr>
             <tr>
                 <td width="158">
-                    <p><em>ИНН:</em></p>
+                    <p><em>{{ __('ИНН') }}:</em></p>
                 </td>
                 <td width="559">
                     <p><strong>305 768 069</strong></p>
@@ -51,7 +51,7 @@
             </tr>
             <tr>
                 <td width="158">
-                    <p><em>ОКЭД:</em></p>
+                    <p><em>{{ __('ОКЭД') }}:</em></p>
                 </td>
                 <td width="559">
                     <p><strong>79900</strong></p>
@@ -66,7 +66,7 @@
             @if($currency === \Sdk\Shared\Enum\CurrencyEnum::UZS)
                 <tr>
                     <td width="158">
-                        <p><em>Банк:</em></p>
+                        <p><em>{{ __('Банк') }}:</em></p>
                     </td>
                     <td width="559">
                         <p><strong>ЧАКБ «ORIENT FINANCE BANK» Мирабадский ф-л</strong></p>
@@ -74,7 +74,7 @@
                 </tr>
                 <tr>
                     <td width="158">
-                        <p><em>Адрес:</em></p>
+                        <p><em>{{ __('Адрес') }}:</em></p>
                     </td>
                     <td width="559">
                         <p><strong>7А, ул. Якуб Колас, г. Ташкент, 100023, Узбекистан</strong></p>
@@ -82,7 +82,7 @@
                 </tr>
                 <tr>
                     <td width="158">
-                        <p><em>МФО:</em></p>
+                        <p><em>{{ __('МФО') }}:</em></p>
                     </td>
                     <td width="559">
                         <p><strong>01167</strong></p>
@@ -90,7 +90,7 @@
                 </tr>
                 <tr>
                     <td width="158">
-                        <p><em>Р/с в сум (UZS):</em></p>
+                        <p><em>{{ __('Р/с в :currency', ['currency' => \Sdk\Shared\Enum\CurrencyEnum::UZS->name]) }}:</em></p>
                     </td>
                     <td width="559">
                         <p><strong>20208000400934341001</strong></p>
@@ -101,7 +101,7 @@
             @if($currency === \Sdk\Shared\Enum\CurrencyEnum::USD)
                 <tr>
                     <td width="158">
-                        <p><em>Банк:</em></p>
+                        <p><em>{{ __('Банк') }}:</em></p>
                     </td>
                     <td width="559">
                         <p><strong>ЧАКБ «ORIENT FINANCE BANK» Мирабадский ф-л</strong></p>
@@ -109,7 +109,7 @@
                 </tr>
                 <tr>
                     <td width="158">
-                        <p><em>Адрес банка:</em></p>
+                        <p><em>{{ __('Адрес') }}:</em></p>
                     </td>
                     <td width="559">
                         <p><strong>7А, ул. Якуб Колас, г. Ташкент, 100023, Узбекистан</strong></p>
@@ -117,7 +117,7 @@
                 </tr>
                 <tr>
                     <td width="158">
-                        <p><em>МФО:</em></p>
+                        <p><em>{{ __('МФО') }}:</em></p>
                     </td>
                     <td width="559">
                         <p><strong>01167</strong></p>
@@ -125,7 +125,7 @@
                 </tr>
                 <tr>
                     <td width="158">
-                        <p><em>Р/с в долларах США (USD):</em></p>
+                        <p><em>{{ __('Р/с в :currency', ['currency' => \Sdk\Shared\Enum\CurrencyEnum::USD->name]) }}:</em></p>
                     </td>
                     <td width="559">
                         <p><strong>20208840900934341002</strong></p>
@@ -146,7 +146,7 @@
                 </tr>
                 <tr>
                     <td width="158">
-                        <p><em>Банк корреспондент:</em></p>
+                        <p><em>{{ __('Банк корреспондент') }}:</em></p>
                     </td>
                     <td width="559">
                         <p><strong>АКБ "Азия-Инвест Банк"</strong></p>
@@ -154,7 +154,7 @@
                 </tr>
                 <tr>
                     <td width="158">
-                        <p><em>БИК:</em></p>
+                        <p><em>{{ __('БИК') }}:</em></p>
                     </td>
                     <td width="559">
                         <p><strong>044525234</strong></p>
@@ -162,7 +162,7 @@
                 </tr>
                 <tr>
                     <td width="158">
-                        <p><em>Телекс:</em></p>
+                        <p><em>{{ __('Телекс') }}:</em></p>
                     </td>
                     <td width="559">
                         <p><strong>914624 ASINV RU</strong></p>
@@ -178,7 +178,7 @@
                 </tr>
                 <tr>
                     <td width="158">
-                        <p><em>Кор.сч. в долл. США (USD):</em></p>
+                        <p><em>{{ __('Кор.сч. в :currency', ['currency' => \Sdk\Shared\Enum\CurrencyEnum::USD]) }}</em></p>
                     </td>
                     <td width="559">
                         <p><strong>30111840800000002535</strong></p>

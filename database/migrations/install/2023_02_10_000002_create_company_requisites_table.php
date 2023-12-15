@@ -20,7 +20,7 @@ return new class extends Migration {
 
     public function down()
     {
-        Schema::dropIfExists('s_company_requisites_translations');
+        Schema::dropIfExists('s_company_requisites_translation');
         Schema::dropIfExists('s_company_requisites');
     }
 };

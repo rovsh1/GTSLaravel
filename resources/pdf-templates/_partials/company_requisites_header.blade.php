@@ -9,7 +9,7 @@
                 <td>{{$company->name}}</td>
             </tr>
             <tr>
-                <td>Тел: {{$company->phone}}</td>
+                <td>{{ __('Тел: :phone', ['phone'=>$company->phone]) }}</td>
             </tr>
             <tr>
                 <td>E-mail: {{$company->email}}</td>

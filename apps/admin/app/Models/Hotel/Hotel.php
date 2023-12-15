@@ -57,6 +57,7 @@ class Hotel extends Model
         'name',
         'rating',
         'address',
+        'address_en',
 //->addAttribute('citycenter_distance','number', ['default' => 0, 'nonnegative' => true, 'allowZero' => true]),
         'address_lat',
         'address_lon',

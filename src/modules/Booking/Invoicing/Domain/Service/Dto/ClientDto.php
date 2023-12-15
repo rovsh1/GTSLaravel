@@ -11,5 +11,6 @@ class ClientDto
         public readonly ?string $phone,
         public readonly ?string $email,
         public readonly ?string $address,
+        public readonly ?string $contractNumber,
     ) {}
 }

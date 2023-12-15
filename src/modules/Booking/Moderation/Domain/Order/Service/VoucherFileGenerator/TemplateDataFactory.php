@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator;
 
+use Illuminate\Support\Facades\App;
 use Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Dto\ClientDto;
 use Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Dto\CompanyRequisitesDto;
 use Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Dto\ManagerDto;

@@ -1,10 +1,10 @@
 <tr class="first last">
-    <th class="text-align-left" style="width: 52%;">Информация об услуге</th>
+    <th class="text-align-left" style="width: 52%;">{{ __('Информация об услуге') }}</th>
 </tr>
 
 @if(count($service->guests) > 0)
     <tr class="padding-top">
-        <td>Гости ({{ count($service->guests) }}):</td>
+        <td>{{ __('Гости (:count)', ['count' => count($service->guests)]) }}:</td>
     </tr>
 @endif
 @foreach($service->guests ?? [] as $index => $guest)

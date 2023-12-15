@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
+use Sdk\Shared\Enum\Client\LanguageEnum;
 use Sdk\Shared\Enum\Client\ResidencyEnum;
 use Sdk\Shared\Enum\CurrencyEnum;
 
@@ -49,6 +50,7 @@ return new class extends Migration {
                     'description' => $r->description,
                     'status' => $r->status,
                     'is_b2b' => (bool)$r->is_b2b,
+                    'language' => LanguageEnum::RU->value,
                     'markup_group_id' => self::BASE_MARKUP_GROUP_ID,
                     'created_at' => $r->created,
                     'updated_at' => $r->updated

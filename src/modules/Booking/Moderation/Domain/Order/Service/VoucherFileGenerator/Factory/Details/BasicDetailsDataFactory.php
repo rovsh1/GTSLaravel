@@ -10,8 +10,9 @@ use Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Dto\Serv
 use Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Factory\BookingPeriodDataFactory;
 use Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Factory\CancelConditionsDataFactory;
 use Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Factory\GuestDataFactory;
+use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
-use Module\Booking\Shared\Domain\Booking\Service\Dto\DetailOptionDto;
+use Module\Shared\Support\Dto\DetailOptionDto;
 use Sdk\Booking\Contracts\Entity\DetailsInterface;
 use Sdk\Booking\Entity\Details\CarRentWithDriver;
 use Sdk\Booking\Entity\Details\CIPMeetingInAirport;
@@ -38,14 +39,15 @@ class BasicDetailsDataFactory
         private readonly BookingPeriodDataFactory $bookingPeriodDataFactory,
         private readonly GuestDataFactory $guestDataFactory,
         private readonly CancelConditionsDataFactory $cancelConditionsDataFactory,
+        private readonly SupplierAdapterInterface $supplierAdapter,
     ) {}
 
     public function build(Booking $booking, DetailsInterface $details): ServiceInfoDto
     {
-        $serviceTitle = $details->serviceInfo()->title();
+        $service = $this->supplierAdapter->findService($details->serviceInfo()->id());
 
         return new ServiceInfoDto(
-            title: $serviceTitle,
+            title: $service->title,
             bookingPeriod: $this->bookingPeriodDataFactory->build($details),
             detailOptions: $this->buildDetails($details),
             guests: method_exists($details, 'guestIds')

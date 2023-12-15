@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Shared\Domain\Booking\Service\Dto;
+namespace Module\Shared\Support\Dto;
 
 use Format;
 
 class DetailOptionDto
 {
+    public readonly string $label;
+
     private const DATE_TYPE = 'date';
     private const TIME_TYPE = 'time';
     private const TEXT_TYPE = 'text';
@@ -15,10 +17,12 @@ class DetailOptionDto
     private const NUMBER_TYPE = 'number';
 
     public function __construct(
-        public readonly string $label,
+        string $label,
         public readonly string $type,
-        public readonly mixed $value
-    ) {}
+        public readonly mixed $value,
+    ) {
+        $this->label = __($label);
+    }
 
     public static function createDate(string $label, mixed $value): static
     {

@@ -5,43 +5,15 @@ namespace App\Admin\Models\Client;
 use App\Admin\Models\Order\Order;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Builder as Query;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
-use Sdk\Module\Database\Eloquent\Model;
-use Sdk\Shared\Enum\Client\ResidencyEnum;
-use Sdk\Shared\Enum\Client\StatusEnum;
-use Sdk\Shared\Enum\Client\TypeEnum;
-use Sdk\Shared\Enum\CurrencyEnum;
 
-class Client extends Model
+class Client extends \Module\Client\Moderation\Infrastructure\Models\Client
 {
-    use HasQuicksearch;
-
-    public $timestamps = false;
+    use HasQuicksearch, SoftDeletes;
 
     protected array $quicksearch = ['id', 'clients.%name%'];
-
-    protected $table = 'clients';
-
-    protected $fillable = [
-        'name',
-        'city_id',
-        'currency',
-        'is_b2b',
-        'type',
-        'status',
-        'residency',
-        'description',
-        'markup_group_id'
-    ];
-
-    protected $casts = [
-        'currency' => CurrencyEnum::class,
-        'status' => StatusEnum::class,
-        'type' => TypeEnum::class,
-        'residency' => ResidencyEnum::class,
-        'is_b2b' => 'boolean',
-    ];
 
     protected static function booted()
     {

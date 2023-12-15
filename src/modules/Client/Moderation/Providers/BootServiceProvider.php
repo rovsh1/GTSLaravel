@@ -33,5 +33,9 @@ class BootServiceProvider extends ServiceProvider
             Domain\Repository\ClientRequisitesRepositoryInterface::class,
             Infrastructure\Repository\ClientRequisitesRepository::class
         );
+        $this->app->singleton(
+            Domain\Repository\ContractRepositoryInterface::class,
+            Infrastructure\Repository\ContractRepository::class
+        );
     }
 }

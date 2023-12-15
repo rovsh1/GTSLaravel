@@ -11,17 +11,39 @@ INSERT INTO `supplier_seasons` (`id`, `supplier_id`, `number`, `date_start`, `da
 VALUES (1, 555, '2023', '2023-01-01', '2023-12-31', '2023-10-23 14:05:22', '2023-10-23 14:05:22'),
        (2, 555, 'NEW YEAR', '2024-01-01', '2024-03-31', '2023-10-26 07:45:53', '2023-10-26 07:48:58');
 
-INSERT INTO `supplier_services` (`id`, `supplier_id`, `title`, `type`, `data`, `created_at`, `updated_at`)
-VALUES (1, 555, 'Трансфер из аэропорта Ташкента', 7, '{\"airportId\":1}', NULL, NULL),
-       (2, 555, 'Трансфер в аэропорт Ташкента', 6, '{\"airportId\":1}', NULL, NULL),
-       (3, 555, 'Аренда авто на пол дня в Ташкенте', 3, '{\"cityId\":1}', NULL, NULL),
-       (4, 555, 'Трансфер в ЖД вокзала Ташкент', 4, '{\"railwayStationId\":1,\"cityId\":1}', NULL, NULL),
-       (5, 555, 'Трансфер из ЖД вокзала Ташкент', 5, '{\"railwayStationId\":1,\"cityId\":1}', NULL, NULL),
-       (6, 555, 'Трасфер Ташкент-Самарканд', 9, '{\"fromCityId\":1,\"toCityId\":4,\"returnTripIncluded\":true}', NULL, NULL),
-       (7, 555, 'Однодневная поездка в горы', 10, '{\"cityId\":1}', NULL, NULL),
-       (8, 555, 'CIP Встреча Аэропорт Ташкент', 2, '{\"airportId\":1}', NULL, NULL),
-       (9, 555, 'CIP Проводы Аэропорт Ташкент', 11, '{\"airportId\":1}', NULL, NULL),
-       (10, 555, 'Прочая', 8, NULL, NULL, NULL);
+INSERT INTO `supplier_services` (`id`, `supplier_id`, `type`, `data`, `created_at`, `updated_at`)
+VALUES (1, 555,  7, '{\"airportId\":1}', NULL, NULL),
+       (2, 555,  6, '{\"airportId\":1}', NULL, NULL),
+       (3, 555,  3, '{\"cityId\":1}', NULL, NULL),
+       (4, 555, 4, '{\"railwayStationId\":1,\"cityId\":1}', NULL, NULL),
+       (5, 555, 5, '{\"railwayStationId\":1,\"cityId\":1}', NULL, NULL),
+       (6, 555, 9, '{\"fromCityId\":1,\"toCityId\":4,\"returnTripIncluded\":true}', NULL, NULL),
+       (7, 555, 10, '{\"cityId\":1}', NULL, NULL),
+       (8, 555, 2, '{\"airportId\":1}', NULL, NULL),
+       (9, 555, 11, '{\"airportId\":1}', NULL, NULL),
+       (10, 555, 8, NULL, NULL, NULL);
+
+INSERT INTO `supplier_services_translation` (`translatable_id`, `language`, `title`)
+VALUES (1, 'ru', 'Трансфер из аэропорта Ташкента'),
+       (2, 'ru', 'Трансфер в аэропорт Ташкента'),
+       (3, 'ru', 'Аренда авто на пол дня в Ташкенте'),
+       (4, 'ru', 'Трансфер в ЖД вокзала Ташкент'),
+       (5, 'ru', 'Трансфер из ЖД вокзала Ташкент'),
+       (6, 'ru', 'Трасфер Ташкент-Самарканд'),
+       (7, 'ru', 'Однодневная поездка в горы'),
+       (8, 'ru', 'CIP Встреча Аэропорт Ташкент'),
+       (9, 'ru', 'CIP Проводы Аэропорт Ташкент'),
+       (10, 'ru', 'Прочая'),
+       (1, 'en', '[EN] Трансфер из аэропорта Ташкента'),
+       (2, 'en', '[EN] Трансфер в аэропорт Ташкента'),
+       (3, 'en', '[EN] Аренда авто на пол дня в Ташкенте'),
+       (4, 'en', '[EN] Трансфер в ЖД вокзала Ташкент'),
+       (5, 'en', '[EN] Трансфер из ЖД вокзала Ташкент'),
+       (6, 'en', '[EN] Трасфер Ташкент-Самарканд'),
+       (7, 'en', '[EN] Однодневная поездка в горы'),
+       (8, 'en', '[EN] CIP Встреча Аэропорт Ташкент'),
+       (9, 'en', '[EN] CIP Проводы Аэропорт Ташкент'),
+       (10, 'en', '[EN] Прочая');
 
 INSERT INTO `supplier_contracts` (`id`, `supplier_id`, `service_type`, `status`, `date_start`, `date_end`, `created_at`, `updated_at`)
 VALUES (1, 555, 7, 1,'2023-01-01', '2023-12-31', null, null),

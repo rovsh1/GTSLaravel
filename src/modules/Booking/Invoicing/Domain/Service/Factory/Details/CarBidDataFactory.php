@@ -12,7 +12,7 @@ use Module\Booking\Invoicing\Domain\Service\Factory\GuestDataFactory;
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\Service\Dto\DetailOptionDto;
+use Module\Shared\Support\Dto\DetailOptionDto;
 use Module\Supplier\Moderation\Application\Dto\CarDto;
 use Sdk\Booking\Contracts\Entity\DetailsInterface;
 use Sdk\Booking\Entity\CarBid;
@@ -34,12 +34,13 @@ class CarBidDataFactory
     {
         $details = $this->detailsRepository->findOrFail($booking->id());
         $cars = $this->supplierAdapter->getSupplierCars($details->serviceInfo()->supplierId());
+        $service = $this->supplierAdapter->findService($details->serviceInfo()->id());
         $this->carsIndexedById = collect($cars)->keyBy('id');
 
         $bookingPeriod = $this->periodDataFactory->build($details);
 
         return new ServiceInfoDto(
-            title: $details->serviceInfo()->title(),
+            title: $service->title,
             bookingPeriod: $bookingPeriod,
             detailOptions: $this->buildDetails($carBid, $details),
             guests: $this->guestDataFactory->build($carBid->guestIds()),

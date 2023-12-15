@@ -13,15 +13,10 @@ use Sdk\Shared\Enum\GenderEnum;
 
 class GuestDataFactory
 {
-    private array $countryNamesIndexedId;
-
     public function __construct(
-        CountryAdapterInterface $countryAdapter,
+        private readonly CountryAdapterInterface $countryAdapter,
         private readonly GuestRepositoryInterface $guestRepository
-    ) {
-        $countries = $countryAdapter->get();
-        $this->countryNamesIndexedId = collect($countries)->keyBy('id')->map->name->all();
-    }
+    ) {}
 
     /**
      * @param GuestIdCollection $guestIds
@@ -32,12 +27,15 @@ class GuestDataFactory
         if ($guestIds->count() === 0) {
             return [];
         }
+        $countries = $this->countryAdapter->get();
+        $countryNamesIndexedId = collect($countries)->keyBy('id')->map->name->all();
+
         $guests = $this->guestRepository->get($guestIds);
 
         return collect($guests)->map(fn(Guest $guest) => new GuestDto(
             $guest->fullName(),
-            $guest->gender() === GenderEnum::MALE ? 'Мужской' : 'Женский',
-            $this->countryNamesIndexedId[$guest->countryId()]
+            __($guest->gender() === GenderEnum::MALE ? 'Мужской' : 'Женский'),
+            $countryNamesIndexedId[$guest->countryId()]
         ))->all();
     }
 }

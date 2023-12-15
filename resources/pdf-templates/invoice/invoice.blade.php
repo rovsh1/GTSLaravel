@@ -42,16 +42,16 @@
                 <table class="text-align-right">
                     <tbody>
                     <tr>
-                        <td class="title">ИНВОЙС №{{ $order->number }}</td>
+                        <td class="title">{{ __('ИНВОЙС №:number', ['number' => $order->number]) }}</td>
                     </tr>
                     <tr>
-                        <td>Дата создания: {{ $invoice->createdAt }}</td>
+                        <td>{{ __('Дата создания: :date',['date' => $invoice->createdAt]) }}</td>
                     </tr>
                     <tr>
                         <td>{{$company->name}}</td>
                     </tr>
                     <tr>
-                        <td>Тел: {{$company->phone}}</td>
+                        <td>{{ __('Тел: :phone', ['phone'=>$company->phone]) }}</td>
                     </tr>
                     <tr>
                         <td>E-mail: {{$company->email}}</td>
@@ -73,19 +73,19 @@
                             <table>
                                 <tbody>
                                 <tr class="first">
-                                    <td>Клиент: {{ $client->name }}</td>
+                                    <td>{{ __('Клиент: :client' , ['client' => $client->name]) }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Договор: {{ $client->name }}</td>
+                                    <td>{{ __('Договор: :contract', ['contract' => $client->contractNumber]) }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Адрес: {{ $client->address  }}</td>
+                                    <td>{{ __('Адрес: :address', ['address' => $client->address]) }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Телефон: {{ $client->phone }}</td>
+                                    <td>{{ __('Телефон: :phone', ['phone' => $client->phone]) }}</td>
                                 </tr>
                                 <tr class="last">
-                                    <td>Email: {{ $client->email }}</td>
+                                    <td>E-mail: {{ $client->email }}</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -104,15 +104,17 @@
                         @include('invoice._partials.service')
                     @endforeach
                     <tr class="first summary">
-                        <td class="text-align-left">ИТОГО К ОПЛАТЕ</td>
-                        <td colspan="4" class="text-align-right">{{ Format::number($invoice->totalAmount) }} {{ $order->currency }}</td>
+                        <td class="text-align-left">{{ __('ИТОГО К ОПЛАТЕ') }}</td>
+                        <td colspan="4"
+                            class="text-align-right">{{ Format::number($invoice->totalAmount) }} {{ $order->currency }}</td>
                     </tr>
                     <tr>
                         <td colspan="5">
-                            <p><span style="text-decoration: underline;">Важное примечание:</span> <i>Оплата должна быть
-                                    произведена в полной мере, без учета комиссии межбанковских переводов, налогов и
-                                    сборов. В случае необходимости уплаты таковых, все расчеты должны быть произведены
-                                    заказчиком сверх сумм, указанных в настоящем инвойсе.</i>
+                            <p>
+                                <span style="text-decoration: underline;">{{ __('Важное примечание:') }}</span>
+                                <i>
+                                    {{ __("Оплата должна быть произведена в полной мере, без учета комиссии межбанковских переводов, налогов и сборов.\nВ случае необходимости уплаты таковых, все расчеты должны быть произведены заказчиком сверх сумм, указанных в настоящем инвойсе.") }}
+                                </i>
                             </p>
                         </td>
                     </tr>
@@ -135,19 +137,21 @@
                                     <td>{{ $company->name }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Директор: {{ $company->signer }}</td>
+                                    <td>{{ __('Директор: :signer', ['signer' => $company->signer]) }}</td>
                                 </tr>
                                 <tr>
                                     <td> </td>
                                 </tr>
                                 <tr>
-                                    <td>Менеджер: <b>{{ $manager->fullName }}</b></td>
+                                    <td>
+                                        {{ __('Менеджер') }}: <b>{{ $manager->fullName }}</b>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>E-mail: {{ $manager->email }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Мобильный номер: {{ $manager->phone }}</td>
+                                    <td>{{ __('Мобильный номер: :phone', ['phone' => $manager->phone]) }}</td>
                                 </tr>
                                 </tbody>
                             </table>

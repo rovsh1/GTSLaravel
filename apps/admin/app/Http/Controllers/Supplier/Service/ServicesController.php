@@ -142,7 +142,7 @@ class ServicesController extends Controller
     {
         return Form::name('data')
             ->hidden('supplier_id', ['value' => $supplierId])
-            ->text('title', ['label' => 'Название', 'required' => true])
+            ->localeText('title', ['label' => 'Название', 'required' => true])
             ->bookingServiceType('type', [
                 'label' => 'Тип услуги',
                 'emptyItem' => '',

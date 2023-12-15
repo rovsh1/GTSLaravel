@@ -7,6 +7,7 @@ namespace Module\Client\Moderation\Domain\Entity;
 use Module\Client\Shared\Domain\ValueObject\ClientId;
 use Module\Shared\Contracts\Domain\EntityInterface;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
+use Sdk\Shared\Enum\Client\LanguageEnum;
 use Sdk\Shared\Enum\Client\ResidencyEnum;
 use Sdk\Shared\Enum\Client\TypeEnum;
 
@@ -16,6 +17,7 @@ class Client extends AbstractAggregateRoot implements EntityInterface
         private readonly ClientId $id,
         private string $name,
         private readonly TypeEnum $type,
+        private readonly LanguageEnum $language,
         private ResidencyEnum $residency,
     ) {}
 
@@ -37,6 +39,11 @@ class Client extends AbstractAggregateRoot implements EntityInterface
     public function type(): TypeEnum
     {
         return $this->type;
+    }
+
+    public function language(): LanguageEnum
+    {
+        return $this->language;
     }
 
     public function residency(): ResidencyEnum
