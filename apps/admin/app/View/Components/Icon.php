@@ -18,6 +18,7 @@ class Icon extends Component
         'reports' => 'bar_chart',
         'booking' => 'airplane_ticket',
         'site' => 'language',
+        'horizon' => 'layers',
     ];
 
     protected readonly ?string $key;
