@@ -7,6 +7,8 @@ use App\Hotel\Http\Middleware\TryAuthenticate;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(AuthController::class)
+    ->prefix('auth')
+    ->as('auth.')
     ->middleware([TryAuthenticate::class, 'guest:hotel'])
     ->withoutMiddleware(Authenticate::class)
     ->group(function () {
@@ -19,7 +21,7 @@ Route::controller(AuthController::class)
     });
 
 Route::controller(ProfileController::class)
-    ->prefix('profile')
+    ->prefix('profile.')
     ->name('profile')
     ->group(function () {
         Route::get('/logout', 'logout')->name('logout');
