@@ -4,7 +4,7 @@ namespace Module\Shared\Infrastructure\Adapter;
 
 use Module\Support\MailManager\Application\UseCase\SendMessage;
 use Sdk\Shared\Contracts\Adapter\MailAdapterInterface;
-use Sdk\Shared\Dto\FileDto;
+use Sdk\Shared\Dto\Mail\AttachmentDto;
 use Sdk\Shared\Dto\Mail\MailMessageDto;
 
 class MailAdapter implements MailAdapterInterface
@@ -18,7 +18,7 @@ class MailAdapter implements MailAdapterInterface
      * @param string $to
      * @param string $subject
      * @param string $body
-     * @param FileDto[] $attachments
+     * @param AttachmentDto[] $attachments
      * @return void
      */
     public function sendTo(string $to, string $subject, string $body, array $attachments = []): void

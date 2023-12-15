@@ -2,15 +2,13 @@
 
 namespace Sdk\Shared\Dto\Mail;
 
-use Sdk\Shared\Dto\FileDto;
-
 class MailMessageDto
 {
     /**
      * @param string[] $to
      * @param string $subject
      * @param string $body
-     * @param FileDto[] $attachments
+     * @param AttachmentDto[] $attachments
      * @param string[] $from
      * @param string[] $replyTo
      * @param string[] $cc
