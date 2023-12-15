@@ -12,7 +12,6 @@
         'cancelUrl' => $cancelUrl,
         'service' => $service ?? null,
         'titles' => $titles ?? null,
-        'languages' => App\Admin\Support\Facades\Languages::all(),
     ]) !!}
 
     @vite('resources/views/supplier/service/form/form.ts')
