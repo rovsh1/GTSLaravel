@@ -50,11 +50,17 @@ const { service, cancelUrl, supplier, titles } = requestInitialData(z.object({
     ru: z.string(),
     en: z.string().nullable(),
     uz: z.string().nullable(),
-  }),
+  }).nullable(),
 }))
 
+type TitleLocles = {
+  ru: string
+  en: string
+  uz: string
+}
+
 type ServiceFormData = {
-  title: string
+  titles: TitleLocles
   type: number | undefined
   details: DetailsFormData | undefined
 }
@@ -68,12 +74,20 @@ const { data: BookingDetailsTypes, execute: fetchBookingDetailsTypes } = useGetB
 const serviceTypesOptions = ref<SelectOption[]>([])
 
 const serviceFormData = reactive<ServiceFormData>({
-  title: '',
+  titles: {
+    ru: '',
+    en: '',
+    uz: '',
+  },
   type: undefined,
   details: undefined,
 })
 
-const isValidForm = computed(() => !!serviceFormData.title && !!serviceFormData.type && !!serviceFormData.details)
+const isValidForm = computed(() => !!serviceFormData.titles.ru
+&& !!serviceFormData.titles.en
+&& !!serviceFormData.titles.uz
+&& !!serviceFormData.type
+&& !!serviceFormData.details)
 
 const setDetailsComponentByServiceType = (typeId: number | undefined) => {
   serviceFormData.type = typeId
@@ -122,7 +136,9 @@ onMounted(async () => {
     name: type.display_name,
   })) || [])
   if (service) {
-    serviceFormData.title = service.title
+    serviceFormData.titles.ru = titles?.ru || ''
+    serviceFormData.titles.en = titles?.en || ''
+    serviceFormData.titles.uz = titles?.uz || ''
     serviceFormData.type = service.type
     serviceFormData.details = service.data || undefined
     setDetailsComponentByServiceType(service.type)
@@ -139,14 +155,41 @@ onMounted(async () => {
       <div class="row form-field field-text field-title field-required">
         <label for="form_data_title" class="col-sm-5 col-form-label">Название</label>
         <div class="col-sm-7 d-flex align-items-center">
-          <input
-            id="form_data_title"
-            v-model="serviceFormData.title"
-            name="data[title]"
-            type="text"
-            class="form-control"
-            required
-          >
+          <div class="field-locale-inputs-wrapper">
+            <div class="field-locale-input-wrapper">
+              <img src="/images/flag/ru.svg" alt="ru">
+              <input
+                id="form_data_title_ru"
+                v-model="serviceFormData.titles.ru"
+                type="text"
+                name="data[title][ru]"
+                required
+                class="field-locale form-control"
+              >
+            </div>
+            <div class="field-locale-input-wrapper">
+              <img src="/images/flag/en.svg" alt="en">
+              <input
+                id="form_data_title_en"
+                v-model="serviceFormData.titles.en"
+                type="text"
+                name="data[title][en]"
+                required
+                class="field-locale form-control"
+              >
+            </div>
+            <div class="field-locale-input-wrapper">
+              <img src="/images/flag/uz.svg" alt="uz">
+              <input
+                id="form_data_title_uz"
+                v-model="serviceFormData.titles.uz"
+                type="text"
+                name="data[title][uz]"
+                required
+                class="field-locale form-control"
+              >
+            </div>
+          </div>
         </div>
       </div>
       <div class="row form-field field-bookingservicetype field-type field-required">
