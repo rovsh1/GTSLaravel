@@ -8,7 +8,7 @@ use Module\Support\MailManager\Domain\ValueObject\Attachments;
 use Module\Support\MailManager\Domain\ValueObject\MailBody;
 use Module\Support\MailManager\Domain\ValueObject\MailId;
 use Module\Support\MailManager\Domain\ValueObject\QueueMailStatusEnum;
-use Sdk\Shared\Dto\FileDto;
+use Sdk\Shared\Dto\Mail\AttachmentDto;
 use Sdk\Shared\Dto\Mail\MailMessageDto;
 use Sdk\Shared\ValueObject\File;
 
@@ -30,6 +30,6 @@ class MailMessageFactory
     {
         return empty($mailDto->attachments)
             ? new Attachments([])
-            : new Attachments(array_map(fn(FileDto $fileDto) => new File($fileDto->guid), $mailDto->attachments));
+            : new Attachments(array_map(fn(AttachmentDto $fileDto) => new File($fileDto->guid), $mailDto->attachments));
     }
 }
