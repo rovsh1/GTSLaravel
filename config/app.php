@@ -185,11 +185,13 @@ return [
         /*
          * Package Service Providers...
          */
+        \App\Shared\Providers\HorizonServiceProvider::class,
 
         /*
          * Application Service Providers...
          */
         \App\Shared\Providers\AppServiceProvider::class,
+
     ],
 
     /*

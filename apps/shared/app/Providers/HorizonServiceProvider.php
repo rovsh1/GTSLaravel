@@ -4,6 +4,7 @@ namespace App\Shared\Providers;
 
 class HorizonServiceProvider extends \Laravel\Horizon\HorizonServiceProvider
 {
+    // приходиться переопределять чтобы изменить путь для assets
     public function defineAssetPublishing(): void
     {
         $this->publishes([
