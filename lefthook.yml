@@ -17,3 +17,19 @@ pre-commit:
       root: "apps/admin"
       glob: "*.vue"
       run: npx vue-tsc --noEmit
+    hotel-eslint:
+      root: "apps/hotel"
+      glob: "*.{js,ts,vue}"
+      run: npx eslint {staged_files}
+    hotel-stylelint:
+      root: "apps/hotel"
+      glob: "*.{vue,scss}"
+      run: npx stylelint {staged_files}
+    hotel-types:
+      root: "apps/hotel"
+      glob: "*.ts"
+      run: npx tsc --noEmit
+    hotel-types-vue:
+      root: "apps/hotel"
+      glob: "*.vue"
+      run: npx vue-tsc --noEmit
