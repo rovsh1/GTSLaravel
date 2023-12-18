@@ -2,7 +2,7 @@
 
 namespace App\Hotel\Support\View\Grid\Column;
 
-use App\Admin\Support\Facades\Languages;
+use App\Hotel\Support\Facades\Languages;
 use Gsdk\Grid\Support\AbstractColumn;
 
 class Language extends AbstractColumn

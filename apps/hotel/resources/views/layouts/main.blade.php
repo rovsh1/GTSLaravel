@@ -19,12 +19,12 @@
         @include('layouts/main/header')
         <div class="gts-content-wrapper">
             <div class="gts-menu-wrapper">
-{{--                {!! \App\Hotel\Support\Facades\Layout::sitemap() !!}--}}
+                {!! Layout::sitemap() !!}
             </div>
             <main class="main-wrapper">
                 <div class="content-wrapper">
                     <section class="content">
-{{--                        {!! \App\Hotel\Support\Facades\Layout::breadcrumbs() !!}--}}
+                        {!! Layout::breadcrumbs() !!}
 
                         @yield('content')
                     </section>

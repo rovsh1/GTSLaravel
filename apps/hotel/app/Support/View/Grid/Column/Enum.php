@@ -2,7 +2,7 @@
 
 namespace App\Hotel\Support\View\Grid\Column;
 
-use App\Admin\Support\Facades\Format;
+use App\Hotel\Support\Facades\Format;
 use Gsdk\Grid\Support\AbstractColumn;
 
 class Enum extends AbstractColumn

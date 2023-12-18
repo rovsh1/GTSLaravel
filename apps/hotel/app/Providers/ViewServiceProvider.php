@@ -3,6 +3,7 @@
 namespace App\Hotel\Providers;
 
 use App\Hotel\Support\Facades\Meta;
+use App\Hotel\Helpers;
 use App\Hotel\View\Components;
 use App\Hotel\Support\View as ViewNamespace;
 use App\Hotel\Support\View\Grid as GridNamespace;
@@ -68,12 +69,13 @@ class ViewServiceProvider extends ServiceProvider
     private function registerLayout(): void
     {
         class_alias(Meta::class, 'Meta');
+        class_alias(Helpers\Layout::class, 'Layout');
 
-//        $this->app->singleton('sitemap', ViewNamespace\Sitemap\Sitemap::class);
+        $this->app->singleton('sitemap', ViewNamespace\Sitemap\Sitemap::class);
 //
-//        $this->app->singleton('sidebar', ViewNamespace\Sidebar\Sidebar::class);
+        $this->app->singleton('sidebar', ViewNamespace\Sidebar\Sidebar::class);
 //
-//        $this->app->singleton('breadcrumbs', ViewNamespace\Navigation\Breadcrumbs::class);
+        $this->app->singleton('breadcrumbs', ViewNamespace\Navigation\Breadcrumbs::class);
     }
 
     private function registerUi(): void

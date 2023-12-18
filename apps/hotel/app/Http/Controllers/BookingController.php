@@ -36,7 +36,6 @@ use Illuminate\Support\Facades\DB;
 use Module\Booking\Requesting\Domain\Service\RequestingRules;
 use Sdk\Booking\Enum\QuotaProcessingMethodEnum;
 use Sdk\Booking\Enum\StatusEnum;
-use Sdk\Shared\Enum\SourceEnum;
 use Sdk\Shared\Exception\ApplicationException;
 
 class BookingController extends AbstractController
@@ -81,74 +80,8 @@ class BookingController extends AbstractController
                 'currencies' => Currency::get(),
                 'manager' => $this->administratorRepository->get($id),
                 'creator' => Administrator::find($booking->creatorId),
-                'timelineUrl' => $this->route('timeline', $id),
-                'editUrl' => $this->isAllowed('update') ? $this->route('edit', $id) : null,
-                'deleteUrl' => $this->isAllowed('delete') ? $this->route('destroy', $id) : null,
                 'hotelRooms' => RoomResource::collection(Room::whereHotelId($hotelId)->get())
             ]);
-    }
-
-    public function edit(int $id): LayoutContract
-    {
-        $breadcrumbs = Breadcrumb::prototype($this->prototype);
-
-        $booking = BookingAdapter::getBooking($id);
-
-        $title = "Бронь №{$id}";
-        $breadcrumbs->addUrl($this->prototype->route('show', $id), $title);
-        $breadcrumbs->add($this->prototype->title('edit') ?? 'Редактирование');
-
-        $form = $this->formFactory(true)
-            ->method('put')
-            ->action($this->prototype->route('update', $id))
-            ->data($this->prepareFormData($booking));
-
-        return Layout::title($title)
-            ->view($this->prototype->view('edit') ?? $this->prototype->view('form') ?? 'default.form.form', [
-                'model' => $booking,
-                'form' => $form,
-                'cancelUrl' => $this->prototype->route('show', $id),
-//                'deleteUrl' => $this->isAllowed('delete') ? $this->prototype->route('destroy', $id) : null
-            ]);
-    }
-
-    public function update(int $id): RedirectResponse
-    {
-        $form = $this->formFactory(true)
-            ->method('put')
-            ->failUrl($this->prototype->route('edit', $id));
-
-        $form->submitOrFail();
-
-        $data = $form->getData();
-        try {
-            DetailsAdapter::update(
-                bookingId: $id,
-                period: $data['period'],
-                note: $data['note'] ?? null
-            );
-            $this->administratorRepository->update($id, $data['manager_id'] ?? request()->user()->id);
-        } catch (ApplicationException $e) {
-            $form->throwException($e);
-        }
-
-        return redirect($this->prototype->route('show', $id));
-    }
-
-    public function destroy(int $id): AjaxResponseInterface
-    {
-        BookingAdapter::deleteBooking($id);
-
-        return new AjaxRedirectResponse($this->prototype->route());
-    }
-
-    public function copy(int $id): RedirectResponse
-    {
-        $newBooking = BookingAdapter::copyBooking($id);
-
-        return redirect(
-            $this->prototype->route('show', $newBooking->id)
-        );
     }
 
     public function updateExternalNumber(UpdateExternalNumberRequest $request, int $id): AjaxResponseInterface
@@ -162,40 +95,22 @@ class BookingController extends AbstractController
     {
         return Grid::enableQuicksearch()
             ->setSearchForm($this->searchForm())
+            ->bookingStatus('status', ['text' => 'Статус', 'statuses' => BookingAdapter::getStatuses(), 'order' => true]
+            )
             ->id('id', [
                 'text' => '№',
                 'order' => true,
-//                'renderer' => function ($row, $val) {
-//                    $bookingUrl = route($this->prototype->routeName('show'), $row['id']);
-//                    $idLink = "<a href='{$bookingUrl}'>{$row['id']}</a>";
-//                    $orderId = $row['order_id'];
-//                    $orderUrl = route('booking-order.show', $orderId);
-//                    $orderLink = "<a href='{$orderUrl}'>{$orderId}</a>";
-//
-//                    return "$idLink / {$orderLink}";
-//                }
+                'route' => fn($r) => route('booking.show', $r),
             ])
-            ->bookingStatus('status', ['text' => 'Статус', 'statuses' => BookingAdapter::getStatuses(), 'order' => true]
-            )
-            ->text('client_name', ['text' => 'Клиент'])
-            ->text('manager_name', ['text' => 'Менеджер'])
-            ->text(
-                'date_start',
-                [
-                    'text' => 'Заезд - выезд',
-                    'renderer' => fn($row, $val) => \Format::period(new CarbonPeriod($val, $row['date_end']))
-                ]
-            )
-            ->text(
-                'city_name',
-                ['text' => 'Город / Отель', 'renderer' => fn($row, $val) => "{$val} / {$row['hotel_name']}"]
-            )
+            ->text('date_start', [
+                'text' => 'Заезд - выезд',
+                'renderer' => fn($row, $val) => \Format::period(new CarbonPeriod($val, $row['date_end']))
+            ])
             ->textWithTooltip(
                 'rooms_count',
                 ['text' => 'Номера', 'tooltip' => fn($row, $val) => $this->getRoomNamesTooltip($row)]
             )
             ->text('guests_count', ['text' => 'Гостей'])
-            ->enum('source', ['text' => 'Источник', 'order' => true, 'enum' => SourceEnum::class])
             ->date('created_at', ['text' => 'Создан', 'format' => 'datetime', 'order' => true])
             ->text('actions', ['renderer' => fn($row, $val) => $this->getActionButtons($row)])
             ->orderBy('created_at', 'desc')
@@ -244,84 +159,6 @@ class BookingController extends AbstractController
             ->dateRange('created_period', ['label' => 'Дата создания']);
     }
 
-    private function prepareFormData(object $booking): array
-    {
-        $hotelId = $booking->details->hotelInfo->id;
-        $cityId = Hotel::find($hotelId)->city_id;
-        $order = OrderAdapter::getOrder($booking->orderId);
-        $manager = $this->administratorRepository->get($booking->id);
-        $details = $booking->details;
-
-        return [
-            'quota_processing_method' => $details->quotaProcessingMethod->value,
-            'manager_id' => $manager->id,
-            'order_id' => $booking->orderId,
-            'currency' => $order->clientPrice->currency->value,
-            'hotel_id' => $hotelId,
-            'city_id' => $cityId,
-            'client_id' => $order->clientId,
-            'legal_id' => $order->legalId,
-            'period' => new CarbonPeriod($details->period->dateFrom, $details->period->dateTo),
-            'note' => $booking->note,
-        ];
-    }
-
-    protected function formFactory(bool $isEdit = false): FormContract
-    {
-        return Form::name('data')
-            ->radio('quota_processing_method', [
-                'label' => 'Тип брони',
-                'emptyItem' => '',
-                'required' => !$isEdit,
-                'disabled' => $isEdit,
-                'items' => [
-                    ['id' => QuotaProcessingMethodEnum::REQUEST->value, 'name' => 'По запросу'],
-                    ['id' => QuotaProcessingMethodEnum::QUOTA->value, 'name' => 'По квоте'],
-                ]
-            ])
-            ->select('client_id', [
-                'label' => __('label.client'),
-                'required' => !$isEdit,
-                'emptyItem' => '',
-                'items' => Client::orderBy('name')->get(),
-                'disabled' => $isEdit,
-            ])
-            ->hidden('order_id', [
-                'label' => 'Заказ',
-                'disabled' => $isEdit
-            ])
-            ->hidden('legal_id', [
-                'label' => 'Юр. лицо',
-            ])
-            ->currency('currency', [
-                'label' => 'Валюта',
-                'emptyItem' => '',
-            ])
-            ->city('city_id', [
-                'label' => __('label.city'),
-                'emptyItem' => '',
-                'required' => !$isEdit,
-                'onlyWithHotels' => true,
-                'disabled' => $isEdit
-            ])
-            ->hidden('hotel_id', [
-                'label' => 'Отель',
-                'required' => !$isEdit,
-                'emptyItem' => '',
-                'disabled' => $isEdit,
-            ])
-            ->manager('manager_id', [
-                'label' => 'Менеджер',
-                'emptyItem' => '',
-                'value' => request()->user()->id,
-            ])
-            ->dateRange('period', [
-                'label' => 'Дата заезда/выезда',
-                'required' => true
-            ])
-            ->textarea('note', ['label' => 'Примечание']);
-    }
-
     protected function isAllowed(string $permission): bool
     {
         return $this->prototype->hasPermission($permission) && Acl::isAllowed($this->prototype->key, $permission);
@@ -329,7 +166,7 @@ class BookingController extends AbstractController
 
     protected function route(string $name, mixed $parameters = []): string
     {
-        return route("hotel-booking.{$name}", $parameters);
+        return route("booking.{$name}", $parameters);
     }
 
     private function prepareGridQuery(Builder $query, array $searchCriteria): Builder

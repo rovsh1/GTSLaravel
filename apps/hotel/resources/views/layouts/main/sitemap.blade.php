@@ -1,35 +1,31 @@
 <div class="sitemap-wrapper">
     <div class="sitemap">
-        <div class="categories" id="sitemap-categories">
-            @foreach($categories as $category)
-                <div data-category="{{ $category->key }}" class="item{{ $sitemap->isCurrent($category) ? ' current' : '' }}">
-                    <a href="#" title="{{ $category->title }}">
-                        <x-icon :key="$category->key"/>
-                    </a>
-                </div>
-            @endforeach
-        </div>
-
         <div class="main-wrapper">
             <div class="btn-sitemap-toggle-switch-wrapper">
                 <div class="main" id="sitemap-categories-menus">
                     {!! Layout::sidebar() !!}
-                    @foreach($categories as $category)
-                        @if(!$sitemap->isCurrent($category))
-                            <aside class="sidebar" data-category="{{ $category->key }}" style="display: none;">
-                                <div class="main-menu-wrapper">
-                                    <div class="sidebar-header">
-                                        <x-icon :key="$category->key"/>
-                                        <div class="title">{{ $category->title }}</div>
-                                    </div>
+                    <aside class="sidebar">
+                        <div class="main-menu-wrapper">
+                            <div class="sidebar-header">
+                                <div class="title">{TITLE}</div>
+                            </div>
 
-                                    <div class="menu-wrapper">
-                                        {!! $category->render() !!}
+                            <div class="menu-wrapper">
+                                <div class="sidebar-menu">
+
+                                    <div class="group">
+                                        <div class="group-items">
+                                            <nav>
+                                                <a href="{{ route('booking.index') }}" class="current ">
+                                                    Брони отелей
+                                                </a>
+                                            </nav>
+                                        </div>
                                     </div>
                                 </div>
-                            </aside>
-                        @endif
-                    @endforeach
+                            </div>
+                        </div>
+                    </aside>
                 </div>
                 <div class="btn-sitemap-toggle-switch-hover-effect">
                     <div class="btn-sitemap-toggle-switch">

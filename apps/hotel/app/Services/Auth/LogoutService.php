@@ -9,7 +9,7 @@ class LogoutService
 {
     public function logout(Request $request): void
     {
-        Auth::guard('admin')->logout();
+        Auth::guard('hotel')->logout();
 
         $request->session()->invalidate();
 

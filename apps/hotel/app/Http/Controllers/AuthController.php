@@ -5,6 +5,7 @@ namespace App\Hotel\Http\Controllers;
 use App\Hotel\Http\Forms\Auth\LoginForm;
 use App\Hotel\Http\Forms\Auth\PartnerForm;
 use App\Hotel\Http\Forms\Auth\RecoveryForm;
+use App\Hotel\Services\Auth\LogoutService;
 use App\Hotel\Support\Facades\Layout;
 use App\Hotel\Support\Http\AbstractController;
 use App\Hotel\Support\View\LayoutBuilder;
@@ -27,6 +28,13 @@ class AuthController extends AbstractController
 
         return redirect(route('auth.login'))
             ->withErrors($form->errors());
+    }
+
+    public function logout(Request $request)
+    {
+        (new LogoutService())->logout($request);
+
+        return redirect(route('auth.login'));
     }
 
     public function recovery(): LayoutBuilder

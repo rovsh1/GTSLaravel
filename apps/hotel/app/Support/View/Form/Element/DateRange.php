@@ -2,7 +2,7 @@
 
 namespace App\Hotel\Support\View\Form\Element;
 
-use App\Admin\Support\Facades\Format;
+use App\Hotel\Support\Facades\Format;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Gsdk\Form\Element\Text;

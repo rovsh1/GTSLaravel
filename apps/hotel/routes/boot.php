@@ -14,6 +14,7 @@ Route::controller(BookingController::class)
     ->as('booking.')
     ->group(function () {
         Route::get('/', 'index')->name('index');
+        Route::get('/{booking}', 'show')->name('show');
     });
 
 Route::group([], __DIR__ . '/auth.php');
