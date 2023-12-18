@@ -25,7 +25,7 @@ class AuthController extends AbstractController
             return redirect($request->query('url') ?? route('home'));
         }
 
-        return redirect(route('login'))
+        return redirect(route('auth.login'))
             ->withErrors($form->errors());
     }
 

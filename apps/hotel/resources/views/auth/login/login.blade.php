@@ -1,4 +1,4 @@
-@extends('layouts.common')
+@extends('layouts.blank')
 
 @section('styles')
     @vite('resources/views/auth/login/login.scss')
