@@ -1,0 +1,104 @@
+@use "header";
+@use "sitemap";
+@use "sidebar";
+@use "footer";
+
+@use "elements/grid-default";
+@use "elements/core";
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  min-width: 320px;
+  font-size: 13px;
+  letter-spacing: 0.4px;
+
+  main {
+    overflow: auto;
+  }
+}
+
+input {
+  font-size: 13px;
+}
+
+div.dashboard-wrapper {
+  min-height: 100%;
+  background: #fff;
+}
+
+main {
+  flex: 1;
+  height: 100%;
+  padding: 0;
+}
+
+.content {
+  .breadcrumb-wrapper {
+    padding: 1rem 2rem 0;
+  }
+}
+
+.content-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 1rem 2rem 0;
+
+  .title {
+    font-size: 16px;
+  }
+
+  .btn-add {
+    margin-left: 1rem;
+  }
+
+  .btn-menu {
+    margin-left: 1rem;
+  }
+}
+
+.content-body {
+  padding: 0 2rem 2rem;
+
+}
+
+.card .card-body table tr th {
+  font-weight: normal;
+}
+
+.rating {
+  display: inline-block;
+
+  i {
+    vertical-align: top;
+    color: #FEB65A;
+    font-size: 16px;
+  }
+}
+
+.disable-border {
+  border: none;
+
+  .card-body {
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+  }
+}
+
+.rounded hr {
+  margin: 0.5rem 0 0.75rem;
+}
+
+pre {
+  font-size: 0.8rem;
+  font-family: inherit;
+}
+
+.btn-data-content {
+  cursor: pointer;
+}

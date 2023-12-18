@@ -28,7 +28,7 @@ export default defineConfig(({ command }) => ({
         'resources/assets/jquery.ts',
         'resources/assets/tinymce.js',
         'resources/assets/tinymce-content.scss',
-        'resources/views/login.scss',
+        'resources/views/auth/login/login.scss',
       ],
       refresh: [
         'resources/**/*.php',
@@ -62,7 +62,7 @@ export default defineConfig(({ command }) => ({
     alias: {
       '~resources': path.resolve(__dirname, 'resources'),
       '~api': path.resolve(__dirname, 'resources/api'),
-      '~lib': path.resolve(__dirname, '../admin/resources/lib'),
+      '~lib': path.resolve(__dirname, 'resources/lib'),
       '~components': path.resolve(__dirname, 'resources/components'),
     },
   },
