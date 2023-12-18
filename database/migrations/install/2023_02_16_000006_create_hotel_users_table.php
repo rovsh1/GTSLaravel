@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->string('patronymic', 100)->nullable();
             $table->string('login', 50)->nullable();
             $table->string('password', 60)->nullable();
+            $table->string('remember_token', 100)->nullable();
             $table->string('email', 50)->nullable();
             $table->string('phone', 50)->nullable();
             $table->timestamps();

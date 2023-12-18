@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Models;
+namespace App\Hotel\Models;
 
 use App\Admin\Support\Models\HasPeriod;
 use Carbon\CarbonPeriod;

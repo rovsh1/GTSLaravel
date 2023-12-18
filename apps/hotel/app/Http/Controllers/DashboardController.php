@@ -2,12 +2,12 @@
 
 namespace App\Hotel\Http\Controllers;
 
-use App\Admin\Http\Controllers\Controller;
+use App\Hotel\Support\Http\AbstractController;
 
-class DashboardController extends Controller
+class DashboardController extends AbstractController
 {
     public function index()
     {
-        return redirect(route('auth.login'));
+        return redirect(route('booking.index'));
     }
 }

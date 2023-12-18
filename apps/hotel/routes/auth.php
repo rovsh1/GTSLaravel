@@ -14,6 +14,7 @@ Route::controller(AuthController::class)
     ->group(function () {
         Route::get('/login', 'login')->name('login');
         Route::post('/login', 'processLogin')->name('login.submit');
+        Route::get('/logout', 'logout')->name('logout');
         Route::get('/recovery', 'recovery')->name('recovery');
         Route::post('/recovery', 'processRecovery')->name('recovery.submit');
         Route::get('/partner', 'partner')->name('partner');
@@ -21,11 +22,10 @@ Route::controller(AuthController::class)
     });
 
 Route::controller(ProfileController::class)
-    ->prefix('profile.')
-    ->name('profile')
+    ->prefix('profile')
+    ->as('profile.')
     ->group(function () {
-        Route::get('/logout', 'logout')->name('logout');
-//        Route::get('/', 'index');
+        Route::get('/', 'index')->name('index');
 //        Route::match(['get', 'post'], '/settings', 'settings')->name('.name');
 //        Route::match(['get', 'post'], '/password', 'password')->name('.password');
 //        Route::match(['get', 'post'], '/photo', 'photo')->name('.photo');

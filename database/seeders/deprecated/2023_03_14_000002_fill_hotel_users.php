@@ -1,9 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
     public function up()
@@ -28,6 +26,15 @@ return new class extends Migration {
                     'status' => 1,
                 ]);
         }
+
+        DB::table('hotel_users')
+            ->insert([
+                'hotel_id' => 61,
+                'presentation' => 'developer',
+                'login' => 'developer',
+                'password' => \Hash::make('123456'),
+                'status' => 1,
+            ]);
     }
 
     public function down()

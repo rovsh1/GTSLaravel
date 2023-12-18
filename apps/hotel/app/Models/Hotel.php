@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Models;
+namespace App\Hotel\Models;
 
 use App\Admin\Models\HasIndexedChildren;
 use App\Admin\Models\Hotel\Reference\Service;

@@ -78,7 +78,7 @@ return [
         ],
         'hotel' => [
             'driver' => 'eloquent',
-            'model' => \App\Admin\Models\Hotel\User::class
+            'model' => \App\Hotel\Models\User::class
         ],
     ],
 

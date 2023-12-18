@@ -2,7 +2,7 @@
 
 namespace App\Hotel\Services\Auth;
 
-use App\Admin\Models\Hotel\User;
+use App\Hotel\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class LoginService

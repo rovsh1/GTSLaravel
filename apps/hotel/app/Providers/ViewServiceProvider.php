@@ -3,8 +3,11 @@
 namespace App\Hotel\Providers;
 
 use App\Hotel\Support\Facades\Meta;
+use App\Hotel\View\Components;
+use App\Hotel\Support\View as ViewNamespace;
 use App\Hotel\Support\View\Grid as GridNamespace;
 use Gsdk\Form as FormNamespace;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -32,7 +35,7 @@ class ViewServiceProvider extends ServiceProvider
     private function registerForm(): void
     {
         FormNamespace\Form::setDefaults(['name' => 'data']);
-        FormNamespace\Form::registerNamespace('App\Admin\Support\View\Form\Element');
+        FormNamespace\Form::registerNamespace('App\Hotel\Support\View\Form\Element');
         FormNamespace\Form::setElementDefaults([
             //'view' => 'layouts.ui.form.field'
         ]);
@@ -84,5 +87,8 @@ class ViewServiceProvider extends ServiceProvider
 //        ]);
     }
 
-    private function registerComponents(): void {}
+    private function registerComponents(): void {
+        Blade::component('icon', Components\Icon::class);
+        Blade::component('user-avatar', Components\UserAvatar::class);
+    }
 }
