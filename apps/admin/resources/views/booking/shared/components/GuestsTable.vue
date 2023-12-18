@@ -38,7 +38,7 @@ const guests = computed(
 )
 
 const handleEditGuest = async (guest: Guest) => {
-  const message = 'Изменение гостя заказа приведет к возврату всех броней с этим гостем в рабочий статус.'
+  const message = 'Изменение гостя заказа приведет к возврату всех подтвержденных броней с этим гостем в рабочий статус.'
   const { result: isConfirmed, toggleLoading, toggleClose } = await showConfirmDialog(message, 'btn-danger', 'Редактирование гостя')
   if (!isConfirmed) {
     return

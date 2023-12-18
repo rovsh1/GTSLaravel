@@ -23,6 +23,9 @@ class BookingsToProcessing implements DomainEventListenerInterface
 
         $bookings = $this->bookingRepository->getByGuestId($event->guestId());
         foreach ($bookings as $booking) {
+            if (!$booking->isConfirmed()) {
+                continue;
+            }
             $this->bookingUnitOfWork->persist($booking);
             $booking->toProcessing();
         }

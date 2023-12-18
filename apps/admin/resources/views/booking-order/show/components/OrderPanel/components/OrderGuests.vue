@@ -78,7 +78,7 @@ watch(editableGuest, (value) => {
 })
 
 const handleDeleteGuest = async (guestId: number) => {
-  const message = 'Удаление гостя из заказа приведет к возврату всех броней с этим гостем в рабочий статус.'
+  const message = 'Удаление гостя из заказа приведет к возврату всех подтвержденных броней с этим гостем в рабочий статус.'
   const { result: isConfirmed, toggleLoading, toggleClose } = await showConfirmDialog(message, 'btn-danger', 'Удаление гостя')
   if (!isConfirmed) {
     return
