@@ -1,7 +1,7 @@
 @extends('layouts.common')
 
 @section('styles')
-{{--    @vite('resources/views/auth/login/login.scss')--}}
+    @vite('resources/views/auth/login/login.scss')
 @endsection
 
 @section('content')

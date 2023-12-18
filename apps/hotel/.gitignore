@@ -1,0 +1,6 @@
+/node_modules
+npm-debug.log
+/public/hot
+/public/build
+/public/upload
+/public/file
