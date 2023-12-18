@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Domain\Booking\Factory;
 
+use Carbon\CarbonImmutable;
 use Illuminate\Support\Arr;
 use Module\Booking\Moderation\Domain\Booking\Exception\NotFoundServiceCancelConditions;
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
@@ -37,11 +38,19 @@ class TransferCancelConditionsFactory
     ): ?CancelConditions {
         $cancelConditions = null;
         foreach ($carBids as $carBid) {
-            $carCancelConditions = $this->supplierAdapter->getCarCancelConditions($serviceId, $carBid->carId()->value(), $bookingDate);
+            $carCancelConditions = $this->supplierAdapter->getCarCancelConditions(
+                $serviceId,
+                $carBid->carId()->value(),
+                $bookingDate
+            );
             if ($carCancelConditions === null) {
                 throw new NotFoundServiceCancelConditions();
             }
-            $carCancelConditions = $this->buildCarCancelConditions($carCancelConditions, $carBid->clientPriceValue(), $bookingDate);
+            $carCancelConditions = $this->buildCarCancelConditions(
+                $carCancelConditions,
+                $carBid->clientPriceValue(),
+                $bookingDate
+            );
             if ($cancelConditions === null) {
                 $cancelConditions = $carCancelConditions;
                 continue;
@@ -62,7 +71,8 @@ class TransferCancelConditionsFactory
         $maxDaysCount = Arr::first($carCancelConditions->dailyMarkups)?->daysCount;
 
         if ($maxDaysCount !== null && $bookingDate !== null) {
-            $cancelNoFeeDate = $bookingDate->clone()->subDays($maxDaysCount)->toImmutable();
+            $cancelNoFeeDate = $bookingDate->modify("-{$maxDaysCount} days");
+            $cancelNoFeeDate = CarbonImmutable::createFromInterface($cancelNoFeeDate);
             $dailyMarkupOptions = collect($carCancelConditions->dailyMarkups)->map(
                 fn(DailyMarkupDto $dailyMarkupDto) => new DailyCancelFeeValue(
                     value: FeeValue::createAbsolute(
@@ -91,7 +101,8 @@ class TransferCancelConditionsFactory
         CancelConditions $carCancelConditions,
         \DateTimeInterface $bookingDate
     ): CancelConditions {
-        $noCheckInMarkupValue = $baseCancelConditions->noCheckInMarkup()->value()->value() + $carCancelConditions->noCheckInMarkup()->value()->value();
+        $noCheckInMarkupValue = $baseCancelConditions->noCheckInMarkup()->value()->value(
+            ) + $carCancelConditions->noCheckInMarkup()->value()->value();
         $noCheckInMarkup = new CancelFeeValue(
             value: FeeValue::createAbsolute($noCheckInMarkupValue),
             cancelPeriodType: CancelFeePeriodTypeEnum::FULL_PERIOD,

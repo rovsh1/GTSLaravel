@@ -6,11 +6,12 @@ namespace Sdk\Booking\Event\HotelBooking;
 
 use Sdk\Booking\Contracts\Entity\DetailsInterface;
 use Sdk\Booking\Contracts\Event\PriceBecomeDeprecatedEventInterface;
+use Sdk\Booking\Event\BookingDateChangedEventInterface;
 use Sdk\Booking\Support\Event\AbstractDetailsEvent;
 use Sdk\Booking\ValueObject\HotelBooking\BookingPeriod;
 
 //@todo integration event
-class BookingPeriodChanged extends AbstractDetailsEvent implements PriceBecomeDeprecatedEventInterface
+class BookingPeriodChanged extends AbstractDetailsEvent implements PriceBecomeDeprecatedEventInterface, BookingDateChangedEventInterface
 {
     public function __construct(
         DetailsInterface $details,

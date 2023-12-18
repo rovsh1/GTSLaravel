@@ -6,6 +6,7 @@ namespace Sdk\Booking\Entity\Details;
 
 use DateTimeInterface;
 use Sdk\Booking\Contracts\Entity\DetailsInterface;
+use Sdk\Booking\Event\ServiceDateChanged;
 use Sdk\Booking\Support\Entity\AbstractServiceDetails;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\DetailsId;
@@ -48,6 +49,7 @@ final class Other extends AbstractServiceDetails implements DetailsInterface
     public function setDate(?DateTimeInterface $date): void
     {
         $this->date = $date;
+        $this->pushEvent(new ServiceDateChanged($this));
     }
 
     public function serialize(): array

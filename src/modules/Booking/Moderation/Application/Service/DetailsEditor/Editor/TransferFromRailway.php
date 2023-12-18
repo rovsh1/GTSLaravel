@@ -10,12 +10,16 @@ use Sdk\Booking\Entity\Details\TransferFromRailway as Entity;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\ServiceId;
 use Sdk\Booking\ValueObject\ServiceInfo;
+use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 
 class TransferFromRailway extends AbstractEditor implements EditorInterface
 {
     public function __construct(
+        DomainEventDispatcherInterface $eventDispatcher,
         private readonly TransferFromRailwayFactoryInterface $detailsFactory,
-    ) {}
+    ) {
+        parent::__construct($eventDispatcher);
+    }
 
     public function create(BookingId $bookingId, ServiceId $serviceId, array $detailsData): Entity
     {

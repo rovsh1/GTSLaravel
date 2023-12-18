@@ -12,15 +12,18 @@ use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\HotelBooking\BookingPeriod;
 use Sdk\Booking\ValueObject\HotelBooking\HotelInfo;
 use Sdk\Booking\ValueObject\ServiceId;
+use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 use Sdk\Shared\ValueObject\Time;
 
 class HotelBooking extends AbstractEditor implements EditorInterface
 {
     public function __construct(
+        DomainEventDispatcherInterface $eventDispatcher,
         private readonly HotelBookingFactoryInterface $detailsFactory,
         private readonly HotelAdapterInterface $hotelAdapter,
     ) {
+        parent::__construct($eventDispatcher);
     }
 
     public function create(BookingId $bookingId, ServiceId $serviceId, array $detailsData): Entity

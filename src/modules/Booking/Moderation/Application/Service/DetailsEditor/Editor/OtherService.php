@@ -10,12 +10,15 @@ use Sdk\Booking\Contracts\Entity\DetailsInterface;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\ServiceId;
 use Sdk\Booking\ValueObject\ServiceInfo;
+use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 
 class OtherService extends AbstractEditor implements EditorInterface
 {
     public function __construct(
+        DomainEventDispatcherInterface $eventDispatcher,
         private readonly OtherServiceFactoryInterface $detailsFactory
     ) {
+        parent::__construct($eventDispatcher);
     }
 
     public function create(BookingId $bookingId, ServiceId $serviceId, array $detailsData): DetailsInterface

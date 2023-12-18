@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Domain\Booking\Factory;
 
+use Carbon\CarbonImmutable;
 use Illuminate\Support\Arr;
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Supplier\Moderation\Application\Response\CancelConditionsDto;
@@ -47,7 +48,8 @@ class CancelConditionsFactory
         $dailyMarkupOptions = [];
         $maxDaysCount = Arr::first($cancelConditionsDto->dailyMarkups)?->daysCount;
         if ($maxDaysCount !== null && $bookingDate !== null) {
-            $cancelNoFeeDate = $bookingDate->clone()->subDays($maxDaysCount)->toImmutable();
+            $cancelNoFeeDate = $bookingDate->modify("-{$maxDaysCount} days");
+            $cancelNoFeeDate = CarbonImmutable::createFromInterface($cancelNoFeeDate);
             $dailyMarkupOptions = collect($cancelConditionsDto->dailyMarkups)->map(
                 fn(DailyMarkupDto $dailyMarkupDto) => new DailyCancelFeeValue(
                     value: FeeValue::createPercent($dailyMarkupDto->percent),

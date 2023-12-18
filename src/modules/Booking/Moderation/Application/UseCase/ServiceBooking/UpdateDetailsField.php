@@ -19,7 +19,6 @@ class UpdateDetailsField implements UseCaseInterface
     public function execute(int $bookingId, string $field, mixed $value): void
     {
         $details = $this->bookingUnitOfWork->getDetails(new BookingId($bookingId));
-        //@todo если изменилась serviceDate - пересчитать cancelConditions
         $editor = $this->detailsEditorFactory->build($details->serviceType());
         $editor->update($details, [$field => $value]);
         $this->bookingUnitOfWork->commit();

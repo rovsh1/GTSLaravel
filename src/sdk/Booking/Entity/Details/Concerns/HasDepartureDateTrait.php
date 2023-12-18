@@ -3,6 +3,7 @@
 namespace Sdk\Booking\Entity\Details\Concerns;
 
 use DateTimeInterface;
+use Sdk\Booking\Event\DepartureDateChanged;
 
 trait HasDepartureDateTrait
 {
@@ -14,6 +15,7 @@ trait HasDepartureDateTrait
     public function setDepartureDate(?DateTimeInterface $departureDate): void
     {
         $this->departureDate = $departureDate;
+        $this->pushEvent(new DepartureDateChanged($this));
     }
 
     public function serviceDate(): ?DateTimeInterface

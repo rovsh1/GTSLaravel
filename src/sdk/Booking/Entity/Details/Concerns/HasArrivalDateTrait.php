@@ -3,6 +3,7 @@
 namespace Sdk\Booking\Entity\Details\Concerns;
 
 use DateTimeInterface;
+use Sdk\Booking\Event\ArrivalDateChanged;
 
 trait HasArrivalDateTrait
 {
@@ -14,6 +15,7 @@ trait HasArrivalDateTrait
     public function setArrivalDate(?DateTimeInterface $arrivalDate): void
     {
         $this->arrivalDate = $arrivalDate;
+        $this->pushEvent(new ArrivalDateChanged($this));
     }
 
     public function serviceDate(): ?DateTimeInterface

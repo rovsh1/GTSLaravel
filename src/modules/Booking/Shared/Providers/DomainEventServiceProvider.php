@@ -5,6 +5,7 @@ namespace Module\Booking\Shared\Providers;
 use Module\Booking\Shared\Domain\Booking\Listener\CalculateOtherServiceBookingPricesListener;
 use Module\Booking\Shared\Domain\Booking\Listener\RecalculateBookingPricesListener;
 use Module\Booking\Shared\Domain\Booking\Listener\UpdateBookingCancelConditionsListener;
+use Module\Booking\Shared\Domain\Booking\Listener\UpdateCarBidCancelConditionsListener;
 use Module\Booking\Shared\Domain\Booking\Listener\UpdateHotelQuotaListener;
 use Module\Booking\Shared\Domain\Booking\Service\EventMapper\AccommodationGuestBindedMapper;
 use Module\Booking\Shared\Domain\Booking\Service\EventMapper\AccommodationGuestUnbindedMapper;
@@ -18,6 +19,7 @@ use Sdk\Booking\Contracts\Event\CarBidEventInterface;
 use Sdk\Booking\Contracts\Event\PriceBecomeDeprecatedEventInterface;
 use Sdk\Booking\Contracts\Event\QuotaChangedEventInterface;
 use Sdk\Booking\Event\BookingCreated;
+use Sdk\Booking\Event\BookingDateChangedEventInterface;
 use Sdk\Booking\Event\HotelBooking\GuestBinded as AccommodationGuestBinded;
 use Sdk\Booking\Event\HotelBooking\GuestUnbinded as AccommodationGuestUnbinded;
 use Sdk\Booking\Event\ServiceBooking\GuestBinded as AirportGuestBinded;
@@ -36,7 +38,8 @@ class DomainEventServiceProvider extends ServiceProvider
         PriceBecomeDeprecatedEventInterface::class => RecalculateBookingPricesListener::class,
         QuotaChangedEventInterface::class => UpdateHotelQuotaListener::class,
 
-        CarBidEventInterface::class => UpdateBookingCancelConditionsListener::class,
+        CarBidEventInterface::class => UpdateCarBidCancelConditionsListener::class,
+        BookingDateChangedEventInterface::class => UpdateBookingCancelConditionsListener::class,
     ];
 
     protected array $integrationEventMappers = [

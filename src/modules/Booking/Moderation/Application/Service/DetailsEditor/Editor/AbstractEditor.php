@@ -9,9 +9,14 @@ use DateTimeInterface;
 use Illuminate\Support\Str;
 use Sdk\Booking\Contracts\Entity\DetailsInterface;
 use Sdk\Booking\ValueObject\BookingPeriod;
+use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 
 abstract class AbstractEditor
 {
+    public function __construct(
+        private readonly DomainEventDispatcherInterface $eventDispatcher,
+    ) {}
+
     protected function setField(DetailsInterface $details, string $field, mixed $value): void
     {
         $setterMethod = $this->getFieldSetter($field);
@@ -46,5 +51,6 @@ abstract class AbstractEditor
         foreach ($detailsData as $field => $value) {
             $this->setField($details, $field, $value);
         }
+        $this->eventDispatcher->dispatch(...$details->pullEvents());
     }
 }

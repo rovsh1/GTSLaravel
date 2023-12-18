@@ -2,6 +2,7 @@
 
 namespace Sdk\Booking\Entity\Details\Concerns;
 
+use Sdk\Booking\Event\BookingDateChanged;
 use Sdk\Booking\ValueObject\BookingPeriod;
 
 trait HasBookingPeriodTrait
@@ -14,5 +15,6 @@ trait HasBookingPeriodTrait
     public function setBookingPeriod(?BookingPeriod $period): void
     {
         $this->bookingPeriod = $period;
+        $this->pushEvent(new BookingDateChanged($this));
     }
 }

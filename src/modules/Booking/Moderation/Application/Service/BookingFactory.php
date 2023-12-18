@@ -6,10 +6,10 @@ namespace Module\Booking\Moderation\Application\Service;
 
 use Module\Booking\Moderation\Application\Exception\NotFoundHotelCancelPeriodException;
 use Module\Booking\Moderation\Application\Exception\NotFoundServiceCancelConditionsException;
-use Module\Booking\Moderation\Application\Factory\HotelBooking\CancelConditionsFactory as HotelCancelConditionsFactory;
 use Module\Booking\Moderation\Application\RequestDto\CreateBookingRequestDto;
 use Module\Booking\Moderation\Application\Service\DetailsEditor\DetailsEditorFactory;
 use Module\Booking\Moderation\Domain\Booking\Factory\CancelConditionsFactory;
+use Module\Booking\Moderation\Domain\Booking\Factory\HotelCancelConditionsFactory;
 use Module\Booking\Moderation\Domain\Booking\Service\HotelBooking\HotelValidator;
 use Module\Booking\Shared\Domain\Booking\Adapter\HotelAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
