@@ -1,12 +1,12 @@
 <?php
 
-use App\Shared\Support\Database\Schema\TranslationTable;
+use App\Shared\Support\Database\Schema\TranslationSchema;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
-    public function up()
+    public function up(): void
     {
         Schema::create('supplier_services', function (Blueprint $table) {
             $table->increments('id');
@@ -22,15 +22,14 @@ return new class extends Migration {
                 ->cascadeOnUpdate();
         });
 
-
-        (new TranslationTable('supplier_services'))
-            ->string('title')
-            ->create();
+        TranslationSchema::create('supplier_services', function (Blueprint $table) {
+            $table->string('title');
+        });
     }
 
-    public function down()
+    public function down(): void
     {
-        Schema::dropIfExists('supplier_services_translation');
+        TranslationSchema::dropIfExists('supplier_services');
         Schema::dropIfExists('supplier_services');
     }
 };

@@ -1,12 +1,12 @@
 <?php
 
-use App\Shared\Support\Database\Schema\TranslationTable;
+use App\Shared\Support\Database\Schema\TranslationSchema;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
-    public function up()
+    public function up(): void
     {
         Schema::create('r_landmarks', function (Blueprint $table) {
             $table->smallIncrements('id');
@@ -34,13 +34,14 @@ return new class extends Migration {
             $table->index('city_distance');
         });
 
-        (new TranslationTable('r_landmarks'))
-            ->string('name')
-            ->create();
+        TranslationSchema::create('r_landmarks', function (Blueprint $table) {
+            $table->string('name');
+        });
     }
 
-    public function down()
+    public function down(): void
     {
+        TranslationSchema::dropIfExists('r_landmarks');
         Schema::dropIfExists('r_landmarks');
     }
 };

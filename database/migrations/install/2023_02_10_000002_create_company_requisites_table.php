@@ -1,6 +1,6 @@
 <?php
 
-use App\Shared\Support\Database\Schema\TranslationTable;
+use App\Shared\Support\Database\Schema\TranslationSchema;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,14 +13,14 @@ return new class extends Migration {
             $table->string('key');
         });
 
-        (new TranslationTable('s_company_requisites'))
-            ->string('value')
-            ->create();
+        TranslationSchema::create('s_company_requisites', function (Blueprint $table) {
+            $table->string('value');
+        });
     }
 
     public function down()
     {
-        Schema::dropIfExists('s_company_requisites_translation');
+        TranslationSchema::dropIfExists('s_company_requisites');
         Schema::dropIfExists('s_company_requisites');
     }
 };

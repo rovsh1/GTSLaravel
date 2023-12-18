@@ -1,15 +1,11 @@
 <?php
 
-use App\Shared\Support\Database\Schema\TranslationTable;
+use App\Shared\Support\Database\Schema\TranslationSchema;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
-    /**
-     * Run the migrations.
-     */
+return new class extends Migration {
     public function up(): void
     {
         Schema::create('hotel_rules', function (Blueprint $table) {
@@ -23,18 +19,15 @@ return new class extends Migration
                 ->cascadeOnUpdate();
         });
 
-        (new TranslationTable('hotel_rules'))
-            ->string('name')
-            ->text('text')
-            ->create();
+        TranslationSchema::create('hotel_rules', function (Blueprint $table) {
+            $table->string('name');
+            $table->text('text');
+        });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
+        TranslationSchema::dropIfExists('hotel_rules');
         Schema::dropIfExists('hotel_rules');
-        Schema::dropIfExists('hotel_rules_translation');
     }
 };

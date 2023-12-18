@@ -1,6 +1,6 @@
 <?php
 
-use App\Shared\Support\Database\Schema\TranslationTable;
+use App\Shared\Support\Database\Schema\TranslationSchema;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,14 +15,14 @@ return new class extends Migration {
             $table->index('group');
         });
 
-        (new TranslationTable('r_enums'))
-            ->string('name')
-            ->create();
+        TranslationSchema::create('r_enums', function (Blueprint $table) {
+            $table->string('name');
+        });
     }
 
     public function down()
     {
-        Schema::dropIfExists('r_enums_translation');
+        TranslationSchema::dropIfExists('r_enums');
         Schema::dropIfExists('r_enums');
     }
 };

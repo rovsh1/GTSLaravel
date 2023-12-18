@@ -1,19 +1,19 @@
 <?php
 
-use App\Shared\Support\Database\Schema\TranslationTable;
+use App\Shared\Support\Database\Schema\TranslationSchema;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
-    public function up()
+    public function up(): void
     {
         $this->createRates();
         $this->createPriceGroups();
         $this->createPrices();
     }
 
-    private function createRates()
+    private function createRates(): void
     {
         Schema::create('hotel_price_rates', function (Blueprint $table) {
             $table->increments('id');
@@ -33,13 +33,13 @@ return new class extends Migration {
                 ->cascadeOnUpdate();
         });
 
-        (new TranslationTable('hotel_price_rates'))
-            ->string('name')
-            ->string('description')
-            ->create();
+        TranslationSchema::create('hotel_price_rates', function (Blueprint $table) {
+            $table->string('name');
+            $table->string('description');
+        });
     }
 
-    private function createPriceGroups()
+    private function createPriceGroups(): void
     {
         Schema::create('hotel_price_groups', function (Blueprint $table) {
             $table->increments('id');
@@ -58,7 +58,7 @@ return new class extends Migration {
         });
     }
 
-    private function createPrices()
+    private function createPrices(): void
     {
         Schema::create('hotel_calculated_price_calendar', function (Blueprint $table) {
             $table->date('date');
@@ -83,10 +83,11 @@ return new class extends Migration {
         });
     }
 
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('hotel_calculated_price_calendar');
         Schema::dropIfExists('hotel_price_groups');
+        TranslationSchema::dropIfExists('hotel_price_rates');
         Schema::dropIfExists('hotel_price_rates');
     }
 };

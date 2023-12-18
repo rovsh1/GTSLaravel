@@ -1,12 +1,12 @@
 <?php
 
-use App\Shared\Support\Database\Schema\TranslationTable;
+use App\Shared\Support\Database\Schema\TranslationSchema;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
-    public function up()
+    public function up(): void
     {
         Schema::create('hotel_rooms', function (Blueprint $table) {
             $table->increments('id');
@@ -32,15 +32,15 @@ return new class extends Migration {
                 ->cascadeOnUpdate();
         });
 
-        (new TranslationTable('hotel_rooms'))
-            ->text('name')
-            ->text('text', ['nullable' => true])
-            ->create();
+        TranslationSchema::create('hotel_rooms', function (Blueprint $table) {
+            $table->text('name');
+            $table->text('text')->nullable();
+        });
 
         $this->createBeds();
     }
 
-    public function createBeds()
+    public function createBeds(): void
     {
         Schema::create('hotel_room_beds', function (Blueprint $table) {
             $table->unsignedInteger('room_id');
@@ -64,10 +64,10 @@ return new class extends Migration {
         });
     }
 
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('hotel_room_beds');
-        Schema::dropIfExists('hotel_rooms_translation');
+        TranslationSchema::dropIfExists('hotel_rooms');
         Schema::dropIfExists('hotel_rooms');
     }
 };

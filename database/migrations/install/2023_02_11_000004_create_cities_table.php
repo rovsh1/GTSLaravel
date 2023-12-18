@@ -1,12 +1,12 @@
 <?php
 
-use App\Shared\Support\Database\Schema\TranslationTable;
+use App\Shared\Support\Database\Schema\TranslationSchema;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
-    public function up()
+    public function up(): void
     {
         Schema::create('r_cities', function (Blueprint $table) {
             $table->integer('id')->unsigned()->autoIncrement();
@@ -22,14 +22,14 @@ return new class extends Migration {
                 ->cascadeOnUpdate();
         });
 
-        (new TranslationTable('r_cities'))
-            ->string('name')
-            ->create();
+        TranslationSchema::create('r_cities', function (Blueprint $table) {
+            $table->string('name');
+        });
     }
 
-    public function down()
+    public function down(): void
     {
-        Schema::dropIfExists('r_cities_translation');
+        TranslationSchema::dropIfExists('r_cities');
         Schema::dropIfExists('r_cities');
     }
 };

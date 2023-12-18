@@ -1,27 +1,27 @@
 <?php
 
-use App\Shared\Support\Database\Schema\TranslationTable;
+use App\Shared\Support\Database\Schema\TranslationSchema;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
-    public function up()
+    public function up(): void
     {
         Schema::create('site_faq', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedTinyInteger('type');
         });
 
-        (new TranslationTable('site_faq'))
-            ->string('question')
-            ->text('answer')
-            ->create();
+        TranslationSchema::create('site_faq', function (Blueprint $table) {
+            $table->string('question');
+            $table->text('answer');
+        });
     }
 
-    public function down()
+    public function down(): void
     {
-        Schema::dropIfExists('site_faq_translation');
+        TranslationSchema::dropIfExists('site_faq');
         Schema::dropIfExists('site_faq');
     }
 };
