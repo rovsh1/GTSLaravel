@@ -8,13 +8,13 @@ import { CancelReasonResponse, useCancelReasonListAPI } from '~api/cancel-reason
 
 export const useCancelReasonStore = defineStore('cancel-reasons', () => {
   const { data: dataFromStorage, existData, saveToLocalStorage } = useLocalStorageCache('cancel-reasons')
-  const { data: cancelReasons, execute: fetchCities } = useCancelReasonListAPI()
+  const { data: cancelReasons, execute: fetchCancelReasons } = useCancelReasonListAPI()
 
   onMounted(async () => {
     if (existData.value) {
       cancelReasons.value = dataFromStorage.value as CancelReasonResponse[]
     } else {
-      await fetchCities()
+      await fetchCancelReasons()
       saveToLocalStorage(cancelReasons.value)
     }
   })
