@@ -7,7 +7,6 @@ namespace Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Fa
 use Illuminate\Support\Collection;
 use Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Dto\Service\PriceDto;
 use Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Dto\ServiceInfoDto;
-use Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Factory\BookingPeriodDataFactory;
 use Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Factory\CancelConditionsDataFactory;
 use Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Factory\GuestDataFactory;
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
@@ -36,7 +35,6 @@ class BasicDetailsDataFactory
         private readonly AirportAdapterInterface $airportAdapter,
         private readonly RailwayStationAdapterInterface $railwayStationAdapter,
         private readonly CityAdapterInterface $cityAdapter,
-        private readonly BookingPeriodDataFactory $bookingPeriodDataFactory,
         private readonly GuestDataFactory $guestDataFactory,
         private readonly CancelConditionsDataFactory $cancelConditionsDataFactory,
         private readonly SupplierAdapterInterface $supplierAdapter,

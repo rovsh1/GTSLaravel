@@ -8,7 +8,6 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Dto\Service\PriceDto;
 use Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Dto\ServiceInfoDto;
-use Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Factory\BookingPeriodDataFactory;
 use Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Factory\CancelConditionsDataFactory;
 use Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Factory\GuestDataFactory;
 use Module\Booking\Shared\Domain\Booking\Adapter\HotelAdapterInterface;
@@ -39,7 +38,6 @@ class HotelAccommodationDataFactory
 
     public function __construct(
         private readonly DetailsRepositoryInterface $detailsRepository,
-        private readonly BookingPeriodDataFactory $bookingPeriodDataFactory,
         private readonly GuestDataFactory $guestDataFactory,
         private readonly HotelAdapterInterface $hotelAdapter,
         private readonly HotelRoomAdapterInterface $hotelRoomAdapter,
