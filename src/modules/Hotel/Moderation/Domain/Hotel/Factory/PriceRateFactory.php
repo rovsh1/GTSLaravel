@@ -23,8 +23,8 @@ class PriceRateFactory extends AbstractEntityFactory
 
         return new PriceRate(
             $data['id'],
-            $data['name'],
-            $data['description'],
+            $data['name'] ?? '',
+            $data['description'] ?? '',
             $mealPlan
         );
     }

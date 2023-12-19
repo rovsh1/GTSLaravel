@@ -48,7 +48,6 @@ class BasicDetailsDataFactory
 
         return new ServiceInfoDto(
             title: $service->title,
-            bookingPeriod: $this->bookingPeriodDataFactory->build($details),
             detailOptions: $this->buildDetails($details),
             guests: method_exists($details, 'guestIds')
                 ? $this->guestDataFactory->build($details->guestIds())

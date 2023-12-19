@@ -54,7 +54,6 @@ class HotelAccommodationDataFactory
 
         return new ServiceInfoDto(
             title: $serviceTitle,
-            bookingPeriod: $this->bookingPeriodDataFactory->build($details),
             detailOptions: $this->buildDetails($details, $accommodation),
             guests: $this->guestDataFactory->build($accommodation->guestIds()),
             price: $this->buildPrice($booking->prices()->clientPrice()->currency(), $accommodation),

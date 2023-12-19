@@ -14,7 +14,6 @@ class ServiceInfoDto
 {
     public function __construct(
         public readonly string $title,
-        public readonly BookingPeriodDto $bookingPeriod,
         public readonly Collection $detailOptions,
         /** @var GuestDto[] $guests */
         public readonly array $guests,

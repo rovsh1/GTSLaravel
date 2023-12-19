@@ -43,7 +43,6 @@ class CarBidDataFactory
 
         return new ServiceInfoDto(
             title: $service->title,
-            bookingPeriod: $bookingPeriod,
             detailOptions: $this->buildDetails($carBid, $details),
             guests: $this->guestDataFactory->build($carBid->guestIds()),
             price: $this->buildPrice($carBid, $booking->prices()->clientPrice()->currency(), $bookingPeriod->countDays),
