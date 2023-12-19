@@ -16,7 +16,8 @@ class DatabaseSeeder extends Seeder
             DeprecatedSeeder::class,
             TestDataSeeder::class,
             TranslatorSeeder::class,
-            BookingStatusesSeeder::class
+            BookingStatusesSeeder::class,
+            CancelReasonSeeder::class,
         ]);
     }
 }

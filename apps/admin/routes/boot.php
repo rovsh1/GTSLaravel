@@ -15,6 +15,7 @@ Route::group([], __DIR__ . '/supplier.php');
 Route::group([], __DIR__ . '/city.php');
 Route::group([], __DIR__ . '/client.php');
 Route::group([], __DIR__ . '/country.php');
+Route::group([], __DIR__ . '/cancel-reason.php');
 Route::group([], __DIR__ . '/airport.php');
 Route::group([], __DIR__ . '/hotel-booking.php');
 Route::group([], __DIR__ . '/service-booking.php');
