@@ -37,4 +37,9 @@ class Contact extends Model
     {
         $builder->where('type', ContactTypeEnum::PHONE);
     }
+
+    public function scopeWhereMain(Builder $builder): void
+    {
+        $builder->where('is_main', true);
+    }
 }

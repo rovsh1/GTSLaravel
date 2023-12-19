@@ -12,21 +12,21 @@ class ClientRequisitesRepository implements ClientRequisitesRepositoryInterface
 {
     public function getPhone(ClientId $clientId): ?string
     {
-        $model = Contact::whereClientId($clientId->value())->whereIsPhone()->first();
+        $model = Contact::whereClientId($clientId->value())->whereIsPhone()->whereMain()->first();
 
         return $model?->value;
     }
 
     public function getAddress(ClientId $clientId): ?string
     {
-        $model = Contact::whereClientId($clientId->value())->whereIsAddress()->first();
+        $model = Contact::whereClientId($clientId->value())->whereIsAddress()->whereMain()->first();
 
         return $model?->value;
     }
 
     public function getEmail(ClientId $clientId): ?string
     {
-        $model = Contact::whereClientId($clientId->value())->whereIsEmail()->first();
+        $model = Contact::whereClientId($clientId->value())->whereIsEmail()->whereMain()->first();
 
         return $model?->value;
     }

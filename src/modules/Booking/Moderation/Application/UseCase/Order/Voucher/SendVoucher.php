@@ -34,6 +34,9 @@ class SendVoucher implements UseCaseInterface
         if ($client === null) {
             throw new EntityNotFoundException('Client not found');
         }
+        if (empty($client->email)) {
+            throw new \RuntimeException('Не указан емейл клиента');
+        }
 
         $voucher = $order->voucher();
         if ($order->timestamps()->updatedAt()->getTimestamp() > $voucher?->createdAt()->getTimestamp()) {
@@ -47,6 +50,6 @@ class SendVoucher implements UseCaseInterface
         $this->eventDispatcher->dispatch(...$order->pullEvents());
 
         //@todo сформировать шаблон письма из blade
-        $this->mailAdapter->sendTo($client->email, 'Ваучер', '', [new AttachmentDto($voucher->file()->guid())]);
+        $this->mailAdapter->sendTo($client->email, 'Ваучер', 'Тело письма', [new AttachmentDto($voucher->file()->guid())]);
     }
 }
