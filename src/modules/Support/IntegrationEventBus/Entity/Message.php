@@ -13,8 +13,7 @@ class Message
         private readonly string $event,
         private readonly array $payload,
         private readonly array $context
-    ) {
-    }
+    ) {}
 
     public function uuid(): string
     {
@@ -65,7 +64,8 @@ class Message
             'status' => $this->status->value,
             'module' => $this->module,
             'event' => $this->event,
-            'payload' => $this->payload
+            'payload' => $this->payload,
+            'context' => $this->context,
         ];
     }
 
