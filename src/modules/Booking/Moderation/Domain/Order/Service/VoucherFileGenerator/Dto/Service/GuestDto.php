@@ -9,6 +9,6 @@ class GuestDto
     public function __construct(
         public readonly string $fullName,
         public readonly string $gender,
-        public readonly string $countryName,
+        public readonly ?string $countryName,
     ) {}
 }
