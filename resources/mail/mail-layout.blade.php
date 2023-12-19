@@ -325,7 +325,7 @@
 
           <div class="u-row-container" style="padding: 0px;">
 
-            <!-- тут тело письма -->
+            @yield('content')
 
             <div class="u-row-container" style="padding: 0px;background-color: transparent">
               <div class="u-row"

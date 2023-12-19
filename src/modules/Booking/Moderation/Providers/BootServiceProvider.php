@@ -16,6 +16,7 @@ class BootServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        View::addLocation(base_path('resources/mail'));
         View::addLocation(base_path('resources/pdf-templates'));
     }
 }

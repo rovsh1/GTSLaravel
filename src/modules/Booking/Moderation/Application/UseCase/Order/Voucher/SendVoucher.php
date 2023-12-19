@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Moderation\Application\UseCase\Order\Voucher;
 
 use Module\Booking\Moderation\Domain\Order\Factory\VoucherFactory;
+use Module\Booking\Moderation\Domain\Order\Service\VoucherMailGenerator\MailGenerator;
 use Module\Booking\Moderation\Domain\Order\ValueObject\Voucher;
 use Module\Booking\Shared\Domain\Order\DbContext\OrderDbContextInterface;
 use Module\Booking\Shared\Domain\Order\Repository\OrderRepositoryInterface;
@@ -24,6 +25,7 @@ class SendVoucher implements UseCaseInterface
         private readonly VoucherFactory $voucherFactory,
         private readonly MailAdapterInterface $mailAdapter,
         private readonly ClientAdapterInterface $clientAdapter,
+        private readonly MailGenerator $mailGenerator,
         private readonly DomainEventDispatcherInterface $eventDispatcher,
     ) {}
 
@@ -49,7 +51,12 @@ class SendVoucher implements UseCaseInterface
         $this->orderDbContext->store($order);
         $this->eventDispatcher->dispatch(...$order->pullEvents());
 
-        //@todo сформировать шаблон письма из blade
-        $this->mailAdapter->sendTo($client->email, 'Ваучер', 'Тело письма', [new AttachmentDto($voucher->file()->guid())]);
+        $body = $this->mailGenerator->generate($order->id());
+        $this->mailAdapter->sendTo(
+            $client->email,
+            'Ваучер',
+            $body,
+            [new AttachmentDto($voucher->file()->guid())]
+        );
     }
 }
