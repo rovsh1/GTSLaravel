@@ -218,6 +218,8 @@ return [
                 'maxProcesses' => 10,
             ]
         ],
+        'development' => [
+        ],
         'local' => [
         ]
     ],
