@@ -1,54 +1,57 @@
-import { onMounted, ref } from 'vue'
+interface LocalStorageCache {
+  hasData: () => boolean
+  setData: (value: any) => void
+  getData: () => any | undefined
+}
 
-import { cacheSettings } from './settings'
+export enum TTLValues {
+  MONTH = 2628288,
+  WEEK = 604800,
+  DAY = 86400,
+  HOUR = 3600,
+  MINUTE = 60,
+}
 
-const useLocalStorageCache = (key: string) => {
-  const data = ref()
-  const existData = ref<boolean>(false)
+export const useLocalStorageCache = (key: string, expirationTimeInSeconds: TTLValues) => {
+  let data: any
+  let existData: boolean = false
 
-  const loadFromLocalStorage = () => {
-    if (!cacheSettings) {
-      existData.value = false
-      return
-    }
+  const loadData = () => {
     const storedData = localStorage.getItem(key)
-    const settings = cacheSettings.find((option) => option.key === key)
-    if (storedData && settings) {
+    if (storedData) {
       try {
         const parsedData = JSON.parse(storedData)
         const { timestamp, value } = parsedData
         const currentTime = new Date().getTime()
-        const isDataValid = !timestamp || (currentTime - timestamp) < settings.expirationTimeInMinutes * 60 * 1000
-
+        const isDataValid = !timestamp || (currentTime - timestamp) < expirationTimeInSeconds * 1000
         if (isDataValid && value) {
-          data.value = value
-          existData.value = true
+          data = value
+          existData = true
           return
         }
         localStorage.removeItem(key)
       } catch (error) {
         console.error('Error parsing localStorage data:', error)
       }
-    } else if (storedData) {
-      localStorage.removeItem(key)
     }
-    existData.value = false
-    data.value = undefined
+    existData = false
+    data = undefined
   }
 
-  const saveToLocalStorage = (value: any) => {
+  const setData = (value: any) => {
     const dataToStore = {
       timestamp: new Date().getTime(),
       value,
     }
     localStorage.setItem(key, JSON.stringify(dataToStore))
+    loadData()
   }
 
-  onMounted(() => {
-    loadFromLocalStorage()
-  })
+  const getData = () => data
 
-  return { data, existData, saveToLocalStorage, loadFromLocalStorage }
+  const hasData = () => existData
+
+  loadData()
+
+  return { hasData, setData, getData } as LocalStorageCache
 }
-
-export default useLocalStorageCache
