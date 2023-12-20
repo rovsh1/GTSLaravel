@@ -18,4 +18,7 @@ export const cacheSettings: LocalStorageCacheSettings[] = [{
 }, {
   key: 'cities',
   expirationTimeInMinutes: 1440,
+}, {
+  key: 'cancel-reasons',
+  expirationTimeInMinutes: 1440,
 }]

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 
-import { useCancelReasonStore } from '~resources/store/cancel-reason'
 import BookingExternalNumberType from '~resources/views/booking/shared/components/BookingPanel/components/BookingExternalNumberType.vue'
 import BookingFinancialCost from '~resources/views/booking/shared/components/BookingPanel/components/BookingFinancialCost.vue'
 import BookingRequests from '~resources/views/booking/shared/components/BookingPanel/components/BookingRequests.vue'
@@ -15,7 +14,6 @@ import OverlayLoading from '~components/OverlayLoading.vue'
 
 const bookingStore = useBookingStore()
 const { recalculatePrice } = bookingStore
-useCancelReasonStore()
 
 </script>
 
