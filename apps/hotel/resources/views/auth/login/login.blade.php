@@ -5,6 +5,13 @@
 @endsection
 
 @section('content')
+<div class="content-auth w-100">
+    <div class="content-auth-background">
+        <div class="position-absolute content-auth-background-left-arrow"><img src="/images/login/left-arrow.svg"></img></div>
+        <div class="position-absolute content-auth-background-logo-first"><img src="/images/login/logo.svg"></img></div>
+        <div class="position-absolute content-auth-background-right-arrow"><img src="/images/login/right-arrow.svg"></img></div>
+        <div class="position-absolute content-auth-background-logo-second"><img src="/images/login/logo2.svg"></img></div> 
+    </div>
     <div class="form-signin w-100 m-auto">
 
         <div class="content-body">
@@ -24,4 +31,5 @@
             </div>
         </div>
     </div>
+</div>
 @endsection
