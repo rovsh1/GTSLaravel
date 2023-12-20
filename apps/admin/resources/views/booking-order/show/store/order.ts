@@ -4,6 +4,7 @@ import { defineStore, storeToRefs } from 'pinia'
 import { z } from 'zod'
 
 import { useGetOrderBookingsAPI } from '~resources/api/order/booking'
+import { useCancelReasonStore } from '~resources/store/cancel-reason'
 import { showCancelFeeDialog, showNotConfirmedReasonDialog } from '~resources/views/booking/shared/lib/modals'
 import { useOrderStatusesStore } from '~resources/views/booking-order/show/store/status'
 
@@ -38,6 +39,8 @@ export const useOrderStore = defineStore('booking-order', () => {
   const { fetchStatuses } = orderStatusesStore
   const { statuses } = storeToRefs(orderStatusesStore)
 
+  const { cancelReasons } = storeToRefs(useCancelReasonStore())
+
   const isStatusUpdateFetching = ref(false)
   const isVoucherFetching = ref(false)
   const bookingManagerId = ref(manager.id)
@@ -57,7 +60,7 @@ export const useOrderStore = defineStore('booking-order', () => {
     updateStatusPayload.status = status
     const { data: updateStatusResponse } = await updateOrderStatus(updateStatusPayload)
     if (updateStatusResponse.value?.isNotConfirmedReasonRequired) {
-      const { result: isConfirmed, reason, toggleClose } = await showNotConfirmedReasonDialog()
+      const { result: isConfirmed, reason, toggleClose } = await showNotConfirmedReasonDialog(cancelReasons.value || [])
       if (isConfirmed) {
         updateStatusPayload.notConfirmedReason = reason
         toggleClose()
