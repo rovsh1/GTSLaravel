@@ -66,12 +66,13 @@ class Order extends Model
 
     public function scopeForLandingToPaymentId(Builder $builder, int $paymentId): void
     {
-        $builder->whereExists(function (Query $builder) use ($paymentId) {
-            $builder->selectRaw(1)
-                ->from('client_payment_landings')
-                ->whereColumn('client_payment_landings.order_id', 'orders.id')
-                ->where('client_payment_landings.payment_id', $paymentId);
-        });
+        $builder->selectRaw(self::getPayedAmountQuery($paymentId) . ' as payed_amount')
+            ->whereExists(function (Query $builder) use ($paymentId) {
+                $builder->selectRaw(1)
+                    ->from('client_payment_landings')
+                    ->whereColumn('client_payment_landings.order_id', 'orders.id')
+                    ->where('client_payment_landings.payment_id', $paymentId);
+            });
     }
 
     private static function getClientPriceQuery(): string
@@ -82,8 +83,10 @@ class Order extends Model
         return "(SELECT SUM(client_price) FROM (SELECT order_id, IF(status IN ({$cancelledFeeStatus}, {$cancelledNoFeeStatus}), COALESCE(client_penalty, 0), COALESCE(client_manual_price, client_price)) as client_price FROM bookings) as t WHERE t.order_id=orders.id)";
     }
 
-    private static function getPayedAmountQuery(): string
+    private static function getPayedAmountQuery(?int $paymentId = null): string
     {
-        return '(select COALESCE(SUM(sum), 0) from client_payment_landings where client_payment_landings.order_id = orders.id)';
+        $paymentQuery = $paymentId !== null ? "AND client_payment_landings.payment_id = {$paymentId}" : '';
+
+        return "(select COALESCE(SUM(sum), 0) from client_payment_landings where client_payment_landings.order_id = orders.id {$paymentQuery})";
     }
 }
