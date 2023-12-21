@@ -11,6 +11,7 @@ use Module\Hotel\Moderation\Domain\Hotel\ValueObject\TimeSettings;
 use Sdk\Module\Foundation\Support\EntityFactory\AbstractEntityFactory;
 use Sdk\Shared\Enum\ContactTypeEnum;
 use Sdk\Shared\Enum\CurrencyEnum;
+use Sdk\Shared\ValueObject\Time;
 
 class HotelFactory extends AbstractEntityFactory
 {
@@ -20,11 +21,18 @@ class HotelFactory extends AbstractEntityFactory
     {
         $contacts = $this->buildContacts($data['contacts']);
 
-        return new $this->entity(
+        $timeSettings = $data['time_settings'] ?? null;
+        if (!empty($timeSettings)) {
+            $timeSettings = TimeSettings::deserialize(
+                json_decode($timeSettings, true)
+            );
+        }
+
+        return new Hotel(
             id: new HotelId($data['id']),
             name: $data['name'],
             currency: CurrencyEnum::from($data['currency']),
-            timeSettings: TimeSettings::deserialize(json_decode($data['time_settings'], true)),
+            timeSettings: $timeSettings ?? $this->getDefaultTimeSettings(),
             address: new Address(
                 country: $data['country_name'],
                 city: $data['city_name'],
@@ -43,5 +51,13 @@ class HotelFactory extends AbstractEntityFactory
         ), $contacts);
 
         return new ContactCollection($preparedContacts);
+    }
+
+    private function getDefaultTimeSettings(): TimeSettings
+    {
+        $checkInTime = new Time('12:00');
+        $checkOutTime = new Time('14:00');
+
+        return new TimeSettings($checkInTime, $checkOutTime, null);
     }
 }

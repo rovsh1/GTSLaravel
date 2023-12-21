@@ -82,9 +82,7 @@ class MarkupSettingsSetter extends AbstractUpdater
             'cancelPeriod' => $settings->cancelPeriods()->get($keyParts[1]),
             'cancelPeriod.noCheckInMarkup' => $settings->cancelPeriods()->get($keyParts[1])->noCheckInMarkup(),
             'cancelPeriods' => $settings->cancelPeriods(),
-            'cancelPeriods.dailyMarkup' => $settings->cancelPeriods()->get($keyParts[1])->dailyMarkups()->get(
-                $keyParts[2]
-            ),
+            'cancelPeriods.dailyMarkup' => $settings->cancelPeriods()->get($keyParts[1])->dailyMarkups()->get($keyParts[2]),
             'cancelPeriods.dailyMarkups' => $settings->cancelPeriods()->get($keyParts[1])->dailyMarkups(),
         };
     }
