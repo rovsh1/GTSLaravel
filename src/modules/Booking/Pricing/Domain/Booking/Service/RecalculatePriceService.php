@@ -17,8 +17,8 @@ class RecalculatePriceService
         $booking = $this->bookingUnitOfWork->findOrFail($bookingId);
         $calculator = $this->priceCalculatorFactory->build($booking->serviceType());
         $bookingPrices = $calculator->calculate($booking);
-        $booking->updatePrice($bookingPrices);
         $this->bookingUnitOfWork->persist($booking);
+        $booking->updatePrice($bookingPrices);
         $this->bookingUnitOfWork->commit();
     }
 }

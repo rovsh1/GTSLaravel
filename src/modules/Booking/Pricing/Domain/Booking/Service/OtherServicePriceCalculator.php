@@ -39,14 +39,14 @@ class OtherServicePriceCalculator implements PriceCalculatorInterface
             new BookingPriceItem(
                 currency: $supplierCurrency,
                 calculatedValue: Money::round($supplierCurrency, $servicePrice->supplierPrice->amount),
-                manualValue: Money::round($supplierCurrency, $booking->prices()->supplierPrice()->manualValue()),
-                penaltyValue: Money::round($supplierCurrency, $booking->prices()->supplierPrice()->penaltyValue())
+                manualValue: Money::roundNullable($supplierCurrency, $booking->prices()->supplierPrice()->manualValue()),
+                penaltyValue: Money::roundNullable($supplierCurrency, $booking->prices()->supplierPrice()->penaltyValue())
             ),
             new BookingPriceItem(
                 currency: $clientCurrency,
                 calculatedValue: Money::round($clientCurrency, $servicePrice->clientPrice->amount),
-                manualValue: Money::round($clientCurrency, $booking->prices()->clientPrice()->manualValue()),
-                penaltyValue: Money::round($clientCurrency, $booking->prices()->clientPrice()->penaltyValue())
+                manualValue: Money::roundNullable($clientCurrency, $booking->prices()->clientPrice()->manualValue()),
+                penaltyValue: Money::roundNullable($clientCurrency, $booking->prices()->clientPrice()->penaltyValue())
             )
         );
     }

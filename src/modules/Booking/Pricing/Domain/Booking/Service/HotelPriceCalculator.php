@@ -41,7 +41,8 @@ class HotelPriceCalculator implements PriceCalculatorInterface
         );
 
         $this->hotelPriceMapper->boot($booking, $supplierPriceDto, $clientPriceDto);
-        foreach ($this->accommodationRepository->getByBookingId($details->bookingId()) as $accommodation) {
+        $accommodations = $this->accommodationRepository->getByBookingId($details->bookingId());
+        foreach ($accommodations as $accommodation) {
             $this->bookingUnitOfWork->persist($accommodation);
             $accommodation->updatePrices(
                 $this->hotelPriceMapper->buildAccommodationPrice($accommodation)

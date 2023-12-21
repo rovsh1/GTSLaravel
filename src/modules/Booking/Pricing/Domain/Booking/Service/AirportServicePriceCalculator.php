@@ -43,8 +43,8 @@ class AirportServicePriceCalculator implements PriceCalculatorInterface
                     $supplierCurrency,
                     $servicePrice->supplierPrice->amount * $details->guestsCount()
                 ),
-                manualValue: Money::round($supplierCurrency, $bookingPrices->supplierPrice()->manualValue()),
-                penaltyValue: Money::round($supplierCurrency, $bookingPrices->supplierPrice()->penaltyValue())
+                manualValue: Money::roundNullable($supplierCurrency, $bookingPrices->supplierPrice()->manualValue()),
+                penaltyValue: Money::roundNullable($supplierCurrency, $bookingPrices->supplierPrice()->penaltyValue())
             ),
             new BookingPriceItem(
                 currency: $clientCurrency,
@@ -52,8 +52,8 @@ class AirportServicePriceCalculator implements PriceCalculatorInterface
                     $clientCurrency,
                     $servicePrice->clientPrice->amount * $details->guestsCount()
                 ),
-                manualValue: Money::round($clientCurrency, $bookingPrices->clientPrice()->manualValue()),
-                penaltyValue: Money::round($clientCurrency, $bookingPrices->clientPrice()->penaltyValue())
+                manualValue: Money::roundNullable($clientCurrency, $bookingPrices->clientPrice()->manualValue()),
+                penaltyValue: Money::roundNullable($clientCurrency, $bookingPrices->clientPrice()->penaltyValue())
             )
         );
     }

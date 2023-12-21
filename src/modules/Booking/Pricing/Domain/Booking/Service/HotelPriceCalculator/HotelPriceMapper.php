@@ -63,14 +63,14 @@ class HotelPriceMapper
             new BookingPriceItem(
                 currency: $supplierCurrency,
                 calculatedValue: Money::round($supplierCurrency, $supplierPriceDto->price),
-                manualValue: Money::round($supplierCurrency, $bookingPrices->supplierPrice()->manualValue()),
-                penaltyValue: Money::round($supplierCurrency, $bookingPrices->supplierPrice()->penaltyValue())
+                manualValue: Money::roundNullable($supplierCurrency, $bookingPrices->supplierPrice()->manualValue()),
+                penaltyValue: Money::roundNullable($supplierCurrency, $bookingPrices->supplierPrice()->penaltyValue())
             ),
             new BookingPriceItem(
                 currency: $clientCurrency,
                 calculatedValue: Money::round($clientCurrency, $clientPriceDto->price),
-                manualValue: Money::round($clientCurrency, $bookingPrices->clientPrice()->manualValue()),
-                penaltyValue: Money::round($clientCurrency, $bookingPrices->clientPrice()->penaltyValue())
+                manualValue: Money::roundNullable($clientCurrency, $bookingPrices->clientPrice()->manualValue()),
+                penaltyValue: Money::roundNullable($clientCurrency, $bookingPrices->clientPrice()->penaltyValue())
             ),
         );
     }
@@ -103,7 +103,7 @@ class HotelPriceMapper
 
         return new RoomPriceItem(
             dayParts: new RoomPriceDayPartCollection($dayPrices),
-            manualDayValue: Money::round($currency, $manualDayValue),
+            manualDayValue: Money::roundNullable($currency, $manualDayValue),
         );
     }
 }

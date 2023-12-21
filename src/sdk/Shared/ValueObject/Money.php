@@ -19,13 +19,18 @@ final class Money implements CanEquate
         $this->value = $value;
     }
 
-    public static function round(CurrencyEnum $currency, float|int|null $value): ?float
+    public static function round(CurrencyEnum $currency, float|int $value): float
+    {
+        return round($value, self::getDecimalsCount($currency));
+    }
+
+    public static function roundNullable(CurrencyEnum $currency, float|int|null $value): ?float
     {
         if ($value === null) {
             return null;
         }
 
-        return round($value, self::getDecimalsCount($currency));
+        return static::round($currency, $value);
     }
 
     public static function getDecimalsCount(CurrencyEnum $currency): int
