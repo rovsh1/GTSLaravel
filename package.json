@@ -1,8 +1,8 @@
 {
   "private": true,
   "scripts": {
-    "admin": "cd apps/admin && npm run build",
-    "hotel": "cd apps/hotel && npm run build",
+    "admin": "cd apps/admin && npm install && npm run build",
+    "hotel": "cd apps/hotel && npm install && npm run build",
     "bo": "npm run admin",
     "ho": "npm run hotel",
     "build": "npm run admin && npm run hotel"
