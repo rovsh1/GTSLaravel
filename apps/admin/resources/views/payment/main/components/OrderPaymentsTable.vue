@@ -1,18 +1,22 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue'
 
-import { PaymentOrder, PaymentOrderPayload, PaymentPrice } from '~api/payment/payment'
+import { createSelectionState } from '~resources/views/payment/main/lib/selected-item'
+
+import { PaymentInfo, PaymentOrder, PaymentOrderPayload } from '~api/payment/payment'
 
 import { formatPrice } from '~lib/price'
 
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 
-import { createSelectionState } from '../lib/selected-item'
+type PaymentOrderDistributed = PaymentOrder & {
+  distributedAmount: number
+}
 
 const props = withDefaults(defineProps<{
-  remainingAmount: PaymentPrice | undefined
   waitingOrders: PaymentOrder[]
   distributedOrders: PaymentOrder[]
+  paymentInfo: PaymentInfo | null
   loading: boolean
   disabled?: boolean
 }>(), {
@@ -23,23 +27,40 @@ const emit = defineEmits<{
   (event: 'orders', value: PaymentOrderPayload[]): void
 }>()
 
+const setDistributedOrders = () => {
+  const distributedOrders: PaymentOrderDistributed[] = []
+  props.distributedOrders.forEach((distributedOrder) => {
+    const source = distributedOrder
+    const distributedAmount = props.paymentInfo
+      ?.landings?.find((landing) => landing.orderId === distributedOrder.id)?.sum || 0
+    distributedOrders.push({ ...source, distributedAmount })
+  })
+  return distributedOrders
+}
+
 const localeWaitingOrders = ref<PaymentOrder[]>(props.waitingOrders)
-const localeDistributedOrders = ref<PaymentOrder[]>(props.distributedOrders)
-const localeRemainingAmount = ref<number | undefined>(props.remainingAmount?.value)
+const localeDistributedOrders = ref<PaymentOrderDistributed[]>(setDistributedOrders())
+const localeRemainingAmount = ref<number | undefined>(props.paymentInfo?.remainingAmount.value)
+const localePaymentTotalAmount = ref<number | undefined>(props.paymentInfo?.totalAmount.value)
 
 const waitingOrdersSelection = createSelectionState()
 const distributedOrdersSelection = createSelectionState()
 
 const getPaymentOrdersPayload = (): PaymentOrderPayload[] => localeDistributedOrders.value.map((order) => ({
   id: order.id,
-  sum: order.clientPrice.value - order.remainingAmount.value,
+  sum: order.distributedAmount,
 }))
 
-watch([() => props.distributedOrders, () => props.waitingOrders, () => props.remainingAmount], () => {
+const resetLocaleVariables = () => {
   localeWaitingOrders.value = props.waitingOrders
-  localeDistributedOrders.value = props.distributedOrders
-  localeRemainingAmount.value = props.remainingAmount?.value
-  getPaymentOrdersPayload()
+  localeRemainingAmount.value = props.paymentInfo?.remainingAmount?.value
+  localePaymentTotalAmount.value = props.paymentInfo?.totalAmount.value
+  localeDistributedOrders.value = setDistributedOrders()
+}
+
+watch([() => props.distributedOrders, () => props.waitingOrders, () => props.paymentInfo], () => {
+  resetLocaleVariables()
+  emit('orders', getPaymentOrdersPayload())
 })
 
 const getIndexToDelete = (array: PaymentOrder[], removedItem: PaymentOrder) => {
@@ -62,28 +83,31 @@ const moveOrderWaitingToOrders = (allOrders?: boolean) => {
   waitingOrdersSelection.selected.value.forEach((selectedOrder) => {
     const remainingAmount = localeRemainingAmount.value as number
     if (remainingAmount <= 0) return
-    const source = selectedOrder
-    const subtractSum = remainingAmount - selectedOrder.remainingAmount.value
-    const existLocaleOrder = localeDistributedOrders.value.find((order) => order.id === source.id)
+    const selectedWaitingOrder = selectedOrder
+    const subtractSum = remainingAmount - selectedWaitingOrder.remainingAmount.value
+    const existLocaleDistributedOrder = localeDistributedOrders.value.find((order) => order.id === selectedWaitingOrder.id)
     if (subtractSum >= 0) {
-      if (existLocaleOrder) {
-        existLocaleOrder.remainingAmount.value = 0
+      if (existLocaleDistributedOrder) {
+        existLocaleDistributedOrder.distributedAmount += selectedWaitingOrder.remainingAmount.value
+        existLocaleDistributedOrder.remainingAmount.value = 0
       } else {
-        source.remainingAmount.value = 0
-        localeDistributedOrders.value.push(selectedOrder)
+        const localeDistributedAmount = selectedWaitingOrder.remainingAmount.value
+        selectedWaitingOrder.remainingAmount.value = 0
+        localeDistributedOrders.value.push({ ...selectedWaitingOrder, distributedAmount: localeDistributedAmount })
       }
-      localeWaitingOrders.value.splice(getIndexToDelete(localeWaitingOrders.value, selectedOrder), 1)
+      localeWaitingOrders.value.splice(getIndexToDelete(localeWaitingOrders.value, selectedWaitingOrder), 1)
       localeRemainingAmount.value = subtractSum
     } else {
-      if (existLocaleOrder) {
-        existLocaleOrder.remainingAmount.value = Math.abs(subtractSum)
+      if (existLocaleDistributedOrder) {
+        existLocaleDistributedOrder.remainingAmount.value = Math.abs(subtractSum)
+        existLocaleDistributedOrder.distributedAmount += selectedWaitingOrder.remainingAmount.value - Math.abs(subtractSum)
       } else {
-        source.remainingAmount.value = Math.abs(subtractSum)
-        localeDistributedOrders.value.push(selectedOrder)
+        selectedWaitingOrder.remainingAmount.value = Math.abs(subtractSum)
+        localeDistributedOrders.value.push({ ...selectedWaitingOrder, distributedAmount: remainingAmount })
       }
-      const localeWaitingOrder = localeWaitingOrders.value.find((order) => order.id === source.id)
+      const localeWaitingOrder = localeWaitingOrders.value.find((order) => order.id === selectedWaitingOrder.id)
       if (localeWaitingOrder) {
-        localeWaitingOrder.remainingAmount.value = source.remainingAmount.value
+        localeWaitingOrder.remainingAmount.value = Math.abs(subtractSum)
       }
       localeRemainingAmount.value = 0
     }
@@ -105,24 +129,30 @@ const moveOrdersToOrderWaiting = (allOrders?: boolean) => {
     }
   }
   distributedOrdersSelection.selected.value.forEach((selectedOrder) => {
-    const source = selectedOrder
-    const addedSum = selectedOrder.clientPrice.value - selectedOrder.remainingAmount.value
-    const existLocaleWaitingOrder = localeWaitingOrders.value.find((order) => order.id === source.id)
+    const selectedDistributedOrder = selectedOrder
+    const addedSum = selectedDistributedOrder.distributedAmount || 0
+    const existLocaleWaitingOrder = localeWaitingOrders.value.find((order) => order.id === selectedDistributedOrder.id)
     if (existLocaleWaitingOrder) {
-      existLocaleWaitingOrder.remainingAmount.value = existLocaleWaitingOrder.clientPrice.value
+      existLocaleWaitingOrder.remainingAmount.value += addedSum
     } else {
-      source.remainingAmount.value = selectedOrder.clientPrice.value
+      selectedDistributedOrder.remainingAmount.value = selectedDistributedOrder.clientPrice.value
       localeWaitingOrders.value.push(selectedOrder)
     }
-    localeDistributedOrders.value.splice(getIndexToDelete(localeDistributedOrders.value, selectedOrder), 1)
-    localeRemainingAmount.value = localeRemainingAmount.value as number + addedSum
+    localeDistributedOrders.value.splice(getIndexToDelete(localeDistributedOrders.value, selectedDistributedOrder), 1)
+    const calculatedLocaleRemainingAmount = localeRemainingAmount.value as number + addedSum
+    if (localePaymentTotalAmount.value && calculatedLocaleRemainingAmount > localePaymentTotalAmount.value) {
+      localeRemainingAmount.value = localePaymentTotalAmount.value
+    } else {
+      localeRemainingAmount.value = calculatedLocaleRemainingAmount
+    }
   })
   distributedOrdersSelection.selected.value = []
   emit('orders', getPaymentOrdersPayload())
 }
 
 onMounted(() => {
-  getPaymentOrdersPayload()
+  resetLocaleVariables()
+  emit('orders', getPaymentOrdersPayload())
 })
 
 </script>
@@ -137,6 +167,7 @@ onMounted(() => {
             <tr>
               <th scope="col">№ Заказа</th>
               <th class="column-text">Цена продажи</th>
+              <th class="column-text">Распределено по заказу</th>
               <th class="column-text">Остаток</th>
             </tr>
           </thead>
@@ -150,12 +181,18 @@ onMounted(() => {
               >
                 <td>{{ waitingOrder.id }}</td>
                 <td>{{ formatPrice(waitingOrder.clientPrice.value, waitingOrder.clientPrice.currency.value) }}</td>
-                <td>{{ formatPrice(waitingOrder.remainingAmount.value, waitingOrder.remainingAmount.currency.value) }}</td>
+                <td>
+                  {{ formatPrice((waitingOrder.clientPrice.value
+                    - waitingOrder.remainingAmount.value), waitingOrder.clientPrice.currency.value) }}
+                </td>
+                <td>
+                  {{ formatPrice(waitingOrder.remainingAmount.value, waitingOrder.remainingAmount.currency.value) }}
+                </td>
               </tr>
             </template>
             <template v-else>
               <tr>
-                <td class="text-center" colspan="3">Нет данных</td>
+                <td class="text-center" colspan="4">Нет данных</td>
               </tr>
             </template>
           </tbody>
@@ -217,7 +254,8 @@ onMounted(() => {
               <tr>
                 <th scope="col">№ Заказа</th>
                 <th class="column-text">Цена продажи</th>
-                <th class="column-text">Распределено</th>
+                <th class="column-text">Распределено по заказу</th>
+                <th class="column-text">Распределено из оплаты</th>
                 <th class="column-text">Остаток</th>
               </tr>
             </thead>
@@ -232,15 +270,18 @@ onMounted(() => {
                   <td>{{ order.id }}</td>
                   <td>{{ formatPrice(order.clientPrice.value, order.clientPrice.currency.value) }}</td>
                   <td>
-                    {{ formatPrice((order.clientPrice.value
-                      - order.remainingAmount.value), order.clientPrice.currency.value) }}
+                    {{ formatPrice((order.clientPrice.value - order.remainingAmount.value),
+                                   order.clientPrice.currency.value) }}
+                  </td>
+                  <td>
+                    {{ formatPrice((order.distributedAmount), order.payedAmount.currency.value) }}
                   </td>
                   <td>{{ formatPrice(order.remainingAmount.value, order.remainingAmount.currency.value) }}</td>
                 </tr>
               </template>
               <template v-else>
                 <tr>
-                  <td class="text-center" colspan="4">Нет данных</td>
+                  <td class="text-center" colspan="5">Нет данных</td>
                 </tr>
               </template>
             </tbody>
@@ -251,7 +292,7 @@ onMounted(() => {
         <label for="total-amount" class="form-label fs-7">Нераспределенная сумма:</label>
         <div class="input-group">
           <span id="basic-addon3" class="input-group-text">
-            {{ remainingAmount?.currency.value }}
+            {{ paymentInfo?.remainingAmount?.currency.value }}
           </span>
           <input
             id="total-amount"

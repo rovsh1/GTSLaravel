@@ -2,18 +2,22 @@ import { Ref, ref } from 'vue'
 
 import { PaymentOrder } from '~api/payment/payment'
 
+type PaymentOrderSelection = PaymentOrder & {
+  distributedAmount?: number
+}
+
 interface SelectionState {
-  selected: Ref<PaymentOrder[]>
-  isSelectedItem: (item: PaymentOrder) => boolean
-  toggleSelectItem: (item: PaymentOrder) => void
+  selected: Ref<PaymentOrderSelection[]>
+  isSelectedItem: (item: PaymentOrderSelection) => boolean
+  toggleSelectItem: (item: PaymentOrderSelection) => void
 }
 
 export const createSelectionState = (): SelectionState => {
-  const selected = ref<PaymentOrder[]>([])
+  const selected = ref<PaymentOrderSelection[]>([])
 
-  const isSelectedItem = (item: PaymentOrder) => selected.value.some((order) => order.id === item.id)
+  const isSelectedItem = (item: PaymentOrderSelection) => selected.value.some((order) => order.id === item.id)
 
-  const toggleSelectItem = (item: PaymentOrder) => {
+  const toggleSelectItem = (item: PaymentOrderSelection) => {
     if (!isSelectedItem(item)) {
       selected.value.push(item)
     } else {

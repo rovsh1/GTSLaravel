@@ -37,10 +37,10 @@ const getNotExpiredValue = (key: string) => {
 
 const remember = async (key: string, ttl: number | null, callback: () => any) => {
   let value = getNotExpiredValue(key)
-  if (value) { return value }
+  if (value && value.length > 0) { return value }
 
   value = await callback()
-  if (value === null) { return null }
+  if (value === null || value.length < 1) { return null }
 
   localStorage.setItem(getCacheId(key), packData(value, ttl || null))
 

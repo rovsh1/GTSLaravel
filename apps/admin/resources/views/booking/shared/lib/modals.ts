@@ -49,7 +49,7 @@ export const showNotConfirmedReasonDialog = async (): Promise<ShowNotConfirmedRe
         }
       })
     $selectElement.append('<option value="">Другое</option>')
-    cancelReasons.forEach((reason) => {
+    cancelReasons?.forEach((reason) => {
       $selectElement.append(`<option value="${reason.id}">${reason.name}</option>`)
     })
 

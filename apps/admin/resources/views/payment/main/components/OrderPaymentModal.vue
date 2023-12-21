@@ -73,7 +73,7 @@ const onSubmit = async () => {
       <OrderPaymentsTable
         :waiting-orders="waitingOrders || []"
         :distributed-orders="distributedOrders || []"
-        :remaining-amount="payment?.remainingAmount"
+        :payment-info="payment || null"
         :loading="isFetching || isSendingOrders"
         :disabled="isDisabled"
         @orders="(orders) => newDistributedOrders = orders"

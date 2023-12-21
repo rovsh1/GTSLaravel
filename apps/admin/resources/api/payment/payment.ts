@@ -12,6 +12,20 @@ export type PaymentCurrency = {
   name: string
 }
 
+export type PaymentOrderLanding = {
+  orderId: number
+  sum: number
+}
+
+export type PaymentInfo = {
+  id: number
+  clientId: number
+  totalAmount: PaymentPrice
+  payedAmount: PaymentPrice
+  remainingAmount: PaymentPrice
+  landings: PaymentOrderLanding[]
+}
+
 export type PaymentPrice = {
   currency: PaymentCurrency
   value: number
@@ -41,7 +55,7 @@ export type PaymentOrdersPayload = PaymentPayload & {
 export const useGetPaymentAPI = (props: MaybeRef<PaymentPayload | null>) =>
   useAdminAPI(props, ({ paymentID }) => `/payment/${paymentID}`)
     .get()
-    .json<PaymentOrder>()
+    .json<PaymentInfo>()
 
 export const usePaymentWaitingOrdersListAPI = (props: MaybeRef<PaymentPayload | null>) =>
   useAdminAPI(props, ({ paymentID }) => `/payment/${paymentID}/waiting-orders`)
