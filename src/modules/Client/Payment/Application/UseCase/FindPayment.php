@@ -6,6 +6,7 @@ namespace Module\Client\Payment\Application\UseCase;
 
 use Module\Client\Payment\Application\Dto\PaymentDto;
 use Module\Client\Payment\Domain\Payment\Repository\PaymentRepositoryInterface;
+use Module\Client\Payment\Domain\Payment\ValueObject\Landing;
 use Module\Client\Shared\Domain\ValueObject\PaymentId;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 use Sdk\Shared\Contracts\Service\TranslatorInterface;
@@ -41,6 +42,9 @@ class FindPayment implements UseCaseInterface
                 CurrencyDto::fromEnum($payment->paymentAmount()->currency(), $this->translator),
                 ($payment->paymentAmount()->value() - $payment->lendedSum()),
             ),
+            $payment->landings()->map(
+                fn(Landing $landing) => ['orderId' => $landing->orderId()->value(), 'sum' => $landing->sum()]
+            )
         );
     }
 }

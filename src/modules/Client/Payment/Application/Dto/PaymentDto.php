@@ -14,5 +14,6 @@ class PaymentDto
         public readonly MoneyDto $totalAmount,
         public readonly MoneyDto $payedAmount,
         public readonly MoneyDto $remainingAmount,
+        public readonly array $landings,
     ) {}
 }
