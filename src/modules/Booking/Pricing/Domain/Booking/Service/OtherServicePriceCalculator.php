@@ -10,14 +10,14 @@ use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
 use Sdk\Booking\Entity\Details\Other;
 use Sdk\Booking\ValueObject\BookingPriceItem;
 use Sdk\Booking\ValueObject\BookingPrices;
+use Sdk\Shared\ValueObject\Money;
 
 class OtherServicePriceCalculator implements PriceCalculatorInterface
 {
     public function __construct(
         private readonly DetailsRepositoryInterface $detailsRepository,
         private readonly SupplierAdapterInterface $supplierAdapter,
-    ) {
-    }
+    ) {}
 
     public function calculate(Booking $booking): BookingPrices
     {
@@ -32,19 +32,21 @@ class OtherServicePriceCalculator implements PriceCalculatorInterface
         if ($servicePrice === null) {
             throw new NotFoundServicePriceException();
         }
+        $supplierCurrency = $servicePrice->supplierPrice->currency;
+        $clientCurrency = $servicePrice->clientPrice->currency;
 
         return new BookingPrices(
             new BookingPriceItem(
-                currency: $servicePrice->supplierPrice->currency,
-                calculatedValue: $servicePrice->supplierPrice->amount,
-                manualValue: $booking->prices()->supplierPrice()->manualValue(),
-                penaltyValue: $booking->prices()->supplierPrice()->penaltyValue()
+                currency: $supplierCurrency,
+                calculatedValue: Money::round($supplierCurrency, $servicePrice->supplierPrice->amount),
+                manualValue: Money::round($supplierCurrency, $booking->prices()->supplierPrice()->manualValue()),
+                penaltyValue: Money::round($supplierCurrency, $booking->prices()->supplierPrice()->penaltyValue())
             ),
             new BookingPriceItem(
-                currency: $servicePrice->clientPrice->currency,
-                calculatedValue: $servicePrice->clientPrice->amount,
-                manualValue: $booking->prices()->clientPrice()->manualValue(),
-                penaltyValue: $booking->prices()->clientPrice()->penaltyValue()
+                currency: $clientCurrency,
+                calculatedValue: Money::round($clientCurrency, $servicePrice->clientPrice->amount),
+                manualValue: Money::round($clientCurrency, $booking->prices()->clientPrice()->manualValue()),
+                penaltyValue: Money::round($clientCurrency, $booking->prices()->clientPrice()->penaltyValue())
             )
         );
     }

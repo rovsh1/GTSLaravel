@@ -13,7 +13,9 @@ use Sdk\Booking\ValueObject\HotelBooking\RoomPriceDayPart;
 use Sdk\Booking\ValueObject\HotelBooking\RoomPriceDayPartCollection;
 use Sdk\Booking\ValueObject\HotelBooking\RoomPriceItem;
 use Sdk\Booking\ValueObject\HotelBooking\RoomPrices;
+use Sdk\Shared\Enum\CurrencyEnum;
 use Sdk\Shared\ValueObject\Date;
+use Sdk\Shared\ValueObject\Money;
 
 class HotelPriceMapper
 {
@@ -38,11 +40,13 @@ class HotelPriceMapper
         return new RoomPrices(
             $this->buildRoomPriceItem(
                 $this->findRoomCalculationResultDto($accommodation->id(), $this->supplierPriceDto),
-                $accommodation->prices()->supplierPrice()->manualDayValue()
+                $this->supplierPriceDto->currency,
+                $accommodation->prices()->supplierPrice()->manualDayValue(),
             ),
             $this->buildRoomPriceItem(
                 $this->findRoomCalculationResultDto($accommodation->id(), $this->clientPriceDto),
-                $accommodation->prices()->clientPrice()->manualDayValue()
+                $this->clientPriceDto->currency,
+                $accommodation->prices()->clientPrice()->manualDayValue(),
             )
         );
     }
@@ -51,20 +55,22 @@ class HotelPriceMapper
     {
         $bookingPrices = $this->booking->prices();
         $supplierPriceDto = $this->supplierPriceDto;
+        $supplierCurrency = $supplierPriceDto->currency;
         $clientPriceDto = $this->clientPriceDto;
+        $clientCurrency = $clientPriceDto->currency;
 
         return new BookingPrices(
             new BookingPriceItem(
-                currency: $supplierPriceDto->currency,
-                calculatedValue: $supplierPriceDto->price,
-                manualValue: $bookingPrices->supplierPrice()->manualValue(),
-                penaltyValue: $bookingPrices->supplierPrice()->penaltyValue()
+                currency: $supplierCurrency,
+                calculatedValue: Money::round($supplierCurrency, $supplierPriceDto->price),
+                manualValue: Money::round($supplierCurrency, $bookingPrices->supplierPrice()->manualValue()),
+                penaltyValue: Money::round($supplierCurrency, $bookingPrices->supplierPrice()->penaltyValue())
             ),
             new BookingPriceItem(
-                currency: $clientPriceDto->currency,
-                calculatedValue: $clientPriceDto->price,
-                manualValue: $bookingPrices->clientPrice()->manualValue(),
-                penaltyValue: $bookingPrices->clientPrice()->penaltyValue()
+                currency: $clientCurrency,
+                calculatedValue: Money::round($clientCurrency, $clientPriceDto->price),
+                manualValue: Money::round($clientCurrency, $bookingPrices->clientPrice()->manualValue()),
+                penaltyValue: Money::round($clientCurrency, $bookingPrices->clientPrice()->penaltyValue())
             ),
         );
     }
@@ -81,20 +87,23 @@ class HotelPriceMapper
         throw new \Exception('');
     }
 
-    private function buildRoomPriceItem(RoomCalculationResultDto $roomPriceDto, ?float $manualDayValue): RoomPriceItem
-    {
+    private function buildRoomPriceItem(
+        RoomCalculationResultDto $roomPriceDto,
+        CurrencyEnum $currency,
+        ?float $manualDayValue
+    ): RoomPriceItem {
         $dayPrices = [];
         foreach ($roomPriceDto->dates as $dayPriceDto) {
             $dayPrices[] = new RoomPriceDayPart(
                 date: Date::createFromInterface($dayPriceDto->date),
-                value: $dayPriceDto->value,
+                value: Money::round($currency, $dayPriceDto->value),
                 formula: $dayPriceDto->formula
             );
         }
 
         return new RoomPriceItem(
             dayParts: new RoomPriceDayPartCollection($dayPrices),
-            manualDayValue: $manualDayValue
+            manualDayValue: Money::round($currency, $manualDayValue),
         );
     }
 }

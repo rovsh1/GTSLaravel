@@ -9,14 +9,14 @@ use Sdk\Booking\Entity\CarBid;
 use Sdk\Booking\Entity\Details\CarRentWithDriver;
 use Sdk\Booking\ValueObject\BookingPriceItem;
 use Sdk\Booking\ValueObject\BookingPrices;
+use Sdk\Shared\ValueObject\Money;
 
 class TransferServicePriceCalculator implements PriceCalculatorInterface
 {
     public function __construct(
         private readonly DetailsRepositoryInterface $detailsRepository,
         private readonly CarBidDbContextInterface $carBidDbContext,
-    ) {
-    }
+    ) {}
 
     public function calculate(Booking $booking): BookingPrices
     {
@@ -35,21 +35,26 @@ class TransferServicePriceCalculator implements PriceCalculatorInterface
         };
 
         $carBids = $this->carBidDbContext->getByBookingId($booking->id());
-        ['clientPriceAmount' => $clientPriceAmount, 'supplierPriceAmount' => $supplierPriceAmount] = collect($carBids->all())
+        ['clientPriceAmount' => $clientPriceAmount, 'supplierPriceAmount' => $supplierPriceAmount] = collect(
+            $carBids->all()
+        )
             ->reduce($reducer, ['clientPriceAmount' => 0, 'supplierPriceAmount' => 0]);
+
+        $supplierCurrency = $bookingPrices->supplierPrice()->currency();
+        $clientCurrency = $bookingPrices->clientPrice()->currency();
 
         return new BookingPrices(
             new BookingPriceItem(
-                currency: $bookingPrices->supplierPrice()->currency(),
-                calculatedValue: $supplierPriceAmount,
-                manualValue: $bookingPrices->supplierPrice()->manualValue(),
-                penaltyValue: $bookingPrices->supplierPrice()->penaltyValue()
+                currency: $supplierCurrency,
+                calculatedValue: Money::round($supplierCurrency, $supplierPriceAmount),
+                manualValue: Money::round($supplierCurrency, $bookingPrices->supplierPrice()->manualValue()),
+                penaltyValue: Money::round($supplierCurrency, $bookingPrices->supplierPrice()->penaltyValue())
             ),
             new BookingPriceItem(
-                currency: $bookingPrices->clientPrice()->currency(),
-                calculatedValue: $clientPriceAmount,
-                manualValue: $bookingPrices->clientPrice()->manualValue(),
-                penaltyValue: $bookingPrices->clientPrice()->penaltyValue()
+                currency: $clientCurrency,
+                calculatedValue: Money::round($clientCurrency, $clientPriceAmount),
+                manualValue: Money::round($clientCurrency, $bookingPrices->clientPrice()->manualValue()),
+                penaltyValue: Money::round($clientCurrency, $bookingPrices->clientPrice()->penaltyValue())
             )
         );
     }
