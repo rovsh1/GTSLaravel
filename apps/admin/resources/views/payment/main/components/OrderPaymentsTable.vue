@@ -18,9 +18,11 @@ const props = withDefaults(defineProps<{
   distributedOrders: PaymentOrder[]
   paymentInfo: PaymentInfo | null
   loading: boolean
+  clearSelectedOrders?: boolean
   disabled?: boolean
 }>(), {
   disabled: false,
+  clearSelectedOrders: false,
 })
 
 const emit = defineEmits<{
@@ -38,10 +40,10 @@ const setDistributedOrders = () => {
   return distributedOrders
 }
 
-const localeWaitingOrders = ref<PaymentOrder[]>(props.waitingOrders)
-const localeDistributedOrders = ref<PaymentOrderDistributed[]>(setDistributedOrders())
-const localeRemainingAmount = ref<number | undefined>(props.paymentInfo?.remainingAmount.value)
-const localePaymentTotalAmount = ref<number | undefined>(props.paymentInfo?.totalAmount.value)
+const localeWaitingOrders = ref<PaymentOrder[]>([])
+const localeDistributedOrders = ref<PaymentOrderDistributed[]>([])
+const localeRemainingAmount = ref<number | undefined>()
+const localePaymentTotalAmount = ref<number | undefined>()
 
 const waitingOrdersSelection = createSelectionState()
 const distributedOrdersSelection = createSelectionState()
@@ -61,6 +63,13 @@ const resetLocaleVariables = () => {
 watch([() => props.distributedOrders, () => props.waitingOrders, () => props.paymentInfo], () => {
   resetLocaleVariables()
   emit('orders', getPaymentOrdersPayload())
+})
+
+watch(() => props.clearSelectedOrders, (value) => {
+  if (value) {
+    distributedOrdersSelection.selected.value = []
+    waitingOrdersSelection.selected.value = []
+  }
 })
 
 const getIndexToDelete = (array: PaymentOrder[], removedItem: PaymentOrder) => {
@@ -130,12 +139,12 @@ const moveOrdersToOrderWaiting = (allOrders?: boolean) => {
   }
   distributedOrdersSelection.selected.value.forEach((selectedOrder) => {
     const selectedDistributedOrder = selectedOrder
-    const addedSum = selectedDistributedOrder.distributedAmount || 0
+    const addedSum = selectedDistributedOrder.distributedAmount as number
     const existLocaleWaitingOrder = localeWaitingOrders.value.find((order) => order.id === selectedDistributedOrder.id)
     if (existLocaleWaitingOrder) {
       existLocaleWaitingOrder.remainingAmount.value += addedSum
     } else {
-      selectedDistributedOrder.remainingAmount.value = selectedDistributedOrder.clientPrice.value
+      selectedDistributedOrder.remainingAmount.value = selectedDistributedOrder.distributedAmount as number
       localeWaitingOrders.value.push(selectedOrder)
     }
     localeDistributedOrders.value.splice(getIndexToDelete(localeDistributedOrders.value, selectedDistributedOrder), 1)
@@ -177,7 +186,10 @@ onMounted(() => {
                 v-for="waitingOrder in localeWaitingOrders"
                 :key="waitingOrder.id"
                 :class="{ 'table-active': waitingOrdersSelection.isSelectedItem(waitingOrder) }"
-                @click="waitingOrdersSelection.toggleSelectItem(waitingOrder)"
+                @click="() => {
+                  distributedOrdersSelection.selected.value = []
+                  waitingOrdersSelection.toggleSelectItem(waitingOrder)
+                }"
               >
                 <td>{{ waitingOrder.id }}</td>
                 <td>{{ formatPrice(waitingOrder.clientPrice.value, waitingOrder.clientPrice.currency.value) }}</td>
@@ -265,7 +277,10 @@ onMounted(() => {
                   v-for="order in localeDistributedOrders"
                   :key="order.id"
                   :class="{ 'table-active': distributedOrdersSelection.isSelectedItem(order) }"
-                  @click="distributedOrdersSelection.toggleSelectItem(order)"
+                  @click="() => {
+                    waitingOrdersSelection.selected.value = []
+                    distributedOrdersSelection.toggleSelectItem(order)
+                  }"
                 >
                   <td>{{ order.id }}</td>
                   <td>{{ formatPrice(order.clientPrice.value, order.clientPrice.currency.value) }}</td>

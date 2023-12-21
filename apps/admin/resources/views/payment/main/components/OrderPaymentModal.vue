@@ -76,6 +76,7 @@ const onSubmit = async () => {
         :payment-info="payment || null"
         :loading="isFetching || isSendingOrders"
         :disabled="isDisabled"
+        :clear-selected-orders="isOpened"
         @orders="(orders) => newDistributedOrders = orders"
       />
     </div>
