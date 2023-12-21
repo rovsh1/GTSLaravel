@@ -3,7 +3,6 @@ import { computed, onMounted, ref } from 'vue'
 import { defineStore, storeToRefs } from 'pinia'
 import { z } from 'zod'
 
-import { useCancelReasonStore } from '~resources/store/cancel-reason'
 import { showCancelFeeDialog, showNotConfirmedReasonDialog } from '~resources/views/booking/shared/lib/modals'
 import { useBookingStatusesStore } from '~resources/views/booking/shared/store/status'
 import { useBookingStatusHistoryStore } from '~resources/views/booking/shared/store/status-history'
@@ -44,8 +43,6 @@ export const useBookingStore = defineStore('booking', () => {
   const bookingStatusesStore = useBookingStatusesStore()
   const { statuses } = storeToRefs(bookingStatusesStore)
 
-  const { cancelReasons } = storeToRefs(useCancelReasonStore())
-
   const isStatusUpdateFetching = ref(false)
   const bookingManagerId = ref(manager.id)
 
@@ -66,7 +63,7 @@ export const useBookingStore = defineStore('booking', () => {
     updateStatusPayload.status = status
     const { data: updateStatusResponse } = await updateBookingStatus(updateStatusPayload)
     if (updateStatusResponse.value?.isNotConfirmedReasonRequired && isHotelBooking) {
-      const { result: isConfirmed, reason, toggleClose } = await showNotConfirmedReasonDialog(cancelReasons.value || [])
+      const { result: isConfirmed, reason, toggleClose } = await showNotConfirmedReasonDialog()
       if (isConfirmed) {
         updateStatusPayload.notConfirmedReason = reason
         toggleClose()
