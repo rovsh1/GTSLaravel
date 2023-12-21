@@ -26,11 +26,7 @@ final class Money implements CanEquate
 
     public static function roundNullable(CurrencyEnum $currency, float|int|null $value): ?float
     {
-        if ($value === null) {
-            return null;
-        }
-
-        return static::round($currency, $value);
+        return $value === null ? null : static::round($currency, $value);
     }
 
     public static function getDecimalsCount(CurrencyEnum $currency): int
