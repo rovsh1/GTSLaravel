@@ -16,9 +16,8 @@ class RequestDescriptor extends AbstractDescriptor implements DescriptorInterfac
 
     public function build(BookingHistory $history): DescriptionDto
     {
-        $request = $history->payload['request'];
-        $type = RequestTypeEnum::from($request['type']);
-        $fileDto = $this->fileStorageAdapter->find($request['file']);
+        $type = RequestTypeEnum::from($history->payload['requestType']);
+        $fileDto = $this->fileStorageAdapter->find($history->payload['fileGuid']);
 
         return new DescriptionDto(
             'Отправлен '
