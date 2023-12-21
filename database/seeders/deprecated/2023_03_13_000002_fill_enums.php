@@ -1,9 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
     private static array $migrationAssoc = [
@@ -16,6 +14,13 @@ return new class extends Migration {
 //        'client-legal-requisite' => 7,
         'client-legal-industry' => 10,
         'hotel-usability-group' => 19
+    ];
+
+    private const CANCEL_REASON_ENUM_GROUP = 'cancel-reason';
+
+    private const DEFAULT_CANCEL_REASONS = [
+        'Нет мест',
+        'Двойное бронирование',
     ];
 
     public function up()
@@ -50,6 +55,27 @@ return new class extends Migration {
                         'name' => $r->name
                     ]);
             }
+        }
+        $this->upCancelReasons();
+    }
+
+    private function upCancelReasons(): void
+    {
+        $alreadyExists = DB::table('r_enums')->where('group', self::CANCEL_REASON_ENUM_GROUP)->exists();
+        if ($alreadyExists) {
+            return;
+        }
+
+        foreach (self::DEFAULT_CANCEL_REASONS as $cancelReason) {
+            $id = Db::table('r_enums')->insertGetId([
+                'group' => self::CANCEL_REASON_ENUM_GROUP
+            ]);
+
+            Db::table('r_enums_translation')->insert([
+                'translatable_id' => $id,
+                'language' => 'ru',
+                'name' => $cancelReason
+            ]);
         }
     }
 

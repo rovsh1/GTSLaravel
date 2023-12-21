@@ -17,7 +17,6 @@ class DatabaseSeeder extends Seeder
             TestDataSeeder::class,
             TranslatorSeeder::class,
             BookingStatusesSeeder::class,
-            CancelReasonSeeder::class,
         ]);
     }
 }
