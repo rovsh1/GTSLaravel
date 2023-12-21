@@ -1,26 +1,23 @@
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 
 import { defineStore } from 'pinia'
 
 import { BookingStatusResponse } from '~resources/api/booking/models'
-import { TTLValues, useLocalStorageCache } from '~resources/lib/locale-storage-cache/locale-storage-cache'
+import { CacheStorage } from '~resources/lib/cache-storage/cache-storage'
+import { TTLValues } from '~resources/lib/enums'
 
 import { useBookingStatusesAPI } from '~api/booking/status'
 
 export const useBookingStatusesStore = defineStore('booking-statuses', () => {
-  const { hasData, setData, getData } = useLocalStorageCache('booking-statuses', TTLValues.DAY)
-  const { data: statuses, execute: fetchStatuses } = useBookingStatusesAPI()
+  const statuses = ref<BookingStatusResponse[] | null>(null)
   onMounted(async () => {
-    if (hasData()) {
-      statuses.value = getData() as BookingStatusResponse[]
-    } else {
+    statuses.value = await CacheStorage.remember('booking-statuses', TTLValues.DAY, async () => {
+      const { data, execute: fetchStatuses } = useBookingStatusesAPI()
       await fetchStatuses()
-      setData(statuses.value)
-    }
+      return data.value
+    }) as BookingStatusResponse[]
   })
-
   return {
     statuses,
-    fetchStatuses,
   }
 })

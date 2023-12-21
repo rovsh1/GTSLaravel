@@ -36,7 +36,6 @@ export const useOrderStore = defineStore('booking-order', () => {
   const { data: bookings, execute: fetchBookings } = useGetOrderBookingsAPI({ orderId: orderID })
   const { data: availableActions, execute: fetchAvailableActions, isFetching: isAvailableActionsFetching } = useOrderAvailableActionsAPI({ orderID })
   const orderStatusesStore = useOrderStatusesStore()
-  const { fetchStatuses } = orderStatusesStore
   const { statuses } = storeToRefs(orderStatusesStore)
 
   const { cancelReasons } = storeToRefs(useCancelReasonStore())
@@ -136,7 +135,6 @@ export const useOrderStore = defineStore('booking-order', () => {
     isAvailableActionsFetching,
     isStatusUpdateFetching,
     statuses,
-    fetchStatuses,
     changeStatus,
     copy,
     updateNote,

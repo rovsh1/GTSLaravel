@@ -1,21 +1,20 @@
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 
 import { defineStore } from 'pinia'
 
-import { TTLValues, useLocalStorageCache } from '~resources/lib/locale-storage-cache/locale-storage-cache'
+import { CacheStorage } from '~resources/lib/cache-storage/cache-storage'
+import { TTLValues } from '~resources/lib/enums'
 
 import { CityResponse, useCitySearchAPI } from '~api/city'
 
 export const useCityStore = defineStore('city', () => {
-  const { hasData, setData, getData } = useLocalStorageCache('cities', TTLValues.DAY)
-  const { data: cities, execute: fetchCities } = useCitySearchAPI({})
+  const cities = ref<CityResponse[] | null>(null)
   onMounted(async () => {
-    if (hasData()) {
-      cities.value = getData() as CityResponse[]
-    } else {
+    cities.value = await CacheStorage.remember('cities', TTLValues.DAY, async () => {
+      const { data, execute: fetchCities } = useCitySearchAPI({})
       await fetchCities()
-      setData(cities.value)
-    }
+      return data.value
+    }) as CityResponse[]
   })
   return {
     cities,

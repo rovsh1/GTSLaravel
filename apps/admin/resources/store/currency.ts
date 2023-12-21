@@ -1,25 +1,24 @@
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 
 import { defineStore } from 'pinia'
 
 import { Currency } from '~resources/api/models'
-import { TTLValues, useLocalStorageCache } from '~resources/lib/locale-storage-cache/locale-storage-cache'
+import { CacheStorage } from '~resources/lib/cache-storage/cache-storage'
+import { TTLValues } from '~resources/lib/enums'
 
 import { useCurrencyGetAPI } from '~api/currency'
 
 export const useCurrencyStore = defineStore('currency', () => {
-  const { hasData, setData, getData } = useLocalStorageCache('currencies', TTLValues.DAY)
-  const { data: currencies, execute: fetchCurrencies } = useCurrencyGetAPI()
+  const currencies = ref<Currency[] | null>(null)
 
   const getCurrencyByCodeChar = (currencyCode: string | undefined) => currencies.value?.find((cur) => currencyCode === cur.code_char)
 
   onMounted(async () => {
-    if (hasData()) {
-      currencies.value = getData() as Currency[]
-    } else {
+    currencies.value = await CacheStorage.remember('currencies', TTLValues.DAY, async () => {
+      const { data, execute: fetchCurrencies } = useCurrencyGetAPI()
       await fetchCurrencies()
-      setData(currencies.value)
-    }
+      return data.value
+    }) as Currency[]
   })
 
   return {

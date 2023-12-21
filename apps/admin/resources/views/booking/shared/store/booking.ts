@@ -42,7 +42,6 @@ export const useBookingStore = defineStore('booking', () => {
   const { isFetching: isRecalculateBookingPrice, execute: recalculateBookingPrice } = useRecalculateBookingPriceAPI({ bookingID })
   const { fetchStatusHistory } = useBookingStatusHistoryStore()
   const bookingStatusesStore = useBookingStatusesStore()
-  const { fetchStatuses } = bookingStatusesStore
   const { statuses } = storeToRefs(bookingStatusesStore)
 
   const { cancelReasons } = storeToRefs(useCancelReasonStore())
@@ -141,7 +140,6 @@ export const useBookingStore = defineStore('booking', () => {
     isAvailableActionsFetching,
     isStatusUpdateFetching,
     statuses,
-    fetchStatuses,
     changeStatus,
     existCars,
     isEmptyCarsGuests,

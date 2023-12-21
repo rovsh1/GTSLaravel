@@ -1,22 +1,20 @@
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 
 import { defineStore } from 'pinia'
 
-import { TTLValues, useLocalStorageCache } from '~resources/lib/locale-storage-cache/locale-storage-cache'
+import { CacheStorage } from '~resources/lib/cache-storage/cache-storage'
+import { TTLValues } from '~resources/lib/enums'
 
 import { CancelReasonResponse, useCancelReasonListAPI } from '~api/cancel-reason'
 
 export const useCancelReasonStore = defineStore('cancel-reasons', () => {
-  const { hasData, setData, getData } = useLocalStorageCache('cancel-reasons', TTLValues.DAY)
-  const { data: cancelReasons, execute: fetchCancelReasons } = useCancelReasonListAPI()
-
+  const cancelReasons = ref<CancelReasonResponse[] | null>(null)
   onMounted(async () => {
-    if (hasData()) {
-      cancelReasons.value = getData() as CancelReasonResponse[]
-    } else {
+    cancelReasons.value = await CacheStorage.remember('cancel-reasons', TTLValues.DAY, async () => {
+      const { data, execute: fetchCancelReasons } = useCancelReasonListAPI()
       await fetchCancelReasons()
-      setData(cancelReasons.value)
-    }
+      return data.value
+    }) as CancelReasonResponse[]
   })
   return {
     cancelReasons,

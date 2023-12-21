@@ -1,26 +1,24 @@
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 
 import { defineStore } from 'pinia'
 
 import { OrderStatusResponse } from '~resources/api/order/models'
-import { TTLValues, useLocalStorageCache } from '~resources/lib/locale-storage-cache/locale-storage-cache'
+import { CacheStorage } from '~resources/lib/cache-storage/cache-storage'
+import { TTLValues } from '~resources/lib/enums'
 
 import { useOrderStatusesAPI } from '~api/order/status'
 
 export const useOrderStatusesStore = defineStore('order-statuses', () => {
-  const { hasData, setData, getData } = useLocalStorageCache('order-statuses', TTLValues.DAY)
-  const { data: statuses, execute: fetchStatuses } = useOrderStatusesAPI()
+  const statuses = ref<OrderStatusResponse[] | null>(null)
   onMounted(async () => {
-    if (hasData()) {
-      statuses.value = getData() as OrderStatusResponse[]
-    } else {
+    statuses.value = await CacheStorage.remember('order-statuses', TTLValues.DAY, async () => {
+      const { data, execute: fetchStatuses } = useOrderStatusesAPI()
       await fetchStatuses()
-      setData(statuses.value)
-    }
+      return data.value
+    }) as OrderStatusResponse[]
   })
 
   return {
     statuses,
-    fetchStatuses,
   }
 })
