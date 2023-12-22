@@ -28,7 +28,6 @@ class ModuleServiceProvider extends ServiceProvider
         'SupplierModeration' => 'Supplier/Moderation',
         'CurrencyRate' => 'Generic/CurrencyRate',
 //        'Notification' => 'Generic/Notification',
-        'FileStorage' => 'Support/FileStorage',
         'MailManager' => 'Support/MailManager',
         'IntegrationEventBus' => 'Support/IntegrationEventBus',
         'Scheduler' => 'Support/Scheduler',

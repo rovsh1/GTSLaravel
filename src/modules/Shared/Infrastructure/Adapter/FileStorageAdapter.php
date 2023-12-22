@@ -2,13 +2,8 @@
 
 namespace Module\Shared\Infrastructure\Adapter;
 
-use Module\Support\FileStorage\Application\Dto\CreateFileRequestDto;
-use Module\Support\FileStorage\Application\Dto\UpdateFileRequestDto;
-use Module\Support\FileStorage\Application\UseCase\CreateFile;
-use Module\Support\FileStorage\Application\UseCase\DeleteFile;
-use Module\Support\FileStorage\Application\UseCase\FindFile;
-use Module\Support\FileStorage\Application\UseCase\GetFileInfo;
-use Module\Support\FileStorage\Application\UseCase\UpdateFile;
+use Gsdk\FileStorage\FileInfo;
+use Gsdk\FileStorage\FileStorage;
 use Sdk\Shared\Contracts\Adapter\FileStorageAdapterInterface;
 use Sdk\Shared\Dto\FileDto;
 use Sdk\Shared\Dto\FileInfoDto;
@@ -17,17 +12,19 @@ class FileStorageAdapter implements FileStorageAdapterInterface
 {
     public function find(string $guid): ?FileDto
     {
-        return app(FindFile::class)->execute($guid);
+        return ($fileInfo = FileStorage::find($guid))
+            ? $this->makeDto($fileInfo)
+            : null;
     }
 
     public function create(string $name, string $contents): FileDto
     {
-        return app(CreateFile::class)->execute(new CreateFileRequestDto($name, $contents));
+        return $this->makeDto(FileStorage::create($name, $contents));
     }
 
     public function update(string $guid, string $name, string $contents): void
     {
-        app(UpdateFile::class)->execute(new UpdateFileRequestDto($guid, $name, $contents));
+        FileStorage::update($guid, $name, $contents);
     }
 
     public function updateOrCreate(?string $guid, string $name, string $contents): ?FileDto
@@ -43,11 +40,33 @@ class FileStorageAdapter implements FileStorageAdapterInterface
 
     public function getInfo(string $guid): ?FileInfoDto
     {
-        return app(GetFileInfo::class)->execute($guid);
+        $fileInfo = FileStorage::find($guid);
+        if (!$fileInfo) {
+            return null;
+        }
+
+        return new FileInfoDto(
+            guid: $fileInfo->getGuid(),
+            name: $fileInfo->getBasename(),
+            url: $fileInfo->getUrl(),
+            filename: $fileInfo->getPathname(),
+            size: $fileInfo->getSize(),
+            mimeType: $fileInfo->getMimeType(),
+            lastModified: $fileInfo->getMTime(),
+        );
     }
 
     public function delete(string $guid): void
     {
-        app(DeleteFile::class)->execute($guid);
+        FileStorage::delete($guid);
+    }
+
+    private function makeDto(FileInfo $fileInfo): FileDto
+    {
+        return new FileDto(
+            guid: $fileInfo->getGuid(),
+            name: $fileInfo->getBasename(),
+            url: $fileInfo->getUrl()
+        );
     }
 }

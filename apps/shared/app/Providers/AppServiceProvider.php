@@ -3,6 +3,7 @@
 namespace App\Shared\Providers;
 
 use App\Shared\Components\Locale\Languages;
+use Gsdk\FileStorage\FileStorageServiceProvider;
 use Sdk\Module\Database\Eloquent\MacrosServiceProvider;
 use Sdk\Module\Support\ServiceProvider;
 
@@ -18,6 +19,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(QueueServiceProvider::class);
         $this->app->register(ModuleServiceProvider::class);
         $this->app->register(TranslationServiceProvider::class);
+        $this->app->register(FileStorageServiceProvider::class);
 
         $this->registerApp();
 
