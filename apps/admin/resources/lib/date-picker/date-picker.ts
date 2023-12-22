@@ -83,12 +83,14 @@ export const useDatePicker = (element: HTMLInputElement, options?: Options) => {
     picker = new Litepicker({
       element,
       lang: 'ru-RU',
-      singleMode: true,
+      singleMode: false,
       showTooltip: false,
+      disallowLockDaysInRange: true,
       format: stringifyFormat,
       delimiter: dateRangeDelimiter,
       plugins: ['ranges'],
       ranges: {
+        force: false,
         customRanges: {
           ...ranges,
         },
@@ -106,6 +108,51 @@ export const useDatePicker = (element: HTMLInputElement, options?: Options) => {
   picker.on('selected', () => {
     const customChangeEvent = new CustomEvent('customEventChangeLitePicker')
     element?.dispatchEvent(customChangeEvent)
+  })
+
+  picker.on('ranges.selected', (date1: any, date2: any) => {
+    const { lockDays, minDate, maxDate } = picker.options
+    if (!lockDays || !Array.isArray(lockDays) || !lockDays.length) return
+    const startDate = DateTime.fromJSDate(date1.dateInstance)
+    const endDate = DateTime.fromJSDate(date2.dateInstance)
+    const selectedPeriodDays = []
+    if (startDate.equals(endDate)) {
+      selectedPeriodDays.push(startDate)
+    } else {
+      let currentDate = startDate
+      while (currentDate <= endDate) {
+        selectedPeriodDays.push(currentDate)
+        currentDate = currentDate.plus({ days: 1 })
+      }
+    }
+    let isValidSelectedPeriod = true
+    selectedPeriodDays.forEach((dayFromSelectedPeriod) => {
+      const isDateInRange = lockDays.some((range) => {
+        const startDateTime = DateTime.fromJSDate(range[0].dateInstance)
+        const endDateTime = DateTime.fromJSDate(range[1].dateInstance)
+        return dayFromSelectedPeriod >= startDateTime && dayFromSelectedPeriod <= endDateTime
+      })
+      if (minDate) {
+        const minDateFormat = DateTime.fromISO(minDate)
+        if (dayFromSelectedPeriod <= minDateFormat) {
+          isValidSelectedPeriod = false
+          return
+        }
+      }
+      if (maxDate) {
+        const maxDateFormat = DateTime.fromISO(maxDate)
+        if (dayFromSelectedPeriod >= maxDateFormat) {
+          isValidSelectedPeriod = false
+          return
+        }
+      }
+      if (isDateInRange) {
+        isValidSelectedPeriod = false
+      }
+    })
+    if (!isValidSelectedPeriod) {
+      picker.clearSelection()
+    }
   })
 
   $(element).on('customEventClearLitePicker', () => {

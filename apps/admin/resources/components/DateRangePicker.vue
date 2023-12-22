@@ -129,7 +129,6 @@ onMounted(() => {
       })
     } else {
       picker = useDateRangePicker(periodInput, {
-        disallowLockDaysInRange: true,
         lockDays: blockedPeriods.value || [],
         singleMode: false,
         minDate: props.minDate,

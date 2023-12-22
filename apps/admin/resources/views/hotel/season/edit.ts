@@ -35,10 +35,9 @@ const handleChangeContract = async (periodInput: HTMLInputElement, contractID: C
     return undefined
   }) || []
   return useDateRangePicker(periodInput, {
+    lockDays: blockedSeasons,
     minDate,
     maxDate,
-    disallowLockDaysInRange: true,
-    lockDays: blockedSeasons,
   })
 }
 
@@ -60,12 +59,12 @@ $(async () => {
     periodInput.disabled = false
   }
 
-  contractSelect.addEventListener('change', async (event) => {
-    const eventTarget = event.target as HTMLSelectElement | null
+  $(contractSelect).on('change', async (event: any) => {
+    const eventTarget = $(event.target)
     if (eventTarget === null) {
       return
     }
-    const eventValue = eventTarget.value
+    const eventValue = eventTarget.val()
     if (eventValue === '') {
       return
     }

@@ -29,7 +29,6 @@ $(() => {
     .querySelector<HTMLInputElement>('.daterange')
   if (periodInput !== null) {
     useDateRangePicker(periodInput, {
-      disallowLockDaysInRange: true,
       lockDays: getBlockedSeasons(),
     })
   }
