@@ -3,6 +3,7 @@ import { z } from 'zod'
 
 import { ContractID, useHotelContractGetAPI } from '~api/hotel/contract'
 
+import { formatUtcToIsoDate } from '~lib/date'
 import { useDateRangePicker } from '~lib/date-picker/date-picker'
 import { requestInitialData } from '~lib/initial-data'
 import { getNullableRef } from '~lib/vue'
@@ -36,8 +37,8 @@ const handleChangeContract = async (periodInput: HTMLInputElement, contractID: C
   }) || []
   return useDateRangePicker(periodInput, {
     lockDays: blockedSeasons,
-    minDate,
-    maxDate,
+    minDate: minDate ? formatUtcToIsoDate(minDate) : undefined,
+    maxDate: maxDate ? formatUtcToIsoDate(maxDate) : undefined,
   })
 }
 
@@ -60,6 +61,9 @@ $(async () => {
   }
 
   $(contractSelect).on('change', async (event: any) => {
+    if (!seasonID) {
+      periodInput.value = ''
+    }
     const eventTarget = $(event.target)
     if (eventTarget === null) {
       return

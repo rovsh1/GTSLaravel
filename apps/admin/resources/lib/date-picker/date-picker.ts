@@ -134,14 +134,14 @@ export const useDatePicker = (element: HTMLInputElement, options?: Options) => {
       })
       if (minDate) {
         const minDateFormat = DateTime.fromISO(minDate)
-        if (dayFromSelectedPeriod <= minDateFormat) {
+        if (dayFromSelectedPeriod < minDateFormat) {
           isValidSelectedPeriod = false
           return
         }
       }
       if (maxDate) {
         const maxDateFormat = DateTime.fromISO(maxDate)
-        if (dayFromSelectedPeriod >= maxDateFormat) {
+        if (dayFromSelectedPeriod > maxDateFormat) {
           isValidSelectedPeriod = false
           return
         }

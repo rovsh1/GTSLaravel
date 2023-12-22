@@ -14,6 +14,8 @@ export const parseAPIDateAndSetDefaultTime = (date: DateResponse): DateTime =>
 export const formatDateToAPIDate = (date: Date): APIDate => DateTime
   .fromJSDate(date).toFormat('yyyy-LL-dd')
 
+export const formatUtcToIsoDate = (date: DateResponse) => parseAPIDate(date).toFormat('yyyy-LL-dd')
+
 export const formatDateTimeToAPIDate = (date: DateTime): APIDate => date.toFormat('yyyy-LL-dd')
 
 export const formatDate = (date: DateResponse) => parseAPIDate(date).toLocaleString()
