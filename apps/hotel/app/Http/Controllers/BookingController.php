@@ -150,11 +150,6 @@ class BookingController extends AbstractHotelController
             ->dateRange('created_period', ['label' => 'Дата создания']);
     }
 
-    protected function isAllowed(string $permission): bool
-    {
-        return $this->prototype->hasPermission($permission) && Acl::isAllowed($this->prototype->key, $permission);
-    }
-
     protected function route(string $name, mixed $parameters = []): string
     {
         return route("booking.{$name}", $parameters);

@@ -19,4 +19,9 @@ class HotelService
     {
         return $this->hotel;
     }
+
+    public function getHotelId(): int
+    {
+        return $this->hotel->id;
+    }
 }

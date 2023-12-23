@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Hotel\Models;
 
 use App\Admin\Support\View\Form\ValueObject\NumRangeValue;
+use App\Hotel\Services\HotelService;
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Builder as Query;
@@ -17,6 +18,18 @@ class Booking extends \Module\Booking\Shared\Infrastructure\Models\Booking
     use HasQuicksearch;
 
     protected array $quicksearch = ['id'];
+
+    protected static function booted()
+    {
+        static::addGlobalScope('default', function (Builder $builder) {
+            $builder->whereExists(function (Query $query) {
+                $query->selectRaw(1)
+                    ->from('booking_hotel_details')
+                    ->whereColumn('booking_hotel_details.booking_id', 'bookings.id')
+                    ->where('booking_hotel_details.hotel_id', app(HotelService::class)->getHotelId());
+            });
+        });
+    }
 
     public function scopeWhereCreatedPeriod(Builder $builder, CarbonPeriod $period): void
     {
