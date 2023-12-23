@@ -11,6 +11,10 @@ Route::controller(HotelController::class)
     ->as('hotel.')
     ->group(function () {
         Route::get('/', 'index')->name('index');
+        Route::get('/get', 'get')->name('get');
+
+        Route::get('/settings', 'settings')->name('settings');
+        Route::put('/settings', 'updateSettings')->name('settings.update');
 
         Route::prefix('notes')
             ->as('notes.')

@@ -2,33 +2,28 @@
 
 namespace App\Hotel\Http\Controllers;
 
-use App\Admin\Http\Controllers\Controller;
-use App\Admin\Http\Requests\Hotel\BatchUpdateQuotaRequest;
-use App\Admin\Http\Requests\Hotel\GetQuotaRequest;
-use App\Admin\Http\Requests\Hotel\UpdateQuotaRequest;
-use App\Admin\Http\Requests\Hotel\UpdateQuotaStatusRequest;
-use App\Admin\Http\Resources\RoomQuota;
-use App\Admin\Models\Hotel\Hotel;
-use App\Admin\Models\Hotel\Room;
-use App\Admin\Support\Facades\Breadcrumb;
-use App\Admin\Support\Facades\Hotel\QuotaAdapter;
-use App\Admin\Support\Facades\Layout;
-use App\Admin\Support\Facades\Sidebar;
-use App\Admin\Support\View\Layout as LayoutContract;
-use App\Admin\View\Menus\HotelMenu;
+use App\Hotel\Http\Requests\BatchUpdateQuotaRequest;
+use App\Hotel\Http\Requests\GetQuotaRequest;
+use App\Hotel\Http\Requests\UpdateQuotaRequest;
+use App\Hotel\Http\Requests\UpdateQuotaStatusRequest;
+use App\Hotel\Http\Resources\RoomQuota;
+use App\Hotel\Models\Hotel;
+use App\Hotel\Models\Room;
+use App\Hotel\Support\Facades\QuotaAdapter;
+use App\Hotel\Support\Facades\Layout;
+use App\Hotel\Support\Facades\Sidebar;
+use App\Hotel\Support\View\LayoutBuilder as LayoutContract;
 use App\Shared\Http\Responses\AjaxResponseInterface;
 use App\Shared\Http\Responses\AjaxSuccessResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class QuotaController extends Controller
+class QuotaController extends AbstractHotelController
 {
-    public function index(Request $request, Hotel $hotel): LayoutContract
+    public function index(Request $request): LayoutContract
     {
-        $this->hotel($hotel);
-
-        return Layout::title((string)$hotel)
-            ->view('hotel.quotas.quotas', ['hotel' => $hotel]);
+        return Layout::title($this->getPageHeader())
+            ->view('quotas.quotas', ['hotel' => $this->getHotel()]);
     }
 
     public function get(GetQuotaRequest $request, Hotel $hotel): JsonResponse

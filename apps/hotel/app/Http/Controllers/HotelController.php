@@ -3,8 +3,6 @@
 namespace App\Hotel\Http\Controllers;
 
 use App\Hotel\Http\Requests\UpdateSettingsRequest;
-use App\Hotel\Http\Resources\Room;
-use App\Hotel\Models\Hotel;
 use App\Hotel\Support\Facades\Layout;
 use App\Hotel\Support\Facades\SettingsAdapter;
 use App\Hotel\Support\View\LayoutBuilder as LayoutContract;
@@ -30,9 +28,11 @@ class HotelController extends AbstractHotelController
             ]);
     }
 
-    public function get(Request $request, Hotel $hotel): JsonResponse
+    public function get(Request $request): JsonResponse
     {
-        return response()->json($hotel);
+        return response()->json(
+            $this->getHotel()
+        );
     }
 
     public function settings(Request $request, int $id): JsonResponse

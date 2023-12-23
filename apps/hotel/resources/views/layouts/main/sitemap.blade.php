@@ -18,6 +18,8 @@
                                             <nav>
                                                 <a href="{{ route('booking.index') }}" class="{{ request()->routeIs('booking.index') ? 'current' : '' }}">
                                                     Брони
+                                                </a>                                                <a href="{{ route('quotas.index') }}" class="{{ request()->routeIs('quotas.index') ? 'current' : '' }}">
+                                                    Квоты
                                                 </a>
                                                 <a href="{{ route('hotel.index') }}" class="{{ request()->routeIs('hotel.index') ? 'current' : '' }}">
                                                     Описание
