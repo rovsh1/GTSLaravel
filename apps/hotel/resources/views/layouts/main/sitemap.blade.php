@@ -16,8 +16,17 @@
                                     <div class="group">
                                         <div class="group-items">
                                             <nav>
-                                                <a href="{{ route('booking.index') }}" class="current ">
-                                                    Брони отелей
+                                                <a href="{{ route('booking.index') }}" class="{{ request()->routeIs('booking.index') ? 'current' : '' }}">
+                                                    Брони
+                                                </a>
+                                                <a href="{{ route('hotel.index') }}" class="{{ request()->routeIs('hotel.index') ? 'current' : '' }}">
+                                                    Описание
+                                                </a>
+                                                <a href="{{ route('rooms.index') }}" class="{{ request()->routeIs('rooms.index') ? 'current' : '' }}">
+                                                    Номера
+                                                </a>
+                                                <a href="{{ route('images.index') }}" class="{{ request()->routeIs('images.index') ? 'current' : '' }}">
+                                                    Фотографии
                                                 </a>
                                             </nav>
                                         </div>

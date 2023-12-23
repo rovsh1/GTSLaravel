@@ -2,41 +2,34 @@
 
 namespace App\Hotel\Http\Controllers;
 
-use App\Admin\Components\Factory\Prototype;
-use App\Admin\Http\Controllers\Controller;
-use App\Admin\Models\Hotel\Hotel;
 use App\Admin\Models\Hotel\Reference\Usability;
 use App\Admin\Repositories\Hotel\UsabilitiesRepository;
-use App\Admin\Support\Facades\Prototypes;
-use App\Admin\Support\Repository\RepositoryInterface;
+use App\Hotel\Services\HotelService;
 use App\Shared\Http\Responses\AjaxReloadResponse;
 use App\Shared\Http\Responses\AjaxResponseInterface;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-class UsabilityController extends Controller
+class UsabilityController extends AbstractHotelController
 {
-    protected Prototype $prototype;
-
-    private RepositoryInterface $repository;
-
-    public function __construct(UsabilitiesRepository $repository)
-    {
-        $this->prototype = Prototypes::get($this->getPrototypeKey());
-        $this->repository = $repository;
+    public function __construct(
+        HotelService $hotelService,
+        private readonly UsabilitiesRepository $repository
+    ) {
+        parent::__construct($hotelService);
     }
 
-    public function index(Hotel $hotel): View
+    public function edit(): View
     {
-        return view('hotel._partials.modals.usabilities', [
+        return view('show._modals.usabilities', [
             'usabilities' => Usability::all(),
-            'hotelUsabilities' => $hotel->usabilities,
-            'usabilitiesUrl' => $this->prototype->route('show', $hotel->id) . '/usabilities',
-            'rooms' => $hotel->rooms,
+            'hotelUsabilities' => $this->getHotel()->usabilities,
+            'usabilitiesUrl' => route('hotel.usabilities.update'),
+            'rooms' => $this->getHotel()->rooms,
         ]);
     }
 
-    public function update(Request $request, Hotel $hotel): AjaxResponseInterface
+    public function update(Request $request): AjaxResponseInterface
     {
         $usabilitiesData = \Arr::get($request->toArray(), 'data.usabilities');
 
@@ -50,19 +43,14 @@ class UsabilityController extends Controller
                 }
                 $usabilityUpdateData[] = [
                     'usability_id' => $usabilityId,
-                    'hotel_id' => $hotel->id,
+                    'hotel_id' => $this->getHotel()->id,
                     'room_id' => $isForAllRooms ? null : $roomId
                 ];
             }
         }
 
-        $this->repository->update($hotel->id, $usabilityUpdateData);
+        $this->repository->update($this->getHotel()->id, $usabilityUpdateData);
 
         return new AjaxReloadResponse();
-    }
-
-    private function getPrototypeKey(): string
-    {
-        return 'hotel';
     }
 }

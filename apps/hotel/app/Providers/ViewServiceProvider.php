@@ -92,5 +92,7 @@ class ViewServiceProvider extends ServiceProvider
     private function registerComponents(): void {
         Blade::component('icon', Components\Icon::class);
         Blade::component('user-avatar', Components\UserAvatar::class);
+        Blade::component('file-image', Components\FileImage::class);
+        Blade::component('ui.card', Components\Card::class);
     }
 }

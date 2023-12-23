@@ -2,11 +2,9 @@
 
 namespace App\Hotel\Models;
 
-use App\Admin\Models\HasIndexedChildren;
-use App\Admin\Models\Hotel\Reference\Service;
-use App\Admin\Models\Hotel\Reference\Usability;
-use App\Admin\Models\Reference\Landmark;
-use App\Admin\Support\Models\HasCoordinates;
+use App\Hotel\Models\Reference\Service;
+use App\Hotel\Models\Reference\Usability;
+use App\Hotel\Models\Reference\Landmark;
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -40,7 +38,6 @@ use Sdk\Shared\Enum\Hotel\VisibilityEnum;
 class Hotel extends Model
 {
     use HasQuicksearch;
-    use HasCoordinates;
     use HasIndexedChildren;
 
     //use SoftDeletes;
@@ -77,10 +74,6 @@ class Hotel extends Model
         'visibility' => VisibilityEnum::class
     ];
 
-    public static function saving($callback)
-    {
-    }
-
     public static function booted()
     {
         static::addGlobalScope('default', function (Builder $builder) {
@@ -100,23 +93,6 @@ class Hotel extends Model
         return $this->hasMany(Room::class);
     }
 
-    public function seasons(): BelongsToMany
-    {
-        return $this->belongsToMany(
-            Season::class,
-            'hotel_contracts',
-            'hotel_id',
-            'id',
-            'id',
-            'contract_id',
-        );
-    }
-
-    public function contacts(): HasMany
-    {
-        return $this->hasMany(Contact::class, 'hotel_id', 'id');
-    }
-
     public function landmarks(): BelongsToMany
     {
         return $this->belongsToMany(
@@ -128,25 +104,6 @@ class Hotel extends Model
             'id',
         )
             ->addSelect('hotel_landmark.distance');
-    }
-
-    public function scopeWherePeriod(Builder $builder, CarbonPeriod $period): void
-    {
-        $builder->whereHas('contracts', function (Builder $query) use ($period) {
-            $query->whereBetween('date_start', [$period->getStartDate(), $period->getEndDate()]);
-        });
-    }
-
-    public function scopeWithRoomsCount(Builder $builder): void
-    {
-        $builder->addSelect(
-            \DB::raw("(SELECT COUNT(`id`) FROM `hotel_rooms` WHERE `hotel_id`=`hotels`.`id`) as rooms_count")
-        );
-    }
-
-    public function contracts(): HasMany
-    {
-        return $this->hasMany(Contract::class, 'hotel_id', 'id');
     }
 
     public function services(): BelongsToMany
@@ -182,11 +139,6 @@ class Hotel extends Model
         return $this->hasMany(User::class);
     }
 
-    public function priceRates(): HasMany
-    {
-        return $this->hasMany(PriceRate::class);
-    }
-
     protected function images(): HasMany
     {
         return $this->hasMany(Image::class);
@@ -215,15 +167,5 @@ class Hotel extends Model
     public function __toString()
     {
         return (string)$this->name;
-    }
-
-    protected function getLatitudeField(): string
-    {
-        return 'address_lat';
-    }
-
-    protected function getLongitudeField(): string
-    {
-        return 'address_lon';
     }
 }

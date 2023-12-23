@@ -20,13 +20,3 @@ Route::controller(AuthController::class)
         Route::get('/partner', 'partner')->name('partner');
         Route::post('/partner', 'processPartner')->name('partner.submit');
     });
-
-Route::controller(ProfileController::class)
-    ->prefix('profile')
-    ->as('profile.')
-    ->group(function () {
-        Route::get('/', 'index')->name('index');
-//        Route::match(['get', 'post'], '/settings', 'settings')->name('.name');
-//        Route::match(['get', 'post'], '/password', 'password')->name('.password');
-//        Route::match(['get', 'post'], '/photo', 'photo')->name('.photo');
-    });

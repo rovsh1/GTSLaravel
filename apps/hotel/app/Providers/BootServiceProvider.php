@@ -2,6 +2,7 @@
 
 namespace App\Hotel\Providers;
 
+use App\Hotel\Services\HotelService;
 use App\Hotel\Support\Facades\AppContext;
 use Illuminate\Support\ServiceProvider;
 use Sdk\Shared\Enum\SourceEnum;
@@ -19,6 +20,7 @@ class BootServiceProvider extends ServiceProvider
     {
         AppContext::setSource(SourceEnum::HOTEL);
         $this->setRequestContext();
+        $this->app->singleton(HotelService::class);
     }
 
     private function setRequestContext(): void

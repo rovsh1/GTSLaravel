@@ -2,19 +2,16 @@
 
 namespace App\Hotel\Http\Controllers;
 
-use App\Admin\Http\Controllers\Controller;
-use App\Admin\Http\Requests\Hotel\UploadImagesRequest;
-use App\Admin\Http\Resources\HotelImage;
-use App\Admin\Http\Resources\Room as RoomResource;
-use App\Admin\Models\Hotel\Hotel;
-use App\Admin\Models\Hotel\Image;
-use App\Admin\Models\Hotel\Room;
-use App\Admin\Support\Facades\Breadcrumb;
-use App\Admin\Support\Facades\Layout;
-use App\Admin\Support\Facades\Sidebar;
-use App\Admin\Support\View\Layout as LayoutContract;
-use App\Admin\View\Menus\HotelMenu;
 use App\Api\Repositories\Hotel\RoomImageRepository;
+use App\Hotel\Http\Requests\UploadImagesRequest;
+use App\Hotel\Http\Resources\HotelImage;
+use App\Hotel\Http\Resources\Room as RoomResource;
+use App\Hotel\Models\Hotel;
+use App\Hotel\Models\Image;
+use App\Hotel\Models\Room;
+use App\Hotel\Services\HotelService;
+use App\Hotel\Support\Facades\Layout;
+use App\Hotel\Support\View\LayoutBuilder as LayoutContract;
 use App\Shared\Http\Responses\AjaxResponseInterface;
 use App\Shared\Http\Responses\AjaxSuccessResponse;
 use Illuminate\Http\JsonResponse;
@@ -26,14 +23,16 @@ use Module\Hotel\Moderation\Application\UseCase\GetImages;
 use Sdk\Shared\Dto\UploadedFileDto;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class ImageController extends Controller
+class ImageController extends AbstractHotelController
 {
     public function __construct(
+        HotelService $hotelService,
         private readonly RoomImageRepository $roomImageRepository
     ) {
+        parent::__construct($hotelService);
     }
 
-    public function index(Request $request, Hotel $hotel): LayoutContract
+    public function index(Request $request): LayoutContract
     {
         $roomId = $request->get('room_id');
         if ($roomId !== null) {
@@ -41,13 +40,10 @@ class ImageController extends Controller
             if ($room === null) {
                 throw new NotFoundHttpException('Room id not found');
             }
-            $this->roomMenu($hotel, $room);
-        } else {
-            $this->hotel($hotel);
         }
 
-        return Layout::title((string)$hotel)
-            ->view('hotel.images.images', ['hotel' => $hotel]);
+        return Layout::title($this->getPageHeader())
+            ->view('images.images', ['hotel' => $this->getHotel()]);
     }
 
     public function get(Request $request, Hotel $hotel): JsonResponse
@@ -142,25 +138,5 @@ class ImageController extends Controller
         $image->update(['is_main' => false]);
 
         return new AjaxSuccessResponse();
-    }
-
-    private function hotel(Hotel $hotel): void
-    {
-        Breadcrumb::prototype('hotel')
-            ->addUrl(route('hotels.show', $hotel), (string)$hotel)
-            ->addUrl(route('hotels.images.index', $hotel), 'Фотографии');
-
-        Sidebar::submenu(new HotelMenu($hotel, 'images'));
-    }
-
-    private function roomMenu(Hotel $hotel, Room $room): void
-    {
-        Breadcrumb::prototype('hotel')
-            ->addUrl(route('hotels.show', $hotel), (string)$hotel)
-            ->addUrl(route('hotels.rooms.index', $hotel), 'Номера')
-            ->addUrl(route('hotels.rooms.edit', [$hotel, $room]), (string)$room)
-            ->addUrl(route('hotels.images.index', $hotel), 'Фотографии');
-
-        Sidebar::submenu(new HotelMenu($hotel, 'rooms'));
     }
 }

@@ -29,6 +29,12 @@ export default defineConfig(({ command }) => ({
         'resources/assets/tinymce.js',
         'resources/assets/tinymce-content.scss',
         'resources/views/auth/login/login.scss',
+        'resources/views/show/show.scss',
+        'resources/views/show/show.ts',
+        'resources/views/show/notes/notes.ts',
+        'resources/views/rooms/rooms.scss',
+        'resources/views/rooms/rooms.ts',
+        'resources/views/images/images.ts',
       ],
       refresh: [
         'resources/**/*.php',

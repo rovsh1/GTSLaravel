@@ -6,6 +6,15 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Hash;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
 
+/**
+ * @property int $hotel_id
+ * @property string|null $presentation
+ * @property string|null $name
+ * @property string|null $surname
+ * @property string|null $patronymic
+ * @property string $email
+ * @property string|null $phone
+ */
 class User extends Authenticatable
 {
     use HasQuicksearch;

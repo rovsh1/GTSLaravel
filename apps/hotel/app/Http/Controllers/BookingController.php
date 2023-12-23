@@ -14,31 +14,22 @@ use App\Admin\Support\Facades\Booking\BookingAdapter;
 use App\Admin\Support\Facades\Booking\Hotel\DetailsAdapter;
 use App\Admin\Support\Facades\Booking\OrderAdapter;
 use App\Admin\Support\Facades\Breadcrumb;
-use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Grid;
-use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Grid\SearchForm;
 use App\Hotel\Models\Booking;
-use App\Hotel\Models\User;
 use App\Hotel\Support\Facades\Layout;
-use App\Hotel\Support\Http\AbstractController;
 use App\Hotel\Support\View\LayoutBuilder as LayoutContract;
-use App\Shared\Http\Responses\AjaxRedirectResponse;
 use App\Shared\Http\Responses\AjaxResponseInterface;
 use App\Shared\Http\Responses\AjaxSuccessResponse;
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Module\Booking\Requesting\Domain\Service\RequestingRules;
-use Sdk\Booking\Enum\QuotaProcessingMethodEnum;
 use Sdk\Booking\Enum\StatusEnum;
-use Sdk\Shared\Exception\ApplicationException;
 
-class BookingController extends AbstractController
+class BookingController extends AbstractHotelController
 {
     public function index(): LayoutContract
     {
@@ -223,14 +214,5 @@ class BookingController extends AbstractController
                     'EXISTS(SELECT 1 FROM booking_requests WHERE bookings.id = booking_requests.booking_id AND is_archive = 0) as has_downloadable_request'
                 ),
             );
-    }
-
-    private function getPageHeader(): ?string
-    {
-        /** @var User $user */
-        $user = Auth::guard('hotel')->user();
-        $hotel = \App\Hotel\Models\Hotel::find($user->hotel_id);
-
-        return $hotel?->name;
     }
 }
