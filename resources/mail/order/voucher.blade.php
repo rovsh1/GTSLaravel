@@ -23,7 +23,7 @@
         </tr>
         @foreach($services as $service)
             <tr>
-                <td>{{ __('Номер брони: :id', ['id' => $service->id]) }}</td>
+                <td>{{ $service->title }}</td>
             </tr>
             <tr>
                 <td>{{ __('Общая сумма: :amount', ['amount' => $service->price->total]) }}</td>
