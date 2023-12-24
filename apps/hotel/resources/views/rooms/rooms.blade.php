@@ -9,6 +9,11 @@
 @endsection
 
 @section('content')
+    <div class="content-header">
+        <div class="title">{{ $title }}</div>
+        <div class="flex-grow-1"></div>
+    </div>
+
     <div class="content-body rooms-cards" id="hotel-rooms">
         @foreach($rooms as $room)
             <div class="card room" data-id="{{ $room->id }}">

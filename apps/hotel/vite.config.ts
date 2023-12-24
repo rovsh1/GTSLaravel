@@ -36,6 +36,8 @@ export default defineConfig(({ command }) => ({
         'resources/views/rooms/rooms.ts',
         'resources/views/images/images.ts',
         'resources/views/quotas/quotas.ts',
+        'resources/views/settings/settings.ts',
+        'resources/views/settings/settings.scss',
       ],
       refresh: [
         'resources/**/*.php',

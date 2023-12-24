@@ -93,17 +93,9 @@ class Hotel extends Model
         return $this->hasMany(Room::class);
     }
 
-    public function landmarks(): BelongsToMany
+    public function contracts(): HasMany
     {
-        return $this->belongsToMany(
-            Landmark::class,
-            'hotel_landmark',
-            'hotel_id',
-            'landmark_id',
-            'id',
-            'id',
-        )
-            ->addSelect('hotel_landmark.distance');
+        return $this->hasMany(Contract::class, 'hotel_id', 'id');
     }
 
     public function services(): BelongsToMany

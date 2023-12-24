@@ -7,7 +7,7 @@
                     <aside class="sidebar">
                         <div class="main-menu-wrapper">
                             <div class="sidebar-header">
-                                <div class="title">{TITLE}</div>
+                                <div class="title">{{ app(\App\Hotel\Services\HotelService::class)->getHotel()->name }}</div>
                             </div>
 
                             <div class="menu-wrapper">
@@ -16,19 +16,32 @@
                                     <div class="group">
                                         <div class="group-items">
                                             <nav>
-                                                <a href="{{ route('booking.index') }}" class="{{ request()->routeIs('booking.index') ? 'current' : '' }}">
+                                                <a href="{{ route('booking.index') }}"
+                                                   class="{{ request()->routeIs('booking.index') ? 'current' : '' }}">
                                                     Брони
-                                                </a>                                                <a href="{{ route('quotas.index') }}" class="{{ request()->routeIs('quotas.index') ? 'current' : '' }}">
+                                                </a> <a href="{{ route('quotas.index') }}"
+                                                        class="{{ request()->routeIs('quotas.index') ? 'current' : '' }}">
                                                     Квоты
                                                 </a>
-                                                <a href="{{ route('hotel.index') }}" class="{{ request()->routeIs('hotel.index') ? 'current' : '' }}">
+                                                <a href="{{ route('hotel.index') }}"
+                                                   class="{{ request()->routeIs('hotel.index') ? 'current' : '' }}">
                                                     Описание
                                                 </a>
-                                                <a href="{{ route('rooms.index') }}" class="{{ request()->routeIs('rooms.index') ? 'current' : '' }}">
+                                                <a href="{{ route('rooms.index') }}"
+                                                   class="{{ request()->routeIs('rooms.index') ? 'current' : '' }}">
                                                     Номера
                                                 </a>
-                                                <a href="{{ route('images.index') }}" class="{{ request()->routeIs('images.index') ? 'current' : '' }}">
+                                                <a href="{{ route('images.index') }}"
+                                                   class="{{ request()->routeIs('images.index') ? 'current' : '' }}">
                                                     Фотографии
+                                                </a>
+                                                <a href="{{ route('hotel.settings.index') }}"
+                                                   class="{{ request()->routeIs('hotel.settings.index') ? 'current' : '' }}">
+                                                    Условия размещения
+                                                </a>
+                                                <a href="{{ route('contracts.index') }}"
+                                                   class="{{ request()->routeIs('contracts.index') ? 'current' : '' }}">
+                                                    Договора
                                                 </a>
                                             </nav>
                                         </div>

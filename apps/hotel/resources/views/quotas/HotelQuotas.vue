@@ -1,12 +1,11 @@
 <script lang="ts" setup>
-import { computed, nextTick, ref, watch, watchEffect } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 
 import { useToggle } from '@vueuse/core'
 import { z } from 'zod'
 
 import { useUpdateHotelRoomQuotasBatch } from '~resources/api/hotel/quotas/batch'
 import { formatDateToAPIDate } from '~resources/lib/date'
-import { createHotelSwitcher } from '~resources/lib/hotel-switcher/hotel-switcher'
 
 import { HotelResponse, useHotelGetAPI } from '~api/hotel/get'
 import { useHotelQuotasAPI } from '~api/hotel/quotas/list'
@@ -139,14 +138,6 @@ watch(editable, (value) => {
 const handleFilters = (value: FiltersPayload) => {
   filtersPayload.value = value
 }
-
-watchEffect(() => {
-  if (!isHotelFetching.value && !isHotelRoomsFetching.value) {
-    nextTick(() => {
-      createHotelSwitcher(document.getElementsByClassName('content-header')[0], false)
-    })
-  }
-})
 
 const switchRooms = (value: number[]) => {
   activeRoomIDs.value = value

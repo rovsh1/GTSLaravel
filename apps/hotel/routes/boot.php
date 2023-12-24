@@ -18,4 +18,5 @@ Route::middleware(HotelContextMiddleware::class)->group(function () {
     Route::group([], __DIR__ . '/image.php');
     Route::group([], __DIR__ . '/hotel.php');
     Route::group([], __DIR__ . '/quota.php');
+    Route::group([], __DIR__ . '/contract.php');
 });

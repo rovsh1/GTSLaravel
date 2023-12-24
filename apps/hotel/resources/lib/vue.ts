@@ -12,7 +12,7 @@ export const createVueInstance = (params: CreateVueInstanceParams) => {
 
   const rootContainerElement = document.querySelector<HTMLElement>(rootContainer)
   if (rootContainerElement === null) {
-    throw new Error('Root container not found')
+    throw new Error(`Root container not found: ${rootContainer}`)
   }
 
   const app = createApp({

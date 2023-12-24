@@ -3,6 +3,7 @@
 use App\Hotel\Http\Controllers\HotelController;
 use App\Hotel\Http\Controllers\NotesController;
 use App\Hotel\Http\Controllers\ServiceController;
+use App\Hotel\Http\Controllers\SettingsController;
 use App\Hotel\Http\Controllers\UsabilityController;
 use Illuminate\Support\Facades\Route;
 
@@ -13,8 +14,13 @@ Route::controller(HotelController::class)
         Route::get('/', 'index')->name('index');
         Route::get('/get', 'get')->name('get');
 
-        Route::get('/settings', 'settings')->name('settings');
-        Route::put('/settings', 'updateSettings')->name('settings.update');
+        Route::prefix('settings')
+            ->as('settings.')
+            ->group(function () {
+                Route::get('/', [SettingsController::class, 'index'])->name('index');
+                Route::get('/get', [SettingsController::class, 'get'])->name('get');
+                Route::put('/settings', [SettingsController::class, 'update'])->name('update');
+            });
 
         Route::prefix('notes')
             ->as('notes.')

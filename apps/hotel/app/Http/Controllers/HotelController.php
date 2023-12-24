@@ -35,17 +35,26 @@ class HotelController extends AbstractHotelController
         );
     }
 
-    public function settings(Request $request, int $id): JsonResponse
+    public function settings(Request $request): LayoutContract
     {
-        $hotelSettings = SettingsAdapter::getHotelSettings($id);
+        return Layout::title($this->getPageHeader())
+            ->view('settings.settings', [
+                'model' => $this->getHotel(),
+                'contract' => $this->getHotel()->contracts()->active()->first(),
+            ]);
+    }
+
+    public function getSettings(Request $request, int $id): JsonResponse
+    {
+        $hotelSettings = SettingsAdapter::getHotelSettings($this->getHotel()->id);
 
         return response()->json($hotelSettings);
     }
 
-    public function updateSettings(UpdateSettingsRequest $request, int $id): AjaxResponseInterface
+    public function updateSettings(UpdateSettingsRequest $request): AjaxResponseInterface
     {
         SettingsAdapter::updateHotelTimeSettings(
-            $id,
+            $this->getHotel()->id,
             $request->getCheckInAfter(),
             $request->getCheckOutBefore(),
             $request->getBreakfastPeriodFrom(),

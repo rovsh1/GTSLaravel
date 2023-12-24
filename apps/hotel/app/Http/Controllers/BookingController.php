@@ -37,7 +37,7 @@ class BookingController extends AbstractHotelController
         $query = $this->prepareGridQuery(Booking::query(), $grid->getSearchCriteria());
         $grid->data($query);
 
-        return Layout::title($this->getPageHeader())
+        return Layout::title('Брони')
             ->view('default.grid.grid', [
                 'quicksearch' => $grid->getQuicksearch(),
                 'searchForm' => $grid->getSearchForm(),

@@ -2,49 +2,43 @@
 
 namespace App\Hotel\Http\Controllers;
 
-use App\Admin\Http\Controllers\Controller;
-use App\Admin\Models\Hotel\Hotel;
-use App\Admin\Models\Hotel\Rule;
-use App\Admin\Support\Facades\Breadcrumb;
-use App\Admin\Support\Facades\Grid;
-use App\Admin\Support\Facades\Layout;
-use App\Admin\Support\Facades\Sidebar;
-use App\Admin\Support\View\Grid\Grid as GridContract;
-use App\Admin\Support\View\Layout as LayoutContract;
-use App\Admin\View\Menus\HotelMenu;
+use App\Hotel\Http\Requests\UpdateSettingsRequest;
+use App\Hotel\Support\Facades\Layout;
+use App\Hotel\Support\Facades\SettingsAdapter;
+use App\Hotel\Support\View\LayoutBuilder as LayoutContract;
+use App\Shared\Http\Responses\AjaxResponseInterface;
+use App\Shared\Http\Responses\AjaxSuccessResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class SettingsController extends Controller
+class SettingsController extends AbstractHotelController
 {
-    public function index(Request $request, Hotel $hotel): LayoutContract
+    public function index(Request $request): LayoutContract
     {
-        $this->hotel($hotel);
-
-        return Layout::title((string)$hotel)
-            ->view('hotel.settings.settings', [
-                'model' => $hotel,
-                'createRuleUrl' => route('hotels.rules.create', $hotel),
-                'rulesGrid' => $this->rulesGridFactory($hotel->id),
-                'contract' => $hotel->contracts()->active()->first(),
+        return Layout::title('Условия размещения')
+            ->view('settings.settings', [
+                'model' => $this->getHotel(),
+                'contract' => $this->getHotel()->contracts()->active()->first(),
             ]);
     }
 
-    private function rulesGridFactory(int $hotelId): GridContract
+    public function get(Request $request, int $id): JsonResponse
     {
-        return Grid::header(false)
-            ->edit(fn($r) => route('hotels.rules.edit', [$hotelId, $r->id]))
-            ->text('name')
-            ->data(
-                Rule::whereHotelId($hotelId)
-            );
+        $hotelSettings = SettingsAdapter::getHotelSettings($this->getHotel()->id);
+
+        return response()->json($hotelSettings);
     }
 
-    private function hotel(Hotel $hotel): void
+    public function update(UpdateSettingsRequest $request): AjaxResponseInterface
     {
-        Breadcrumb::prototype('hotel')
-            ->addUrl(route('hotels.show', $hotel), (string)$hotel)
-            ->addUrl(route('hotels.settings.index', $hotel), 'Условия размещения');
+        SettingsAdapter::updateHotelTimeSettings(
+            $this->getHotel()->id,
+            $request->getCheckInAfter(),
+            $request->getCheckOutBefore(),
+            $request->getBreakfastPeriodFrom(),
+            $request->getBreakfastPeriodTo()
+        );
 
-        Sidebar::submenu(new HotelMenu($hotel, 'settings'));
+        return new AjaxSuccessResponse();
     }
 }

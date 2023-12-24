@@ -9,6 +9,11 @@
 @endsection
 
 @section('content')
+    <div class="content-header">
+        <div class="title">{{ $title }}</div>
+        <div class="flex-grow-1"></div>
+    </div>
+
     <div class="content-body">
         <div class="card card-form mt-3">
             <div class="card-body">
