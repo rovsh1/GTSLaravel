@@ -12,9 +12,7 @@
         'order' => $order,
         'currencies' => $currencies,
         'timelineUrl' => $timelineUrl,
-        'editUrl' => $editUrl,
-        'deleteUrl' => $deleteUrl,
-        'manager' => $manager,
+        'manager' => $manager ?? null,
         'isHotelBooking' => true,
         'isOtherServiceBooking' => false,
     ]) !!}
@@ -38,13 +36,6 @@
                             <table class="table-params">
                                 <tbody>
                                 <tr>
-                                    <th>Заказ (ID)</th>
-                                    <td>
-                                        <a href="{{ route('booking-order.show', $model->orderId) }}"
-                                           target="_blank">{{ $model->orderId }}</a>
-                                    </td>
-                                </tr>
-                                <tr>
                                     <th>Дата заезда и выезда</th>
                                     <td>{{ Format::period(new \Carbon\CarbonPeriod($model->details->period->dateFrom, $model->details->period->dateTo)) }}</td>
                                 </tr>
@@ -65,33 +56,19 @@
                                     <td>{{ $hotel->country_name }} / {{ $hotel->city_name }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Клиент</th>
-                                    <td>
-                                        <a href="{{ route('client.show', $client->id) }}"
-                                           target="_blank">{{ $client->name }}</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>Отель</th>
-                                    <td>
-                                        <a href="{{ route('hotels.show', $hotel->id) }}"
-                                           target="_blank">{{ $hotel->name }}</a>
-                                    </td>
-                                </tr>
-                                <tr>
                                     <th>Менеджер</th>
                                     <td>
                                         <div id="booking-editable-manager"></div>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <th>Автор</th>
-                                    <td>{{ $creator->presentation }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Создана</th>
-                                    <td>{{ $model->createdAt }}</td>
-                                </tr>
+{{--                                <tr>--}}
+{{--                                    <th>Автор</th>--}}
+{{--                                    <td>{{ $creator->presentation }}</td>--}}
+{{--                                </tr>--}}
+{{--                                <tr>--}}
+{{--                                    <th>Создана</th>--}}
+{{--                                    <td>{{ $model->createdAt }}</td>--}}
+{{--                                </tr>--}}
                                 <tr>
                                 <tr>
                                     <th>Примечание</th>

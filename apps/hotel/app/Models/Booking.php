@@ -9,6 +9,7 @@ use App\Hotel\Services\HotelService;
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Builder as Query;
+use Sdk\Booking\Enum\QuotaProcessingMethodEnum;
 use Sdk\Booking\Enum\StatusEnum;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
 use Sdk\Shared\Enum\SourceEnum;
@@ -28,6 +29,26 @@ class Booking extends \Module\Booking\Shared\Infrastructure\Models\Booking
                     ->whereColumn('booking_hotel_details.booking_id', 'bookings.id')
                     ->where('booking_hotel_details.hotel_id', app(HotelService::class)->getHotelId());
             });
+        });
+    }
+
+    public function scopeWhereByRequest(Builder $builder): void
+    {
+        $builder->whereExists(function (Query $query) {
+            $query->selectRaw(1)
+                ->from('booking_hotel_details')
+                ->whereColumn('booking_hotel_details.booking_id', 'bookings.id')
+                ->where('booking_hotel_details.quota_processing_method', QuotaProcessingMethodEnum::REQUEST);
+        });
+    }
+
+    public function scopeWhereByQuota(Builder $builder): void
+    {
+        $builder->whereExists(function (Query $query) {
+            $query->selectRaw(1)
+                ->from('booking_hotel_details')
+                ->whereColumn('booking_hotel_details.booking_id', 'bookings.id')
+                ->where('booking_hotel_details.quota_processing_method', QuotaProcessingMethodEnum::QUOTA);
         });
     }
 

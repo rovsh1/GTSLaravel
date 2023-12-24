@@ -4,16 +4,13 @@ namespace App\Hotel\Http\Controllers;
 
 use App\Admin\Http\Requests\Booking\Hotel\UpdateExternalNumberRequest;
 use App\Admin\Http\Resources\Room as RoomResource;
-use App\Admin\Models\Administrator\Administrator;
 use App\Admin\Models\Client\Client;
 use App\Admin\Models\Hotel\Hotel;
 use App\Admin\Models\Hotel\Room;
 use App\Admin\Models\Reference\Currency;
-use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Facades\Booking\BookingAdapter;
 use App\Admin\Support\Facades\Booking\Hotel\DetailsAdapter;
 use App\Admin\Support\Facades\Booking\OrderAdapter;
-use App\Admin\Support\Facades\Breadcrumb;
 use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Grid\SearchForm;
@@ -26,6 +23,7 @@ use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Module\Booking\EventSourcing\Application\UseCase\GetHistory;
 use Module\Booking\Requesting\Domain\Service\RequestingRules;
 use Sdk\Booking\Enum\StatusEnum;
 
@@ -34,10 +32,10 @@ class BookingController extends AbstractHotelController
     public function index(): LayoutContract
     {
         $grid = $this->gridFactory();
-        $query = $this->prepareGridQuery(Booking::query(), $grid->getSearchCriteria());
+        $query = $this->prepareGridQuery(Booking::whereByRequest(), $grid->getSearchCriteria());
         $grid->data($query);
 
-        return Layout::title('Брони')
+        return Layout::title("Брони по запросу ({$query->count()})")
             ->view('default.grid.grid', [
                 'quicksearch' => $grid->getQuicksearch(),
                 'searchForm' => $grid->getSearchForm(),
@@ -56,11 +54,9 @@ class BookingController extends AbstractHotelController
         $hotel = Hotel::find($hotelId);
 
         $title = "Бронь №{$id}";
-        Breadcrumb::prototype($this->prototype)
-            ->add($title);
 
         return Layout::title($title)
-            ->view($this->prototype->view('show'), [
+            ->view('booking.hotel.show.show', [
                 'bookingId' => $id,
                 'hotelId' => $hotelId,
                 'hotel' => $hotel,
@@ -69,9 +65,20 @@ class BookingController extends AbstractHotelController
                 'client' => $client,
                 'order' => $order,
                 'currencies' => Currency::get(),
-                'manager' => $this->administratorRepository->get($id),
-                'creator' => Administrator::find($booking->creatorId),
+                'timelineUrl' => route('booking.timeline', $id),
+//                'manager' => $this->administratorRepository->get($id),
+//                'creator' => Administrator::find($booking->creatorId),
                 'hotelRooms' => RoomResource::collection(Room::whereHotelId($hotelId)->get())
+            ]);
+    }
+
+    public function timeline(int $id): LayoutContract
+    {
+        $title = "Бронь №{$id}";
+
+        return Layout::title($title)
+            ->view('booking.hotel.timeline.timeline', [
+                'history' => app(GetHistory::class)->execute($id)
             ]);
     }
 

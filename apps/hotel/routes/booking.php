@@ -9,4 +9,5 @@ Route::controller(BookingController::class)
     ->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/{booking}', 'show')->name('show');
+        Route::get('/{booking}/timeline', 'timeline')->name('timeline');
     });
