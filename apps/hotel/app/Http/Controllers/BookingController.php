@@ -2,18 +2,20 @@
 
 namespace App\Hotel\Http\Controllers;
 
-use App\Admin\Http\Requests\Booking\Hotel\UpdateExternalNumberRequest;
-use App\Admin\Http\Resources\Room as RoomResource;
-use App\Admin\Models\Client\Client;
-use App\Admin\Models\Hotel\Hotel;
-use App\Admin\Models\Hotel\Room;
-use App\Admin\Models\Reference\Currency;
-use App\Admin\Support\Facades\Booking\BookingAdapter;
-use App\Admin\Support\Facades\Booking\Hotel\DetailsAdapter;
-use App\Admin\Support\Facades\Booking\OrderAdapter;
-use App\Admin\Support\Facades\Grid;
-use App\Admin\Support\View\Grid\Grid as GridContract;
-use App\Admin\Support\View\Grid\SearchForm;
+use App\Hotel\Http\Requests\Booking\UpdateExternalNumberRequest;
+use App\Hotel\Http\Requests\Booking\UpdateNoteRequest;
+use App\Hotel\Http\Requests\Booking\UpdateStatusRequest;
+use App\Hotel\Http\Resources\Room as RoomResource;
+use App\Hotel\Models\Client;
+use App\Hotel\Models\Hotel;
+use App\Hotel\Models\Room;
+use App\Hotel\Models\Reference\Currency;
+use App\Hotel\Support\Facades\Booking\BookingAdapter;
+use App\Hotel\Support\Facades\Booking\DetailsAdapter;
+use App\Hotel\Support\Facades\Booking\OrderAdapter;
+use App\Hotel\Support\Facades\Grid;
+use App\Hotel\Support\View\Grid\GridBuilder as GridContract;
+use App\Hotel\Support\View\Grid\SearchForm;
 use App\Hotel\Models\Booking;
 use App\Hotel\Support\Facades\Layout;
 use App\Hotel\Support\View\LayoutBuilder as LayoutContract;
@@ -21,25 +23,29 @@ use App\Shared\Http\Responses\AjaxResponseInterface;
 use App\Shared\Http\Responses\AjaxSuccessResponse;
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Module\Booking\EventSourcing\Application\UseCase\GetHistory;
-use Module\Booking\Requesting\Domain\Service\RequestingRules;
-use Sdk\Booking\Enum\StatusEnum;
 
 class BookingController extends AbstractHotelController
 {
     public function index(): LayoutContract
     {
         $grid = $this->gridFactory();
-        $query = $this->prepareGridQuery(Booking::whereByRequest(), $grid->getSearchCriteria());
+        $query = $this->prepareGridQuery(Booking::whereWaitingStatus()->whereByRequest(), $grid->getSearchCriteria());
+        $query2 = $this->prepareGridQuery(Booking::whereWaitingStatus()->whereByQuota(), $grid->getSearchCriteria());
         $grid->data($query);
 
+        $grid2 = $this->gridFactory()->data($query2);
+
         return Layout::title("Брони по запросу ({$query->count()})")
-            ->view('default.grid.grid', [
+            ->view('booking.hotel.main.main', [
                 'quicksearch' => $grid->getQuicksearch(),
                 'searchForm' => $grid->getSearchForm(),
                 'grid' => $grid,
+                'grid2' => $grid2,
+                'title2' => "Брони по квоте ({$query2->count()})",
                 'paginator' => $grid->getPaginator(),
                 'createUrl' => null,
             ]);
@@ -70,6 +76,61 @@ class BookingController extends AbstractHotelController
 //                'creator' => Administrator::find($booking->creatorId),
                 'hotelRooms' => RoomResource::collection(Room::whereHotelId($hotelId)->get())
             ]);
+    }
+
+    public function get(int $id): JsonResponse
+    {
+        return response()->json(
+            BookingAdapter::getBooking($id)
+        );
+    }
+
+    public function getAvailableActions(int $id): JsonResponse
+    {
+        return response()->json(
+            BookingAdapter::getAvailableActions($id)
+        );
+    }
+
+    public function getStatuses(): JsonResponse
+    {
+        return response()->json(
+            BookingAdapter::getStatuses()
+        );
+    }
+
+    public function updateStatus(UpdateStatusRequest $request, int $id): JsonResponse
+    {
+        return response()->json(
+            BookingAdapter::updateStatus(
+                id: $id,
+                status: $request->getStatus(),
+                notConfirmedReason: $request->getNotConfirmedReason() ?? '',
+                supplierPenalty: $request->getSupplierPenalty(),
+                clientPenalty: $request->getClientPenalty(),
+            )
+        );
+    }
+
+    public function getStatusHistory(int $id): JsonResponse
+    {
+        return response()->json(
+            array_map(fn($eventDto) => [
+                'event' => $eventDto->description,
+                'color' => $eventDto->color,
+                'payload' => $eventDto->payload,
+                'administratorName' => $eventDto->context['administrator']['name'] ?? null,
+                'source' => $eventDto->context['source'] ?? null,
+                'createdAt' => $eventDto->createdAt
+            ], BookingAdapter::getStatusHistory($id))
+        );
+    }
+
+    public function updateNote(int $id, UpdateNoteRequest $request): AjaxResponseInterface
+    {
+        BookingAdapter::updateNote($id, $request->getNote());
+
+        return new AjaxSuccessResponse();
     }
 
     public function timeline(int $id): LayoutContract
@@ -164,9 +225,6 @@ class BookingController extends AbstractHotelController
 
     private function prepareGridQuery(Builder $query, array $searchCriteria): Builder
     {
-        $requestableStatuses = array_map(fn(StatusEnum $status) => $status->value,
-            RequestingRules::getRequestableStatuses());
-
         return $query
             ->applyCriteria($searchCriteria)
             ->addSelect('bookings.*')
@@ -207,9 +265,6 @@ class BookingController extends AbstractHotelController
                 DB::raw(
                     '(SELECT COUNT(id) FROM booking_hotel_accommodations WHERE booking_id=bookings.id) as rooms_count'
                 )
-            )
-            ->addSelect(
-                DB::raw('(SELECT bookings.status IN (' . implode(',', $requestableStatuses) . ')) as is_requestable'),
             )
             ->addSelect(
                 DB::raw(

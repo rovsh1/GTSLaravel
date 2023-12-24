@@ -3,68 +3,13 @@ import { getHumanRequestType } from '~resources/views/booking/shared/lib/constan
 
 import { downloadDocument } from '~api/booking/document'
 import { BookingRequest } from '~api/booking/request'
-import { BookingAvailableActionsResponse } from '~api/booking/status'
 
-import { showConfirmDialog } from '~lib/confirm-dialog'
 import { formatDateTime } from '~lib/date'
 import createPopover, { PopoverItem } from '~lib/popover/popover'
 
 import '~resources/views/main'
 
 $(() => {
-  $('#form_data_hotel_id').childCombo({
-    url: '/hotels/search',
-    disabledText: 'Выберите город',
-    parent: $('#form_data_city_id'),
-    dataIndex: 'city_id',
-    allowEmpty: true,
-  })
-
-  $('#form_data_hotel_room_id').childCombo({
-    urlGetter: (hotelId: number) => `/hotels/${hotelId}/rooms/list`,
-    disabledText: 'Выберите отель',
-    parent: $('#form_data_hotel_id'),
-    dataIndex: 'hotel_id',
-    allowEmpty: true,
-  })
-
-  const selectedBookings: string[] = []
-
-  const $deleteBookingsButton = $('<a />', {
-    href: '#',
-    html: '<i class="icon">delete</i>Удалить брони',
-    class: 'btn btn-delete text-danger border-0 disabled',
-  }).click(async (event) => {
-    event.preventDefault()
-
-    const { result: isConfirmed, toggleLoading } = await showConfirmDialog('Удалить запись?', 'btn-danger')
-    if (isConfirmed) {
-      toggleLoading()
-      await axios.delete('/hotel-booking/bulk', { data: { ids: selectedBookings } })
-      location.reload()
-    }
-  })
-
-  $('.content-header a.btn-add').after($deleteBookingsButton)
-
-  $('.js-select-booking').change((event: any): void => {
-    const $checkbox = $(event.target)
-    const bookingId = $checkbox.data('booking-id')
-    if ($checkbox.is(':checked')) {
-      selectedBookings.push(bookingId)
-      $deleteBookingsButton.toggleClass('disabled', false)
-      return
-    }
-
-    const index = selectedBookings.indexOf(bookingId)
-    if (index !== -1) {
-      selectedBookings.splice(index, 1)
-      if (selectedBookings.length === 0) {
-        $deleteBookingsButton.toggleClass('disabled', true)
-      }
-    }
-  })
-
   $('.btn-request-download').on('click', async (e: any) => {
     e.preventDefault()
     const bookingId = $(e.currentTarget).parent().parent().parent()
@@ -108,40 +53,6 @@ $(() => {
       relationElement: e.currentTarget,
       textForEmpty: 'Нет файлов для загрузки',
       content: popoverContentDownload,
-    })
-  })
-
-  $('.btn-request-send').on('click', async (e: any) => {
-    e.preventDefault()
-    const bookingId = $(e.currentTarget).parent().parent().parent()
-      .data('id')
-    const { data: availableActions } = await axios.get<BookingAvailableActionsResponse>(`/hotel-booking/${bookingId}/actions/available`)
-    const popoverContentSend: Array<PopoverItem> = []
-    let requestText
-    if (availableActions.canSendBookingRequest) {
-      requestText = 'Запрос на бронирование еще не отправлен'
-    }
-    if (availableActions.canSendChangeRequest) {
-      requestText = 'Ожидание изменений и отправки запроса'
-    }
-    if (availableActions.canSendCancellationRequest) {
-      requestText = 'Бронирование подтверждено, до выставления счета доступен запрос на отмену'
-    }
-    if (availableActions.isRequestable && requestText) {
-      const popoverContentActions: PopoverItem = {
-        text: requestText,
-        buttonText: 'Отправить',
-        callback: async () => {
-          await axios.post(`/hotel-booking/${bookingId}/request`)
-          location.reload()
-        },
-      }
-      popoverContentSend.push(popoverContentActions)
-    }
-    createPopover({
-      relationElement: e.currentTarget,
-      textForEmpty: 'Нет возможных действий',
-      content: popoverContentSend,
     })
   })
 })

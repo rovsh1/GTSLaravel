@@ -32,6 +32,19 @@ class Booking extends \Module\Booking\Shared\Infrastructure\Models\Booking
         });
     }
 
+    public function scopeWhereWaitingStatus(Builder $builder): void
+    {
+        $builder->whereIn('bookings.status', $this->getWaitingStatuses());
+    }
+
+    private function getWaitingStatuses(): array
+    {
+        return [
+            StatusEnum::WAITING_CANCELLATION,
+            StatusEnum::WAITING_CONFIRMATION,
+        ];
+    }
+
     public function scopeWhereByRequest(Builder $builder): void
     {
         $builder->whereExists(function (Query $query) {
