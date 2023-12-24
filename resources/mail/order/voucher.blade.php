@@ -34,7 +34,7 @@
         @endforeach
 
         <tr>
-            <td>{{ __('С уважением, :manager', ['manager' => $manager->name]) }}</td>
+            <td>{{ __('С уважением, :manager', ['manager' => $manager->fullName]) }}</td>
         </tr>
         <tr>
             <td>{Отправитель.Должность}</td>
