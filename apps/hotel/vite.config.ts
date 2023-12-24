@@ -38,7 +38,6 @@ export default defineConfig(({ command }) => ({
         'resources/views/quotas/quotas.ts',
         'resources/views/settings/settings.ts',
         'resources/views/settings/settings.scss',
-        'resources/views/booking/hotel/main/main.ts',
         'resources/views/booking/hotel/show/show.scss',
         'resources/views/booking/hotel/show/show.ts',
         'resources/views/booking/hotel/timeline/timeline.scss',

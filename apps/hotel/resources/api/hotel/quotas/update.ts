@@ -32,8 +32,8 @@ type HotelRoomQuotasUpdatePayload = {
 }
 
 export const useHotelRoomQuotasUpdate = (props: MaybeRef<HotelRoomQuotasUpdateProps | null>) =>
-  useAdminAPI(props, ({ hotelID, roomID }) =>
-    `/hotels/${hotelID}/rooms/${roomID}/quota`)
+  useAdminAPI(props, ({ roomID }) =>
+    `/quotas/rooms/${roomID}/quota`)
     .put(computed<string>(() => JSON.stringify(
       getNullableRef<HotelRoomQuotasUpdateProps, HotelRoomQuotasUpdatePayload>(
         props,
