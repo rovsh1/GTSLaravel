@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Factory;
+namespace Module\Booking\Moderation\Domain\Order\Service\VoucherGenerator\Factory;
 
-use Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Dto\Service\CancelConditionsDto;
-use Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Dto\Service\DailyCancelFeeValueDto;
+use Module\Booking\Moderation\Domain\Order\Service\VoucherGenerator\Dto\Service\CancelConditionsDto;
+use Module\Booking\Moderation\Domain\Order\Service\VoucherGenerator\Dto\Service\DailyCancelFeeValueDto;
 use Module\Hotel\Moderation\Domain\Hotel\ValueObject\MarkupSettings\CancelPeriodTypeEnum;
 use Sdk\Booking\ValueObject\CancelCondition\DailyCancelFeeValue;
 use Sdk\Booking\ValueObject\CancelConditions;

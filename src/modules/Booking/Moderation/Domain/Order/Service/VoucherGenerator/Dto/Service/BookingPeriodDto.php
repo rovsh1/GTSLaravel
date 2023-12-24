@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Dto\Service;
+namespace Module\Booking\Moderation\Domain\Order\Service\VoucherGenerator\Dto\Service;
 
 class BookingPeriodDto
 {

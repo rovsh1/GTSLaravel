@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Factory;
+namespace Module\Booking\Moderation\Domain\Order\Service\VoucherGenerator\Factory;
 
-use Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Dto\Service\BookingPeriodDto;
+use Module\Booking\Moderation\Domain\Order\Service\VoucherGenerator\Dto\Service\BookingPeriodDto;
 use Sdk\Booking\Contracts\Entity\DetailsInterface;
 
 class BookingPeriodDataFactory

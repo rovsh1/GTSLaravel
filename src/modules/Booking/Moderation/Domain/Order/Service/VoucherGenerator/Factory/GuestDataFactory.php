@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Factory;
+namespace Module\Booking\Moderation\Domain\Order\Service\VoucherGenerator\Factory;
 
-use Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Dto\Service\GuestDto;
+use Module\Booking\Moderation\Domain\Order\Service\VoucherGenerator\Dto\Service\GuestDto;
 use Module\Booking\Shared\Domain\Guest\Guest;
 use Module\Booking\Shared\Domain\Guest\Repository\GuestRepositoryInterface;
 use Sdk\Booking\ValueObject\GuestIdCollection;

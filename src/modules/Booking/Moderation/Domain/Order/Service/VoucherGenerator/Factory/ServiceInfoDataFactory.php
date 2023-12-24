@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Factory;
+namespace Module\Booking\Moderation\Domain\Order\Service\VoucherGenerator\Factory;
 
-use Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Dto\ServiceInfoDto;
-use Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Factory\Details\BasicDetailsDataFactory;
-use Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Factory\Details\CarBidDataFactory;
-use Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Factory\Details\HotelAccommodationDataFactory;
+use Module\Booking\Moderation\Domain\Order\Service\VoucherGenerator\Dto\ServiceInfoDto;
+use Module\Booking\Moderation\Domain\Order\Service\VoucherGenerator\Factory\Details\BasicDetailsDataFactory;
+use Module\Booking\Moderation\Domain\Order\Service\VoucherGenerator\Factory\Details\CarBidDataFactory;
+use Module\Booking\Moderation\Domain\Order\Service\VoucherGenerator\Factory\Details\HotelAccommodationDataFactory;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\DbContext\CarBidDbContextInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\AccommodationRepositoryInterface;

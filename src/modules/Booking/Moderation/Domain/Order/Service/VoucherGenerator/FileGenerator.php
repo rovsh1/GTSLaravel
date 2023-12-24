@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator;
+namespace Module\Booking\Moderation\Domain\Order\Service\VoucherGenerator;
 
 use Module\Booking\Shared\Domain\Shared\Service\TemplateCompilerInterface;
 use Sdk\Booking\ValueObject\OrderId;

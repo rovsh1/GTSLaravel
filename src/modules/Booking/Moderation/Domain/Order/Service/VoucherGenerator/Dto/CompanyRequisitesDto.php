@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Dto;
+namespace Module\Booking\Moderation\Domain\Order\Service\VoucherGenerator\Dto;
 
 final class CompanyRequisitesDto
 {

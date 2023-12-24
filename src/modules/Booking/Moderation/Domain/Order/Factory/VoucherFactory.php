@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Moderation\Domain\Order\Factory;
 
 
-use Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\FileGenerator;
+use Module\Booking\Moderation\Domain\Order\Service\VoucherGenerator\FileGenerator;
 use Module\Booking\Moderation\Domain\Order\ValueObject\Voucher;
 use Module\Booking\Shared\Domain\Order\Order;
 use Module\Booking\Shared\Domain\Shared\Service\ClientLocaleContext;

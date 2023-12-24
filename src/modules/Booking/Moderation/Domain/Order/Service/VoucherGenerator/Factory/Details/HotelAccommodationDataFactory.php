@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Factory\Details;
+namespace Module\Booking\Moderation\Domain\Order\Service\VoucherGenerator\Factory\Details;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
-use Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Dto\Service\PriceDto;
-use Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Dto\ServiceInfoDto;
-use Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Factory\CancelConditionsDataFactory;
-use Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Factory\GuestDataFactory;
+use Module\Booking\Moderation\Domain\Order\Service\VoucherGenerator\Dto\Service\PriceDto;
+use Module\Booking\Moderation\Domain\Order\Service\VoucherGenerator\Dto\ServiceInfoDto;
+use Module\Booking\Moderation\Domain\Order\Service\VoucherGenerator\Factory\CancelConditionsDataFactory;
+use Module\Booking\Moderation\Domain\Order\Service\VoucherGenerator\Factory\GuestDataFactory;
 use Module\Booking\Shared\Domain\Booking\Adapter\HotelAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Adapter\HotelRoomAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;

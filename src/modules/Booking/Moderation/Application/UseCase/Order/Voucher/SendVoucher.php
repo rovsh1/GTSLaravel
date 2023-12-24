@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Module\Booking\Moderation\Application\UseCase\Order\Voucher;
 
 use Module\Booking\Moderation\Domain\Order\Factory\VoucherFactory;
-use Module\Booking\Moderation\Domain\Order\Service\VoucherMailGenerator\MailGenerator;
+use Module\Booking\Moderation\Domain\Order\Service\VoucherGenerator\MailGenerator;
 use Module\Booking\Moderation\Domain\Order\ValueObject\Voucher;
 use Module\Booking\Shared\Domain\Order\DbContext\OrderDbContextInterface;
 use Module\Booking\Shared\Domain\Order\Repository\OrderRepositoryInterface;
 use Module\Booking\Shared\Domain\Shared\Adapter\ClientAdapterInterface;
+use Module\Booking\Shared\Domain\Shared\Service\ClientLocaleContext;
 use Sdk\Booking\ValueObject\OrderId;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
@@ -25,6 +26,7 @@ class SendVoucher implements UseCaseInterface
         private readonly VoucherFactory $voucherFactory,
         private readonly MailAdapterInterface $mailAdapter,
         private readonly ClientAdapterInterface $clientAdapter,
+        private readonly ClientLocaleContext $clientLocaleDecorator,
         private readonly MailGenerator $mailGenerator,
         private readonly DomainEventDispatcherInterface $eventDispatcher,
     ) {}
@@ -51,7 +53,10 @@ class SendVoucher implements UseCaseInterface
         $this->orderDbContext->store($order);
         $this->eventDispatcher->dispatch(...$order->pullEvents());
 
-        $body = $this->mailGenerator->generate($order->id());
+        $body = $this->clientLocaleDecorator->executeInClientLocale(
+            $order->clientId(),
+            fn() => $this->mailGenerator->generate($order->id())
+        );
         $this->mailAdapter->sendTo(
             $client->email,
             'Ваучер',

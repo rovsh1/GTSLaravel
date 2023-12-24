@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Dto;
+namespace Module\Booking\Moderation\Domain\Order\Service\VoucherGenerator\Dto;
 
 use Illuminate\Support\Collection;
-use Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Dto\Service\BookingPeriodDto;
-use Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Dto\Service\CancelConditionsDto;
-use Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Dto\Service\GuestDto;
-use Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Dto\Service\PriceDto;
+use Module\Booking\Moderation\Domain\Order\Service\VoucherGenerator\Dto\Service\CancelConditionsDto;
+use Module\Booking\Moderation\Domain\Order\Service\VoucherGenerator\Dto\Service\GuestDto;
+use Module\Booking\Moderation\Domain\Order\Service\VoucherGenerator\Dto\Service\PriceDto;
 
 class ServiceInfoDto
 {

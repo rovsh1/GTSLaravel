@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator;
+namespace Module\Booking\Moderation\Domain\Order\Service\VoucherGenerator;
 
 use Illuminate\Support\Facades\App;
-use Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Dto\ClientDto;
-use Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Dto\CompanyRequisitesDto;
-use Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Dto\ManagerDto;
-use Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Dto\OrderDto;
-use Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Dto\ServiceInfoDto;
-use Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Dto\VoucherDto;
-use Module\Booking\Moderation\Domain\Order\Service\VoucherFileGenerator\Factory\ServiceInfoDataFactory;
+use Module\Booking\Moderation\Domain\Order\Service\VoucherGenerator\Dto\ClientDto;
+use Module\Booking\Moderation\Domain\Order\Service\VoucherGenerator\Dto\CompanyRequisitesDto;
+use Module\Booking\Moderation\Domain\Order\Service\VoucherGenerator\Dto\ManagerDto;
+use Module\Booking\Moderation\Domain\Order\Service\VoucherGenerator\Dto\OrderDto;
+use Module\Booking\Moderation\Domain\Order\Service\VoucherGenerator\Dto\ServiceInfoDto;
+use Module\Booking\Moderation\Domain\Order\Service\VoucherGenerator\Dto\VoucherDto;
+use Module\Booking\Moderation\Domain\Order\Service\VoucherGenerator\Factory\ServiceInfoDataFactory;
 use Module\Booking\Shared\Domain\Order\Order;
 use Module\Booking\Shared\Domain\Order\Repository\OrderRepositoryInterface;
 use Module\Booking\Shared\Domain\Shared\Adapter\AdministratorAdapterInterface;

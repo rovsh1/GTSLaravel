@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Moderation\Domain\Order\Service\VoucherMailGenerator;
+namespace Module\Booking\Moderation\Domain\Order\Service\VoucherGenerator;
 
 use Module\Booking\Shared\Domain\Shared\Service\MailTemplateCompilerInterface;
 use Sdk\Booking\ValueObject\OrderId;
