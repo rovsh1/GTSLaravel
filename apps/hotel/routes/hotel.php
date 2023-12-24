@@ -20,7 +20,7 @@ Route::controller(HotelController::class)
             ->group(function () {
                 Route::get('/', [SettingsController::class, 'index'])->name('index');
                 Route::get('/get', [SettingsController::class, 'get'])->name('get');
-                Route::put('/settings', [SettingsController::class, 'update'])->name('update');
+                Route::put('/', [SettingsController::class, 'update'])->name('update');
             });
 
         Route::prefix('notes')
