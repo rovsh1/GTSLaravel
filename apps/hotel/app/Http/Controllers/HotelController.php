@@ -2,9 +2,7 @@
 
 namespace App\Hotel\Http\Controllers;
 
-use App\Hotel\Http\Requests\UpdateSettingsRequest;
 use App\Hotel\Support\Facades\Layout;
-use App\Hotel\Support\Facades\SettingsAdapter;
 use App\Hotel\Support\View\LayoutBuilder as LayoutContract;
 use App\Hotel\View\Components\HotelRating;
 use App\Shared\Http\Responses\AjaxResponseInterface;
@@ -35,31 +33,11 @@ class HotelController extends AbstractHotelController
         );
     }
 
-    public function settings(Request $request): LayoutContract
+    public function update(Request $request): AjaxResponseInterface
     {
-        return Layout::title($this->getPageHeader())
-            ->view('settings.settings', [
-                'model' => $this->getHotel(),
-                'contract' => $this->getHotel()->contracts()->active()->first(),
-            ]);
-    }
+        $hotel = $this->getHotel();
 
-    public function getSettings(Request $request, int $id): JsonResponse
-    {
-        $hotelSettings = SettingsAdapter::getHotelSettings($this->getHotel()->id);
-
-        return response()->json($hotelSettings);
-    }
-
-    public function updateSettings(UpdateSettingsRequest $request): AjaxResponseInterface
-    {
-        SettingsAdapter::updateHotelTimeSettings(
-            $this->getHotel()->id,
-            $request->getCheckInAfter(),
-            $request->getCheckOutBefore(),
-            $request->getBreakfastPeriodFrom(),
-            $request->getBreakfastPeriodTo()
-        );
+        $hotel->update($request->toArray());
 
         return new AjaxSuccessResponse();
     }
