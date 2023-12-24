@@ -1,5 +1,6 @@
 <?php
 
+use App\Hotel\Http\Controllers\HotelController;
 use App\Hotel\Http\Controllers\RoomController;
 use Illuminate\Support\Facades\Route;
 
@@ -9,18 +10,7 @@ Route::controller(RoomController::class)
     ->group(function () {
         Route::get('/', 'index')->name('index');
 
-        Route::get('/rooms/list', Controllers\Hotel\HotelController::class . '@getRooms', 'read', 'rooms.list');
-        Route::get(
-            '/rooms/names/{lang}/list',
-            Controllers\Hotel\RoomController::class . '@getRoomNames',
-            'read',
-            'rooms.names.list'
-        );
-        Route::get('/rooms/{room}/get', Controllers\Hotel\RoomController::class . '@get', 'read', 'get');
-        Route::put(
-            '/rooms/position',
-            Controllers\Hotel\RoomController::class . '@position',
-            'update',
-            'rooms.position'
-        );
+        Route::get('/list', [HotelController::class, 'getRooms'])->name('list');
+        Route::get('/{room}/get', 'get')->name('get');
+        Route::put('/position', 'position')->name('position');
     });

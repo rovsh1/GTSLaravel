@@ -2,6 +2,7 @@
 
 namespace App\Hotel\Http\Controllers;
 
+use App\Hotel\Http\Resources\Room;
 use App\Hotel\Support\Facades\Layout;
 use App\Hotel\Support\View\LayoutBuilder as LayoutContract;
 use App\Hotel\View\Components\HotelRating;
@@ -30,6 +31,13 @@ class HotelController extends AbstractHotelController
     {
         return response()->json(
             $this->getHotel()
+        );
+    }
+
+    public function getRooms(Request $request): JsonResponse
+    {
+        return response()->json(
+            Room::collection($this->getHotel()->rooms)
         );
     }
 
