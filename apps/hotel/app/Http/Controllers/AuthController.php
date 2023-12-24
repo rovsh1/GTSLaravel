@@ -9,6 +9,7 @@ use App\Hotel\Services\Auth\LogoutService;
 use App\Hotel\Support\Facades\Layout;
 use App\Hotel\Support\Http\AbstractController;
 use App\Hotel\Support\View\LayoutBuilder;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class AuthController extends AbstractController
@@ -30,7 +31,7 @@ class AuthController extends AbstractController
             ->withErrors($form->errors());
     }
 
-    public function logout(Request $request)
+    public function logout(Request $request): RedirectResponse
     {
         (new LogoutService())->logout($request);
 

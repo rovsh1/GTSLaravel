@@ -2,9 +2,9 @@
 
 namespace App\Hotel\Http\Controllers;
 
+use App\Hotel\Models\User;
 use App\Hotel\Support\Facades\Form;
 use App\Hotel\Support\Facades\Layout;
-use App\Hotel\Models\User;
 use App\Hotel\Support\Http\AbstractController;
 use App\Shared\Http\Responses\AjaxReloadResponse;
 use Illuminate\Http\Request;
@@ -17,7 +17,7 @@ class ProfileController extends AbstractController
     public function index()
     {
         /** @var User $user */
-        $user = Auth::user();
+        $user = $this->getUser();
         $valueEmpty = '<i class="value-empty">Не указано</i>';
 
         return Layout::title($user->presentation)
@@ -45,10 +45,10 @@ class ProfileController extends AbstractController
             ]);
 
         if ($request->isMethod('get')) {
-            $form->data(Auth::user());
+            $form->data($this->getUser());
         } elseif ($form->submit()) {
             $data = $form->getData();
-            $user = Auth::user();
+            $user = $this->getUser();
             $user->fill($data);
             $user->save();
 
@@ -79,7 +79,7 @@ class ProfileController extends AbstractController
             }
 
             if ($form->isValid()) {
-                $user = Auth::user();
+                $user = $this->getUser();
                 $user->password = $data['password'];
                 $user->save();
 
@@ -96,13 +96,13 @@ class ProfileController extends AbstractController
 
     public function photo(Request $request)
     {
-        $user = Auth::user();
         $form = Form::name('data')
             ->file('image', ['accept' => 'image/*']);
 
         if ($request->isMethod('get')) {
         } elseif ($form->submit()) {
             $uploadedFile = $request->file('data.image');
+
 //            $this->updateAvatar($user, $uploadedFile);
 
             return new AjaxReloadResponse();
@@ -116,7 +116,7 @@ class ProfileController extends AbstractController
         ]);
     }
 
-    private function updateAvatar(Administrator $model, UploadedFile $uploadedFile): void
+    private function updateAvatar(User $model, UploadedFile $uploadedFile): void
     {
         $fileStorageAdapter = app(FileStorageAdapterInterface::class);
         $fileDto = $fileStorageAdapter->updateOrCreate(
@@ -127,5 +127,10 @@ class ProfileController extends AbstractController
         if ($fileDto) {
             $model->update(['avatar' => $fileDto->guid]);
         }
+    }
+
+    private function getUser(): User
+    {
+        return Auth::guard('hotel')->user();
     }
 }

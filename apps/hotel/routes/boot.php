@@ -9,9 +9,9 @@ Route::controller(DashboardController::class)
         Route::get('/', 'index')->name('home');
     });
 
+Route::group([], __DIR__ . '/auth.php');
 
 Route::middleware(HotelContextMiddleware::class)->group(function () {
-    Route::group([], __DIR__ . '/auth.php');
     Route::group([], __DIR__ . '/profile.php');
     Route::group([], __DIR__ . '/booking.php');
     Route::group([], __DIR__ . '/room.php');
