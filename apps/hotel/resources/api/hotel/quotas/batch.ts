@@ -7,7 +7,6 @@ import { BaseResponse, useAdminAPI } from '~api'
 import { getNullableRef } from '~lib/vue'
 
 type UpdateHotelRoomQuotasBatchPayload = {
-  hotelID: number
   dateFrom: string
   dateTo: string
   weekDays: number[]
@@ -16,8 +15,8 @@ type UpdateHotelRoomQuotasBatchPayload = {
 }
 
 export const useUpdateHotelRoomQuotasBatch = (props: MaybeRef<UpdateHotelRoomQuotasBatchPayload | null>) =>
-  useAdminAPI(props, ({ hotelID }) =>
-    `/hotels/${hotelID}/quotas/date/batch`)
+  useAdminAPI(props, () =>
+    '/quotas/date/batch')
     .put(computed<string>(() => JSON.stringify(
       getNullableRef<UpdateHotelRoomQuotasBatchPayload, any>(
         props,

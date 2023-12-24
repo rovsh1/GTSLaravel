@@ -2,7 +2,6 @@
 import { computed, nextTick, ref, watch } from 'vue'
 
 import { useToggle } from '@vueuse/core'
-import { z } from 'zod'
 
 import { useUpdateHotelRoomQuotasBatch } from '~resources/api/hotel/quotas/batch'
 import { formatDateToAPIDate } from '~resources/lib/date'
@@ -10,8 +9,6 @@ import { formatDateToAPIDate } from '~resources/lib/date'
 import { HotelResponse, useHotelGetAPI } from '~api/hotel/get'
 import { useHotelQuotasAPI } from '~api/hotel/quotas/list'
 import { UseHotelRooms, useHotelRoomsListAPI } from '~api/hotel/rooms'
-
-import { requestInitialData } from '~lib/initial-data'
 
 import BaseDialog from '~components/BaseDialog.vue'
 import BaseLayout from '~components/BaseLayout.vue'
@@ -27,9 +24,6 @@ import { Day, getRoomQuotas, Month, RoomQuota } from './components/lib'
 import { QuotasStatusUpdatePayload } from './components/lib/types'
 import { defaultFiltersPayload, FiltersPayload } from './components/QuotasFilters/lib'
 
-const { hotelID } = requestInitialData(z.object({
-  hotelID: z.number(),
-}))
 const openingDayMenuRoomId = ref<number | null>(null)
 
 const [isOpenedOpenCloseQuotasModal, toggleModalOpenCloseQuotas] = useToggle()
@@ -38,7 +32,7 @@ const {
   data: hotelData,
   execute: fetchHotel,
   isFetching: isHotelFetching,
-} = useHotelGetAPI({ hotelID })
+} = useHotelGetAPI()
 
 fetchHotel()
 
@@ -48,7 +42,7 @@ const {
   data: roomsData,
   execute: fetchHotelRoomsAPI,
   isFetching: isHotelRoomsFetching,
-} = useHotelRoomsListAPI({ hotelID })
+} = useHotelRoomsListAPI()
 
 const rooms = computed<UseHotelRooms>(() => roomsData.value)
 
@@ -66,7 +60,6 @@ const {
 } = useHotelQuotasAPI(computed(() => {
   const { dateFrom, dateTo, availability } = filtersPayload.value
   return {
-    hotelID,
     dateFrom: formatDateToAPIDate(dateFrom),
     dateTo: formatDateToAPIDate(dateTo),
     roomID: undefined,
@@ -81,7 +74,6 @@ const {
   if (!filtersQuotasStatusBatchPayload.value) return null
   const { dateFrom, dateTo, selectedRoomsID, daysWeekSelected, action } = filtersQuotasStatusBatchPayload.value
   return {
-    hotelID,
     dateFrom: formatDateToAPIDate(dateFrom),
     dateTo: formatDateToAPIDate(dateTo),
     weekDays: daysWeekSelected,
@@ -185,12 +177,12 @@ const handleUpdateQuotasBatch = async () => {
         />
         <div v-if="hotel === null">
           <EmptyData>
-            Не удалось найти данные для отеля.
+            Не удалось найти данные о отеле.
           </EmptyData>
         </div>
         <div v-else-if="rooms === null">
           <EmptyData>
-            Не удалось найти номера для этого отеля. <a :href="`/hotels/${hotelID}/rooms/create`">Добавить номер</a>
+            Не удалось найти номера у отеля.
           </EmptyData>
         </div>
         <div v-else class="quotasTables">

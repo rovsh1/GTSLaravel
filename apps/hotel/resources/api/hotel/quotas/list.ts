@@ -24,14 +24,13 @@ export type HotelQuotaResponse = {
 }
 
 type HotelRoomQuotaProps = {
-  hotelID: number
   dateFrom: string
   dateTo: string
   roomID?: number
   availability?: 'sold' | 'stopped' | 'available'
 }
 
-type HotelRoomQuotaPayload = Omit<HotelRoomQuotaProps, 'hotelID'>
+type HotelRoomQuotaPayload = HotelRoomQuotaProps
 
 export type HotelQuota = Omit<HotelQuotaResponse, 'room_id'> & {
   roomID: number
@@ -41,8 +40,8 @@ type HotelQuotasResponse = HotelQuotaResponse[]
 export type UseHotelQuota = HotelQuota[] | null
 
 export const useHotelQuotasAPI = (props: MaybeRef<HotelRoomQuotaProps>) =>
-  useAdminAPI(props, ({ hotelID }) =>
-    `/hotels/${hotelID}/quotas`, {
+  useAdminAPI(props, () =>
+    '/quotas', {
     afterFetch: (ctx: AfterFetchContext<HotelQuotasResponse>) =>
       alternateDataAfterFetch<HotelQuotasResponse, UseHotelQuota>(ctx, (data) =>
         (data.length === 0
