@@ -34,6 +34,7 @@ class ImageController extends AbstractHotelController
     public function index(Request $request): LayoutContract
     {
         $roomId = $request->get('room_id');
+        $room = null;
         if ($roomId !== null) {
             $room = Room::find($roomId);
             if ($room === null) {
