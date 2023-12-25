@@ -8,6 +8,16 @@ use Illuminate\Database\Eloquent\Builder;
 use Module\Booking\EventSourcing\Domain\ValueObject\EventGroupEnum;
 use Sdk\Module\Database\Eloquent\Model;
 
+/**
+ * @property int $booking_id
+ * @property EventGroupEnum $group
+ * @property string $field
+ * @property string $description
+ * @property mixed $before
+ * @property mixed $after
+ * @property array $context
+ * @property \DateTimeInterface $created_at
+ */
 class BookingHistory extends Model
 {
     public $timestamps = false;
@@ -17,7 +27,10 @@ class BookingHistory extends Model
     protected $fillable = [
         'booking_id',
         'group',
-        'payload',
+        'field',
+        'description',
+        'before',
+        'after',
         'context',
         'created_at'
     ];
@@ -25,7 +38,6 @@ class BookingHistory extends Model
     protected $casts = [
         'booking_id' => 'int',
         'group' => EventGroupEnum::class,
-        'payload' => 'array',
         'context' => 'array',
         'created_at' => 'datetime',
     ];

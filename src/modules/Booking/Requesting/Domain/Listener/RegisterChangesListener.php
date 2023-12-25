@@ -3,9 +3,10 @@
 namespace Module\Booking\Requesting\Domain\Listener;
 
 use Module\Booking\Requesting\Domain\Service\ChangesRegistratorInterface;
-use Module\Booking\Shared\Domain\Booking\Booking;
+use Module\Booking\Requesting\Domain\Service\EventComparator\ComparatorFactory;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Sdk\Booking\Enum\StatusEnum;
+use Sdk\Booking\IntegrationEvent\BookingEventInterface;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Module\Contracts\Event\IntegrationEventListenerInterface;
 use Sdk\Module\Event\IntegrationEventMessage;
@@ -14,29 +15,37 @@ class RegisterChangesListener implements IntegrationEventListenerInterface
 {
     public function __construct(
         private readonly BookingRepositoryInterface $bookingRepository,
+        private readonly ComparatorFactory $comparatorFactory,
         private readonly ChangesRegistratorInterface $changesRegistrator,
     ) {}
 
     public function handle(IntegrationEventMessage $message): void
     {
-        $booking = $this->bookingRepository->findOrFail(new BookingId($message->payload['bookingId']));
-        if (!$this->isActualStatus($booking)) {
+        $event = $message->event;
+        asset($event instanceof BookingEventInterface);
+
+        $booking = $this->bookingRepository->findOrFail(new BookingId($event->bookingId));
+        if (!$this->needStoreChanges($booking->status()->value())) {
             return;
         }
 
+        $comparator = $this->comparatorFactory->build($event);
+        if (!$comparator) {
+            return;
+        }
 
-        $data = $message->payload;
-        unset($data['bookingId']);
-        $data['@event'] = $message->event;
+        $changesDto = $comparator->get($event);
+
         $this->changesRegistrator->register(
-            new BookingId($message->payload['bookingId']),
-            $data,
-            $message->context
+            new BookingId($event->bookingId),
+            $changesDto->field,
+            $changesDto->before,
+            $changesDto->after,
         );
     }
 
-    private function isActualStatus(Booking $booking): bool
+    private function needStoreChanges(StatusEnum $status): bool
     {
-        return $booking->status()->value() === StatusEnum::NOT_CONFIRMED;
+        return $status === StatusEnum::NOT_CONFIRMED;
     }
 }

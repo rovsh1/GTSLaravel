@@ -10,7 +10,10 @@ interface ChangesRegistratorInterface
 {
     public function register(
         BookingId $bookingId,
-        array|null $payload,
-        array $context = []
+        string $field,
+        mixed $before,
+        mixed $after
     ): void;
+
+    public function clear(BookingId $bookingId): void;
 }

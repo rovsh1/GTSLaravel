@@ -716,16 +716,16 @@
         },
         {
             "name": "gsdk/form",
-            "version": "1.0.14",
+            "version": "1.0.15",
             "source": {
                 "type": "git",
                 "url": "git@gitlab.com:gsdk/form.git",
-                "reference": "82c4e01e982040ecccba6ab335459c54525d56e5"
+                "reference": "b56cd8adf66a4cc6d77a376c5becd9a8dcfb1947"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://gitlab.com/api/v4/projects/gsdk%2Fform/repository/archive.zip?sha=82c4e01e982040ecccba6ab335459c54525d56e5",
-                "reference": "82c4e01e982040ecccba6ab335459c54525d56e5",
+                "url": "https://gitlab.com/api/v4/projects/gsdk%2Fform/repository/archive.zip?sha=b56cd8adf66a4cc6d77a376c5becd9a8dcfb1947",
+                "reference": "b56cd8adf66a4cc6d77a376c5becd9a8dcfb1947",
                 "shasum": ""
             },
             "require": {
@@ -752,7 +752,7 @@
                 "gsdk",
                 "meta"
             ],
-            "time": "2023-12-22T08:05:06+00:00"
+            "time": "2023-12-25T20:37:45+00:00"
         },
         {
             "name": "gsdk/format",

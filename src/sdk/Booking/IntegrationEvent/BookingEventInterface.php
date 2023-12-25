@@ -2,7 +2,12 @@
 
 namespace Sdk\Booking\IntegrationEvent;
 
-interface BookingEventInterface
+use Sdk\Module\Contracts\Event\IntegrationEventInterface;
+
+/**
+ * @property int $bookingId
+ */
+interface BookingEventInterface extends IntegrationEventInterface
 {
 
 }

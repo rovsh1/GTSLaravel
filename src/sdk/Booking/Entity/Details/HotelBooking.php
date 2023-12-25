@@ -7,7 +7,7 @@ namespace Sdk\Booking\Entity\Details;
 use DateTimeInterface;
 use Sdk\Booking\Contracts\Entity\DetailsInterface;
 use Sdk\Booking\Enum\QuotaProcessingMethodEnum;
-use Sdk\Booking\Event\HotelBooking\BookingPeriodChanged;
+use Sdk\Booking\Event\HotelBooking\PeriodChanged;
 use Sdk\Booking\Support\Entity\AbstractDetails;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\DetailsId;
@@ -50,7 +50,7 @@ final class HotelBooking extends AbstractDetails implements DetailsInterface
             return;
         }
 
-        $this->pushEvent(new BookingPeriodChanged($this, $this->bookingPeriod));
+        $this->pushEvent(new PeriodChanged($this, $this->bookingPeriod));
         $this->bookingPeriod = $period;
     }
 
