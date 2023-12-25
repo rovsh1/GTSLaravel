@@ -1,6 +1,7 @@
 <?php
 
 use App\Hotel\Http\Controllers\HotelController;
+use App\Hotel\Http\Controllers\MarkupSettingsController;
 use App\Hotel\Http\Controllers\NotesController;
 use App\Hotel\Http\Controllers\ServiceController;
 use App\Hotel\Http\Controllers\SettingsController;
@@ -21,6 +22,11 @@ Route::controller(HotelController::class)
                 Route::get('/', [SettingsController::class, 'index'])->name('index');
                 Route::get('/get', [SettingsController::class, 'get'])->name('get');
                 Route::put('/', [SettingsController::class, 'update'])->name('update');
+
+                Route::get('/markup', [MarkupSettingsController::class, 'get'])->name('markup.get');
+                Route::put('/markup', [MarkupSettingsController::class, 'update'])->name('markup.update');
+                Route::post('/markup/condition', [MarkupSettingsController::class, 'addCondition'])->name('markup.condition.add');
+                Route::delete('/markup/condition', [MarkupSettingsController::class, 'deleteCondition'])->name('markup.condition.delete');
             });
 
         Route::prefix('notes')
