@@ -23,6 +23,9 @@ VALUES (1, 555,  7, '{\"airportId\":1}', NULL, NULL),
        (9, 555, 11, '{\"airportId\":1}', NULL, NULL),
        (10, 555, 8, NULL, NULL, NULL);
 
+INSERT INTO `r_railway_stations` (`id`, `city_id`) VALUES (1, 1);
+INSERT INTO `r_railway_stations_translation` (`translatable_id`, `language`, `name`) VALUES (1, 'ru', 'ЖД Вокзал Ташкент');
+
 INSERT INTO `supplier_services_translation` (`translatable_id`, `language`, `title`)
 VALUES (1, 'ru', 'Трансфер из аэропорта Ташкента'),
        (2, 'ru', 'Трансфер в аэропорт Ташкента'),
