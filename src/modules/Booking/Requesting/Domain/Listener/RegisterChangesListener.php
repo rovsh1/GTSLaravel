@@ -2,8 +2,7 @@
 
 namespace Module\Booking\Requesting\Domain\Listener;
 
-use Module\Booking\Requesting\Domain\Service\ChangesRegistratorInterface;
-use Module\Booking\Requesting\Domain\Service\EventComparator\ComparatorFactory;
+use Module\Booking\Requesting\Domain\Service\ChangesRegistrar\RegistrarFactory;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Sdk\Booking\Enum\StatusEnum;
 use Sdk\Booking\IntegrationEvent\BookingEventInterface;
@@ -15,8 +14,7 @@ class RegisterChangesListener implements IntegrationEventListenerInterface
 {
     public function __construct(
         private readonly BookingRepositoryInterface $bookingRepository,
-        private readonly ComparatorFactory $comparatorFactory,
-        private readonly ChangesRegistratorInterface $changesRegistrator,
+        private readonly RegistrarFactory $registrarFactory,
     ) {}
 
     public function handle(IntegrationEventMessage $message): void
@@ -29,23 +27,18 @@ class RegisterChangesListener implements IntegrationEventListenerInterface
             return;
         }
 
-        $comparator = $this->comparatorFactory->build($event);
-        if (!$comparator) {
+        $registrar = $this->registrarFactory->build($event);
+        if (!$registrar) {
             return;
         }
 
-        $changesDto = $comparator->get($event);
-
-        $this->changesRegistrator->register(
-            new BookingId($event->bookingId),
-            $changesDto->field,
-            $changesDto->before,
-            $changesDto->after,
-        );
+        $registrar->register($event);
     }
 
     private function needStoreChanges(StatusEnum $status): bool
     {
+        return true;
+
         return $status === StatusEnum::NOT_CONFIRMED;
     }
 }

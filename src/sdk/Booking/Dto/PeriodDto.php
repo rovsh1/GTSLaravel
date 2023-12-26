@@ -12,4 +12,12 @@ final class PeriodDto
         public readonly DateTimeImmutable $dateFrom,
         public readonly DateTimeImmutable $dateTo,
     ) {}
+
+    public function toArray(): array
+    {
+        return [
+            'dateFrom' => $this->dateFrom,
+            'dateTo' => $this->dateTo,
+        ];
+    }
 }

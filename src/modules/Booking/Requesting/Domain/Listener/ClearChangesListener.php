@@ -2,7 +2,7 @@
 
 namespace Module\Booking\Requesting\Domain\Listener;
 
-use Module\Booking\Requesting\Domain\Service\ChangesRegistratorInterface;
+use Module\Booking\Requesting\Domain\Service\ChangesStorageInterface;
 use Sdk\Booking\Enum\StatusEnum;
 use Sdk\Booking\IntegrationEvent\StatusUpdated;
 use Sdk\Booking\ValueObject\BookingId;
@@ -12,7 +12,7 @@ use Sdk\Module\Event\IntegrationEventMessage;
 class ClearChangesListener implements IntegrationEventListenerInterface
 {
     public function __construct(
-        private readonly ChangesRegistratorInterface $changesRegistrator
+        private readonly ChangesStorageInterface $changesRegistrator
     ) {}
 
     public function handle(IntegrationEventMessage $message): void

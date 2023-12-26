@@ -8,12 +8,14 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('booking_request_changes', function (Blueprint $table) {
-            $table->id();
             $table->unsignedInteger('booking_id');
+            $table->string('status');
             $table->string('field');
-            $table->string('before')->nullable();
-            $table->string('after')->nullable();
+            $table->string('description');
+            $table->json('payload')->nullable();
             $table->timestamp('created_at')->useCurrent();
+
+            $table->primary(['booking_id', 'field']);
 
             $table->foreign('booking_id')
                 ->references('id')
