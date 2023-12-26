@@ -6,6 +6,8 @@ use Sdk\Shared\Dto\FileDto;
 
 abstract class AbstractDescriptor
 {
+    protected const NULL_PRESENTATION = 'NULL';
+
     protected function fileLink(?FileDto $fileDto): string
     {
         return $fileDto
@@ -16,7 +18,7 @@ abstract class AbstractDescriptor
     protected function valuePresentation(mixed $value): string
     {
         if (is_null($value)) {
-            return 'NULL';
+            return self::NULL_PRESENTATION;
         } elseif ($value instanceof \Stringable) {
             return $value->__toString();
         } elseif ($value instanceof \BackedEnum) {
@@ -26,5 +28,14 @@ abstract class AbstractDescriptor
         } else {
             return (string)$value;
         }
+    }
+
+    protected function formatPrice(mixed $price): string
+    {
+        if (is_null($price)) {
+            return self::NULL_PRESENTATION;
+        }
+
+        return number_format($price);
     }
 }

@@ -51,7 +51,7 @@ class PriceDescriptor extends AbstractDescriptor implements DescriptorInterface
             if ($a->$key === $b->$key) {
                 continue;
             }
-            $changes[] = "$label: {$this->valuePresentation($a->$key)} &rarr; {$this->valuePresentation($b->$key)}";
+            $changes[] = "{$this->valuePresentation($a->$key)} &rarr; {$this->valuePresentation($b->$key)} ($label)";
         }
 
         return implode(', ', $changes);

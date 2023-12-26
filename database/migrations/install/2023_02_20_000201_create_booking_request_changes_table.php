@@ -9,8 +9,8 @@ return new class extends Migration {
     {
         Schema::create('booking_request_changes', function (Blueprint $table) {
             $table->unsignedInteger('booking_id');
-            $table->string('status');
             $table->string('field');
+            $table->string('status');
             $table->string('description');
             $table->json('payload')->nullable();
             $table->timestamp('created_at')->useCurrent();
