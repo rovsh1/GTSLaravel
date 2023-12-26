@@ -1,8 +1,8 @@
 <script setup lang="ts">
 
-import EditTableRowButton from '~resources/views/hotel/settings/components/EditTableRowButton.vue'
-
 import { CarBid } from '~api/booking/service'
+
+import EditTableRowButton from '~components/EditTableRowButton.vue'
 
 defineProps<{
   bookingCars: CarBid[]

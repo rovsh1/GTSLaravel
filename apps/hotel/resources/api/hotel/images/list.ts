@@ -9,9 +9,9 @@ type HotelImagesResponse = HotelImageResponse[]
 
 export type UseHotelImages = HotelImage[]
 
-export const useHotelImagesListAPI = (props: MaybeRef<{ hotelID: number }>) =>
-  useAdminAPI(props, ({ hotelID }) =>
-    `/hotels/${hotelID}/images/get`, {
+export const useHotelImagesListAPI = () =>
+  useAdminAPI({}, () =>
+    '/img/get', {
     afterFetch: (ctx: AfterFetchContext<HotelImagesResponse>) =>
       alternateDataAfterFetch<HotelImagesResponse, UseHotelImages>(ctx, (data) =>
         (data.length > 0 ? data.map(mapHotelImageResponseToImageResponse) : [])),

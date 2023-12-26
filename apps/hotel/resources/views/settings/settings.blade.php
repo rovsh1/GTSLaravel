@@ -5,11 +5,6 @@
 @endsection
 
 @section('scripts')
-    {!! Js::variables([
-            'hotelID' => $model->id,
-            'contract' => $contract,
-    ]) !!}
-
     @vite('resources/views/settings/settings.ts')
 @endsection
 
@@ -21,6 +16,6 @@
 
     <div class="content-body">
         <div id="residence-conditions"></div>
-
         <div class="mt-3" id="cancellation-conditions"></div>
+    </div>
 @endsection

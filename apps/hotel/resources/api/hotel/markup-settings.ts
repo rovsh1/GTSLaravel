@@ -88,8 +88,8 @@ export type HotelMarkupSettingsConditionDeleteProps = {
   index: number
 }
 
-export const useHotelMarkupSettingsAPI = (props: MaybeRef<HotelMarkupSettingsProps | null>) =>
-  useAdminAPI(props, ({ hotelID }) => `/hotels/${hotelID}/settings/markup`)
+export const useHotelMarkupSettingsAPI = () =>
+  useAdminAPI({}, () => '/hotel/settings/markup')
     .get()
     .json<MarkupSettings>()
 

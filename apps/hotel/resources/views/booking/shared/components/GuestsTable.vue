@@ -3,12 +3,13 @@
 import { computed, nextTick } from 'vue'
 
 import { getGenderName } from '~resources/views/booking/shared/lib/constants'
-import EditTableRowButton from '~resources/views/hotel/settings/components/EditTableRowButton.vue'
 
 import { CountryResponse } from '~api/country'
 import { Guest } from '~api/order/guest'
 
 import { showConfirmDialog } from '~lib/confirm-dialog'
+
+import EditTableRowButton from '~components/EditTableRowButton.vue'
 
 const props = withDefaults(defineProps<{
   guestIds?: number[]

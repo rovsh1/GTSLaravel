@@ -7,7 +7,6 @@ import { HotelRoomID } from '~api/hotel/index'
 import { HotelID } from './get'
 
 type HotelRoomProps = {
-  hotelID: number
   roomID: number
 }
 
@@ -46,8 +45,8 @@ export const mapHotelRoomResponseToHotelRoom = ({
 })
 
 export const useHotelRoomAPI = (props: MaybeRef<HotelRoomProps | null>) =>
-  useAdminAPI(props, ({ hotelID, roomID }) =>
-    `/hotels/${hotelID}/rooms/${roomID}/get`, {
+  useAdminAPI(props, ({ roomID }) =>
+    `/rooms/${roomID}/get`, {
     afterFetch: (ctx: AfterFetchContext<HotelRoomResponse>) =>
       alternateDataAfterFetch<HotelRoomResponse, HotelRoom>(ctx, mapHotelRoomResponseToHotelRoom),
   })

@@ -46,7 +46,7 @@ const {
   execute: fetchImages,
   data: imagesData,
   isFetching: isImagesFetching,
-} = useHotelImagesListAPI({ hotelID })
+} = useHotelImagesListAPI()
 
 const images = ref<UseHotelImages>([])
 
@@ -72,7 +72,7 @@ const {
   execute: fetchHotel,
   data: hotelData,
   isFetching: isHotelFetching,
-} = useHotelGetAPI({ hotelID })
+} = useHotelGetAPI()
 
 const hotel = computed<HotelResponse | null>(() => hotelData.value)
 

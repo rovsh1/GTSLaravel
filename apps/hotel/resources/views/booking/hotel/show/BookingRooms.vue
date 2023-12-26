@@ -18,7 +18,6 @@ import { getConditionLabel } from '~resources/views/booking/shared/lib/constants
 import { GuestFormData, RoomFormData } from '~resources/views/booking/shared/lib/data-types'
 import { useBookingStore } from '~resources/views/booking/shared/store/booking'
 import { useOrderStore } from '~resources/views/booking/shared/store/order'
-import EditTableRowButton from '~resources/views/hotel/settings/components/EditTableRowButton.vue'
 import { useEditableModal } from '~resources/views/hotel/settings/composables/editable-modal'
 
 import {
@@ -43,6 +42,7 @@ import BaseDialog from '~components/BaseDialog.vue'
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 import BootstrapCard from '~components/Bootstrap/BootstrapCard/BootstrapCard.vue'
 import BootstrapCardTitle from '~components/Bootstrap/BootstrapCard/components/BootstrapCardTitle.vue'
+import EditTableRowButton from '~components/EditTableRowButton.vue'
 import EmptyData from '~components/EmptyData.vue'
 import IconButton from '~components/IconButton.vue'
 import InlineIcon from '~components/InlineIcon.vue'

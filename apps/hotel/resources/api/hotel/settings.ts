@@ -22,9 +22,9 @@ export interface HotelSettings {
   timeSettings: TimeSettings
 }
 
-export const useHotelSettingsAPI = (props: MaybeRef<{ hotelID: number }>) =>
-  useAdminAPI(props, ({ hotelID }) =>
-    `/hotels/${hotelID}/settings/get`)
+export const useHotelSettingsAPI = () =>
+  useAdminAPI({}, () =>
+    '/hotel/settings/get')
     .get()
     .json<HotelSettings>()
 
