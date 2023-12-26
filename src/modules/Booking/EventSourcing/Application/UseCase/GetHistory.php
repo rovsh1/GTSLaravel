@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\EventSourcing\Application\UseCase;
 
 use Module\Booking\EventSourcing\Application\Dto\EventDto;
-use Module\Booking\EventSourcing\Application\Service\HistoryBuilder\EventDtoMapper;
+use Module\Booking\EventSourcing\Application\Service\EventDtoMapper;
 use Module\Booking\EventSourcing\Domain\Service\HistoryStorageInterface;
 use Module\Booking\EventSourcing\Infrastructure\Model\BookingHistory;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;

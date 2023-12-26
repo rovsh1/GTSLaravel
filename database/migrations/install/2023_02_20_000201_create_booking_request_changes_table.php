@@ -7,16 +7,15 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('booking_history', function (Blueprint $table) {
-            $table->id();
+        Schema::create('booking_request_changes', function (Blueprint $table) {
             $table->unsignedInteger('booking_id');
-            $table->string('group')->nullable();
-            $table->string('field')->nullable();
+            $table->string('field');
+            $table->string('status');
             $table->string('description');
-            $table->string('before')->nullable();
-            $table->string('after')->nullable();
-            $table->json('context');
+            $table->json('payload')->nullable();
             $table->timestamp('created_at')->useCurrent();
+
+            $table->primary(['booking_id', 'field']);
 
             $table->foreign('booking_id')
                 ->references('id')
@@ -28,6 +27,6 @@ return new class extends Migration {
 
     public function down(): void
     {
-        Schema::dropIfExists('booking_history');
+        Schema::dropIfExists('booking_request_changes');
     }
 };

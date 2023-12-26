@@ -13,8 +13,11 @@ interface HistoryStorageInterface
 {
     public function register(
         BookingId $bookingId,
-        EventGroupEnum $group,
-        array|null $payload,
+        EventGroupEnum|null $group,
+        string|null $field,
+        string $description,
+        mixed $before,
+        mixed $after,
         array $context = []
     ): void;
 

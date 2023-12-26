@@ -9,7 +9,7 @@ use DateTimeInterface;
 final class EventDto
 {
     public function __construct(
-        public readonly string $event,
+        public readonly string|null $event,
         public readonly string $description,
         public readonly ?string $color,
         public readonly array $payload,

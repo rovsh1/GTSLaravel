@@ -14,14 +14,20 @@ class HistoryStorage implements HistoryStorageInterface
 {
     public function register(
         BookingId $bookingId,
-        EventGroupEnum $group,
-        array|null $payload,
+        EventGroupEnum|null $group,
+        string|null $field,
+        string $description,
+        mixed $before,
+        mixed $after,
         array $context = []
     ): void {
         BookingHistory::create([
             'booking_id' => $bookingId->value(),
-            'group' => $group->name,
-            'payload' => $payload,
+            'group' => $group?->name,
+            'field' => $field,
+            'description' => $description,
+            'before' => is_array($before) ? json_encode($before) : $before,
+            'after' => is_array($after) ? json_encode($after) : $after,
             //'order_id' => $event->orderId()->value(),
             'context' => $context
         ]);
