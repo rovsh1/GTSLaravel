@@ -22,6 +22,7 @@ class ModuleServiceProvider extends ServiceProvider
         'BookingModeration' => 'Booking/Moderation',
         'BookingPricing' => 'Booking/Pricing',
         'BookingRequesting' => 'Booking/Requesting',
+        'BookingNotification' => 'Booking/Notification',
         'BookingEventSourcing' => 'Booking/EventSourcing',
         'BookingInvoicing' => 'Booking/Invoicing',
         'BookingShared' => 'Booking/Shared',

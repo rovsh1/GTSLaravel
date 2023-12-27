@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Admin\Support\Adapters\Booking\Order;
 
 use Module\Booking\Moderation\Application\Dto\VoucherDto;
-use Module\Booking\Moderation\Application\UseCase\Order\Voucher\CreateVoucher;
-use Module\Booking\Moderation\Application\UseCase\Order\Voucher\SendVoucher;
+use Module\Booking\Notification\Application\UseCase\CreateVoucher;
+use Module\Booking\Notification\Application\UseCase\SendVoucher;
 
 class VoucherAdapter
 {
