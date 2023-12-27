@@ -33,14 +33,21 @@ class NotesController extends Controller
 
         return Layout::title('Изменить примечание отеля')
             ->view('hotel.notes.notes', [
-                'value' => '',
+                'value' => $hotel->text,
                 'cancelUrl' => $this->prototype->route('show', $hotel)
             ]);
     }
 
     public function update(Request $request, Hotel $hotel): RedirectResponse
     {
-        $value = $request->post('notes');
+        $notes = $request->post('notes');
+
+        $hotel->update([
+            'text' => [
+                'ru' => $notes
+            ]
+        ]);
+
         return redirect($this->prototype->route('show', $hotel));
     }
 }

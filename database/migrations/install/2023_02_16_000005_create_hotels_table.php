@@ -1,5 +1,6 @@
 <?php
 
+use App\Shared\Support\Database\Schema\TranslationSchema;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -52,10 +53,15 @@ return new class extends Migration {
                 ->restrictOnDelete()
                 ->cascadeOnUpdate();
         });
+
+        TranslationSchema::create('hotels', function (Blueprint $table) {
+            $table->text('text')->nullable();
+        });
     }
 
     public function down()
     {
+        TranslationSchema::dropIfExists('hotels');
         Schema::dropIfExists('hotels');
     }
 };
