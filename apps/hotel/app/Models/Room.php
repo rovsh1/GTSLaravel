@@ -20,7 +20,7 @@ use Sdk\Shared\Dto\FileDto;
  * @property-read string $name
  * @property-read Image $images
  * @property-read FileDto|null $main_image
- * @property-read Collection<int, PriceRate> $priceRates
+ * @property-read Collection<int, Usability> $usabilities
  */
 class Room extends Model
 {
@@ -82,19 +82,6 @@ class Room extends Model
         $builder->where('hotel_rooms.id', $id);
     }
 
-    public function beds(): HasMany
-    {
-        return $this->hasMany(RoomBed::class);
-    }
-
-    public function updateBeds(array $beds)
-    {
-        RoomBed::where('room_id', $this->id)->delete();
-        foreach ($beds as $bed) {
-            RoomBed::create(array_merge($bed, ['room_id' => $this->id]));
-        }
-    }
-
     public function mainImage(): Attribute
     {
         return Attribute::get(fn() => $this->images()->first()?->file);
@@ -117,21 +104,14 @@ class Room extends Model
         return $this->belongsToMany(
             Usability::class,
             'hotel_usabilities',
-            'room_id',
+            'hotel_id',
             'usability_id',
-            'id',
+            'hotel_id',
             'id'
-        );
-    }
-
-    public function priceRates(): BelongsToMany
-    {
-        return $this->belongsToMany(
-            PriceRate::class,
-            'hotel_price_rate_rooms',
-            'room_id',
-            'rate_id',
-        );
+        )->where(function (Builder $builder) {
+            $builder->where('hotel_usabilities.room_id', $this->id)
+                ->orWhereNull('hotel_usabilities.room_id');
+        });
     }
 
     /**
