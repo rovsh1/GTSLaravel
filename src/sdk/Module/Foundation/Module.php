@@ -6,7 +6,6 @@ use Illuminate\Support\ServiceProvider;
 use Sdk\Module\Container\Container;
 use Sdk\Module\Contracts\ModuleInterface;
 use Sdk\Module\Contracts\Support\ContainerInterface;
-use Sdk\Module\Foundation\Providers\BusServiceProvider;
 use Sdk\Module\Foundation\Providers\EventServiceProvider;
 use Sdk\Module\Foundation\Providers\SupportServiceProvider;
 use Sdk\Module\Foundation\Support\SharedContainer;
@@ -180,13 +179,10 @@ class Module extends Container implements ModuleInterface, ContainerInterface
         }
     }
 
-    protected function registerBaseBindings()
-    {
-    }
+    protected function registerBaseBindings() {}
 
     protected function registerBaseServiceProviders()
     {
-        $this->register(BusServiceProvider::class);
         $this->register(EventServiceProvider::class);
         $this->register(SupportServiceProvider::class);
     }

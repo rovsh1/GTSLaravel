@@ -3,7 +3,6 @@
 namespace App\Shared\Support\Module\Monolith;
 
 use App\Shared\Contracts\Module\ModuleAdapterInterface;
-use Sdk\Module\Contracts\Api\ApiInterface;
 use Sdk\Module\Contracts\Event\IntegrationEventSubscriberInterface;
 use Sdk\Module\Contracts\ModuleInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
@@ -14,8 +13,7 @@ class ModuleAdapter implements ModuleAdapterInterface
     public function __construct(
         private readonly string $name,
         private readonly ModuleInterface $module,
-    ) {
-    }
+    ) {}
 
     public function name(): string
     {
@@ -45,10 +43,7 @@ class ModuleAdapter implements ModuleAdapterInterface
 
     public function call(string $method, array $arguments = []): mixed
     {
-        if (is_subclass_of($method, ApiInterface::class)) {
-            //@deprecated
-            return $this->module->make($method)->execute(...$arguments);
-        } elseif (is_subclass_of($method, UseCaseInterface::class)) {
+        if (is_subclass_of($method, UseCaseInterface::class)) {
             return $this->module->make($method)->execute(...$arguments);
         } else {
             throw new \Exception('Only use case allowed');

@@ -5,7 +5,6 @@ namespace App\Shared;
 use App\Shared\Contracts\Module\ModuleAdapterInterface;
 use App\Shared\Support\Module\ModulesManager;
 use App\Shared\Support\Module\Monolith\UseCaseWrapper;
-use Sdk\Module\Contracts\Api\ApiInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class Application extends \Illuminate\Foundation\Application
@@ -66,9 +65,6 @@ class Application extends \Illuminate\Foundation\Application
     {
         if (!is_string($concrete)) {
             return parent::build($concrete);
-        } elseif (is_subclass_of($concrete, ApiInterface::class)) {
-            //@deprecated
-            return (new UseCaseWrapper($this->modules()))->wrap($concrete);
         } elseif (is_subclass_of($concrete, UseCaseInterface::class)) {
             return (new UseCaseWrapper($this->modules()))->wrap($concrete);
         } else {
