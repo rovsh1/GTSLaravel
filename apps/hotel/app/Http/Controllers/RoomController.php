@@ -31,7 +31,7 @@ class RoomController extends AbstractHotelController
         return [];
     }
 
-    public function get(Request $request, Hotel $hotel, Room $room): JsonResponse
+    public function get(Request $request, Room $room): JsonResponse
     {
         return response()->json(RoomResource::make($room));
     }

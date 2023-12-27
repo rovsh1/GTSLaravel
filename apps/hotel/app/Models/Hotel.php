@@ -24,13 +24,11 @@ use Sdk\Shared\Enum\Hotel\VisibilityEnum;
  * @property int rating
  * @property string address
  * @property-read Collection<int, Room> $rooms
- * @property-read Collection<int, Season> $seasons
  * @property-read Collection<int, Contact> $contacts
  * @property-read Collection<int, Service> $services
  * @property-read Collection<int, Usability> $usabilities
  * @property-read Collection<int, Landmark> $landmarks
  * @property-read Collection<int, Image> $images
- * @property-read Collection<int, PriceRate> $priceRates
  * @method static Builder|Hotel wherePeriod(CarbonPeriod $period)
  * @method static Builder|Hotel withRoomsCount()
  * @mixin \Eloquent

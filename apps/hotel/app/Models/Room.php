@@ -3,6 +3,7 @@
 namespace App\Hotel\Models;
 
 use App\Admin\Models\HasIndexedChildren;
+use App\Hotel\Models\Reference\Usability;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
@@ -109,6 +110,18 @@ class Room extends Model
             'id',
             'id'
         )->orderBy('hotel_room_images.index');
+    }
+
+    public function usabilities(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Usability::class,
+            'hotel_usabilities',
+            'room_id',
+            'usability_id',
+            'id',
+            'id'
+        );
     }
 
     public function priceRates(): BelongsToMany

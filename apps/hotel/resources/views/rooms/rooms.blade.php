@@ -35,6 +35,9 @@
                         <b>{{ $room->guests_count }}</b> {{ trans_choice('человека|человека|человек', $room->guests_number) }}
                         (<b>x{{ $room->rooms_number }}</b>)
                     </div>
+                    @foreach($room->usabilities as $usability)
+                        <span class="badge">{{ $usability->name }}</span>
+                    @endforeach
                     <div class="buttons">
                         <a href="" class="btn btn-light">Описание</a>
                         <a href="" class="btn btn-light">Фотографии</a>
