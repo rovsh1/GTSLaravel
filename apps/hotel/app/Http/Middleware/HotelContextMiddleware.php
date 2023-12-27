@@ -2,7 +2,7 @@
 
 namespace App\Hotel\Http\Middleware;
 
-use App\Hotel\Models\User;
+use App\Hotel\Models\Administrator;
 use App\Hotel\Services\HotelService;
 use Closure;
 use Illuminate\Http\Request;
@@ -22,7 +22,7 @@ class HotelContextMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        /** @var User|null $user */
+        /** @var Administrator|null $user */
         $user = $request->user('hotel');
         if ($user === null) {
             return redirect(route('auth.login'));

@@ -2,7 +2,7 @@
 
 namespace App\Hotel\Http\Controllers;
 
-use App\Hotel\Models\User;
+use App\Hotel\Models\Administrator;
 use App\Hotel\Support\Facades\Form;
 use App\Hotel\Support\Facades\Layout;
 use App\Hotel\Support\Http\AbstractController;
@@ -16,7 +16,7 @@ class ProfileController extends AbstractController
 {
     public function index()
     {
-        /** @var User $user */
+        /** @var Administrator $user */
         $user = $this->getUser();
         $valueEmpty = '<i class="value-empty">Не указано</i>';
 
@@ -116,7 +116,7 @@ class ProfileController extends AbstractController
         ]);
     }
 
-    private function updateAvatar(User $model, UploadedFile $uploadedFile): void
+    private function updateAvatar(Administrator $model, UploadedFile $uploadedFile): void
     {
         $fileStorageAdapter = app(FileStorageAdapterInterface::class);
         $fileDto = $fileStorageAdapter->updateOrCreate(
@@ -129,8 +129,8 @@ class ProfileController extends AbstractController
         }
     }
 
-    private function getUser(): User
+    private function getUser(): Administrator
     {
-        return Auth::guard('hotel')->user();
+        return Auth::user();
     }
 }

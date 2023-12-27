@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up()
     {
-        Schema::create('hotel_users', function (Blueprint $table) {
+        Schema::create('hotel_administrators', function (Blueprint $table) {
             $table->integer('id')->unsigned()->autoIncrement();
             $table->integer('hotel_id')->unsigned();
             $table->tinyInteger('status')->unsigned()->default(0);
@@ -33,6 +33,6 @@ return new class extends Migration {
 
     public function down()
     {
-        Schema::dropIfExists('hotel_users');
+        Schema::dropIfExists('hotel_administrators');
     }
 };

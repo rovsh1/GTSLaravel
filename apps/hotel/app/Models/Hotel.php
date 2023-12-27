@@ -128,7 +128,7 @@ class Hotel extends Model
 
     public function users(): HasMany
     {
-        return $this->hasMany(User::class);
+        return $this->hasMany(Administrator::class);
     }
 
     protected function images(): HasMany

@@ -9,7 +9,9 @@ class ContextManager
 {
     private Form $submittedForm;
 
-    public function __construct(private readonly ApplicationContextInterface $applicationContext) {}
+    public function __construct(private readonly ApplicationContextInterface $applicationContext)
+    {
+    }
 
     public function __call(string $name, array $arguments)
     {

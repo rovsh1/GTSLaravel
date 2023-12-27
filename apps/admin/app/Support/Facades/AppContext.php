@@ -19,7 +19,6 @@ use Sdk\Shared\Enum\SourceEnum;
  * @method static void setHttpMethod(string $method)
  * @method static void setUserIp(string $userIp)
  * @method static void setUserAgent(string $userAgent)
- * @method static void setUser(int $id, string $name = null)
  * @method static void setAdministrator(int $id, string $name)
  * @method static void setEntity(string $class, int $id)
  * @method static void addTag(string $tag)

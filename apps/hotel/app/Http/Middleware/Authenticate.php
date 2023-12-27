@@ -2,8 +2,8 @@
 
 namespace App\Hotel\Http\Middleware;
 
-use App\Admin\Models\Administrator\Administrator;
-use App\Admin\Support\Facades\AppContext;
+use App\Hotel\Models\Administrator;
+use App\Hotel\Support\Facades\AppContext;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 use Illuminate\Http\Request;
 
@@ -11,15 +11,15 @@ class Authenticate extends Middleware
 {
     protected function authenticate($request, array $guards)
     {
-        parent::authenticate($request, ['admin']);
+        parent::authenticate($request, ['hotel']);
 
-        /** @var Administrator $administrator */
-        $administrator = $this->auth->user();
-        if (!$administrator->isActive() && !$administrator->isSuperuser()) {
-            $administrator->setRememberToken(null);
-            $this->unauthenticated($request, ['admin']);
+        /** @var Administrator $user */
+        $user = $this->auth->user();
+        if (!$user->isActive()) {
+            $user->setRememberToken(null);
+            $this->unauthenticated($request, ['hotel']);
         } else {
-            AppContext::setAdministrator($administrator->id, $administrator->presentation);
+            AppContext::setAdministrator($user->id, $user->presentation);
         }
     }
 

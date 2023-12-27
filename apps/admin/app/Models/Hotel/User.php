@@ -15,7 +15,7 @@ class User extends Model
 
     protected array $quicksearch = ['id', 'presentation%'];
 
-    protected $table = 'hotel_users';
+    protected $table = 'hotel_administrators';
 
     protected $fillable = [
         'hotel_id',
@@ -39,9 +39,9 @@ class User extends Model
     {
         static::addGlobalScope('default', function (Builder $builder) {
             $builder
-                ->addSelect('hotel_users.*')
+                ->addSelect('hotel_administrators.*')
                 ->addSelect('hotels.name as hotel_name')
-                ->join('hotels', 'hotels.id', '=', 'hotel_users.hotel_id')
+                ->join('hotels', 'hotels.id', '=', 'hotel_administrators.hotel_id')
                 ->join('r_cities', 'r_cities.id', '=', 'hotels.city_id')
                 ->joinTranslatable('r_cities', 'name as city_name');
         });

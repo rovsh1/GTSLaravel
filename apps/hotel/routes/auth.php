@@ -9,8 +9,6 @@ use Illuminate\Support\Facades\Route;
 Route::controller(AuthController::class)
     ->prefix('auth')
     ->as('auth.')
-    ->middleware([TryAuthenticate::class, 'guest:hotel'])
-    ->withoutMiddleware(Authenticate::class)
     ->group(function () {
         Route::get('/login', 'login')->name('login');
         Route::post('/login', 'processLogin')->name('login.submit');

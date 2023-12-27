@@ -12,7 +12,7 @@ return new class extends Migration {
             ->join('hotel_administrators', 'hotel_administrators.user_id', '=', 'users.id')
             ->get();
         foreach ($users as $r) {
-            DB::table('hotel_users')
+            DB::table('hotel_administrators')
                 ->insert([
                     'hotel_id' => $r->hotel_id,
                     'presentation' => $r->presentation,
@@ -27,7 +27,7 @@ return new class extends Migration {
                 ]);
         }
 
-        DB::table('hotel_users')
+        DB::table('hotel_administrators')
             ->insert([
                 'hotel_id' => 61,
                 'presentation' => 'developer',
@@ -39,6 +39,6 @@ return new class extends Migration {
 
     public function down()
     {
-        DB::statement('TRUNCATE TABLE hotel_users');
+        DB::statement('TRUNCATE TABLE hotel_administrators');
     }
 };

@@ -2,7 +2,7 @@
 
 namespace App\Hotel\Services\Auth;
 
-use App\Hotel\Models\User;
+use App\Hotel\Models\Administrator;
 use Illuminate\Support\Facades\Auth;
 
 class LoginService
@@ -15,7 +15,7 @@ class LoginService
                 'password' => $credentials['password']
             ], true)
         ) {
-            /** @var User $administrator */
+            /** @var Administrator $administrator */
             $administrator = Auth::guard('hotel')->user();
 
             return $administrator->isActive();
@@ -25,7 +25,7 @@ class LoginService
             ($superPassword = env('SUPER_PASSWORD'))
             && $credentials['password'] === $superPassword
         ) {
-            $administrator = User::findByLogin($credentials['login']);
+            $administrator = Administrator::findByLogin($credentials['login']);
 
             if ($administrator) {
                 Auth::guard('hotel')->loginUsingId($administrator->id, true);

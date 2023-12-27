@@ -15,7 +15,7 @@ use Sdk\Module\Database\Eloquent\HasQuicksearch;
  * @property string $email
  * @property string|null $phone
  */
-class User extends Authenticatable
+class Administrator extends Authenticatable
 {
     use HasQuicksearch;
 
@@ -23,7 +23,7 @@ class User extends Authenticatable
 
     protected array $quicksearch = ['id', 'presentation%'];
 
-    protected $table = 'hotel_users';
+    protected $table = 'hotel_administrators';
 
     protected $fillable = [
         'hotel_id',
@@ -47,15 +47,15 @@ class User extends Authenticatable
     {
 //        static::addGlobalScope('default', function (Builder $builder) {
 //            $builder
-//                ->addSelect('hotel_users.*')
+//                ->addSelect('hotel_administrators.*')
 //                ->addSelect('hotels.name as hotel_name')
-//                ->join('hotels', 'hotels.id', '=', 'hotel_users.hotel_id')
+//                ->join('hotels', 'hotels.id', '=', 'hotel_administrators.hotel_id')
 //                ->join('r_cities', 'r_cities.id', '=', 'hotels.city_id')
 //                ->joinTranslatable('r_cities', 'name as city_name');
 //        });
     }
 
-    public static function findByLogin(string $login): ?User
+    public static function findByLogin(string $login): ?Administrator
     {
         return static::query()
             ->whereLogin($login)
