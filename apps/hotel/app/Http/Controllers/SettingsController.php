@@ -22,7 +22,7 @@ class SettingsController extends AbstractHotelController
             ]);
     }
 
-    public function get(Request $request, int $id): JsonResponse
+    public function get(Request $request): JsonResponse
     {
         $hotelSettings = SettingsAdapter::getHotelSettings($this->getHotel()->id);
 
