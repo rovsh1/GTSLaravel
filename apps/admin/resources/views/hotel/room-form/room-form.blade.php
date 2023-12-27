@@ -28,6 +28,14 @@
             </div>
 
             <div class="card card-form mt-4">
+                <div class="card-header"><h5>Описание</h5></div>
+
+                <div class="textarea-wrapper">
+                    <textarea name="text[ru]" id="room-text-textarea" style="visibility: hidden">{!! $text ?? '' !!}</textarea>
+                </div>
+            </div>
+
+            <div class="card card-form mt-4">
                 <div class="card-header"><h5>Спальные места</h5></div>
 
                 <div class="card-body room-beds" id="room-beds"></div>

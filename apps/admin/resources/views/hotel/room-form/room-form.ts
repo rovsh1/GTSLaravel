@@ -1,4 +1,5 @@
 import axios from '~resources/js/app/api'
+import HtmlEditor from '~resources/js/plugins/htmleditor/htmleditor'
 import { Select2Option } from '~resources/views/booking/shared/lib/constants'
 import bootBeds from '~resources/views/hotel/_services/room-editor'
 
@@ -51,6 +52,7 @@ $(async () => {
     })
   }
 
+  (new HtmlEditor('#room-text-textarea', {})).init()
   await switchInputToSelect('form_data_name_ru', '/hotels/rooms/names/ru/list')
   await switchInputToSelect('form_data_name_en', '/hotels/rooms/names/en/list')
   await switchInputToSelect('form_data_name_uz', '/hotels/rooms/names/uz/list')

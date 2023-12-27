@@ -86,6 +86,7 @@ class RoomController extends Controller
         return $this->formLayout($form)
             ->title((string)$room)
             ->data([
+                'text' => $room->text,
                 'cancelUrl' => route('hotels.rooms.index', $hotel),
                 'deleteUrl' => route('hotels.rooms.destroy', [$hotel, $room])
             ]);
@@ -145,6 +146,7 @@ class RoomController extends Controller
                 'name',
                 ['label' => 'Наименование', 'required' => true]
             )
+            ->hidden('text')
             ->number('rooms_number', ['label' => 'Кол-во номеров', 'required' => true])
             ->number('guests_count', ['label' => 'Вместимость номера', 'required' => true])
             ->number('square', ['label' => 'Площадь']);
