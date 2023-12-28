@@ -6,7 +6,6 @@ import { MaybeRef } from '@vueuse/core'
 import { AttachmentDialogImageProp } from '~resources/views/images/components/lib'
 
 import { HotelRoomID, HotelRoomImage } from '~api/hotel'
-import { HotelID } from '~api/hotel/get'
 import { useHotelRoomAttachImageAPI, useHotelRoomDetachImageAPI, useHotelSetMainImageAPI, useHotelUnSetMainImageAPI } from '~api/hotel/images/update'
 
 import BaseDialog from '~components/BaseDialog.vue'
@@ -15,7 +14,6 @@ import BootstrapCheckbox from '~components/Bootstrap/BootstrapCheckbox.vue'
 
 const props = withDefaults(defineProps<{
   image: AttachmentDialogImageProp
-  hotel: HotelID
   rooms: HotelRoomImage[]
   isRoomsFetching?: MaybeRef<boolean>
   opened: boolean
@@ -33,14 +31,12 @@ const roomIDToChangeImageAttachment = ref<HotelRoomID | null>(null)
 
 const hotelRoomChangeImageAttachmentPayload = computed(() =>
   (roomIDToChangeImageAttachment.value === null ? null : ({
-    hotelID: props.hotel,
     roomID: roomIDToChangeImageAttachment.value,
     imageID: props.image.id,
   })))
 
 const hotelSetMainImagePayload = computed(() =>
   ({
-    hotelID: props.hotel,
     imageID: props.image.id,
   }))
 
@@ -69,7 +65,6 @@ const {
 } = useHotelUnSetMainImageAPI(hotelSetMainImagePayload)
 
 const changeImageAttachment = async (roomID: HotelRoomID, value: boolean) => {
-  // TODO revert checkbox state to previous if request is not success
   if (value) {
     roomIDToChangeImageAttachment.value = roomID
     await executeAttach()
@@ -88,7 +83,6 @@ const changeImageAttachment = async (roomID: HotelRoomID, value: boolean) => {
 }
 
 const changeSetMainImageToHotel = async (value: boolean) => {
-  // TODO revert checkbox state to previous if request is not success
   if (value) {
     await executeSetMainImage()
     if (setMainImageData.value !== null && setMainImageData.value.success) {
@@ -127,6 +121,7 @@ const isCheckboxDisabled = computed<boolean>(() =>
             class="list-group-item"
           >
             <BootstrapCheckbox
+              :id="room.id.toString()"
               :label="room.name"
               :value="room.isImageLinked"
               :disabled="isCheckboxDisabled"

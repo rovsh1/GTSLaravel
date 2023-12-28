@@ -3,42 +3,29 @@ import { computed, ref, watch } from 'vue'
 import { VueDraggable } from 'vue-draggable-plus'
 
 import { useUrlSearchParams } from '@vueuse/core'
-import { z } from 'zod'
 
 import AttachmentDialog from '~resources/views/images/components/AttachmentDialog.vue'
-import { AttachmentDialogImageProp, isImageAttachedToRoom, UploadStatus } from '~resources/views/images/components/lib'
+import { AttachmentDialogImageProp, isImageAttachedToRoom } from '~resources/views/images/components/lib'
 
-import { HotelID, HotelResponse, useHotelGetAPI } from '~api/hotel/get'
-import { FileResponse, HotelImage, HotelImageID } from '~api/hotel/images'
+import { HotelResponse, useHotelGetAPI } from '~api/hotel/get'
+import { FileResponse, HotelImageID } from '~api/hotel/images'
 import {
   UseHotelImages,
   useHotelImagesListAPI,
   UseHotelRoomImages,
   useHotelRoomImagesAPI,
 } from '~api/hotel/images/list'
-import { useHotelImageRemoveAPI } from '~api/hotel/images/remove'
 import { useHotelImagesReorderAPI, useHotelRoomImagesReorderAPI } from '~api/hotel/images/reorder'
 import { useHotelRoomAttachImageAPI, useHotelRoomDetachImageAPI } from '~api/hotel/images/update'
-import { useHotelImagesUploadAPI } from '~api/hotel/images/upload'
 import { HotelRoom, useHotelRoomAPI } from '~api/hotel/room'
 import { useHotelRoomsListWithAttachedImageAPI } from '~api/hotel/rooms-image'
 
-import { requestInitialData } from '~lib/initial-data'
-
-import BaseDialog from '~components/BaseDialog.vue'
 import BaseLayout from '~components/BaseLayout.vue'
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
-import { showToast } from '~components/Bootstrap/BootstrapToast'
 import ImageZoom from '~components/ImageZoom.vue'
 import InlineIcon from '~components/InlineIcon.vue'
 import LoadingSpinner from '~components/LoadingSpinner.vue'
 import OverlayLoading from '~components/OverlayLoading.vue'
-
-import UploadDialog from './components/UploadDialog.vue'
-
-const { hotelID } = requestInitialData(z.object({
-  hotelID: z.number(),
-}))
 
 const { room_id: roomID } = useUrlSearchParams<{ room_id?: number }>()
 
@@ -51,7 +38,7 @@ const {
 const images = ref<UseHotelImages>([])
 
 const hotelRoomImagesProps = computed(() =>
-  (roomID === undefined ? null : { hotelID, roomID }))
+  (roomID === undefined ? null : { roomID }))
 
 const {
   execute: fetchRoomImages,
@@ -79,7 +66,7 @@ const hotel = computed<HotelResponse | null>(() => hotelData.value)
 const hotelRoomProps = computed(() =>
   (roomID === undefined
     ? null
-    : { hotelID, roomID }))
+    : { roomID }))
 
 const {
   execute: fetchRoom,
@@ -89,106 +76,13 @@ const {
 
 const room = computed<HotelRoom | null>(() => roomData.value)
 
-const isUploadDialogOpened = ref(false)
-
-const isImagesUploadFetching = ref(false)
-
-const imagesToUpload = ref<File[] | null>(null)
-
-const uploadsImageStatus = ref<UploadStatus[] | null>(null)
-
-const uploadImages = async () => {
-  if (imagesToUpload.value === null) return
-  isImagesUploadFetching.value = true
-  const uploadPromises = imagesToUpload.value.map(async (image) => {
-    const { data, execute } = useHotelImagesUploadAPI({
-      hotelID,
-      roomID,
-      image,
-    })
-    await execute()
-    return {
-      status: data.value?.success || false,
-      name: image.name,
-    }
-  })
-
-  const results = await Promise.all(uploadPromises)
-
-  uploadsImageStatus.value = results
-
-  const wrongStatusUploadImage = uploadsImageStatus.value.filter((upload) => !upload.status)
-
-  loadAllImages()
-  if (wrongStatusUploadImage.length > 0) {
-    isImagesUploadFetching.value = false
-  } else {
-    isUploadDialogOpened.value = false
-    isImagesUploadFetching.value = false
-    imagesToUpload.value = null
-  }
-}
-
-const imageIDToRemove = ref<number | null>(null)
-
-const isRemoveImagePromptOpened = ref(false)
-
-const imageToRemove = computed<HotelImage | null>(() => {
-  if (images.value === null) return null
-  if (imageIDToRemove.value === null) return null
-  const found = images.value.find(({ id }) => id === imageIDToRemove.value)
-  if (found === undefined) return null
-  return found
-})
-
-const hotelImageRemoveProps = computed(() =>
-  (imageIDToRemove.value === null
-    ? null
-    : {
-      hotelID,
-      imageID: imageIDToRemove.value,
-    }))
-
-const {
-  isFetching: isImageRemoveFetching,
-  execute: executeRemoveImage,
-  data: removeImageData,
-} = useHotelImageRemoveAPI(hotelImageRemoveProps)
-
-const removeImage = (imageID: number) => {
-  imageIDToRemove.value = imageID
-  isRemoveImagePromptOpened.value = true
-}
-
-const cancelRemoveImage = () => {
-  imageIDToRemove.value = null
-  isRemoveImagePromptOpened.value = false
-}
-
-watch(removeImageData, (value) => {
-  if (value === null || !value.success) {
-    showToast({ title: 'Не удалось удалить фото' })
-    return
-  }
-  isRemoveImagePromptOpened.value = false
-  if (imageToRemove.value === null) return
-  showToast({
-    title: 'Фото удалено',
-    description: imageToRemove.value.file.name,
-  })
-  imageIDToRemove.value = null
-  fetchImages()
-})
-
 const hotelImagesReorderProps = computed(() =>
   (images.value === null ? null : {
-    hotelID,
     imagesIDs: images.value.map(({ id }) => id),
   }))
 
 const hotelRoomImagesReorderProps = computed(() =>
   (images.value === null || !roomID ? null : {
-    hotelID,
     roomID,
     imagesIDs: images.value.map(({ id }) => id),
   }))
@@ -205,14 +99,14 @@ const {
 
 const attachImageToRoom = async (imageID: number) => {
   if (roomID === undefined) return
-  await useHotelRoomAttachImageAPI({ hotelID, roomID, imageID })
+  await useHotelRoomAttachImageAPI({ roomID, imageID })
     .execute()
   await loadAllImages()
 }
 
 const deleteRoomImage = async (imageID: number) => {
   if (roomID === undefined) return
-  await useHotelRoomDetachImageAPI({ hotelID, roomID, imageID })
+  await useHotelRoomDetachImageAPI({ roomID, imageID })
     .execute()
   await loadAllImages()
 }
@@ -226,7 +120,6 @@ const attachmentDialogImage = ref<AttachmentDialogImageProp | null>(null)
 
 const hotelRoomsWithAttachedImageProps = computed(() =>
   (attachmentDialogImage.value === null ? null : {
-    hotelID,
     imageID: attachmentDialogImage.value.id,
   }))
 
@@ -310,19 +203,11 @@ watch([imagesData, roomImages], (value) => {
 </script>
 <template>
   <BaseLayout :title="title" :loading="isHotelFetching">
-    <template #header-controls>
-      <BootstrapButton
-        label="Добавить фотографии"
-        start-icon="add"
-        severity="primary"
-        @click="isUploadDialogOpened = true"
-      />
-    </template>
     <div v-if="isInitialFetching">
       <LoadingSpinner class="loadingSpinner" />
     </div>
     <div v-else-if="images === null || images.length === 0">
-      У этого отеля ещё нет фото. Загрузите их, нажав на кнопку выше.
+      У этого отеля ещё нет фото.
     </div>
     <div v-else>
       <VueDraggable
@@ -406,63 +291,17 @@ watch([imagesData, roomImages], (value) => {
                   />
                 </template>
               </div>
-              <div class="actionsEnd">
-                <BootstrapButton
-                  v-if="roomID === undefined
-                    || (
-                      room !== null
-                      && !isImageAttachedToRoom(id, roomImages)
-                    )
-                  "
-                  label="Удалить"
-                  severity="danger"
-                  only-icon="delete"
-                  :loading="isImageRemoveFetching && imageIDToRemove === id"
-                  @click="removeImage(id)"
-                />
-              </div>
             </div>
           </div>
         </div>
       </vuedraggable>
     </div>
   </BaseLayout>
-  <UploadDialog
-    :opened="isUploadDialogOpened"
-    :loading="isImagesUploadFetching"
-    :files="imagesToUpload"
-    :upload-status="uploadsImageStatus"
-    @files="(files) => imagesToUpload = files"
-    @upload="() => uploadImages()"
-    @close="() => isUploadDialogOpened = false"
-  />
-  <BaseDialog :opened="isRemoveImagePromptOpened" :disabled="isImageRemoveFetching">
-    <template #title>Действительно удалить это фото?</template>
-    <ImageZoom
-      v-if="imageToRemove !== null"
-      class="picture"
-      :src="imageToRemove.file.url"
-      :alt="imageToRemove.file.name"
-      :disabled="isImageRemoveFetching"
-    />
-    <template #actions-end>
-      <BootstrapButton
-        label="Удалить"
-        variant="outline"
-        severity="danger"
-        :loading="isImageRemoveFetching"
-        start-icon="delete"
-        @click="executeRemoveImage"
-      />
-      <BootstrapButton label="Отмена" severity="light" :disabled="isImageRemoveFetching" @click="cancelRemoveImage" />
-    </template>
-  </BaseDialog>
   <AttachmentDialog
     v-if="attachmentDialogImage !== null && hotelRoomsWithAttachedImage !== null"
     :image="attachmentDialogImage"
     :rooms="hotelRoomsWithAttachedImage"
     :is-rooms-fetching="isHotelRoomsWithAttachedImageFetching"
-    :hotel="hotelID as HotelID"
     :opened="isAttachmentDialogOpened"
     @update-set-main-image-hotel="fetchImages"
     @update-attached-image-rooms="fetchHotelRoomsWithAttachedImage"

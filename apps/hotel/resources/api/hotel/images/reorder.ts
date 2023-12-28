@@ -9,7 +9,6 @@ import { getNullableRef } from '~lib/vue'
 import { HotelImageID } from '.'
 
 type HotelImagesReorderProps = {
-  hotelID: number
   imagesIDs: HotelImageID[]
 }
 
@@ -24,8 +23,8 @@ type HotelImagesReorderPayload = {
 type HotelRoomImagesReorderPayload = HotelImagesReorderPayload
 
 export const useHotelImagesReorderAPI = (props: MaybeRef<HotelImagesReorderProps | null>) =>
-  useAdminAPI(props, ({ hotelID }) =>
-    `/hotels/${hotelID}/images/reorder`)
+  useAdminAPI(props, () =>
+    '/photos/reorder')
     .post(computed<string>(() => JSON.stringify(
       getNullableRef<HotelImagesReorderProps, HotelImagesReorderPayload>(
         props,
@@ -35,8 +34,8 @@ export const useHotelImagesReorderAPI = (props: MaybeRef<HotelImagesReorderProps
     .json<BaseResponse>()
 
 export const useHotelRoomImagesReorderAPI = (props: MaybeRef<HotelRoomImagesReorderProps | null>) =>
-  useAdminAPI(props, ({ hotelID, roomID }) =>
-    `/hotels/${hotelID}/rooms/${roomID}/images/reorder`)
+  useAdminAPI(props, ({ roomID }) =>
+    `/photos/rooms/${roomID}/images/reorder`)
     .post(computed<string>(() => JSON.stringify(
       getNullableRef<HotelRoomImagesReorderProps, HotelRoomImagesReorderPayload>(
         props,

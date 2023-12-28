@@ -11,7 +11,7 @@ export type UseHotelImages = HotelImage[]
 
 export const useHotelImagesListAPI = () =>
   useAdminAPI({}, () =>
-    '/img/get', {
+    '/photos/get', {
     afterFetch: (ctx: AfterFetchContext<HotelImagesResponse>) =>
       alternateDataAfterFetch<HotelImagesResponse, UseHotelImages>(ctx, (data) =>
         (data.length > 0 ? data.map(mapHotelImageResponseToImageResponse) : [])),
@@ -20,7 +20,6 @@ export const useHotelImagesListAPI = () =>
     .json<UseHotelImages>()
 
 type HotelRoomImagesProps = {
-  hotelID: number
   roomID: number
 }
 
@@ -38,8 +37,8 @@ export type HotelRoomImage = HotelImage & {
 export type UseHotelRoomImages = HotelRoomImage[]
 
 export const useHotelRoomImagesAPI = (props: MaybeRef<HotelRoomImagesProps | null>) =>
-  useAdminAPI(props, ({ hotelID, roomID }) =>
-    `/hotels/${hotelID}/images/${roomID}/list`, {
+  useAdminAPI(props, ({ roomID }) =>
+    `/photos/${roomID}/list`, {
     afterFetch: (ctx: AfterFetchContext<RoomImagesResponse>) =>
       alternateDataAfterFetch<RoomImagesResponse, UseHotelRoomImages>(ctx, (data) =>
         (data.length > 0 ? data.map(({
