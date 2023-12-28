@@ -34,20 +34,29 @@ class PaymentController extends AbstractPrototypeController
 
     protected function gridFactory(): GridContract
     {
+        $paymentMethods = PaymentMethod::get()->keyBy('id')->map->name;
+
         return Grid::enableQuicksearch()
             ->paginator(self::GRID_LIMIT)
             ->id('id', ['text' => '№', 'order' => true])
             ->text('client_name', ['text' => 'Клиент', 'order' => true])
+            ->text('invoice_number', ['text' => 'Номер счета-фактуры'])
             ->enum('status', ['text' => 'Статус', 'enum' => PaymentStatusEnum::class])
             ->text('order_ids', [
                 'text' => 'Заказы',
-                'renderer' => fn($row) => "<a href='#' class='js-order-pay-link' data-payment-id='{$row->id}'>Распределить</a>"
+                'renderer' => fn($row
+                ) => "<a href='#' class='js-order-pay-link' data-payment-id='{$row->id}'>Распределить</a>"
             ])
             ->date('issue_date', ['text' => 'Дата выставления', 'order' => true])
             ->date('payment_date', ['text' => 'Дата оплаты', 'order' => true])
             ->price('payment_sum', ['text' => 'Сумма', 'currencyIndex' => 'payment_currency'])
             ->price('lend_sum', ['text' => 'Распределено', 'currencyIndex' => 'payment_currency'])
             ->price('remaining_sum', ['text' => 'Остаток', 'currencyIndex' => 'payment_currency'])
+            ->text(
+                'payment_method_id',
+                ['text' => 'Платежный метод', 'renderer' => fn($r, $v) => $paymentMethods[$v] ?? '']
+            )
+            ->text('document_name', ['text' => 'Документ'])
             ->file('file', ['text' => 'Файл'])
             ->date('created_at', ['text' => 'Создан', 'format' => 'datetime', 'order' => true])
             ->orderBy('id', 'desc');
@@ -57,7 +66,8 @@ class PaymentController extends AbstractPrototypeController
     {
         return Form::name('data')
             ->setOption('enctype', 'multipart/form-data')
-            ->client('client_id', ['label' => 'Клиент', 'required' => true, 'emptyItem' => '', 'onlyWithOrders' => true])
+            ->client('client_id', ['label' => 'Клиент', 'required' => true, 'emptyItem' => '', 'onlyWithOrders' => true]
+            )
             ->text('invoice_number', ['label' => 'Номер счет-фактуры', 'required' => true])
             ->date('issue_date', ['label' => 'Дата выставления', 'required' => true])
             ->date('payment_date', ['label' => 'Дата оплаты', 'required' => true])
