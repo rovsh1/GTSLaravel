@@ -62,7 +62,7 @@ class PaymentController extends AbstractPrototypeController
             ->date('issue_date', ['label' => 'Дата выставления', 'required' => true])
             ->date('payment_date', ['label' => 'Дата оплаты', 'required' => true])
             ->number('payment_sum', ['label' => 'Сумма оплаты', 'required' => true])
-            ->currency('payment_currency', ['label' => 'Валюта', 'required' => true, 'emptyItem' => ''])
+            ->hidden('payment_currency', ['label' => 'Валюта', 'required' => true, 'emptyItem' => ''])
             ->select(
                 'payment_method_id',
                 ['label' => 'Способ оплаты', 'required' => true, 'items' => PaymentMethod::get(), 'emptyItem' => '']

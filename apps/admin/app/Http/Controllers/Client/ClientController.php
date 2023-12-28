@@ -6,6 +6,7 @@ namespace App\Admin\Http\Controllers\Client;
 
 use App\Admin\Http\Requests\Client\CreateClientRequest;
 use App\Admin\Http\Resources\Client as ClientResource;
+use App\Admin\Models\Client\Client;
 use App\Admin\Models\Client\Legal;
 use App\Admin\Models\Client\User;
 use App\Admin\Models\Pricing\MarkupGroup;
@@ -131,6 +132,15 @@ class ClientController extends AbstractPrototypeController
         Sidebar::submenu(new ClientMenu($this->model, 'info'));
 
         return $layout;
+    }
+
+    public function currencies(Client $client): JsonResponse
+    {
+        $currency = $client->currency;
+
+        return response()->json([
+            ['id' => $currency->value, 'name' => $currency->name]
+        ]);
     }
 
     public function list(): JsonResponse
