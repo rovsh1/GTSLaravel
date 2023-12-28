@@ -10,11 +10,16 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Query\Builder as Query;
 use Illuminate\Http\UploadedFile;
 use Module\Client\Payment\Domain\Payment\ValueObject\PaymentStatusEnum;
+use Sdk\Module\Database\Eloquent\HasQuicksearch;
 use Sdk\Shared\Dto\FileDto;
 use Sdk\Shared\Dto\UploadedFileDto;
 
 class Payment extends \Module\Client\Payment\Infrastructure\Models\Payment
 {
+    use HasQuicksearch;
+
+    protected array $quicksearch = ['id', 'invoice_number'];
+
     protected $attributes = [
         'status' => PaymentStatusEnum::NOT_PAID,
     ];

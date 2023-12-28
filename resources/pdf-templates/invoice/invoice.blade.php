@@ -126,6 +126,10 @@
         @include('_partials.bank_requisites')
 
         <tr>
+            <td>Спасибо за сотрудничество.</td>
+        </tr>
+
+        <tr>
             <td>
                 <table>
                     <tbody>

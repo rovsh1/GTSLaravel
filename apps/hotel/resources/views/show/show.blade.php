@@ -24,7 +24,7 @@
         <div class="mt-3">
             <x-ui.card :collapsable="true" header="Примечание">
                 @if($model->text)
-                    {{ $model->text }}
+                    {!! $model->text !!}
                 @else
                     <i class="empty">Отсутствует</i>
                 @endif

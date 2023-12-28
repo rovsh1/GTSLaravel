@@ -36,6 +36,7 @@
   "ОКЭД": "OKED",
   "Банк": "Bank",
   "МФО": "MFO",
+  "Код ЦБУ": "CBU Code",
   "Р/с в :currency": "Bank acc. in :currency",
   "Банк корреспондент": "Correspondent bank",
   "БИК": "BIC",

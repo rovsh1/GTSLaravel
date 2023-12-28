@@ -6,6 +6,7 @@ use App\Admin\Http\Controllers;
 use App\Admin\Support\Facades\AclRoute;
 
 AclRoute::for('client')
+    ->get('/{client}/currencies', Controllers\Client\ClientController::class . '@currencies', 'read', 'currencies.get')
     ->resource('legals', Controllers\Client\LegalsController::class, [
         'except' => ['show']
     ])

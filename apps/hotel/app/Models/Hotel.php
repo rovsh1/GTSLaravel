@@ -2,15 +2,15 @@
 
 namespace App\Hotel\Models;
 
+use App\Hotel\Models\Reference\Landmark;
 use App\Hotel\Models\Reference\Service;
 use App\Hotel\Models\Reference\Usability;
-use App\Hotel\Models\Reference\Landmark;
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Sdk\Module\Database\Eloquent\HasQuicksearch;
+use Sdk\Module\Database\Eloquent\HasTranslations;
 use Sdk\Module\Database\Eloquent\Model;
 use Sdk\Shared\Enum\CurrencyEnum;
 use Sdk\Shared\Enum\Hotel\RatingEnum;
@@ -35,12 +35,12 @@ use Sdk\Shared\Enum\Hotel\VisibilityEnum;
  */
 class Hotel extends Model
 {
-    use HasQuicksearch;
     use HasIndexedChildren;
+    use HasTranslations;
 
     //use SoftDeletes;
 
-    protected array $quicksearch = ['id', 'hotels.name%'];
+    protected array $translatable = ['text'];
 
     protected $table = 'hotels';
 
@@ -57,7 +57,7 @@ class Hotel extends Model
         'address_lat',
         'address_lon',
         'zipcode',
-//    'text',
+        'text',
         'status',
         'city_distance',
         'visibility',
@@ -82,7 +82,8 @@ class Hotel extends Model
                 ->join('r_enums', 'r_enums.id', '=', 'hotels.type_id')
                 ->joinTranslatable('r_cities', 'name as city_name')
                 ->joinTranslatable('r_countries', 'name as country_name')
-                ->joinTranslatable('r_enums', 'name as type_name');
+                ->joinTranslatable('r_enums', 'name as type_name')
+                ->joinTranslations();
         });
     }
 
