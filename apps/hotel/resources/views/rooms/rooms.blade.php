@@ -36,8 +36,7 @@
                     @endforeach
                     <div class="buttons">
                         <a href="" class="btn btn-light">Описание</a>
-                        <a href="" class="btn btn-light">Фотографии</a>
-                        <!-- route('hotels.images.index', [$hotel, 'room_id' => $room->id]) -->
+                        <a href="{{ route('images.index', ['room_id' => $room->id]) }}" class="btn btn-light">Фотографии</a>
                     </div>
                 </div>
             </div>
