@@ -4,10 +4,6 @@
     @vite('resources/views/rooms/rooms.scss')
 @endsection
 
-@section('scripts')
-    @vite('resources/views/rooms/rooms.ts')
-@endsection
-
 @section('content')
     <div class="content-header">
         <div class="title">{{ $title }}</div>
@@ -35,13 +31,13 @@
                         <b>{{ $room->guests_count }}</b> {{ trans_choice('человека|человека|человек', $room->guests_number) }}
                         (<b>x{{ $room->rooms_number }}</b>)
                     </div>
-                    {!! $room->text !!}
                     @foreach($room->usabilities as $usability)
-                        <span class="badge">{{ $usability->name }}</span>
+                        <span class="badge badge-success">{{ $usability->name }}</span>
                     @endforeach
                     <div class="buttons">
                         <a href="" class="btn btn-light">Описание</a>
                         <a href="" class="btn btn-light">Фотографии</a>
+                        <!-- route('hotels.images.index', [$hotel, 'room_id' => $room->id]) -->
                     </div>
                 </div>
             </div>

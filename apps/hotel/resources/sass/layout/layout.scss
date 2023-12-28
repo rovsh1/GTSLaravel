@@ -102,3 +102,20 @@ pre {
 .btn-data-content {
   cursor: pointer;
 }
+
+.badge {
+  display: inline-block;
+  padding: .25em .4em;
+  font-size: 78%;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: .25rem;
+}
+
+.badge-success {
+  color: #fff;
+  background-color: #0ab21b;
+}
