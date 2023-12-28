@@ -4,7 +4,7 @@ use App\Hotel\Http\Controllers\ImageController;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(ImageController::class)
-    ->prefix('images')
+    ->prefix('photos')
     ->as('images.')
     ->group(function () {
         Route::get('/', 'index')->name('index');
