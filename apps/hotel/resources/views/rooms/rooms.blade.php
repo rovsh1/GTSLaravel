@@ -4,6 +4,10 @@
     @vite('resources/views/rooms/rooms.scss')
 @endsection
 
+@section('scripts')
+    @vite('resources/views/rooms/rooms.ts')
+@endsection
+
 @section('content')
     <div class="content-header">
         <div class="title">{{ $title }}</div>
@@ -13,14 +17,6 @@
     <div class="content-body rooms-cards" id="hotel-rooms">
         @foreach($rooms as $room)
             <div class="card room" data-id="{{ $room->id }}">
-                <div class="edit-info">
-                        <?php
-//                                    $flags = $room->data_flags;
-//                                    foreach (\HOTEL_ROOM_DATA_FLAG::getLabels() as $flag => $l) {
-//                                        echo '<div data-flag="'  . $flag . '" class="' . ($flags & $flag ? 'success' : 'error') . '">' . $l . '</div>';
-//                                    }
-                        ?>
-                </div>
                 <div class="image">
                     <x-file-image :file="$room->main_image"/>
                     <div class="name">{{ $room->name }}</div>
@@ -31,9 +27,16 @@
                         <b>{{ $room->guests_count }}</b> {{ trans_choice('человека|человека|человек', $room->guests_number) }}
                         (<b>x{{ $room->rooms_number }}</b>)
                     </div>
-                    @foreach($room->usabilities as $usability)
-                        <span class="badge badge-success">{{ $usability->name }}</span>
-                    @endforeach
+                    <div class="usability-wrapper">
+                        <div class="usability">
+                            @foreach($room->usabilities as $usability)
+                                <span class="badge badge-success">{{ $usability->name }}</span>
+                            @endforeach
+                        </div>
+                        <div class="usability-expand">
+                            <i class="material-symbols-outlined">expand_more</i>
+                        </div>
+                    </div>
                     <div class="buttons">
                         <a href="" class="btn btn-light">Описание</a>
                         <a href="{{ route('images.index', ['room_id' => $room->id]) }}" class="btn btn-light">Фотографии</a>

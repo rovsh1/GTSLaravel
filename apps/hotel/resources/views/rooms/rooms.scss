@@ -43,6 +43,37 @@
   .body {
     padding: 0.5rem 1rem;
 
+    .usability-wrapper {
+
+      .usability {
+        margin-top: 0.5rem;
+        height: 2.5rem;
+        overflow: hidden;
+      }
+
+      .usability-expand {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        i {
+          cursor: pointer;
+          transition: transform ease-in-out 0.5s;
+        }
+      }
+
+      &.expand {
+
+        .usability {
+          height: 100%;
+        }
+
+        .usability-expand i {
+          transform: rotateX(180deg);
+        }
+      }
+    }
+
     .buttons {
       display: flex;
       gap: 1rem;
