@@ -65,7 +65,7 @@ class JournalLoggerListener
         return null;
     }
 
-    private function isChangesIgnored(Model $model, int $eventId): bool
+    private function isChangesIgnored(mixed $model, int $eventId): bool
     {
         if (in_array($model::class, $this->ignoredModels)) {
             return true;
