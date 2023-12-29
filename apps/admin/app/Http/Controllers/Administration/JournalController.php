@@ -52,8 +52,9 @@ class JournalController extends Controller
             ->when($filters['entity_id'] ?? null, function ($q, $v) {
                 $q->where('entity_id', $v);
             })
-            ->when($filters['entity_class'] ?? null, function ($q, $v) {
-                $q->where('entity_class', 'like', "%$v%");
+            ->when($filters['entity_class'] ?? null, function (Builder $q, string $v) {
+                $escapedValue = DB::escape($v);
+                $q->whereRaw("entity_class = $escapedValue");
             })
             ->when($filters['created_at'] ?? null, function (Builder $q, CarbonPeriod $v) {
                 $q->whereBetween('created_at', [
