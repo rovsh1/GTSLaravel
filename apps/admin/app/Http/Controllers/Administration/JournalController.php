@@ -13,6 +13,8 @@ use App\Admin\Support\Facades\Prototypes;
 use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Grid\SearchForm;
 use App\Admin\Support\View\Layout as LayoutContract;
+use Carbon\CarbonPeriod;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
 
 class JournalController extends Controller
@@ -53,11 +55,12 @@ class JournalController extends Controller
             ->when($filters['entity_class'] ?? null, function ($q, $v) {
                 $q->where('entity_class', 'like', "%$v%");
             })
-            ->when($filters['created_at'] ?? null, function ($q, $v) {
-//                $q->where('entity_class', 'like', "%$v%");
+            ->when($filters['created_at'] ?? null, function (Builder $q, CarbonPeriod $v) {
+                $q->whereBetween('created_at', [$v->getStartDate(), $v->getEndDate()]);
             })
-            ->when($filters['quicksearch'] ?? null, function ($q, $v) {
-//                $q->where('entity_class', 'like', "%$v%");
+            ->when($filters['quicksearch'] ?? null, function (Builder $q, string $v) {
+                $q->where('entity_class', 'like', "%$v%")
+                    ->orWhere('event', 'like', "%$v%");
             });
     }
 
