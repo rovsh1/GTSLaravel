@@ -165,7 +165,7 @@
                 </table>
             </td>
             <td class="text-align-right" style="width: 250px">
-                <img src="var:stamp" alt="" width="250"/>
+                <img src="var:stamp_only" alt="" width="250"/>
             </td>
         </tr>
         </tbody>
