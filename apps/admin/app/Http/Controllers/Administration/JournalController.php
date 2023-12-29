@@ -56,7 +56,10 @@ class JournalController extends Controller
                 $q->where('entity_class', 'like', "%$v%");
             })
             ->when($filters['created_at'] ?? null, function (Builder $q, CarbonPeriod $v) {
-                $q->whereBetween('created_at', [$v->getStartDate(), $v->getEndDate()]);
+                $q->whereBetween('created_at', [
+                    $v->getStartDate()->startOfDay(),
+                    $v->getEndDate()->endOfDay()
+                ]);
             })
             ->when($filters['quicksearch'] ?? null, function (Builder $q, string $v) {
                 $q->where('entity_class', 'like', "%$v%")
