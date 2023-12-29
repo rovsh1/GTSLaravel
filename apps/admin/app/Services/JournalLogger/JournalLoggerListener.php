@@ -5,7 +5,9 @@ namespace App\Admin\Services\JournalLogger;
 use App\Admin\Services\JournalLogger\Changes\ModelChanged;
 use App\Admin\Services\JournalLogger\Changes\ModelCreated;
 use App\Admin\Services\JournalLogger\Changes\ModelDeleted;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
+use Sdk\Module\Database\Eloquent\Model;
 
 class JournalLoggerListener
 {
@@ -33,11 +35,13 @@ class JournalLoggerListener
 
     public function __construct(
         public readonly ChangesRegistrator $changesRegistrator
-    ) {}
+    ) {
+    }
 
     public function handle(string $event, $data): void
     {
-        if (!Auth::check() || !($eventId = $this->getEventId($event)) || $this->isChangesIgnored($data[0])) {
+        $eventId = $this->getEventId($event);
+        if (!Auth::check() || $eventId === null || $this->isChangesIgnored($data[0], $eventId)) {
             return;
         }
 
@@ -61,7 +65,7 @@ class JournalLoggerListener
         return null;
     }
 
-    private function isChangesIgnored($model): bool
+    private function isChangesIgnored(Model $model, int $eventId): bool
     {
         if (in_array($model::class, $this->ignoredModels)) {
             return true;
@@ -73,10 +77,12 @@ class JournalLoggerListener
             }
         }
 
-        $changes = $model->getChanges();
-        foreach ($this->ignoredAttributes as $key) {
-            unset($changes[$key]);
+        $changes = $model->getAttributes();
+        if ($eventId === self::EVENT_UPDATED) {
+            $changes = $model->getChanges();
         }
+
+        $changes = Arr::except($changes, $this->ignoredAttributes);
 
         return empty($changes);
     }
