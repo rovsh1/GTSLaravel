@@ -1,8 +1,8 @@
 <?php
 
-namespace Module\Shared\Infrastructure\Service\ApplicationsConstants\Constant;
+namespace Services\ApplicationsConstants\Constant;
 
-use Module\Shared\Infrastructure\Service\ApplicationsConstants\AbstractConstant;
+use Services\ApplicationsConstants\AbstractConstant;
 
 final class BasicCalculatedValue extends AbstractConstant implements ConstantInterface
 {

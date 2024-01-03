@@ -3,13 +3,8 @@
 namespace App\Shared\Providers;
 
 use App\Shared\Components\Locale\Languages;
-use Gsdk\FileStorage\FileStorageServiceProvider;
 use Sdk\Module\Database\Eloquent\MacrosServiceProvider;
 use Sdk\Module\Support\ServiceProvider;
-use Services\CurrencyRate\CurrencyRateServiceProvider;
-use Services\IntegrationEventBus\IntegrationEventBusServiceProvider;
-use Support\LocaleTranslator\TranslationServiceProvider;
-use Support\MailManager\MailManagerServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -20,10 +15,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(DatabaseServiceProvider::class);
         $this->app->register(DateServiceProvider::class);
         $this->app->register(MacrosServiceProvider::class);
-        $this->app->register(MailManagerServiceProvider::class);
+        $this->app->register(CoreServiceProvider::class);
         $this->app->register(ModuleServiceProvider::class);
-        $this->app->register(TranslationServiceProvider::class);
-        $this->app->register(FileStorageServiceProvider::class);
         $this->app->register(QueueServiceProvider::class);
 
         $this->registerApp();
@@ -36,9 +29,6 @@ class AppServiceProvider extends ServiceProvider
         if ($this->app->isLocal()) {
             $this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
         }
-
-        $this->app->register(CurrencyRateServiceProvider::class);
-        $this->app->register(IntegrationEventBusServiceProvider::class);
     }
 
     private function registerApp(): void

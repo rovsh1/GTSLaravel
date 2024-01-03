@@ -1,11 +1,11 @@
 <?php
 
-namespace Module\Shared\Infrastructure\Service\ApplicationsConstants;
+namespace Services\ApplicationsConstants;
 
-use Module\Shared\Infrastructure\Service\ApplicationsConstants\Constant\BasicCalculatedValue;
-use Module\Shared\Infrastructure\Service\ApplicationsConstants\Constant\ConstantInterface;
 use Sdk\Module\Support\ItemCollectionIteratorTrait;
 use Sdk\Shared\Contracts\Service\ApplicationConstantsInterface;
+use Services\ApplicationsConstants\Constant\BasicCalculatedValue;
+use Services\ApplicationsConstants\Constant\ConstantInterface;
 
 class ApplicationConstantManager implements ApplicationConstantsInterface
 {

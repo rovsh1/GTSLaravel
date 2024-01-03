@@ -1,8 +1,8 @@
 <?php
 
-namespace Module\Shared\Infrastructure\Service\CompanyRequisites\Entity;
+namespace Services\CompanyRequisites\Entity;
 
-use Module\Shared\Infrastructure\Service\CompanyRequisites\AbstractCompanyRequisite;
+use Services\CompanyRequisites\AbstractCompanyRequisite;
 
 final class Signer extends AbstractCompanyRequisite implements CompanyRequisiteInterface
 {

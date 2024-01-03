@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Shared\Infrastructure\Service\ApplicationsConstants;
+namespace Services\ApplicationsConstants;
 
 abstract class AbstractConstant
 {

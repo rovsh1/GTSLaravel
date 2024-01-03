@@ -3,10 +3,10 @@
 namespace Module\Shared\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Module\Shared\Infrastructure\Service\ApplicationsConstants\ApplicationConstantManager;
-use Module\Shared\Infrastructure\Service\CompanyRequisites\CompanyRequisiteManager;
 use Sdk\Shared\Contracts\Service\ApplicationConstantsInterface;
 use Sdk\Shared\Contracts\Service\CompanyRequisitesInterface;
+use Services\ApplicationsConstants\ApplicationConstantManager;
+use Services\CompanyRequisites\CompanyRequisiteManager;
 
 class ServicesServiceProvider extends ServiceProvider
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Shared\Infrastructure\Service\CompanyRequisites\Entity;
+namespace Services\CompanyRequisites\Entity;
 
 interface CompanyRequisiteInterface
 {

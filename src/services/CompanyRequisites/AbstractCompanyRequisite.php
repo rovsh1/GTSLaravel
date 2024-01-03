@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Shared\Infrastructure\Service\CompanyRequisites;
+namespace Services\CompanyRequisites;
 
 abstract class AbstractCompanyRequisite
 {

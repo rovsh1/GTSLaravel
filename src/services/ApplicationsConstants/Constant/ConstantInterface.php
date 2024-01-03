@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Shared\Infrastructure\Service\ApplicationsConstants\Constant;
+namespace Services\ApplicationsConstants\Constant;
 
 interface ConstantInterface
 {

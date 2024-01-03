@@ -1,9 +1,9 @@
 <?php
 
-namespace Module\Shared\Infrastructure\Service\CompanyRequisites\Entity;
+namespace Services\CompanyRequisites\Entity;
 
 use Illuminate\Support\Facades\Storage;
-use Module\Shared\Infrastructure\Service\CompanyRequisites\AbstractCompanyRequisite;
+use Services\CompanyRequisites\AbstractCompanyRequisite;
 
 final class StampWithSign extends AbstractCompanyRequisite implements CompanyRequisiteInterface
 {

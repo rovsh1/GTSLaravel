@@ -1,10 +1,10 @@
 <?php
 
-namespace Module\Shared\Infrastructure\Service\CompanyRequisites;
+namespace Services\CompanyRequisites;
 
 use Module\Shared\Infrastructure\Models\CompanyRequisite as Model;
-use Module\Shared\Infrastructure\Service\CompanyRequisites\Entity\CompanyRequisiteInterface;
 use Sdk\Module\Services\NamespaceReader;
+use Services\CompanyRequisites\Entity\CompanyRequisiteInterface;
 
 class CompanyRequisiteLoader
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace Module\Shared\Infrastructure\Service\ApplicationsConstants;
+namespace Services\ApplicationsConstants;
 
 use Module\Shared\Infrastructure\Models\Constant as Model;
-use Module\Shared\Infrastructure\Service\ApplicationsConstants\Constant\ConstantInterface;
 use Sdk\Module\Services\NamespaceReader;
+use Services\ApplicationsConstants\Constant\ConstantInterface;
 
 class ConstantLoader
 {
