@@ -28,10 +28,8 @@ class ModuleServiceProvider extends ServiceProvider
         'BookingShared' => 'Booking/Shared',
         'SupplierModeration' => 'Supplier/Moderation',
         'CurrencyRate' => 'Generic/CurrencyRate',
-//        'Notification' => 'Generic/Notification',
         'MailManager' => 'Support/MailManager',
         'IntegrationEventBus' => 'Support/IntegrationEventBus',
-        'Scheduler' => 'Support/Scheduler',
         'LocaleTranslator' => 'Support/LocaleTranslator',
 //        'Traveline' => 'Traveline',
     ];
