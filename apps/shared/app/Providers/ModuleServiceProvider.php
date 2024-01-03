@@ -9,7 +9,7 @@ use Sdk\Shared\Contracts\Adapter\MailAdapterInterface;
 use Sdk\Shared\Contracts\Service\TranslatorInterface;
 
 /**
- * @see \Module\Support\IntegrationEventBus\Service\MessageSender
+ * @see \Services\IntegrationEventBus\Service\MessageSender
  */
 class ModuleServiceProvider extends ServiceProvider
 {
@@ -30,7 +30,6 @@ class ModuleServiceProvider extends ServiceProvider
         'BookingShared' => 'Booking/Shared',
         'SupplierModeration' => 'Supplier/Moderation',
         'CurrencyRate' => 'Generic/CurrencyRate',
-        'IntegrationEventBus' => 'Support/IntegrationEventBus',
         'LocaleTranslator' => 'Support/LocaleTranslator',
 //        'Traveline' => 'Traveline',
     ];

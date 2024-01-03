@@ -1,8 +1,8 @@
 <?php
 
-namespace Module\Support\IntegrationEventBus\Entity;
+namespace Services\IntegrationEventBus\Entity;
 
-use Module\Support\IntegrationEventBus\Enums\MessageStatusEnum;
+use Services\IntegrationEventBus\Enums\MessageStatusEnum;
 
 class Message
 {

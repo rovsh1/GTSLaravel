@@ -1,10 +1,10 @@
 <?php
 
-namespace Module\Support\IntegrationEventBus\Queue;
+namespace Services\IntegrationEventBus\Queue;
 
 use Illuminate\Contracts\Queue\Job as JobContract;
-use Module\Support\IntegrationEventBus\Entity\Message;
-use Module\Support\IntegrationEventBus\Service\MessageSender;
+use Services\IntegrationEventBus\Entity\Message;
+use Services\IntegrationEventBus\Service\MessageSender;
 
 class Job implements JobContract
 {

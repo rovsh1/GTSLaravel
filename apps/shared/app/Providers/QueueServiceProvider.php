@@ -3,7 +3,7 @@
 namespace App\Shared\Providers;
 
 use Illuminate\Queue\QueueServiceProvider as ServiceProvider;
-use Module\Support\IntegrationEventBus\Queue\Connector as IntegrationEventConnector;
+use Services\IntegrationEventBus\Queue\Connector as IntegrationEventConnector;
 use Support\MailManager\Queue\MailConnector;
 
 class QueueServiceProvider extends ServiceProvider
@@ -17,10 +17,7 @@ class QueueServiceProvider extends ServiceProvider
         });
 
         $manager->addConnector('integrationEvent', function () {
-            $module = module('integrationEventBus');
-            $module->boot();
-
-            return $module->make(IntegrationEventConnector::class);
+            return app()->make(IntegrationEventConnector::class);
         });
     }
 }

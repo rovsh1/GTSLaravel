@@ -1,11 +1,11 @@
 <?php
 
-namespace Module\Support\IntegrationEventBus\Service;
+namespace Services\IntegrationEventBus\Service;
 
 use App\Shared\Contracts\Module\ModuleAdapterInterface;
-use Module\Support\IntegrationEventBus\Entity\Message;
 use Sdk\Module\Contracts\Event\IntegrationEventInterface;
 use Sdk\Module\Event\IntegrationEventMessage;
+use Services\IntegrationEventBus\Entity\Message;
 
 class MessageSender
 {

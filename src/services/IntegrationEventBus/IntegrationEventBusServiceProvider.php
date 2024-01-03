@@ -1,11 +1,11 @@
 <?php
 
-namespace Module\Support\IntegrationEventBus\Providers;
+namespace Services\IntegrationEventBus;
 
 use Illuminate\Support\ServiceProvider;
-use Module\Support\IntegrationEventBus\Service\MessageSender;
+use Services\IntegrationEventBus\Service\MessageSender;
 
-class BootServiceProvider extends ServiceProvider
+class IntegrationEventBusServiceProvider extends ServiceProvider
 {
     private array $availableModules = [
         'BookingEventSourcing',
