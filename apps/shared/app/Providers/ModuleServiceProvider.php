@@ -5,6 +5,7 @@ namespace App\Shared\Providers;
 use App\Shared\Support\Module\Monolith\ModuleAdapterFactory;
 use App\Shared\Support\Module\Monolith\SharedKernel;
 use Illuminate\Support\ServiceProvider;
+use Sdk\Shared\Contracts\Adapter\MailAdapterInterface;
 use Sdk\Shared\Contracts\Service\TranslatorInterface;
 
 /**
@@ -29,14 +30,14 @@ class ModuleServiceProvider extends ServiceProvider
         'BookingShared' => 'Booking/Shared',
         'SupplierModeration' => 'Supplier/Moderation',
         'CurrencyRate' => 'Generic/CurrencyRate',
-        'MailManager' => 'Support/MailManager',
         'IntegrationEventBus' => 'Support/IntegrationEventBus',
         'LocaleTranslator' => 'Support/LocaleTranslator',
 //        'Traveline' => 'Traveline',
     ];
 
     protected array $shared = [
-        TranslatorInterface::class
+        TranslatorInterface::class,
+        MailAdapterInterface::class,
     ];
 
     public function register(): void

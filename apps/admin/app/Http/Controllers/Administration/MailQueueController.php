@@ -13,8 +13,7 @@ use App\Admin\Support\View\Layout as LayoutContract;
 use App\Shared\Support\Facades\MailAdapter;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Module\Support\MailManager\Infrastructure\Model\QueueMessage;
-use Sdk\Shared\Dto\FileDto;
+use Support\MailManager\Model\QueueMessage;
 
 class MailQueueController extends Controller
 {
