@@ -6,9 +6,9 @@ namespace Module\Booking\Requesting\Domain\Entity;
 
 use Carbon\CarbonImmutable;
 use Module\Booking\Requesting\Domain\ValueObject\RequestId;
-use Module\Shared\Contracts\Domain\EntityInterface;
 use Sdk\Booking\Enum\RequestTypeEnum;
 use Sdk\Booking\ValueObject\BookingId;
+use Sdk\Module\Contracts\EntityInterface;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 use Sdk\Shared\Contracts\Support\SerializableInterface;
 use Sdk\Shared\ValueObject\File;

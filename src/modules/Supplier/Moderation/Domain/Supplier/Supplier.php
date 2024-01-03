@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Supplier\Moderation\Domain\Supplier;
 
-use Module\Shared\Contracts\Domain\EntityInterface;
 use Module\Supplier\Moderation\Domain\Supplier\ValueObject\Requisites;
 use Module\Supplier\Moderation\Domain\Supplier\ValueObject\SupplierId;
+use Sdk\Module\Contracts\EntityInterface;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 use Sdk\Shared\Enum\CurrencyEnum;
 

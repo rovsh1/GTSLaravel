@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Domain\Guest;
 
-use Module\Shared\Contracts\Domain\EntityInterface;
 use Sdk\Booking\ValueObject\GuestId;
 use Sdk\Booking\ValueObject\OrderId;
+use Sdk\Module\Contracts\EntityInterface;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 use Sdk\Shared\Contracts\Support\SerializableInterface;
 use Sdk\Shared\Enum\GenderEnum;

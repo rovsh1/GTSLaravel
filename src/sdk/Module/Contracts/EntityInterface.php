@@ -1,7 +1,10 @@
 <?php
 
-namespace Module\Shared\Contracts\Domain;
+namespace Sdk\Module\Contracts;
 
+/**
+ * @deprecated
+ */
 interface EntityInterface
 {
     public function id(): mixed;

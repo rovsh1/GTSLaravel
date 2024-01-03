@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Hotel\Moderation\Domain\Hotel\Entity\Room;
 
 use Module\Hotel\Moderation\Domain\Hotel\ValueObject\RoomId;
-use Module\Shared\Contracts\Domain\EntityInterface;
+use Sdk\Module\Contracts\EntityInterface;
 use Sdk\Shared\Contracts\Support\SerializableInterface;
 use Sdk\Shared\ValueObject\Percent;
 

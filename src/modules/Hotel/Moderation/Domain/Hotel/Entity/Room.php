@@ -4,7 +4,7 @@ namespace Module\Hotel\Moderation\Domain\Hotel\Entity;
 
 use Module\Hotel\Moderation\Domain\Hotel\ValueObject\HotelId;
 use Module\Hotel\Moderation\Domain\Hotel\ValueObject\RoomId;
-use Module\Shared\Contracts\Domain\EntityInterface;
+use Sdk\Module\Contracts\EntityInterface;
 
 class Room implements EntityInterface
 {

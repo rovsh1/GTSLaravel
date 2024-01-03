@@ -8,7 +8,7 @@ use Module\Hotel\Moderation\Domain\Hotel\ValueObject\HotelId;
 use Module\Hotel\Moderation\Domain\Hotel\ValueObject\MarkupSettings\CancelPeriodCollection;
 use Module\Hotel\Moderation\Domain\Hotel\ValueObject\MarkupSettings\EarlyCheckInCollection;
 use Module\Hotel\Moderation\Domain\Hotel\ValueObject\MarkupSettings\LateCheckOutCollection;
-use Module\Shared\Contracts\Domain\EntityInterface;
+use Sdk\Module\Contracts\EntityInterface;
 use Sdk\Shared\Contracts\Support\SerializableInterface;
 use Sdk\Shared\ValueObject\Percent;
 

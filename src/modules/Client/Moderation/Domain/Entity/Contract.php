@@ -6,7 +6,7 @@ namespace Module\Client\Moderation\Domain\Entity;
 
 use Carbon\CarbonPeriodImmutable;
 use Module\Client\Moderation\Domain\ValueObject\ContractId;
-use Module\Shared\Contracts\Domain\EntityInterface;
+use Sdk\Module\Contracts\EntityInterface;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 use Sdk\Shared\Enum\Contract\StatusEnum;
 

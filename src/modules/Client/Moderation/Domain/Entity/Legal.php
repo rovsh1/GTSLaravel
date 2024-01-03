@@ -7,7 +7,7 @@ namespace Module\Client\Moderation\Domain\Entity;
 use Module\Client\Moderation\Domain\ValueObject\BankRequisites;
 use Module\Client\Moderation\Domain\ValueObject\IndustryId;
 use Module\Client\Moderation\Domain\ValueObject\LegalId;
-use Module\Shared\Contracts\Domain\EntityInterface;
+use Sdk\Module\Contracts\EntityInterface;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 
 class Legal extends AbstractAggregateRoot implements EntityInterface

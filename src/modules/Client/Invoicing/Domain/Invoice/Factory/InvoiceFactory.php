@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Client\Invoicing\Domain\Invoice\Factory;
 
+use Illuminate\Support\Facades\DB;
 use Module\Client\Invoicing\Application\Exception\InvoiceCreatingForbiddenException;
 use Module\Client\Invoicing\Domain\Invoice\Adapter\FileGeneratorAdapterInterface;
 use Module\Client\Invoicing\Domain\Invoice\Exception\InvalidOrderStatusToCreateInvoice;
@@ -13,8 +14,6 @@ use Module\Client\Invoicing\Domain\Invoice\Repository\InvoiceRepositoryInterface
 use Module\Client\Invoicing\Domain\Order\Order;
 use Module\Client\Invoicing\Domain\Order\Repository\OrderRepositoryInterface;
 use Module\Client\Shared\Domain\ValueObject\OrderId;
-use Module\Shared\Contracts\Service\SafeExecutorInterface;
-use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Shared\ValueObject\File;
 
 class InvoiceFactory
@@ -23,15 +22,13 @@ class InvoiceFactory
         private readonly FileGeneratorAdapterInterface $fileGeneratorAdapter,
         private readonly InvoiceRepositoryInterface $invoiceRepository,
         private readonly OrderRepositoryInterface $orderRepository,
-        private readonly SafeExecutorInterface $executor,
-        private readonly DomainEventDispatcherInterface $eventDispatcher,
     ) {}
 
     public function generate(OrderId $orderId): Invoice
     {
         $order = $this->prepareOrder($orderId);
 
-        $handler = function () use ($order) {
+        $invoice = DB::transaction(function () use ($order) {
             $fileDto = $this->fileGeneratorAdapter->generate(
                 $this->getFilename($order->id()),
                 $order->id(),
@@ -46,9 +43,7 @@ class InvoiceFactory
             $this->invoiceRepository->store($invoice);
 
             return $invoice;
-        };
-
-        $invoice = $this->executor->execute($handler);
+        });
 
         $this->updateOrderStatus($order);
 
