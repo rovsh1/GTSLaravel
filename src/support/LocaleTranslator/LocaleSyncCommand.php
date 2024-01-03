@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Shared\Console\Commands\System;
+namespace Support\LocaleTranslator;
 
 use Illuminate\Console\Command;
-use Module\Support\LocaleTranslator\Application\UseCase\SyncTranslations;
 
 class LocaleSyncCommand extends Command
 {
@@ -14,6 +13,6 @@ class LocaleSyncCommand extends Command
 
     public function handle(): void
     {
-        app(SyncTranslations::class)->execute($this->hasOption('truncate'));
+        app(SyncTranslationsService::class)->execute($this->hasOption('truncate'));
     }
 }

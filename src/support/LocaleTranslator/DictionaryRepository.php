@@ -1,9 +1,9 @@
 <?php
 
-namespace Module\Support\LocaleTranslator;
+namespace Support\LocaleTranslator;
 
-use Module\Support\LocaleTranslator\Storage\CacheStorage;
-use Module\Support\LocaleTranslator\Storage\DatabaseStorage;
+use Support\LocaleTranslator\Storage\CacheStorage;
+use Support\LocaleTranslator\Storage\DatabaseStorage;
 
 class DictionaryRepository
 {

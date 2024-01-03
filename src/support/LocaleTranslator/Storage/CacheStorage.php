@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Support\LocaleTranslator\Storage;
+namespace Support\LocaleTranslator\Storage;
 
 //@todo implement redis cache
 class CacheStorage

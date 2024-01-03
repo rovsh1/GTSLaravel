@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Support\LocaleTranslator;
+namespace Support\LocaleTranslator;
 
 use Sdk\Shared\Contracts\Service\TranslatorInterface;
 use UnitEnum;

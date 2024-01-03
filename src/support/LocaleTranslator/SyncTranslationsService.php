@@ -1,14 +1,13 @@
 <?php
 
-namespace Module\Support\LocaleTranslator\Application\UseCase;
+namespace Support\LocaleTranslator;
 
 use DirectoryIterator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use Module\Support\LocaleTranslator\Model\Dictionary;
-use Sdk\Module\Contracts\UseCase\UseCaseInterface;
+use Support\LocaleTranslator\Model\Dictionary;
 
-class SyncTranslations implements UseCaseInterface
+class SyncTranslationsService
 {
     public function execute(bool $truncate = false): void
     {

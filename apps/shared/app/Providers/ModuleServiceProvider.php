@@ -5,6 +5,7 @@ namespace App\Shared\Providers;
 use App\Shared\Support\Module\Monolith\ModuleAdapterFactory;
 use App\Shared\Support\Module\Monolith\SharedKernel;
 use Illuminate\Support\ServiceProvider;
+use Sdk\Shared\Contracts\Service\TranslatorInterface;
 
 /**
  * @see \Module\Support\IntegrationEventBus\Service\MessageSender
@@ -34,11 +35,19 @@ class ModuleServiceProvider extends ServiceProvider
 //        'Traveline' => 'Traveline',
     ];
 
+    protected array $shared = [
+        TranslatorInterface::class
+    ];
+
     public function register(): void
     {
         $kernel = new SharedKernel($this->app);
         $this->app->booting(function () use ($kernel) {
             $kernel->boot();
+
+            foreach ($this->shared as $abstract) {
+                $kernel->getContainer()->bind($abstract, fn() => $this->app->get($abstract));
+            }
         });
 
         $modules = app()->modules();

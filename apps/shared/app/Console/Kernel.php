@@ -7,11 +7,12 @@ use Illuminate\Console\Command;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Sdk\Module\Services\NamespaceReader;
+use Support\LocaleTranslator\LocaleSyncCommand;
 
 class Kernel extends ConsoleKernel
 {
     protected $commands = [
-        //
+        LocaleSyncCommand::class,
     ];
 
     /**

@@ -1,8 +1,8 @@
 <?php
 
-namespace Module\Support\LocaleTranslator\Storage;
+namespace Support\LocaleTranslator\Storage;
 
-use Module\Support\LocaleTranslator\Model\Dictionary;
+use Support\LocaleTranslator\Model\Dictionary;
 
 class DatabaseStorage
 {

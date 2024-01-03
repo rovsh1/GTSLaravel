@@ -6,7 +6,7 @@ use App\Admin\Support\Facades\Languages;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 
-class Dictionary extends \Module\Support\LocaleTranslator\Model\Dictionary
+class Dictionary extends \Support\LocaleTranslator\Model\Dictionary
 {
     public function storeValues(array $values): void
     {

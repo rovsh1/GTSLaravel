@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Shared\Services;
+namespace Support\LocaleTranslator\Illuminate;
 
 use Illuminate\Contracts\Translation\Loader;
 use Illuminate\Translation\Translator;

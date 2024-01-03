@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Support\LocaleTranslator\Model;
+namespace Support\LocaleTranslator\Model;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;

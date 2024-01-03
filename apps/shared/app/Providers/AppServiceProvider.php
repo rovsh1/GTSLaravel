@@ -6,6 +6,7 @@ use App\Shared\Components\Locale\Languages;
 use Gsdk\FileStorage\FileStorageServiceProvider;
 use Sdk\Module\Database\Eloquent\MacrosServiceProvider;
 use Sdk\Module\Support\ServiceProvider;
+use Support\LocaleTranslator\TranslationServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {

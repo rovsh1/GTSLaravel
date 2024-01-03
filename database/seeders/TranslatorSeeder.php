@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Module\Support\LocaleTranslator\Application\UseCase\SyncTranslations;
-use Module\Support\LocaleTranslator\Model\Dictionary;
+use Support\LocaleTranslator\Model\Dictionary;
+use Support\LocaleTranslator\SyncTranslationsService;
 
 class TranslatorSeeder extends Seeder
 {
@@ -14,6 +14,6 @@ class TranslatorSeeder extends Seeder
             return;
         }
 
-        app(SyncTranslations::class)->execute();
+        app(SyncTranslationsService::class)->execute();
     }
 }

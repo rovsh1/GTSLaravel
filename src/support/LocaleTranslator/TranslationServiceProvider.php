@@ -1,16 +1,18 @@
 <?php
 
-namespace App\Shared\Providers;
+namespace Support\LocaleTranslator;
 
-use App\Shared\Services\LocaleTranslator;
 use Illuminate\Translation\TranslationServiceProvider as ServiceProvider;
 use Sdk\Shared\Contracts\Service\TranslatorInterface;
+use Support\LocaleTranslator\Illuminate\LocaleTranslator;
 
 class TranslationServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
         $this->registerLoader();
+
+        $this->app->singleton(TranslatorInterface::class, Translator::class);
 
         $this->app->singleton('translator', function ($app) {
             $loader = $app['translation.loader'];
