@@ -2,11 +2,11 @@
 
 namespace App\Shared\Support\Adapters;
 
-use Module\Generic\CurrencyRate\Application\Request\GetRateDto;
-use Module\Generic\CurrencyRate\Application\UseCase\GetNetRate;
-use Module\Generic\CurrencyRate\Application\UseCase\UpdateRates;
-use Module\Generic\CurrencyRate\Domain\ValueObject\CountryEnum;
 use Sdk\Shared\Enum\CurrencyEnum;
+use Services\CurrencyRate\Dto\GetRateDto;
+use Services\CurrencyRate\UseCase\GetNetRate;
+use Services\CurrencyRate\UseCase\UpdateRates;
+use Services\CurrencyRate\ValueObject\CountryEnum;
 
 class CurrencyAdapter
 {
