@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Shared\Console\Commands\System\HotelRating;
+namespace Module\Hotel\Moderation\Infrastructure\Command;
 
 use App\Admin\Models\Hotel\Hotel;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Query\Builder;
 
-class RefreshHotelsRating extends Command
+class RefreshRatingsCommand extends Command
 {
     public bool $cronable = true;
 

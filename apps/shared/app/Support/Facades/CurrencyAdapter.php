@@ -5,7 +5,7 @@ namespace App\Shared\Support\Facades;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static float getRate(string $currency)
+ * @method static float getRate(string $currency, string $country = null)
  *
  * @see \App\Shared\Support\Adapters\CurrencyAdapter
  */
