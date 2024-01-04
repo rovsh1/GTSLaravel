@@ -6,9 +6,7 @@ use Illuminate\Support\ServiceProvider;
 
 class DatabaseServiceProvider extends ServiceProvider
 {
-    public function register() {}
-
-    public function boot()
+    public function boot(): void
     {
         $path = database_path('migrations');
         $paths = [

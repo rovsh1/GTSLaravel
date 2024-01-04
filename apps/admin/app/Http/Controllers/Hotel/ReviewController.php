@@ -21,7 +21,6 @@ use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Layout as LayoutContract;
 use App\Admin\View\Menus\HotelMenu;
 use App\Shared\Http\Responses\AjaxResponseInterface;
-use App\Shared\Support\Facades\Lang;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -181,7 +180,7 @@ class ReviewController extends Controller
             [
                 'items' => [['value' => 1], ['value' => 2], ['value' => 3], ['value' => 4], ['value' => 5]],
                 'required' => true,
-                'label' => Lang::translateEnum($enum)
+                'label' => __($enum)
             ]
         ];
         foreach (ReviewRatingTypeEnum::cases() as $ratingType) {

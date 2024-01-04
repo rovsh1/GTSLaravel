@@ -15,7 +15,6 @@ class BootServiceProvider extends ServiceProvider
         $this->app->singleton(ApplicationContextInterface::class, ApplicationContextManager::class);
 
         $this->app->register(AdapterServiceProvider::class);
-        $this->app->register(ServicesServiceProvider::class);
         $this->app->register(EventServiceProvider::class);
     }
 }

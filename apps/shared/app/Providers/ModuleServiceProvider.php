@@ -6,7 +6,10 @@ use App\Shared\Support\Module\Monolith\ModuleAdapterFactory;
 use App\Shared\Support\Module\Monolith\SharedKernel;
 use Illuminate\Support\ServiceProvider;
 use Sdk\Shared\Contracts\Adapter\CurrencyRateAdapterInterface;
+use Sdk\Shared\Contracts\Adapter\FileStorageAdapterInterface;
 use Sdk\Shared\Contracts\Adapter\MailAdapterInterface;
+use Sdk\Shared\Contracts\Service\ApplicationConstantsInterface;
+use Sdk\Shared\Contracts\Service\CompanyRequisitesInterface;
 use Sdk\Shared\Contracts\Service\TranslatorInterface;
 
 /**
@@ -28,7 +31,6 @@ class ModuleServiceProvider extends ServiceProvider
         'BookingNotification' => 'Booking/Notification',
         'BookingEventSourcing' => 'Booking/EventSourcing',
         'BookingInvoicing' => 'Booking/Invoicing',
-        'BookingShared' => 'Booking/Shared',
         'SupplierModeration' => 'Supplier/Moderation',
 //        'Traveline' => 'Traveline',
     ];
@@ -37,6 +39,9 @@ class ModuleServiceProvider extends ServiceProvider
         TranslatorInterface::class,
         MailAdapterInterface::class,
         CurrencyRateAdapterInterface::class,
+        FileStorageAdapterInterface::class,
+        ApplicationConstantsInterface::class,
+        CompanyRequisitesInterface::class,
     ];
 
     public function register(): void

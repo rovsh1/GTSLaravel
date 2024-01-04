@@ -2,13 +2,36 @@
 
 namespace Support\LocaleTranslator\Storage;
 
-//@todo implement redis cache
+use Illuminate\Redis\Connections\Connection;
+use Illuminate\Support\Facades\Redis;
+
 class CacheStorage
 {
-    public function get(string $locale): ?array
+    private const CACHE_KEY = 'locale-dictionary';
+
+    private readonly Connection $connection;
+
+    public function __construct()
     {
-        return null;
+        $this->connection = Redis::connection('cache');
     }
 
-    public function put(string $locale, array $items): void {}
+    public function get(string $locale): ?array
+    {
+        $data = $this->connection->hGetAll($this->cacheId($locale));
+
+        return empty($data) ? null : $data;
+    }
+
+    public function put(string $locale, array $items): void
+    {
+        foreach ($items as $key => $value) {
+            $this->connection->hSet($this->cacheId($locale), $key, $value);
+        }
+    }
+
+    private function cacheId(string $locale): string
+    {
+        return self::CACHE_KEY . ":$locale";
+    }
 }

@@ -26,6 +26,10 @@ class LocaleTranslator extends Translator
 
     public function get($key, array $replace = [], $locale = null, $fallback = true)
     {
+        if ($key instanceof UnitEnum) {
+            return $this->appTranslator->translateEnum($key, $locale);
+        }
+
         $line = parent::get($key, $replace, $locale, $fallback);
         if (!empty($line) && $line !== $key) {
             return $line;

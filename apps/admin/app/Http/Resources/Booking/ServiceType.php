@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Admin\Http\Resources\Booking;
 
-use App\Shared\Support\Facades\Lang;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Sdk\Shared\Enum\ServiceTypeEnum;
@@ -27,8 +26,6 @@ class ServiceType extends JsonResource
 
     private function getDisplayName(): string
     {
-        $enum = ServiceTypeEnum::from($this->value);
-
-        return Lang::translateEnum($enum);
+        return __(ServiceTypeEnum::from($this->value));
     }
 }

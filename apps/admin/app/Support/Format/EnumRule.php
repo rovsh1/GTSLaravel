@@ -2,7 +2,6 @@
 
 namespace App\Admin\Support\Format;
 
-use App\Shared\Support\Facades\Lang;
 use Gsdk\Format\Rules\RuleInterface;
 
 class EnumRule implements RuleInterface
@@ -15,6 +14,6 @@ class EnumRule implements RuleInterface
             return '';
         }
 
-        return Lang::translateEnum($value);
+        return __($value);
     }
 }
