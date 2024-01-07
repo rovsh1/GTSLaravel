@@ -38,7 +38,7 @@ class CompanyRequisiteLoader
     private function getAvailableRequisites(): array
     {
         $classes = (new NamespaceReader(
-            'Module\Shared\Infrastructure\Service\CompanyRequisites\Entity',
+            'Services\CompanyRequisites\Entity',
             __DIR__ . '/Entity'
         ))->read();
 

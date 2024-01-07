@@ -38,7 +38,7 @@ class ConstantLoader
     private function getAvailableConstants(): array
     {
         $classes = (new NamespaceReader(
-            'Module\Shared\Infrastructure\Service\ApplicationsConstants\Constant',
+            'Services\ApplicationsConstants\Constant',
             __DIR__ . '/Constant'
         ))->read();
 
