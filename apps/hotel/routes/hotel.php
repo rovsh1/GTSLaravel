@@ -3,6 +3,7 @@
 use App\Hotel\Http\Controllers\HotelController;
 use App\Hotel\Http\Controllers\MarkupSettingsController;
 use App\Hotel\Http\Controllers\NotesController;
+use App\Hotel\Http\Controllers\RatesController;
 use App\Hotel\Http\Controllers\ServiceController;
 use App\Hotel\Http\Controllers\SettingsController;
 use App\Hotel\Http\Controllers\UsabilityController;
@@ -48,5 +49,11 @@ Route::controller(HotelController::class)
             ->group(function () {
                 Route::get('/', [UsabilityController::class, 'edit'])->name('edit');
                 Route::put('/', [UsabilityController::class, 'update'])->name('update');
+            });
+
+        Route::prefix('rates')
+            ->as('rates.')
+            ->group(function () {
+                Route::get('/search', [RatesController::class, 'search'])->name('search');
             });
     });

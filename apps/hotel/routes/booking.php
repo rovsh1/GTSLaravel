@@ -14,6 +14,7 @@ Route::controller(BookingController::class)
 
         Route::get('/{booking}/get', 'get')->name('get');
         Route::put('/{booking}/note', 'updateNote')->name('note.update');
+        Route::get('/{booking}/order/guests', 'getOrderGuests')->name('order.guests');
 
         Route::get('/status/list', 'getStatuses')->name('status.list');
         Route::put('/{booking}/status/update', 'updateStatus')->name('status.update');

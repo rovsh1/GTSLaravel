@@ -6,18 +6,18 @@ use App\Hotel\Http\Requests\Booking\UpdateExternalNumberRequest;
 use App\Hotel\Http\Requests\Booking\UpdateNoteRequest;
 use App\Hotel\Http\Requests\Booking\UpdateStatusRequest;
 use App\Hotel\Http\Resources\Room as RoomResource;
+use App\Hotel\Models\Booking;
 use App\Hotel\Models\Client;
 use App\Hotel\Models\Hotel;
-use App\Hotel\Models\Room;
 use App\Hotel\Models\Reference\Currency;
+use App\Hotel\Models\Room;
 use App\Hotel\Support\Facades\Booking\BookingAdapter;
 use App\Hotel\Support\Facades\Booking\DetailsAdapter;
 use App\Hotel\Support\Facades\Booking\OrderAdapter;
 use App\Hotel\Support\Facades\Grid;
+use App\Hotel\Support\Facades\Layout;
 use App\Hotel\Support\View\Grid\GridBuilder as GridContract;
 use App\Hotel\Support\View\Grid\SearchForm;
-use App\Hotel\Models\Booking;
-use App\Hotel\Support\Facades\Layout;
 use App\Hotel\Support\View\LayoutBuilder as LayoutContract;
 use App\Shared\Http\Responses\AjaxResponseInterface;
 use App\Shared\Http\Responses\AjaxSuccessResponse;
@@ -83,6 +83,14 @@ class BookingController extends AbstractHotelController
         return response()->json(
             BookingAdapter::getBooking($id)
         );
+    }
+
+    public function getOrderGuests(int $id): JsonResponse
+    {
+        $booking = BookingAdapter::getBooking($id);
+        $guests = OrderAdapter::getGuests($booking->orderId);
+
+        return response()->json($guests);
     }
 
     public function getAvailableActions(int $id): JsonResponse

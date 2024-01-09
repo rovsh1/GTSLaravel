@@ -21,4 +21,5 @@ Route::middleware([Authenticate::class, HotelContextMiddleware::class])
         Route::group([], __DIR__ . '/hotel.php');
         Route::group([], __DIR__ . '/quota.php');
         Route::group([], __DIR__ . '/contract.php');
+        Route::group([], __DIR__ . '/reference.php');
     });

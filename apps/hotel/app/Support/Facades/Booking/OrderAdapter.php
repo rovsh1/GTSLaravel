@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace App\Hotel\Support\Facades\Booking;
 
 use Illuminate\Support\Facades\Facade;
+use Module\Booking\Moderation\Application\Dto\GuestDto;
 use Module\Booking\Moderation\Application\Dto\OrderDto;
 
 /**
  * @method static OrderDto|null getOrder(int $id)
+ * @method static GuestDto[] getGuests(int $id)
  **/
 class OrderAdapter extends Facade
 {
