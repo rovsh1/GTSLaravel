@@ -11,22 +11,12 @@
         .voucher-content li,
         .voucher-content a,
         .voucher-content p,
-        .voucher-content i,
-        .voucher-content u,
         .voucher-content b,
         .voucher-content div,
         .voucher-footer p,
          {
             font-size: 13px;
             font-family: Arial, Helvetica, sans-serif !important;
-        }
-        .voucher-wrapper * {
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
-        .voucher-footer *,
-        .voucher-content * {
-            font-size: 8px !important;
         }
 
         .voucher-wrapper p {
