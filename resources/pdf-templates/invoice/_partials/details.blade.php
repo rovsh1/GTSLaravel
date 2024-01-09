@@ -1,16 +1,25 @@
-@foreach($service->detailOptions as $index => $detailOption)
-    <tr>
-        @if($index === $service->detailOptions->count() - 1)
-            <td>{{ $detailOption->label }}: {{ $detailOption->getHumanValue() }}</td>
-            <td class="text-align-center" style="padding: 5px 0;">{{ $service->price->quantity }}</td>
-            <td class="text-align-center" style="padding: 5px 0;">
-                {{ Format::number($service->price->amount) }} {{ $order->currency }}
-            </td>
-            <td class="text-align-center" style="padding: 5px 0;">
-                {{ Format::number($service->price->total) }} {{ $order->currency }}
-            </td>
-        @else
-            <td colspan="4">{{ $detailOption->label }}: {{ $detailOption->getHumanValue() }}</td>
+<div class="service-details w-55">
+    <p><b>{{ $service->title }}</b></p>
+    @foreach($service->detailOptions as $index => $detailOption)
+        @if($index < $service->detailOptions->count() - 1)
+            <p>{{ $detailOption->label }}: {{ $detailOption->getHumanValue() }}</p>
         @endif
-    </tr>
-@endforeach
+    @endforeach
+</div>
+
+@php
+    $lastDetailOption = $service->detailOptions->last();
+@endphp
+
+<div class="service-details clear-both">
+    <div class="column w-55">
+        <p>{{ $lastDetailOption->label }}: {{ $lastDetailOption->getHumanValue() }}</p>
+    </div>
+    <div class="column w-10 text-center">{{ $service->price->quantity }}</div>
+    <div class="column w-17 text-right">
+        {{ Format::number($service->price->amount) }} {{ $order->currency }}
+    </div>
+    <div class="column w-17 text-right">
+        {{ Format::number($service->price->total) }} {{ $order->currency }}
+    </div>
+</div>

@@ -46,6 +46,7 @@ class PdfTemplateCompiler implements TemplateCompilerInterface
     {
         static $images = [
             'logo' => 'company-logo-small.png',
+            'logo_big' => 'company-logo-big.png',
             'stamp' => 'company-stamp-with-sign.png',
             'stamp_only' => 'company-stamp-without-sign.png',
         ];

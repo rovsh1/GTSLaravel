@@ -114,12 +114,12 @@
             @endforeach
         </div>
         <div class="voucher-footer">
-            <div class="column">
-                <p>{{ __('Менеджер ') }}:</p>
+            <div class="column" style="width: 25%;">
+                <p>{{ __('Менеджер') }}:</p>
                 <p>E-mail:</p>
                 <p>{{ __('Мобильный номер') }}:</p>
             </div>
-            <div class="column" style="margin-left: 20px;">
+            <div class="column" style="width: 75%;">
                 <p><b>{{ $manager->fullName }}</b></p>
                 <p>{{ $manager->email }}</p>
                 <p>{{ $manager->phone }}</p>
