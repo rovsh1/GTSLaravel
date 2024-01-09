@@ -25,9 +25,9 @@
             <tr>
                 <td>{{ $service->title }}</td>
             </tr>
-            <tr>
-                <td>{{ __('Общая сумма: :amount :currency', ['amount' => $service->price->total, 'currency' => $service->price->currency]) }}</td>
-            </tr>
+{{--            <tr>--}}
+{{--                <td>{{ __('Общая сумма: :amount :currency', ['amount' => $service->price->total, 'currency' => $service->price->currency]) }}</td>--}}
+{{--            </tr>--}}
 {{--            <tr>--}}
 {{--                <td>{{ __('Статус брони: {Бронь.Статус}', []) }}</td>--}}
 {{--            </tr>--}}
