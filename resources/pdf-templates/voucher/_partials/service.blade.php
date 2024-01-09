@@ -18,6 +18,5 @@
             <p>Номер подтверждения:</p>
         </div>
     </div>
-
     @include('voucher._partials.cancel_conditions')
 </div>

@@ -2,13 +2,31 @@
 
 @push('css')
     <style>
+        .voucher-header a,
+        .voucher-header b,
+        .voucher-header p {
+            font-family: Arial, Helvetica, sans-serif !important;
+        }
+
+        .voucher-content li,
+        .voucher-content a,
+        .voucher-content p,
+        .voucher-content i,
+        .voucher-content u,
+        .voucher-content b,
+        .voucher-content div,
+        .voucher-footer p,
+         {
+            font-size: 13px;
+            font-family: Arial, Helvetica, sans-serif !important;
+        }
         .voucher-wrapper * {
             font-family: Arial, Helvetica, sans-serif;
         }
 
         .voucher-footer *,
         .voucher-content * {
-            font-size: 13px;
+            font-size: 8px !important;
         }
 
         .voucher-wrapper p {
@@ -45,7 +63,7 @@
 
         .voucher-header .voucher-header__right .voucher-header-title {
             font-size: 32px;
-            color: #0000ff;
+            color: #000;
         }
 
         .voucher-header .voucher-header__right .voucher-header-description {
@@ -76,11 +94,11 @@
         }
 
         .service-details__left {
-            width: 60%;
+            width: 55%;
         }
 
         .service-details__right {
-            width: 40%;
+            width: 45%;
         }
 
         .service-title {

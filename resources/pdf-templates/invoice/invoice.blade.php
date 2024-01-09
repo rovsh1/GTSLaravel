@@ -2,13 +2,23 @@
 
 @push('css')
     <style>
-        .invoice-wrapper * {
-            font-family: Arial, Helvetica, sans-serif;
+        .invoice-header a,
+        .invoice-header b,
+        .invoice-header p {
+            font-family: Arial, Helvetica, sans-serif !important;
         }
 
-        .invoice-footer *,
-        .invoice-content * {
+        .invoice-content li,
+        .invoice-content a,
+        .invoice-content p,
+        .invoice-content i,
+        .invoice-content u,
+        .invoice-content b,
+        .invoice-content div,
+        .invoice-footer p,
+         {
             font-size: 13px;
+            font-family: Arial, Helvetica, sans-serif !important;
         }
 
         .invoice-wrapper p {
@@ -53,12 +63,7 @@
         }
 
         .invoice-footer .mark {
-            width: 225px;
-            margin-top: -50px;
-        }
-
-        .invoice-footer .manager {
-            margin-top: -40px;
+            width: 225px;   
         }
 
         .invoice-header {
@@ -77,10 +82,11 @@
         }
 
         .invoice-header .invoice-header__right .invoice-header-title {
-            font-size: 32px;
+            font-size: 32px !important;
         }
 
-        .invoice-header .invoice-header__right .invoice-header-description {
+        .invoice-header .invoice-header__right .invoice-header-description,
+        .invoice-header .invoice-header__right .invoice-header-description a {
             font-size: 11px;
         }
 
@@ -100,8 +106,8 @@
             margin-bottom: 15px;
         }
 
-        .total-amount * {
-            font-size: 19px;
+        .total-amount p b {
+            font-size: 19px !important;
         }
 
         .note {
@@ -250,19 +256,21 @@
                     <p>{{ __('Директор: :signer', ['signer' => $company->signer]) }}</p>
                 </div>
                 <div class="column w-50 text-center">
-                    <img class="mark" src="var:stamp" alt="mark">
+                    <img style="margin-top: -50px" class="mark" src="var:stamp" alt="mark">
                 </div>
             </div>
-            <div class="manager clear-both">
-                <div class="column" style="width: 25%;">
-                    <p>{{ __('Менеджер') }}:</p>
-                    <p>E-mail:</p>
-                    <p>{{ __('Мобильный номер') }}:</p>
-                </div>
-                <div class="column" style="width: 75%;">
-                    <p><b>{{ $manager->fullName }}</b></p>
-                    <p>{{ $manager->email }}</p>
-                    <p>{{ $manager->phone }}</p>
+            <div style="margin-top: -10px;">
+                <div class="clear-both">
+                    <div class="column" style="width: 25%;">
+                        <p>{{ __('Менеджер') }}:</p>
+                        <p>E-mail:</p>
+                        <p>{{ __('Мобильный номер') }}:</p>
+                    </div>
+                    <div class="column" style="width: 75%;">
+                        <p><b>{{ $manager->fullName }}</b></p>
+                        <p>{{ $manager->email }}</p>
+                        <p>{{ $manager->phone }}</p>
+                    </div>
                 </div>
             </div>
         </div>
