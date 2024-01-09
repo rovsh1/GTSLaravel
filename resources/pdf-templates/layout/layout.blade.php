@@ -4,11 +4,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <style>
-        body {
-            /*font-size: 1.45em;*/
-            /*font-family: Tahoma, sans-serif;*/
-        }
-
         p, h1, h2, h3, h4, h5, h6 {
             word-wrap: break-word;
         }

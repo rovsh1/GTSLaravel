@@ -1,5 +1,14 @@
 @extends('layout.layout')
 
+@push('css')
+    <style>
+        body {
+            font-size: 1.45em;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+    </style>
+@endpush
+
 @section('content')
     <table>
         <tbody>
