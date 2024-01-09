@@ -120,6 +120,7 @@ class HotelBookingDataFactory
                 }
 
                 return new RoomDto(
+                    $accommodation->id()->value(),
                     $accommodation->roomInfo()->name(),
                     $hotelPriceRatesIndexedId[$accommodation->details()->rateId()]->name,
                     $checkInTime,

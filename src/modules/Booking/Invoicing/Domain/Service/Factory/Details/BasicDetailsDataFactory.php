@@ -11,7 +11,7 @@ use Module\Booking\Invoicing\Domain\Service\Factory\BookingPeriodDataFactory;
 use Module\Booking\Invoicing\Domain\Service\Factory\GuestDataFactory;
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
-use Module\Shared\Support\Dto\DetailOptionDto;
+use Module\Booking\Shared\Domain\Shared\Service\DetailOptionDto;
 use Sdk\Booking\Contracts\Entity\DetailsInterface;
 use Sdk\Booking\Entity\Details\CarRentWithDriver;
 use Sdk\Booking\Entity\Details\CIPMeetingInAirport;

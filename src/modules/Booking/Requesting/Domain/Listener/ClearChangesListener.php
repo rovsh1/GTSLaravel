@@ -28,6 +28,6 @@ class ClearChangesListener implements IntegrationEventListenerInterface
 
     private function isClearNeeded(StatusEnum $status): bool
     {
-        return false;
+        return $status === StatusEnum::CONFIRMED;
     }
 }

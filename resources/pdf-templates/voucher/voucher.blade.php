@@ -38,7 +38,7 @@
             <td class="text-align-left" style="width: 250px">
                 <img src="var:logo" alt="" width="250">
             </td>
-            <td style="width: 650px; ">
+            <td>
                 <table class="text-align-right">
                     <tbody>
                     <tr>

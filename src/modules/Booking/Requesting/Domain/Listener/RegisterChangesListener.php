@@ -37,8 +37,9 @@ class RegisterChangesListener implements IntegrationEventListenerInterface
 
     private function needStoreChanges(StatusEnum $status): bool
     {
-        return true;
-
-        return $status === StatusEnum::NOT_CONFIRMED;
+        return in_array($status, [
+            StatusEnum::NOT_CONFIRMED,
+            StatusEnum::WAITING_PROCESSING,
+        ]);
     }
 }

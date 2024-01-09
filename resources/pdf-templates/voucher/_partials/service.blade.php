@@ -1,4 +1,4 @@
-<tr class="first last">
+<tr class="first last" style="page-break-before: always;">
     <th class="text-align-left" style="width: 52%;">{{ __('Информация об услуге') }}</th>
 </tr>
 

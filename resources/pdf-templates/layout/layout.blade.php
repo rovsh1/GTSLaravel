@@ -11,6 +11,7 @@
             border-spacing: 0;
             border-collapse: collapse;
             width: 100%;
+            page-break-inside: avoid;
         }
 
         .title {

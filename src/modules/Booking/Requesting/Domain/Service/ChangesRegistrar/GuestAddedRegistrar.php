@@ -5,26 +5,29 @@ namespace Module\Booking\Requesting\Domain\Service\ChangesRegistrar;
 use Module\Booking\Requesting\Domain\Entity\Changes;
 use Module\Booking\Requesting\Domain\ValueObject\ChangesIdentifier;
 use Sdk\Booking\IntegrationEvent\BookingEventInterface;
-use Sdk\Booking\IntegrationEvent\HotelBooking\AccommodationAdded;
+use Sdk\Booking\IntegrationEvent\HotelBooking\GuestAdded;
 
-class AccommodationAddedRegistrar extends AbstractRegistrar
+class GuestAddedRegistrar extends AbstractRegistrar
 {
     public function register(BookingEventInterface $event): void
     {
-        assert($event instanceof AccommodationAdded);
+        assert($event instanceof GuestAdded);
 
         $identifier = new ChangesIdentifier(
             $event->bookingId,
-            "accommodation[$event->accommodationId]"
+            "accommodation[$event->accommodationId][guests]"
         );
         $currentChanges = $this->changesStorage->find($identifier);
 
         if (!$currentChanges) {
             $currentChanges = Changes::makeCreated(
                 $identifier,
-                "Добавлено размещение \"$event->roomName\"",
+                "Добавлен гость $event->guestName",
                 $this->eventPayload($event)
             );
+        } elseif ($currentChanges->isDeleted()) {
+            $currentChanges->setUpdated();
+            $currentChanges->setDescription("Гость заменен на $event->guestName");
         } else {
             //@todo compare details
         }
@@ -37,11 +40,13 @@ class AccommodationAddedRegistrar extends AbstractRegistrar
         return '';
     }
 
-    private function eventPayload($event): array
+    private function eventPayload(GuestAdded $event): array
     {
         return [
-            'roomId' => $event->roomId,
+            'guestId' => $event->guestId,
+            'guestName' => $event->guestName,
             'roomName' => $event->roomName,
+            'accommodationId' => $event->accommodationId,
         ];
     }
 }

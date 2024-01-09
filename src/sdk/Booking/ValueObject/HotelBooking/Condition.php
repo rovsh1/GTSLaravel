@@ -57,8 +57,11 @@ final class Condition implements SerializableInterface, CanEquate
 
     public function isEqual(mixed $b): bool
     {
-        return $b instanceof Condition
-            ? $this->priceMarkup->isEqual($b->priceMarkup) && $this->timePeriod->isEqual($b->timePeriod)
-            : $this === $b;
+        if (!$b instanceof Condition) {
+            return false;
+        }
+
+        return $this->priceMarkup->isEqual($b->priceMarkup)
+            && $this->timePeriod->isEqual($b->timePeriod);
     }
 }

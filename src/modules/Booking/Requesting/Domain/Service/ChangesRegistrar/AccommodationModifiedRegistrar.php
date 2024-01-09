@@ -5,13 +5,13 @@ namespace Module\Booking\Requesting\Domain\Service\ChangesRegistrar;
 use Module\Booking\Requesting\Domain\Entity\Changes;
 use Module\Booking\Requesting\Domain\ValueObject\ChangesIdentifier;
 use Sdk\Booking\IntegrationEvent\BookingEventInterface;
-use Sdk\Booking\IntegrationEvent\HotelBooking\AccommodationAdded;
+use Sdk\Booking\IntegrationEvent\HotelBooking\AccommodationModified;
 
-class AccommodationAddedRegistrar extends AbstractRegistrar
+class AccommodationModifiedRegistrar extends AbstractRegistrar
 {
     public function register(BookingEventInterface $event): void
     {
-        assert($event instanceof AccommodationAdded);
+        assert($event instanceof AccommodationModified);
 
         $identifier = new ChangesIdentifier(
             $event->bookingId,
@@ -20,9 +20,9 @@ class AccommodationAddedRegistrar extends AbstractRegistrar
         $currentChanges = $this->changesStorage->find($identifier);
 
         if (!$currentChanges) {
-            $currentChanges = Changes::makeCreated(
+            $currentChanges = Changes::makeUpdated(
                 $identifier,
-                "Добавлено размещение \"$event->roomName\"",
+                "Изменено размещение $event->roomName",
                 $this->eventPayload($event)
             );
         } else {

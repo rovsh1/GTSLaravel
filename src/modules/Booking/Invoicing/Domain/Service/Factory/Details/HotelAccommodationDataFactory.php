@@ -12,7 +12,7 @@ use Module\Booking\Invoicing\Domain\Service\Factory\GuestDataFactory;
 use Module\Booking\Shared\Domain\Booking\Adapter\HotelRoomAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
-use Module\Shared\Support\Dto\DetailOptionDto;
+use Module\Booking\Shared\Domain\Shared\Service\DetailOptionDto;
 use Sdk\Booking\Entity\Details\HotelBooking;
 use Sdk\Booking\Entity\HotelAccommodation;
 use Sdk\Booking\ValueObject\HotelBooking\Condition;

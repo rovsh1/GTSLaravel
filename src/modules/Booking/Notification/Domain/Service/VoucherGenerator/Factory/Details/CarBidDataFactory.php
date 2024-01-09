@@ -14,7 +14,7 @@ use Module\Booking\Notification\Domain\Service\VoucherGenerator\Factory\GuestDat
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
-use Module\Shared\Support\Dto\DetailOptionDto;
+use Module\Booking\Shared\Domain\Shared\Service\DetailOptionDto;
 use Sdk\Booking\Contracts\Entity\DetailsInterface;
 use Sdk\Booking\Entity\CarBid;
 use Sdk\Shared\Enum\CurrencyEnum;

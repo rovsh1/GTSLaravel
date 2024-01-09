@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Shared\Support\Dto;
+namespace Module\Booking\Shared\Domain\Shared\Service;
 
 use Format;
 

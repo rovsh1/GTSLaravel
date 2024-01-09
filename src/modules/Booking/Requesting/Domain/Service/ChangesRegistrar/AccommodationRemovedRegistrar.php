@@ -13,21 +13,21 @@ class AccommodationRemovedRegistrar extends AbstractRegistrar
     {
         assert($event instanceof AccommodationDeleted);
 
-        $identifier = new ChangesIdentifier($event->bookingId, "accommodation[$event->roomId]");
+        $identifier = new ChangesIdentifier($event->bookingId, "accommodation[$event->accommodationId]");
         $currentChanges = $this->changesStorage->find($identifier);
 
         if (!$currentChanges) {
             $this->changesStorage->store(
                 Changes::makeDeleted(
                     $identifier,
-                    "Размещение удалено $event->roomName"
+                    "Размещение \"$event->roomName\" удалено"
                 )
             );
         } elseif ($currentChanges->isCreated()) {
             $this->changesStorage->remove($identifier);
         } else {
             $currentChanges->setDeleted();
-            $currentChanges->setDescription("Размещение удалено $event->roomName");
+            $currentChanges->setDescription("Размещение \"$event->roomName\" удалено");
             $this->changesStorage->store($currentChanges);
         }
     }

@@ -7,7 +7,6 @@ use App\Admin\Services\JournalLogger\Changes\ModelCreated;
 use App\Admin\Services\JournalLogger\Changes\ModelDeleted;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
-use Sdk\Module\Database\Eloquent\Model;
 
 class JournalLoggerListener
 {

@@ -5,13 +5,13 @@ namespace Module\Booking\Requesting\Domain\Service\ChangesRegistrar;
 use Module\Booking\Requesting\Domain\Entity\Changes;
 use Module\Booking\Requesting\Domain\ValueObject\ChangesIdentifier;
 use Sdk\Booking\IntegrationEvent\BookingEventInterface;
-use Sdk\Booking\IntegrationEvent\HotelBooking\AccommodationAdded;
+use Sdk\Booking\IntegrationEvent\HotelBooking\AccommodationReplaced;
 
-class AccommodationAddedRegistrar extends AbstractRegistrar
+class AccommodationReplacedRegistrar extends AbstractRegistrar
 {
     public function register(BookingEventInterface $event): void
     {
-        assert($event instanceof AccommodationAdded);
+        assert($event instanceof AccommodationReplaced);
 
         $identifier = new ChangesIdentifier(
             $event->bookingId,
@@ -20,9 +20,9 @@ class AccommodationAddedRegistrar extends AbstractRegistrar
         $currentChanges = $this->changesStorage->find($identifier);
 
         if (!$currentChanges) {
-            $currentChanges = Changes::makeCreated(
+            $currentChanges = Changes::makeUpdated(
                 $identifier,
-                "Добавлено размещение \"$event->roomName\"",
+                $this->buildDetailsDescription($event),
                 $this->eventPayload($event)
             );
         } else {
@@ -32,9 +32,9 @@ class AccommodationAddedRegistrar extends AbstractRegistrar
         $this->changesStorage->store($currentChanges);
     }
 
-    private function buildDetailsDescription($event): string
+    private function buildDetailsDescription(AccommodationReplaced $event): string
     {
-        return '';
+        return "Изменен номер в размещении $event->oldRoomName " . self::DIFF_SEPARATOR . " $event->roomName";
     }
 
     private function eventPayload($event): array
@@ -42,6 +42,7 @@ class AccommodationAddedRegistrar extends AbstractRegistrar
         return [
             'roomId' => $event->roomId,
             'roomName' => $event->roomName,
+            'oldRoomName' => $event->oldRoomName,
         ];
     }
 }
