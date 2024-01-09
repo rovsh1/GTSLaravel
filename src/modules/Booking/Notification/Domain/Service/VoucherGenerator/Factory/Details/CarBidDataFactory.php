@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Module\Booking\Notification\Domain\Service\VoucherGenerator\Factory\Details;
 
 use Illuminate\Support\Collection;
-use Module\Booking\Moderation\Domain\Order\Service\VoucherGenerator\Factory\Details\CarDto;
 use Module\Booking\Notification\Domain\Service\VoucherGenerator\Dto\Service\PriceDto;
 use Module\Booking\Notification\Domain\Service\VoucherGenerator\Dto\ServiceInfoDto;
 use Module\Booking\Notification\Domain\Service\VoucherGenerator\Factory\BookingPeriodDataFactory;
@@ -14,7 +13,9 @@ use Module\Booking\Notification\Domain\Service\VoucherGenerator\Factory\GuestDat
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\Service\BookingStatusStorageInterface;
 use Module\Booking\Shared\Domain\Shared\Service\DetailOptionDto;
+use Module\Supplier\Moderation\Application\Dto\CarDto;
 use Sdk\Booking\Contracts\Entity\DetailsInterface;
 use Sdk\Booking\Entity\CarBid;
 use Sdk\Shared\Enum\CurrencyEnum;
@@ -30,6 +31,7 @@ class CarBidDataFactory
         private readonly BookingPeriodDataFactory $periodDataFactory,
         private readonly CancelConditionsDataFactory $cancelConditionsDataFactory,
         private readonly GuestDataFactory $guestDataFactory,
+        private readonly BookingStatusStorageInterface $bookingStatusStorage,
     ) {}
 
     public function build(Booking $booking, CarBid $carBid): ServiceInfoDto
@@ -47,8 +49,8 @@ class CarBidDataFactory
             detailOptions: $this->buildDetails($carBid, $details),
             guests: $this->guestDataFactory->build($carBid->guestIds()),
             price: $this->buildPrice($carBid, $booking->prices()->clientPrice()->currency(), $bookingPeriod->countDays),
-            status: $booking->status()->value()->name,//@todo статус
-            cancelConditions: $this->cancelConditionsDataFactory->build($booking->cancelConditions()),
+            cancelConditions: $this->cancelConditionsDataFactory->build($booking->cancelConditions()),//@todo статус
+            status: $this->bookingStatusStorage->getName($booking->status()->value()),
         );
     }
 

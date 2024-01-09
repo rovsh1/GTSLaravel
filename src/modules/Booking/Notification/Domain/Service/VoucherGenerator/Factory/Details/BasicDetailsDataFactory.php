@@ -11,6 +11,7 @@ use Module\Booking\Notification\Domain\Service\VoucherGenerator\Factory\CancelCo
 use Module\Booking\Notification\Domain\Service\VoucherGenerator\Factory\GuestDataFactory;
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
+use Module\Booking\Shared\Domain\Booking\Service\BookingStatusStorageInterface;
 use Module\Booking\Shared\Domain\Shared\Service\DetailOptionDto;
 use Sdk\Booking\Contracts\Entity\DetailsInterface;
 use Sdk\Booking\Entity\Details\CarRentWithDriver;
@@ -38,6 +39,7 @@ class BasicDetailsDataFactory
         private readonly GuestDataFactory $guestDataFactory,
         private readonly CancelConditionsDataFactory $cancelConditionsDataFactory,
         private readonly SupplierAdapterInterface $supplierAdapter,
+        private readonly BookingStatusStorageInterface $bookingStatusStorage,
     ) {}
 
     public function build(Booking $booking, DetailsInterface $details): ServiceInfoDto
@@ -51,8 +53,8 @@ class BasicDetailsDataFactory
                 ? $this->guestDataFactory->build($details->guestIds())
                 : [],
             price: $this->buildPrice($booking),
-            status: $booking->status()->value()->name,//@todo статус
-            cancelConditions: $this->cancelConditionsDataFactory->build($booking->cancelConditions()),
+            cancelConditions: $this->cancelConditionsDataFactory->build($booking->cancelConditions()),//@todo статус
+            status: $this->bookingStatusStorage->getName($booking->status()->value()),
         );
     }
 

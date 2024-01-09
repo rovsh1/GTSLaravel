@@ -1,22 +1,23 @@
-<tr class="first last" style="page-break-before: always;">
-    <th class="text-align-left" style="width: 52%;">{{ __('Информация об услуге') }}</th>
-</tr>
+<div class="service-item">
+    <div class="service-title">
+        <b>{{ __('Информация об услуге') }}</b>
+    </div>
+    @if(count($service->guests) > 0)
+        @include('voucher._partials.guests')
+    @endif
 
-@if(count($service->guests) > 0)
-    <tr class="padding-top">
-        <td>{{ __('Гости (:count)', ['count' => count($service->guests)]) }}:</td>
-    </tr>
-@endif
-@foreach($service->guests ?? [] as $index => $guest)
-    @include('voucher._partials.guest')
-@endforeach
+    <div class="service-details clear-both">
+        <div class="column service-details__left">
+            <p><b>{{ $service->title }}</b></p>
+            @foreach($service->detailOptions as $index => $detailOption)
+                <p>{{ $detailOption->label }}: {{ $detailOption->getHumanValue() }} </p>
+            @endforeach
+        </div>
+        <div class="column service-details__right">
+            <p>Статус: {{ $service->status }}</p>
+            <p>Номер подтверждения:</p>
+        </div>
+    </div>
 
-<tr class="padding-top">
-    <td>
-        <b>{{ $service->title }}</b>
-    </td>
-</tr>
-
-@include('voucher._partials.details')
-
-@include('voucher._partials.cancel_conditions')
+    @include('voucher._partials.cancel_conditions')
+</div>

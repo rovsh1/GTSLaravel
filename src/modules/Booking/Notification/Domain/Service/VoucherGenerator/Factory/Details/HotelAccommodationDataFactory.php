@@ -14,6 +14,7 @@ use Module\Booking\Shared\Domain\Booking\Adapter\HotelAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Adapter\HotelRoomAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\Service\BookingStatusStorageInterface;
 use Module\Booking\Shared\Domain\Shared\Service\DetailOptionDto;
 use Module\Hotel\Moderation\Application\Dto\ContactDto;
 use Module\Hotel\Moderation\Application\Dto\HotelDto;
@@ -42,6 +43,7 @@ class HotelAccommodationDataFactory
         private readonly HotelAdapterInterface $hotelAdapter,
         private readonly HotelRoomAdapterInterface $hotelRoomAdapter,
         private readonly CancelConditionsDataFactory $cancelConditionsDataFactory,
+        private readonly BookingStatusStorageInterface $bookingStatusStorage,
     ) {}
 
     public function build(Booking $booking, HotelAccommodation $accommodation): ServiceInfoDto
@@ -57,7 +59,7 @@ class HotelAccommodationDataFactory
             price: $this->buildPrice($booking->prices()->clientPrice()->currency(), $accommodation),
             externalNumber: $details->externalNumber()?->number(),
             cancelConditions: $this->cancelConditionsDataFactory->build($booking->cancelConditions()),
-            status: $booking->status()->value()->name,//@todo статус
+            status: $this->bookingStatusStorage->getName($booking->status()->value()),
         );
     }
 
