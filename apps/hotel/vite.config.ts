@@ -8,7 +8,7 @@ import { defineConfig } from 'vite'
 import checker from 'vite-plugin-checker'
 import tsconfigPaths from 'vite-tsconfig-paths'
 
-// import { scripts } from './package.json'
+import { scripts } from './package.json'
 
 expand(config({
   allowEmptyValues: true,
@@ -36,6 +36,7 @@ export default defineConfig(({ command }) => ({
         'resources/views/quotas/quotas.ts',
         'resources/views/settings/settings.ts',
         'resources/views/settings/settings.scss',
+        'resources/views/booking/hotel/main/main.ts',
         'resources/views/booking/hotel/show/show.scss',
         'resources/views/booking/hotel/show/show.ts',
         'resources/views/booking/hotel/timeline/timeline.scss',
@@ -59,14 +60,14 @@ export default defineConfig(({ command }) => ({
     }),
     checker({
       enableBuild: false,
-      vueTsc: false,
-      typescript: false,
-      /* eslint: {
+      vueTsc: true,
+      typescript: true,
+      eslint: {
         lintCommand: scripts['lint:scripts'],
       },
       stylelint: {
         lintCommand: scripts['lint:styles'].replace(/"/, ''),
-      }, */
+      },
     }),
   ],
   resolve: {

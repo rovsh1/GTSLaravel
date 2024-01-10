@@ -17,10 +17,8 @@ import { useHotelMarkupSettingsAPI } from '~api/hotel/markup-settings'
 
 import { requestInitialData } from '~lib/initial-data'
 
-const { bookingID, isOtherServiceBooking, isHotelBooking } = requestInitialData(z.object({
+const { bookingID } = requestInitialData(z.object({
   bookingID: z.number(),
-  isOtherServiceBooking: z.boolean(),
-  isHotelBooking: z.boolean(),
 }))
 
 export const useBookingStore = defineStore('booking', () => {
@@ -38,7 +36,7 @@ export const useBookingStore = defineStore('booking', () => {
     isStatusUpdateFetching.value = true
     updateStatusPayload.status = status
     const { data: updateStatusResponse } = await updateBookingStatus(updateStatusPayload)
-    if (updateStatusResponse.value?.isNotConfirmedReasonRequired && isHotelBooking) {
+    if (updateStatusResponse.value?.isNotConfirmedReasonRequired) {
       const { result: isConfirmed, reason, toggleClose } = await showNotConfirmedReasonDialog()
       if (isConfirmed) {
         updateStatusPayload.notConfirmedReason = reason
@@ -71,8 +69,6 @@ export const useBookingStore = defineStore('booking', () => {
 
   return {
     booking,
-    isHotelBooking,
-    isOtherServiceBooking,
     fetchBooking,
     markupSettings,
     availableActions,

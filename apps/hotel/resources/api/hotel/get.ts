@@ -1,12 +1,11 @@
 import { DateResponse, useAdminAPI } from '~api'
-import { CityID } from '~api/city'
 
 export type HotelID = number
 
 export type HotelResponse = {
   id: HotelID
   name: string
-  city_id: CityID
+  city_id: number
   city_distance: number
   city_name: string
   address: string

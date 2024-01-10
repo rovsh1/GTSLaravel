@@ -1,20 +1,4 @@
-import { CityResponse } from '~api/city'
 import { DateResponse } from '~api/index'
-
-export interface Airport {
-  id: number
-  city_id: number
-  code: string
-  name: string
-  city_name: string
-}
-
-export interface Car {
-  id: number
-  mark: string
-  model: string
-  cities?: CityResponse[]
-}
 
 export interface Season {
   id: number

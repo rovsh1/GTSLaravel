@@ -44,17 +44,16 @@
     padding: 0.5rem 1rem;
 
     .usability-wrapper {
-
       .usability {
-        margin-top: 0.5rem;
-        height: 2.5rem;
         overflow: hidden;
+        height: 2.5rem;
+        margin-top: 0.5rem;
       }
 
       .usability-expand {
         display: flex;
-        align-items: center;
         justify-content: center;
+        align-items: center;
 
         i {
           cursor: pointer;
@@ -63,7 +62,6 @@
       }
 
       &.expand {
-
         .usability {
           height: 100%;
         }

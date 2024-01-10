@@ -42,8 +42,8 @@ const guests = computed(
         <tr v-for="(guest, idx) in guests" :key="guest.id">
           <td>{{ idx + 1 }}</td>
           <td>{{ guest.fullName }}</td>
-          <td>{{ getCountryName(guest.countryId) }}</td>
           <td>{{ getGenderName(guest.gender) }}</td>
+          <td>{{ getCountryName(guest.countryId) }}</td>
           <td>{{ guest.isAdult ? 'Взрослый' : 'Ребенок' }}</td>
         </tr>
       </template>

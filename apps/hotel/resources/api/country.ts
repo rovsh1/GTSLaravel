@@ -7,6 +7,6 @@ export interface CountryResponse {
 }
 
 export const useCountrySearchAPI = () =>
-  useAdminAPI({ }, () => '/countries/search')
+  useAdminAPI({ }, () => '/countries')
     .get()
     .json<CountryResponse[]>()
