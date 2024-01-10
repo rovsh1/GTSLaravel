@@ -5,11 +5,14 @@
 #### Prod
 
 - [Web Site](http://www.gotostans.com/)
+- [BO Panel](http://admin.gotostans.com)
+- [HO Panel](http://hotel.gotostans.com)
 
 #### Dev
 
-- [BO Panel](http://fdqec.admin.gotostans.com)
-- [HO Panel](http://fdqec.hotel.gotostans.com)
+- [Web Site](http://dev-www.gotostans.com)
+- [BO Panel](http://dev-admin.gotostans.com)
+- [HO Panel](http://dev-hotel.gotostans.com)
 
 #### Deprecated
 
