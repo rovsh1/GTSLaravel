@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Client\Moderation\Domain\Repository;
+namespace Module\Client\Shared\Domain\Repository;
 
 use Module\Client\Shared\Domain\ValueObject\ClientId;
 

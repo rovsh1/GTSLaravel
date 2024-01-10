@@ -20,7 +20,8 @@ final class Invoice extends AbstractAggregateRoot
         private readonly ClientId $clientId,
         private readonly OrderId $orderId,
         private readonly File $document,
-        private readonly Timestamps $timestamps
+        private readonly Timestamps $timestamps,
+        private ?\DateTimeInterface $sendAt,
         //@todo добавить стоимость инвоисов
     ) {}
 
@@ -47,6 +48,16 @@ final class Invoice extends AbstractAggregateRoot
     public function timestamps(): Timestamps
     {
         return $this->timestamps;
+    }
+
+    public function sendAt(): ?\DateTimeInterface
+    {
+        return $this->sendAt;
+    }
+
+    public function send(): void
+    {
+        $this->sendAt = new \DateTime();
     }
 
     public function delete(): void

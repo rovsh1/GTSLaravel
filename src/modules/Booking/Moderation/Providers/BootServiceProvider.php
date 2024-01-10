@@ -2,7 +2,6 @@
 
 namespace Module\Booking\Moderation\Providers;
 
-use Illuminate\Support\Facades\View;
 use Module\Booking\Shared\Providers\BootServiceProvider as SharedBookingServiceProvider;
 use Sdk\Module\Support\ServiceProvider;
 

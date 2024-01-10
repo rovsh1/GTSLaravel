@@ -13,6 +13,7 @@ export interface OrderInvoicePayload {
 export interface OrderInvoice {
   id: number
   createdAt: DateResponse
+  sendAt: DateResponse | null
 }
 
 export interface OrderInvoiceCreateResponse {

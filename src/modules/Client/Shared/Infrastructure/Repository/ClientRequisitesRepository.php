@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Module\Client\Moderation\Infrastructure\Repository;
+namespace Module\Client\Shared\Infrastructure\Repository;
 
-use Module\Client\Moderation\Domain\Repository\ClientRequisitesRepositoryInterface;
-use Module\Client\Moderation\Infrastructure\Models\Contact;
+use Module\Client\Shared\Domain\Repository\ClientRequisitesRepositoryInterface;
 use Module\Client\Shared\Domain\ValueObject\ClientId;
+use Module\Client\Shared\Infrastructure\Models\Contact;
 
 class ClientRequisitesRepository implements ClientRequisitesRepositoryInterface
 {

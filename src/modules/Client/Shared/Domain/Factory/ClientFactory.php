@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Module\Client\Moderation\Domain\Factory;
+namespace Module\Client\Shared\Domain\Factory;
 
-use Module\Client\Moderation\Domain\Entity\Client;
+use Module\Client\Shared\Domain\Entity\Client;
 use Module\Client\Shared\Domain\ValueObject\ClientId;
 use Sdk\Module\Foundation\Support\EntityFactory\AbstractEntityFactory;
 use Sdk\Shared\Enum\Client\LanguageEnum;

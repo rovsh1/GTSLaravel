@@ -16,6 +16,7 @@ class AdministratorDto extends AbstractDomainBasedDto
         public readonly ?string $phone,
         public readonly ?string $name,
         public readonly ?string $surname,
+        public readonly ?string $post,
     ) {}
 
     public static function fromDomain(mixed $entity): static
@@ -29,6 +30,7 @@ class AdministratorDto extends AbstractDomainBasedDto
             $entity->phone(),
             $entity->name(),
             $entity->surname(),
+            $entity->post(),
         );
     }
 }

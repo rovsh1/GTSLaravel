@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Client\Invoicing\Infrastructure\Models;
+namespace Module\Booking\Invoicing\Infrastructure\Models;
 
 use DateTime;
 use Illuminate\Database\Eloquent\Builder;
@@ -24,12 +24,7 @@ class Invoice extends Model
 
     protected $table = 'client_invoices';
 
-    protected $fillable = [
-        'client_id',
-        'order_id',
-        'document',
-        'send_at',
-    ];
+    protected $fillable = [];
 
     protected $casts = [
         'send_at' => 'datetime',
