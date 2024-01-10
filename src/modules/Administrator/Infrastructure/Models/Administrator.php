@@ -19,8 +19,7 @@ class Administrator extends Model
             $builder->addSelect('administrators.*')
                 ->leftJoin('r_enums', function (JoinClause $join) {
                     $join->on('administrators.post_id', 'r_enums.id')
-                        ->where('r_enums.group', 'administrator-post')
-                        ->limit(1);
+                        ->where('r_enums.group', 'administrator-post');
                 })
                 ->joinTranslatable('r_enums', 'name as post_name');
         });
