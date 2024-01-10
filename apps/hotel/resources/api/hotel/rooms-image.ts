@@ -11,7 +11,7 @@ type HotelRoomsListWithAttachedImageProps = {
 
 export type UseHotelRoomsImage = HotelRoomImage[] | null
 
-export const useHotelRoomsListWithAttachedImageAPI = (props: MaybeRef<HotelRoomsListWithAttachedImageProps | null>) => useAdminAPI(props, ({ hotelID, imageID }) =>
+export const useHotelRoomsListWithAttachedImageAPI = (props: MaybeRef<HotelRoomsListWithAttachedImageProps | null>) => useAdminAPI(props, ({ imageID }) =>
   `/photos/${imageID}/rooms`, {
   afterFetch: (ctx: AfterFetchContext<HotelRoomsImageResponse>) =>
     alternateDataAfterFetch<HotelRoomsImageResponse, UseHotelRoomsImage>(ctx, (data) =>

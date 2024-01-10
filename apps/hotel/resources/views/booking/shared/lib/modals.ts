@@ -13,7 +13,7 @@ export type CancelReason = CancelReasonResponse
 
 export const showNotConfirmedReasonDialog = async (): Promise<ShowNotConfirmedReasonDialogResponse> => {
   const cancelReasons = await CacheStorage.remember('cancel-reasons', TTLValues.DAY, async () => {
-    const cancelReasonsResponse = await axios.get('/cancel-reason/list')
+    const cancelReasonsResponse = await axios.get('/cancel-reasons')
     return cancelReasonsResponse?.data ? cancelReasonsResponse.data : null
   }) as CancelReasonResponse[]
   return new Promise((resolve): void => {

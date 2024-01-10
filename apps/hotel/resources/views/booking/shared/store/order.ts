@@ -8,8 +8,9 @@ import { useGetOrderGuestsAPI } from '~api/order/guest'
 
 import { requestInitialData } from '~lib/initial-data'
 
-const { order, currencies } = requestInitialData(
+const { bookingID, order, currencies } = requestInitialData(
   z.object({
+    bookingID: z.number(),
     order: z.object({
       id: z.number(),
       clientPrice: z.object({
@@ -37,7 +38,7 @@ export const useOrderStore = defineStore('booking-order', () => {
   const currency = computed<Currency | undefined>(
     () => currencies.find((cur) => order.clientPrice.currency.value === cur.code_char),
   )
-  const { data: guests, execute: fetchGuests } = useGetOrderGuestsAPI({ orderId: order.id })
+  const { data: guests, execute: fetchGuests } = useGetOrderGuestsAPI({ bookingId: bookingID })
 
   onMounted(() => {
     fetchGuests()

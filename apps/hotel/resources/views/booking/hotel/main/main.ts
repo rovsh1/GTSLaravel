@@ -14,7 +14,7 @@ $(() => {
     e.preventDefault()
     const bookingId = $(e.currentTarget).parent().parent().parent()
       .data('id')
-    const { data: requests } = await axios.get<BookingRequest[]>(`/hotel-booking/${bookingId}/request/list`)
+    const { data: requests } = await axios.get<BookingRequest[]>(`/booking/${bookingId}/request/list`)
     const popoverContentDownload: Array<PopoverItem> = []
     const groupedRequests: { [type: string]: BookingRequest[] } = requests.reduce((result, request) => {
       const resultItem = result

@@ -19,7 +19,7 @@ const isAvailableActionsFetching = computed<boolean>(() => bookingStore.isAvaila
 const isStatusUpdateFetching = computed(() => bookingStore.isStatusUpdateFetching)
 
 const handleStatusChange = async (value: number) => {
-  if (bookingStore.isHotelBooking && bookingStore.booking) {
+  if (bookingStore.booking) {
     const { hideValidation } = useExternalNumber(bookingStore.booking.id)
     hideValidation()
   }

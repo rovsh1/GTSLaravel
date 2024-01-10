@@ -7,12 +7,10 @@
 @section('scripts')
     {!! Js::variables([
         'bookingID' => $bookingId,
-        'hotelID' => 61,
         'hotelRooms' => $hotelRooms,
+        'timelineUrl' => $timelineUrl,
         'order' => $order,
         'currencies' => $currencies,
-        'isHotelBooking' => true,
-        'isOtherServiceBooking' => false,
     ]) !!}
 
     @vite('resources/views/booking/hotel/show/show.ts')

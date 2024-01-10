@@ -50,7 +50,6 @@ export const useExternalNumber = (bookingID: number) => {
   }
 
   const validateExternalNumber = (): boolean => {
-    // @todo валидация перед переходом на статус "Подтверждена" для админки отелей.
     const type = externalNumberType.value
     const number = externalNumber.value
 

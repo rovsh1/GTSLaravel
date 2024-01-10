@@ -105,17 +105,17 @@ pre {
 
 .badge {
   display: inline-block;
-  padding: .25em .4em;
-  font-size: 78%;
+  vertical-align: baseline;
+  padding: 0.25em 0.4em;
+  border-radius: 0.25rem;
   font-weight: 700;
+  font-size: 78%;
   line-height: 1;
   text-align: center;
   white-space: nowrap;
-  vertical-align: baseline;
-  border-radius: .25rem;
 }
 
 .badge-success {
-  color: #fff;
   background-color: #0ab21b;
+  color: #fff;
 }

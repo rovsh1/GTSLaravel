@@ -41,10 +41,6 @@ const grossCurrency = computed<Currency | undefined>(
 
 const orderGuests = computed<Guest[]>(() => orderStore.guests || [])
 
-const isBookingPriceManual = computed(
-  () => bookingStore.booking?.prices.clientPrice.isManual || bookingStore.booking?.prices.supplierPrice.isManual,
-)
-
 const { execute: fetchPriceRates, data: priceRates } = useHotelRatesAPI({})
 
 const { countries } = storeToRefs(useCountryStore())

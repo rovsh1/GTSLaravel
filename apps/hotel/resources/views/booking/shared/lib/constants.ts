@@ -1,5 +1,3 @@
-import { Client } from '~resources/api/client'
-
 import { ExternalNumberTypeEnum } from '~api/booking/hotel/details'
 import { MarkupCondition } from '~api/hotel/markup-settings'
 
@@ -9,11 +7,6 @@ export interface EntityInterface {
   id: number
   name: string
   group?: string
-}
-
-export type Select2Option = {
-  id: string | number | ''
-  text: string
 }
 
 export const mapEntitiesToSelectOptions = (entities: EntityInterface[]): SelectOption[] => entities.map(
@@ -42,25 +35,12 @@ export const cancelPeriods = [
   { id: 2, name: 'За весь период' },
 ]
 
-const clientTypes = [
-  { id: 1, name: 'Физическое лицо' },
-  { id: 2, name: 'Юридическое лицо' },
-]
-
 const humanRequestType = [
   { id: 1, name: 'бронирование' },
   { id: 3, name: 'отмену' },
 ]
 
-export const genderOptions: SelectOption[] = mapEntitiesToSelectOptions(genders)
-
-export const residentTypeOptions: SelectOption[] = mapEntitiesToSelectOptions(residentTypes)
-
 export const externalNumberTypeOptions: SelectOption[] = mapEntitiesToSelectOptions(externalNumberTypes)
-
-export const cancelPeriodOptions: SelectOption[] = mapEntitiesToSelectOptions(cancelPeriods)
-
-export const clientTypeOptions: SelectOption[] = mapEntitiesToSelectOptions(clientTypes)
 
 export const getConditionLabel = (condition: MarkupCondition) => `с ${condition.from} по ${condition.to} (+${condition.percent}%)`
 
@@ -88,7 +68,3 @@ export const getDaysWord = (number: number) => {
   }
   return 'дней'
 }
-
-export const mapClientsToSelect2Options = (clients: Client[]): Select2Option[] => clients.map(
-  (client) => ({ id: client.id, text: client.name }),
-)
