@@ -44,17 +44,17 @@ export interface BookingStatusHistoryPayload {
 }
 
 export const useBookingStatusesAPI = (props?: any) =>
-  useAdminAPI(props, () => '/service-booking/status/list')
+  useAdminAPI(props, () => '/booking/status/list')
     .get()
     .json<StatusSettings[]>()
 
 export const useBookingAvailableActionsAPI = (props: MaybeRef<BookingAvailableStatusesPayload | null>) =>
   useAdminAPI(props, ({ bookingID }) =>
-    `/service-booking/${bookingID}/actions/available`)
+    `/booking/${bookingID}/actions/available`)
     .get()
     .json<BookingAvailableActionsResponse>()
 
 export const useBookingStatusHistoryAPI = (props: MaybeRef<BookingStatusHistoryPayload | null>) =>
-  useAdminAPI(props, ({ bookingID }) => `/service-booking/${bookingID}/status/history`)
+  useAdminAPI(props, ({ bookingID }) => `/booking/${bookingID}/status/history`)
     .get()
     .json<BookingStatusHistoryResponse[]>()

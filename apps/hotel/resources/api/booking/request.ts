@@ -1,11 +1,7 @@
-import { computed } from 'vue'
-
 import { MaybeRef } from '@vueuse/core'
 
-import { BaseResponse, DateResponse, useAdminAPI } from '~api'
+import { DateResponse, useAdminAPI } from '~api'
 import { BookingID } from '~api/booking/models'
-
-import { getNullableRef } from '~lib/vue'
 
 export interface BookingRequestPayload {
   bookingID: BookingID
@@ -18,20 +14,6 @@ export interface BookingRequest {
 }
 
 export const useBookingRequestListAPI = (props: MaybeRef<BookingRequestPayload>) =>
-  useAdminAPI(props, ({ bookingID }) => `/service-booking/${bookingID}/request/list`)
+  useAdminAPI(props, ({ bookingID }) => `/booking/${bookingID}/request/list`)
     .get()
     .json<BookingRequest[]>()
-
-export const sendBookingRequest = (props: MaybeRef<BookingRequestPayload>) =>
-  useAdminAPI(
-    props,
-    ({ bookingID }) => `/service-booking/${bookingID}/request`,
-    { immediate: true },
-  )
-    .post(computed<string>(() => JSON.stringify(
-      getNullableRef<BookingRequestPayload, any>(
-        props,
-        (): any => null,
-      ),
-    )), 'application/json')
-    .json<BaseResponse>()

@@ -7,10 +7,8 @@ import { handleAjaxError } from '~lib/ajax-error'
 import { ADMIN_API_URL } from '~lib/env'
 import { getNullableRef, RefGetter } from '~lib/vue'
 
-// @example "2021-10-05T14:55:20.000000Z"
 export type DateResponse = string
 
-// @example '2023-04-23'
 export type APIDate = string
 
 export type BaseResponse = {

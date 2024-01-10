@@ -76,3 +76,9 @@ const handleDelete = () => {
     </ul>
   </div>
 </template>
+
+<style scoped lang="scss">
+  a {
+    cursor: pointer;
+  }
+</style>

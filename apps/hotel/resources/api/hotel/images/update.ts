@@ -2,7 +2,6 @@ import { MaybeRef } from '@vueuse/core'
 
 import { BaseResponse, useAdminAPI } from '~api'
 import { HotelRoomID } from '~api/hotel'
-import { HotelID } from '~api/hotel/get'
 
 import { HotelImageID } from '.'
 

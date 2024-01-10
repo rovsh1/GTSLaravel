@@ -1,12 +1,6 @@
-import { computed } from 'vue'
-
-import { MaybeRef } from '@vueuse/core'
-
-import { BaseResponse, useAdminAPI } from '~api'
+import { useAdminAPI } from '~api'
 import { HotelID } from '~api/hotel/get'
 import { Time } from '~api/hotel/markup-settings'
-
-import { getNullableRef } from '~lib/vue'
 
 export interface TimeSettings {
   checkInAfter: Time
@@ -32,17 +26,3 @@ export interface UpdateHotelSettingsPayload {
   hotelID: HotelID
   timeSettings: TimeSettings
 }
-
-export const updateHotelSettings = (props: MaybeRef<UpdateHotelSettingsPayload>) =>
-  useAdminAPI(
-    props,
-    ({ hotelID }) => `/hotels/${hotelID}/settings`,
-    { immediate: true },
-  )
-    .put(computed<string>(() => JSON.stringify(
-      getNullableRef<UpdateHotelSettingsPayload, any>(
-        props,
-        (payload: UpdateHotelSettingsPayload): any => ({ time_settings: payload.timeSettings }),
-      ),
-    )), 'application/json')
-    .json<BaseResponse>()

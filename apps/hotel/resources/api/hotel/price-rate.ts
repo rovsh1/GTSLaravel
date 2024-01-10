@@ -3,7 +3,6 @@ import { MaybeRef } from '@vueuse/core'
 import { getURL, useAdminAPI } from '~api'
 
 interface HotelRatesProps {
-  hotelID: number
   roomID?: number
 }
 
@@ -13,7 +12,7 @@ export interface HotelRate {
 }
 
 export const useHotelRatesAPI = (props: MaybeRef<HotelRatesProps | null>) =>
-  useAdminAPI(props, ({ hotelID, roomID }) =>
-    getURL(`/hotels/${hotelID}/rates/search`, { room_id: roomID as number }))
+  useAdminAPI(props, ({ roomID }) =>
+    getURL('/hotel/rates/search', { room_id: roomID as number }))
     .get()
     .json<HotelRate[]>()
