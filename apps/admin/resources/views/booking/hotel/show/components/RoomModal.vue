@@ -59,20 +59,20 @@ const setFormData = () => ({
   ...props.formData,
 })
 
-const formData = ref<RoomFormData>(setFormData())
+const formDataLocale = ref<RoomFormData>(setFormData())
 
 watchEffect(() => {
-  formData.value = setFormData()
+  formDataLocale.value = setFormData()
 })
 
-const validateRoomForm = computed(() => (isDataValid(null, formData.value.id)
-  && isDataValid(null, formData.value.rateId)
-  && isDataValid(null, formData.value.residentType)))
+const validateRoomForm = computed(() => (isDataValid(null, formDataLocale.value.id)
+  && isDataValid(null, formDataLocale.value.rateId)
+  && isDataValid(null, formDataLocale.value.residentType)))
 
 const roomRatesPayload = ref<{
   hotelID: number
   roomID: number
-}>({ hotelID, roomID: formData.value.id as number })
+}>({ hotelID, roomID: formDataLocale.value.id as number })
 
 const { execute: fetchRoomRates, data: roomRates, isFetching: isRoomDataFetching } = useHotelRatesAPI(roomRatesPayload)
 const { data: roomMarkupSettings } = useHotelRoomMarkupSettings(roomRatesPayload) // execute: fetchRoomMarkupSettings
@@ -80,20 +80,20 @@ const { data: roomMarkupSettings } = useHotelRoomMarkupSettings(roomRatesPayload
 const isFetching = ref<boolean>(false)
 const modalForm = ref<HTMLFormElement>()
 const onModalSubmit = async () => {
-  if (!validateForm<RoomFormData>(modalForm as Ref<HTMLFormElement>, formData)) {
+  if (!validateForm<RoomFormData>(modalForm as Ref<HTMLFormElement>, formDataLocale)) {
     return
   }
   isFetching.value = true
   let isRequestSuccess: undefined | boolean = false
-  if (formData.value.roomBookingId !== undefined) {
-    formData.value.earlyCheckIn = formData.value.earlyCheckIn || null
-    formData.value.lateCheckOut = formData.value.lateCheckOut || null
-    const responseUpdate = await updateBookingRoom(formData)
+  if (formDataLocale.value.roomBookingId !== undefined) {
+    formDataLocale.value.earlyCheckIn = formDataLocale.value.earlyCheckIn || null
+    formDataLocale.value.lateCheckOut = formDataLocale.value.lateCheckOut || null
+    const responseUpdate = await updateBookingRoom(formDataLocale)
     isRequestSuccess = responseUpdate.data.value?.success
   } else {
-    formData.value.earlyCheckIn = formData.value.earlyCheckIn || null
-    formData.value.lateCheckOut = formData.value.lateCheckOut || null
-    const responseAdd = await addRoomToBooking(formData)
+    formDataLocale.value.earlyCheckIn = formDataLocale.value.earlyCheckIn || null
+    formDataLocale.value.lateCheckOut = formDataLocale.value.lateCheckOut || null
+    const responseAdd = await addRoomToBooking(formDataLocale)
     isRequestSuccess = responseAdd.data.value?.success
   }
   if (isRequestSuccess) {
@@ -104,18 +104,18 @@ const onModalSubmit = async () => {
 }
 
 const handleChangeRoomId = (value: any) => {
-  formData.value.id = value as number
-  if (formData.value.id !== undefined) {
-    roomRatesPayload.value.roomID = formData.value.id
+  formDataLocale.value.id = value as number
+  if (formDataLocale.value.id !== undefined) {
+    roomRatesPayload.value.roomID = formDataLocale.value.id
     fetchRoomRates()
     // fetchRoomMarkupSettings()
   } else {
-    formData.value.rateId = undefined
-    formData.value.discount = undefined
+    formDataLocale.value.rateId = undefined
+    formDataLocale.value.discount = undefined
   }
 }
 
-watch(formData, (value: RoomFormData, oldValue: RoomFormData) => {
+watch(formDataLocale, (value: RoomFormData, oldValue: RoomFormData) => {
   if (value.id !== oldValue.id) {
     handleChangeRoomId(value.id)
   }
@@ -135,8 +135,9 @@ const setPreparedRooms = () => {
   const availableRoomsOptions = availableRooms?.map(
     (room: HotelRoomResponse) => ({ value: room.id, label: room.name }),
   ) || []
-  if (formData.value?.id !== undefined && !availableRooms?.some((room: HotelRoomResponse) => room.id === formData.value?.id)) {
-    currentRoom = hotelRooms.filter((room: HotelRoomResponse) => room.id === formData.value?.id)?.map(
+  if (formDataLocale.value?.id !== undefined
+  && !availableRooms?.some((room: HotelRoomResponse) => room.id === formDataLocale.value?.id)) {
+    currentRoom = hotelRooms.filter((room: HotelRoomResponse) => room.id === formDataLocale.value?.id)?.map(
       (room: HotelRoomResponse) => ({ value: room.id, label: room.name }),
     ) || []
   }
@@ -162,23 +163,23 @@ const discounts = computed<SelectOption[]>(() => {
 })
 
 const earlyCheckInValue = computed<string | undefined>({
-  get: () => (formData.value.earlyCheckIn ? JSON.stringify(formData.value.earlyCheckIn) : undefined),
+  get: () => (formDataLocale.value.earlyCheckIn ? JSON.stringify(formDataLocale.value.earlyCheckIn) : undefined),
   set: (value: string | undefined): void => {
     if (value) {
-      formData.value.earlyCheckIn = JSON.parse(value)
+      formDataLocale.value.earlyCheckIn = JSON.parse(value)
     } else {
-      formData.value.earlyCheckIn = undefined
+      formDataLocale.value.earlyCheckIn = undefined
     }
   },
 })
 
 const lateCheckOutValue = computed<string | undefined>({
-  get: () => (formData.value.lateCheckOut ? JSON.stringify(formData.value.lateCheckOut) : undefined),
+  get: () => (formDataLocale.value.lateCheckOut ? JSON.stringify(formDataLocale.value.lateCheckOut) : undefined),
   set: (value: string | undefined): void => {
     if (value) {
-      formData.value.lateCheckOut = JSON.parse(value)
+      formDataLocale.value.lateCheckOut = JSON.parse(value)
     } else {
-      formData.value.lateCheckOut = undefined
+      formDataLocale.value.lateCheckOut = undefined
     }
   },
 })
@@ -189,13 +190,13 @@ const closeModal = () => {
 
 const resetForm = () => {
   emit('clear')
-  formData.value.id = undefined
-  formData.value.discount = undefined
-  formData.value.rateId = undefined
-  formData.value.earlyCheckIn = undefined
-  formData.value.lateCheckOut = undefined
-  formData.value.residentType = undefined
-  formData.value.note = undefined
+  formDataLocale.value.id = undefined
+  formDataLocale.value.discount = undefined
+  formDataLocale.value.rateId = undefined
+  formDataLocale.value.earlyCheckIn = undefined
+  formDataLocale.value.lateCheckOut = undefined
+  formDataLocale.value.residentType = undefined
+  formDataLocale.value.note = undefined
   nextTick(() => {
     $('.is-invalid').removeClass('is-invalid')
   })
@@ -220,7 +221,7 @@ watch(() => props.opened, async (opened) => {
           label="Номер"
           :disabled="preparedRooms.length === 0 || hotelRoomsStore.isFetchAvailableRooms"
           disabled-placeholder="Нет доступных квот на заданный период"
-          :value="formData.id"
+          :value="formDataLocale.id"
           @change="(value, event) => {
             handleChangeRoomId(value)
             isDataValid(event, value)
@@ -232,11 +233,11 @@ watch(() => props.opened, async (opened) => {
           :options="preparedRoomRates"
           required
           label="Тариф"
-          :disabled="!formData.id || isRoomDataFetching"
+          :disabled="!formDataLocale.id || isRoomDataFetching"
           :disabled-placeholder="'Выберите номер'"
-          :value="formData.rateId"
+          :value="formDataLocale.rateId"
           @change="(value, event) => {
-            formData.rateId = value as number
+            formDataLocale.rateId = value as number
             isDataValid(event, value)
           }"
         />
@@ -246,9 +247,9 @@ watch(() => props.opened, async (opened) => {
           :options="residentTypeOptions"
           required
           label="Тип стоимости"
-          :value="formData.residentType"
+          :value="formDataLocale.residentType"
           @change="(value, event) => {
-            formData.residentType = value as number
+            formDataLocale.residentType = value as number
             isDataValid(event, value)
           }"
         />
@@ -257,12 +258,12 @@ watch(() => props.opened, async (opened) => {
         <SelectComponent
           :options="discounts"
           label="Скидка"
-          :value="formData.discount"
-          :disabled="!formData.id || isRoomDataFetching || discounts.length === 0"
-          :disabled-placeholder="!formData.id ? 'Выберите номер' : ''"
+          :value="formDataLocale.discount"
+          :disabled="!formDataLocale.id || isRoomDataFetching || discounts.length === 0"
+          :disabled-placeholder="!formDataLocale.id ? 'Выберите номер' : ''"
           :returned-empty-value="null"
           @change="(value) => {
-            formData.discount = value as number
+            formDataLocale.discount = value as number
           }"
         />
       </div>
@@ -290,10 +291,10 @@ watch(() => props.opened, async (opened) => {
       </div>
       <div class="col-md-12">
         <label for="note" class=" col-form-label">Примечание</label>
-        <textarea id="note" v-model="formData.note" class="form-control" />
+        <textarea id="note" v-model="formDataLocale.note" class="form-control" />
       </div>
     </form>
-    <template v-if="formData.roomBookingId === undefined" #actions-start>
+    <template v-if="formDataLocale.roomBookingId === undefined" #actions-start>
       <button class="btn btn-default" type="button" :disabled="isFetching" @click="resetForm">
         Сбросить
       </button>

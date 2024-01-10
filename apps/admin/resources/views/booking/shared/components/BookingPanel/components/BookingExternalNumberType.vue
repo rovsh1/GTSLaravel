@@ -54,7 +54,6 @@ const handleUpdateExternalNumber = async () => {
         :value="externalNumberType"
         required
         @change="(value) => {
-          console.log('ExternalNumberType', value)
           externalNumberType = value as ExternalNumberType
         }"
       />
