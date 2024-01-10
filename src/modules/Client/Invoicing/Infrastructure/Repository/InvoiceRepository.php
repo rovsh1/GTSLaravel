@@ -32,7 +32,10 @@ class InvoiceRepository implements InvoiceRepositoryInterface
                 new Timestamps(
                     \DateTimeImmutable::createFromInterface($model->created_at),
                     \DateTimeImmutable::createFromInterface($model->updated_at),
-                )
+                ),
+                $model->send_at !== null
+                    ? \DateTimeImmutable::createFromInterface($model->send_at)
+                    : null,
             );
         });
     }
@@ -59,6 +62,10 @@ class InvoiceRepository implements InvoiceRepositoryInterface
             $model->document = $invoice->document()->guid();
         }
 
+        if ($model->send_at?->getTimestamp() !== $invoice->sendAt()?->getTimestamp()) {
+            $model->send_at = $invoice->sendAt();
+        }
+
         $model->touch();
         if ($invoice->isDeleted()) {
             $model->delete();
@@ -83,7 +90,10 @@ class InvoiceRepository implements InvoiceRepositoryInterface
             new Timestamps(
                 createdAt: \DateTimeImmutable::createFromInterface($model->created_at),
                 updatedAt: \DateTimeImmutable::createFromInterface($model->updated_at),
-            )
+            ),
+            $model->send_at !== null
+                ? \DateTimeImmutable::createFromInterface($model->send_at)
+                : null,
         );
     }
 }

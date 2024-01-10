@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Client\Moderation\Infrastructure\Models;
+namespace Module\Client\Shared\Infrastructure\Models;
 
 use Sdk\Module\Database\Eloquent\Model;
 use Sdk\Shared\Enum\Client\LanguageEnum;

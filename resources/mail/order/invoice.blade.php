@@ -8,14 +8,14 @@
 
         <tr>
             <td>
-                {{ __('Ваши брони подтверждены, отправляем Вам ваучер') }} - <a href="{{ $voucher->fileUrl }}" target="_blank">по ссылке</a>
+                {{ __('Ваши брони подтверждены, отправляем Вам инвойс') }} - <a href="{{ $invoice->fileUrl }}" target="_blank">по ссылке</a>
             </td>
         </tr>
         <tr>
-            <td>{{ __('Номер ваучера: :id', ['id' => $voucher->number]) }}</td>
+            <td>{{ __('Номер инвойса: :id', ['id' => $invoice->number]) }}</td>
         </tr>
         <tr>
-            <td>{{ __('Дата создания: :createdAt', ['createdAt' => $voucher->createdAt]) }}</td>
+            <td>{{ __('Дата создания: :createdAt', ['createdAt' => $invoice->createdAt]) }}</td>
         </tr>
 
         <br/>
@@ -27,12 +27,12 @@
             <tr>
                 <td>{{ $service->title }}</td>
             </tr>
-{{--            <tr>--}}
-{{--                <td>{{ __('Общая сумма: :amount :currency', ['amount' => $service->price->total, 'currency' => $service->price->currency]) }}</td>--}}
-{{--            </tr>--}}
-{{--            <tr>--}}
-{{--                <td>{{ __('Статус брони: {Бронь.Статус}', []) }}</td>--}}
-{{--            </tr>--}}
+            {{--            <tr>--}}
+            {{--                <td>{{ __('Общая сумма: :amount :currency', ['amount' => $service->price->total, 'currency' => $service->price->currency]) }}</td>--}}
+            {{--            </tr>--}}
+            {{--            <tr>--}}
+            {{--                <td>{{ __('Статус брони: {Бронь.Статус}', []) }}</td>--}}
+            {{--            </tr>--}}
         @endforeach
 
         <tr>

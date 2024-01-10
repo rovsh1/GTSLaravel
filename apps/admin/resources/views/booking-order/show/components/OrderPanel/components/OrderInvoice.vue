@@ -54,6 +54,8 @@ const handleInvoiceSend = async () => {
         <div>
           Инвойс
           <span class="date align-left ml-1"> от {{ formatDateTime(orderInvoice.createdAt) }}</span>
+          <span v-if="orderInvoice?.sendAt" class="date align-left ml-1"> отправлен клиенту {{ formatDateTime(orderInvoice?.sendAt) }}</span>
+          <span v-else class="date align-left ml-1"> не отправялся клиенту</span>
         </div>
       </div>
       <div class="d-flex gap-2">

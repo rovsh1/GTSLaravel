@@ -12,6 +12,7 @@ return new class extends Migration {
             $table->unsignedInteger('client_id');
             $table->unsignedInteger('order_id');
             $table->char('document', 32)->nullable();
+            $table->timestamp('send_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

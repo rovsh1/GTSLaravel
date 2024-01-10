@@ -4,11 +4,15 @@ namespace Module\Client\Moderation\Providers;
 
 use Module\Client\Moderation\Domain;
 use Module\Client\Moderation\Infrastructure;
+use Module\Client\Shared\Providers\BootServiceProvider as SharedClientServiceProvider;
 use Sdk\Module\Support\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {
-    public function register() {}
+    public function register()
+    {
+        $this->app->register(SharedClientServiceProvider::class);
+    }
 
     public function boot()
     {
@@ -18,20 +22,12 @@ class BootServiceProvider extends ServiceProvider
     private function registerInterfaces()
     {
         $this->app->singleton(
-            Domain\Repository\ClientRepositoryInterface::class,
-            Infrastructure\Repository\ClientRepository::class
-        );
-        $this->app->singleton(
             Domain\Repository\LegalRepositoryInterface::class,
             Infrastructure\Repository\LegalRepository::class
         );
         $this->app->singleton(
             Domain\Repository\CurrencyRateRepositoryInterface::class,
             Infrastructure\Repository\CurrencyRateRepository::class
-        );
-        $this->app->singleton(
-            Domain\Repository\ClientRequisitesRepositoryInterface::class,
-            Infrastructure\Repository\ClientRequisitesRepository::class
         );
         $this->app->singleton(
             Domain\Repository\ContractRepositoryInterface::class,

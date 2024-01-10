@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Invoicing\Domain\Service;
 
 use App\Admin\Support\Facades\Format;
+use Module\Booking\Invoicing\Domain\Repository\InvoiceRepositoryInterface;
 use Module\Booking\Invoicing\Domain\Service\Dto\ClientDto;
 use Module\Booking\Invoicing\Domain\Service\Dto\CompanyRequisitesDto;
 use Module\Booking\Invoicing\Domain\Service\Dto\InvoiceDto;
@@ -18,6 +19,7 @@ use Module\Booking\Shared\Domain\Shared\Adapter\AdministratorAdapterInterface;
 use Module\Booking\Shared\Domain\Shared\Adapter\ClientAdapterInterface;
 use Sdk\Booking\ValueObject\ClientId;
 use Sdk\Booking\ValueObject\OrderId;
+use Sdk\Shared\Contracts\Adapter\FileStorageAdapterInterface;
 use Sdk\Shared\Contracts\Service\CompanyRequisitesInterface;
 
 class TemplateDataFactory
@@ -28,6 +30,8 @@ class TemplateDataFactory
         private readonly ClientAdapterInterface $clientAdapter,
         private readonly OrderRepositoryInterface $orderRepository,
         private readonly ServiceInfoDataFactory $serviceInfoDataFactory,
+        private readonly InvoiceRepositoryInterface $invoiceRepository,
+        private readonly FileStorageAdapterInterface $fileStorageAdapter,
     ) {}
 
     public function build(OrderId $orderId): array
@@ -67,11 +71,15 @@ class TemplateDataFactory
             $totalPenalty = null;
         }
 
+        $fileGuid = $this->invoiceRepository->getInvoiceFileGuid($id);
+        $file = $this->fileStorageAdapter->find($fileGuid);
+
         return new InvoiceDto(
             (string)$id->value(),
             $createdAt->format('d.m.Y H:i'),
             Format::price($totalAmount),
             Format::price($totalPenalty),
+            $file->url,
         );
     }
 
@@ -105,6 +113,7 @@ class TemplateDataFactory
             $managerDto->name ?? $managerDto?->presentation,
             $managerDto?->email,
             $managerDto?->phone,
+            $managerDto?->post,
         );
     }
 

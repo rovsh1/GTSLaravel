@@ -17,6 +17,7 @@ use Module\Booking\Shared\Domain\Shared\Adapter\AdministratorAdapterInterface;
 use Module\Booking\Shared\Domain\Shared\Adapter\ClientAdapterInterface;
 use Sdk\Booking\ValueObject\ClientId;
 use Sdk\Booking\ValueObject\OrderId;
+use Sdk\Shared\Contracts\Adapter\FileStorageAdapterInterface;
 use Sdk\Shared\Contracts\Service\CompanyRequisitesInterface;
 
 class TemplateDataFactory
@@ -27,6 +28,7 @@ class TemplateDataFactory
         private readonly ClientAdapterInterface $clientAdapter,
         private readonly OrderRepositoryInterface $orderRepository,
         private readonly ServiceInfoDataFactory $serviceInfoDataFactory,
+        private readonly FileStorageAdapterInterface $fileStorageAdapter,
     ) {}
 
     public function build(OrderId $orderId): array
@@ -40,7 +42,7 @@ class TemplateDataFactory
             'company' => $this->getCompanyRequisites(),
             'manager' => $this->buildOrderManagerDto($orderId),
             'client' => $this->buildClientDto($order->clientId()),
-            'voucher' => $this->buildVoucherDto($orderId, now()),
+            'voucher' => $this->buildVoucherDto($order, now()),
         ];
     }
 
@@ -50,11 +52,14 @@ class TemplateDataFactory
      * @param ServiceInfoDto[] $services
      * @return VoucherDto
      */
-    private function buildVoucherDto(OrderId $id, \DateTimeInterface $createdAt): VoucherDto
+    private function buildVoucherDto(Order $order, \DateTimeInterface $createdAt): VoucherDto
     {
+        $file = $this->fileStorageAdapter->find($order->voucher()->file()->guid());
+
         return new VoucherDto(
-            (string)$id->value(),
+            (string)$order->id()->value(),
             $createdAt->format('d.m.Y H:i'),
+            $file->url,
         );
     }
 
@@ -86,6 +91,7 @@ class TemplateDataFactory
             $managerDto->name ?? $managerDto?->presentation,
             $managerDto?->email,
             $managerDto?->phone,
+            $managerDto?->post,
         );
     }
 

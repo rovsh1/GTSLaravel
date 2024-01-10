@@ -10,5 +10,6 @@ class ManagerDto
         public readonly string $fullName,
         public readonly ?string $email,
         public readonly ?string $phone,
+        public readonly ?string $post,
     ) {}
 }

@@ -11,5 +11,6 @@ final class InvoiceDto
         public readonly int $orderId,
         public readonly string $document,
         public readonly string $createdAt,
+        public readonly ?string $sendAt,
     ) {}
 }

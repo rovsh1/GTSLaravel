@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Client\Moderation\Domain\Entity;
+namespace Module\Client\Shared\Domain\Entity;
 
 use Module\Client\Shared\Domain\ValueObject\ClientId;
 use Sdk\Module\Contracts\EntityInterface;

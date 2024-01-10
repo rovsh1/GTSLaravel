@@ -2,7 +2,7 @@
 
 namespace App\Admin\Models\Client;
 
-class Contact extends \Module\Client\Moderation\Infrastructure\Models\Contact
+class Contact extends \Module\Client\Shared\Infrastructure\Models\Contact
 {
 
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Client\Moderation\Infrastructure\Models;
+namespace Module\Client\Shared\Infrastructure\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Sdk\Module\Database\Eloquent\Model;

@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Builder as Query;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
 
-class Client extends \Module\Client\Moderation\Infrastructure\Models\Client
+class Client extends \Module\Client\Shared\Infrastructure\Models\Client
 {
     use HasQuicksearch, SoftDeletes;
 
