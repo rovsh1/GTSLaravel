@@ -11,11 +11,11 @@ use Illuminate\Http\JsonResponse;
 
 class RatesController extends AbstractHotelController
 {
-    public function search(SearchRequest $request, Hotel $hotel): JsonResponse
+    public function search(SearchRequest $request): JsonResponse
     {
-        $query = PriceRate::query()->whereHotelId($hotel->id);
+        $query = PriceRate::query()->whereHotelId($this->getHotel()->id);
         if ($request->getRoomId() !== null) {
-            $query = Room::whereHotelId($hotel->id)->whereId($request->getRoomId())->first()->priceRates();
+            $query = Room::whereHotelId($this->getHotel()->id)->whereId($request->getRoomId())->first()->priceRates();
         }
 
         return response()->json(
