@@ -43,7 +43,7 @@
             <td>{{ __('С уважением, :manager', ['manager' => $manager->fullName]) }}</td>
         </tr>
         <tr>
-            <td>{Отправитель.Должность}</td>
+            <td>{{ $manager->post }}</td>
         </tr>
         <tr>
             <td>{{ $manager->email }}</td>

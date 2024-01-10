@@ -58,6 +58,7 @@ final class Invoice extends AbstractAggregateRoot
     public function send(): void
     {
         $this->sendAt = new \DateTime();
+        //@todo нужен ивент?
     }
 
     public function delete(): void
