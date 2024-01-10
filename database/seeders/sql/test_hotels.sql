@@ -1,6 +1,6 @@
-# DELETE
-# FROM hotel_seasons
-# WHERE contract_id = 744;
+UPDATE hotel_contracts SET status = 2 WHERE id = 744;
+DELETE FROM hotel_seasons WHERE contract_id = 744;
+
 INSERT INTO `hotel_contracts` (`id`, `hotel_id`, `status`, `date_start`, `date_end`, `created_at`, `updated_at`)
 VALUES (9999, 75, 1, '2024-01-01', '2024-12-31', NULL, NULL);
 
