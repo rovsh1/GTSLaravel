@@ -31,6 +31,8 @@ export default defineConfig(({ command }) => ({
         'resources/views/auth/login/login.scss',
         'resources/views/default/grid/grid.scss',
         'resources/views/default/form/form.scss',
+        'resources/views/main.scss',
+        'resources/views/main.ts',
         'resources/views/show/show.scss',
         'resources/views/rooms/rooms.scss',
         'resources/views/rooms/rooms.ts',
