@@ -72,8 +72,6 @@ class BookingController extends AbstractHotelController
                 'order' => $order,
                 'currencies' => Currency::get(),
                 'timelineUrl' => route('booking.timeline', $id),
-//                'manager' => $this->administratorRepository->get($id),
-//                'creator' => Administrator::find($booking->creatorId),
                 'hotelRooms' => RoomResource::collection(Room::whereHotelId($hotelId)->get())
             ]);
     }
