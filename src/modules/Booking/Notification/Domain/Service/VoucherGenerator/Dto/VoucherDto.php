@@ -9,6 +9,6 @@ class VoucherDto
     public function __construct(
         public readonly string $number,
         public readonly string $createdAt,
-        public readonly string $fileUrl,
+        public readonly ?string $fileUrl,
     ) {}
 }

@@ -71,15 +71,18 @@ class TemplateDataFactory
             $totalPenalty = null;
         }
 
+        $file = null;
         $fileGuid = $this->invoiceRepository->getInvoiceFileGuid($id);
-        $file = $this->fileStorageAdapter->find($fileGuid);
+        if ($fileGuid !== null) {
+            $file = $this->fileStorageAdapter->find($fileGuid);
+        }
 
         return new InvoiceDto(
             (string)$id->value(),
             $createdAt->format('d.m.Y H:i'),
             Format::price($totalAmount),
             Format::price($totalPenalty),
-            $file->url,
+            $file?->url,
         );
     }
 

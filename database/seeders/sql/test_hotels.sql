@@ -1,9 +1,14 @@
-DELETE
-FROM hotel_seasons
-WHERE contract_id = 744;
+UPDATE `hotels` SET markup_settings = '{"id":75,"vat":12,"touristTax":15,"earlyCheckIn":[{"timePeriod":{"from":"05:00","to":"14:00"},"priceMarkup":50},{"timePeriod":{"from":"00:00","to":"05:00"},"priceMarkup":100}],"lateCheckOut":[{"timePeriod":{"from":"12:00","to":"18:00"},"priceMarkup":50},{"timePeriod":{"from":"18:00","to":"24:00"},"priceMarkup":100}],"cancelPeriods":[{"period":"2022-10-01T00:00:00+00:00\/P1D\/2023-12-31T00:00:00+00:00","noCheckInMarkup":{"percent":100,"cancelPeriodType":1},"dailyMarkups":[{"percent":100,"cancelPeriodType":1,"daysCount":2}]},{"period":"2023-12-31T21:00:00+00:00\/P1D\/2024-12-30T21:00:00+00:00","noCheckInMarkup":{"percent":100,"cancelPeriodType":1},"dailyMarkups":[{"percent":100,"cancelPeriodType":1,"daysCount":2}]}]}' WHERE id = 75;
+
+UPDATE hotel_contracts SET status = 2 WHERE id = 744;
+DELETE FROM hotel_seasons WHERE contract_id = 744;
+
+INSERT INTO `hotel_contracts` (`id`, `hotel_id`, `status`, `date_start`, `date_end`, `created_at`, `updated_at`)
+VALUES (9999, 75, 1, '2024-01-01', '2024-12-31', NULL, NULL);
+
 INSERT INTO `hotel_seasons` (`id`, `contract_id`, `name`, `date_start`, `date_end`, `created_at`, `updated_at`)
-VALUES (1915, 744, 'HIGH', '2023-10-01', '2023-11-30', NULL, NULL),
-       (1916, 744, 'LOW', '2023-12-01', '2023-12-31', NULL, NULL);
+VALUES (1915, 9999, 'HIGH', '2024-01-01', '2024-06-30', NULL, NULL),
+       (1916, 9999, 'LOW', '2024-07-01', '2024-12-31', NULL, NULL);
 
 INSERT INTO `hotel_price_rates` (`id`, `hotel_id`)
 VALUES (521, 75);

@@ -54,12 +54,15 @@ class TemplateDataFactory
      */
     private function buildVoucherDto(Order $order, \DateTimeInterface $createdAt): VoucherDto
     {
-        $file = $this->fileStorageAdapter->find($order->voucher()->file()->guid());
+        $file = null;
+        if ($order->voucher() !== null) {
+            $file = $this->fileStorageAdapter->find($order->voucher()->file()->guid());
+        }
 
         return new VoucherDto(
             (string)$order->id()->value(),
             $createdAt->format('d.m.Y H:i'),
-            $file->url,
+            $file?->url,
         );
     }
 
