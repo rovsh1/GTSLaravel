@@ -79,7 +79,7 @@ class TemplateDataFactory
             $createdAt->format('d.m.Y H:i'),
             Format::price($totalAmount),
             Format::price($totalPenalty),
-            $file->url,
+            $file?->url,
         );
     }
 

@@ -11,6 +11,6 @@ class InvoiceDto
         public readonly string $createdAt,
         public readonly string $totalAmount,
         public readonly string $totalPenalty,
-        public readonly string $fileUrl,
+        public readonly ?string $fileUrl,
     ) {}
 }
