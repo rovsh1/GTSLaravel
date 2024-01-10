@@ -36,7 +36,7 @@ const setFormData = () => ({
   ...props.formData,
 })
 
-const formData = ref<Partial<CarFormData>>(setFormData())
+const formDataLocale = ref<Partial<CarFormData>>(setFormData())
 
 const selectedCar = ref<Car>()
 
@@ -45,25 +45,26 @@ const isSubmiting = computed(() => Boolean(props.isFetching))
 const setSelectedCar = (carId: number | undefined) => {
   if (carId !== undefined) {
     selectedCar.value = props.availableCars.find((car) => car.id === carId)
-    formData.value.carsCount = 1
+    formDataLocale.value.carsCount = 1
   } else {
     selectedCar.value = undefined
-    formData.value.carsCount = undefined
+    formDataLocale.value.carsCount = undefined
   }
-  formData.value.baggageCount = undefined
-  formData.value.passengersCount = undefined
+  formDataLocale.value.baggageCount = undefined
+  formDataLocale.value.passengersCount = undefined
 }
 
 watchEffect(() => {
   setSelectedCar(props.formData.carId)
-  formData.value = setFormData()
+  formDataLocale.value = setFormData()
 })
 
-const carsCountValidate = (): boolean => ((formData.value.carsCount !== undefined && formData.value.carsCount !== null
-  && formData.value?.carsCount > 0))
+const carsCountValidate = (): boolean => ((formDataLocale.value.carsCount !== undefined && formDataLocale.value.carsCount !== null
+  && formDataLocale.value?.carsCount > 0))
 
-const validateCreateCarForm = computed(() => (isDataValid(null, formData.value.carId)
-  && isDataValid(null, formData.value.passengersCount) && isDataValid(null, formData.value.carsCount, carsCountValidate())))
+const validateCreateCarForm = computed(() => (isDataValid(null, formDataLocale.value.carId)
+  && isDataValid(null, formDataLocale.value.passengersCount)
+  && isDataValid(null, formDataLocale.value.carsCount, carsCountValidate())))
 
 const submitDisable = computed(() => !validateCreateCarForm.value)
 
@@ -72,7 +73,7 @@ const onModalSubmit = async () => {
     return
   }
   const payload = {
-    ...formData.value,
+    ...formDataLocale.value,
   }
   emit('submit', payload)
 }
@@ -93,10 +94,10 @@ const baggageOptions = computed<SelectOption[]>(
 
 const resetForm = () => {
   emit('clear')
-  formData.value.carId = undefined
-  formData.value.carsCount = undefined
-  formData.value.passengersCount = undefined
-  formData.value.baggageCount = undefined
+  formDataLocale.value.carId = undefined
+  formDataLocale.value.carsCount = undefined
+  formDataLocale.value.passengersCount = undefined
+  formDataLocale.value.baggageCount = undefined
   nextTick(() => {
     $('.is-invalid').removeClass('is-invalid')
   })
@@ -130,11 +131,11 @@ watch(() => props.opened, () => {
           :options="carsOptions"
           label="Модель автомобиля"
           required
-          :value="formData.carId"
+          :value="formDataLocale.carId"
           @change="(value, event) => {
-            formData.carId = value ? Number(value) : value
+            formDataLocale.carId = value ? Number(value) : value
             isDataValid(event, value)
-            setSelectedCar(formData.carId)
+            setSelectedCar(formDataLocale.carId)
           }"
         />
       </div>
@@ -143,13 +144,13 @@ watch(() => props.opened, () => {
           <label for="cars_count">Количествово автомобилей</label>
           <input
             id="cars_count"
-            v-model="formData.carsCount"
-            :disabled="!formData.carId"
+            v-model="formDataLocale.carsCount"
+            :disabled="!formDataLocale.carId"
             class="form-control"
             type="number"
             required
-            @input="isDataValid($event.target, formData.carsCount, carsCountValidate())"
-            @blur="isDataValid($event.target, formData.carsCount, carsCountValidate())"
+            @input="isDataValid($event.target, formDataLocale.carsCount, carsCountValidate())"
+            @blur="isDataValid($event.target, formDataLocale.carsCount, carsCountValidate())"
           >
         </div>
       </div>
@@ -157,11 +158,11 @@ watch(() => props.opened, () => {
         <SelectComponent
           :options="passengersOptions"
           label="Количествово пассажиров"
-          :disabled="!formData.carId"
+          :disabled="!formDataLocale.carId"
           required
-          :value="formData.passengersCount"
+          :value="formDataLocale.passengersCount"
           @change="(value, event) => {
-            formData.passengersCount = value ? Number(value) : value
+            formDataLocale.passengersCount = value ? Number(value) : value
             isDataValid(event, value)
           }"
         />
@@ -170,18 +171,18 @@ watch(() => props.opened, () => {
         <SelectComponent
           :options="baggageOptions"
           label="Количествово багажа"
-          :disabled="!formData.carId"
-          :value="formData.baggageCount || undefined"
+          :disabled="!formDataLocale.carId"
+          :value="formDataLocale.baggageCount || undefined"
           :allow-empty-item="true"
           empty-item="Нет"
           @change="(value, event) => {
-            formData.passengersCount = value ? Number(value) : value
-            formData.baggageCount = value ? Number(value) : value
+            formDataLocale.passengersCount = value ? Number(value) : value
+            formDataLocale.baggageCount = value ? Number(value) : value
           }"
         />
       </div>
     </form>
-    <template v-if="formData.id === undefined" #actions-start>
+    <template v-if="formDataLocale.id === undefined" #actions-start>
       <button class="btn btn-default" type="button" :disabled="isSubmiting" @click="resetForm">
         Сбросить
       </button>

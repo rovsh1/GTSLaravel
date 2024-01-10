@@ -46,7 +46,7 @@ const setFormData = () => ({
   selectedGuestFromOrder: undefined,
 })
 
-const formData = ref<Partial<GuestFormData>>(setFormData())
+const formDataLocale = ref<Partial<GuestFormData>>(setFormData())
 
 const isSubmiting = computed(() => Boolean(props.isFetching))
 
@@ -57,7 +57,7 @@ const ageType = computed<number>({
       return localAgeType.value
     }
 
-    return formData.value.isAdult ? 0 : 1
+    return formDataLocale.value.isAdult ? 0 : 1
   },
   set: (type: number): void => {
     localAgeType.value = type
@@ -67,8 +67,8 @@ const ageType = computed<number>({
 const handleChangeAgeType = (type: number): void => {
   if (!isNaN(type)) {
     ageType.value = type
-    formData.value.isAdult = type === 0
-    formData.value.age = null
+    formDataLocale.value.isAdult = type === 0
+    formDataLocale.value.age = null
   }
   nextTick(() => {
     $('#child_age').removeClass('is-invalid')
@@ -76,23 +76,23 @@ const handleChangeAgeType = (type: number): void => {
 }
 
 watchEffect(() => {
-  formData.value = setFormData()
+  formDataLocale.value = setFormData()
   localAgeType.value = undefined
 })
 
-const ageValidate = (): boolean => ((formData.value.age !== undefined && formData.value.age !== null
-  && (formData.value?.age >= 0 && formData.value?.age <= 18)))
+const ageValidate = (): boolean => ((formDataLocale.value.age !== undefined && formDataLocale.value.age !== null
+  && (formDataLocale.value?.age >= 0 && formDataLocale.value?.age <= 18)))
 
-const validateCreateGuestForm = computed(() => (isDataValid(null, formData.value.countryId)
-  && isDataValid(null, formData.value.fullName) && isDataValid(null, formData.value.gender)
-  && (!!(ageType.value === 1 ? isDataValid(null, formData.value.age, ageValidate()) : true))))
+const validateCreateGuestForm = computed(() => (isDataValid(null, formDataLocale.value.countryId)
+  && isDataValid(null, formDataLocale.value.fullName) && isDataValid(null, formDataLocale.value.gender)
+  && (!!(ageType.value === 1 ? isDataValid(null, formDataLocale.value.age, ageValidate()) : true))))
 
-const validateSelectGuestForm = computed(() => (isDataValid(null, formData.value.selectedGuestFromOrder)))
+const validateSelectGuestForm = computed(() => (isDataValid(null, formDataLocale.value.selectedGuestFromOrder)))
 
 const isFormValid = (): boolean => {
   if (
-    ((validateCreateGuestForm.value || validateSelectGuestForm.value) && formData.value.id === undefined)
-    || (formData.value.id !== undefined && validateCreateGuestForm.value)
+    ((validateCreateGuestForm.value || validateSelectGuestForm.value) && formDataLocale.value.id === undefined)
+    || (formDataLocale.value.id !== undefined && validateCreateGuestForm.value)
   ) {
     return true
   }
@@ -105,20 +105,20 @@ const onModalSubmit = async () => {
   if (!isFormValid()) {
     return
   }
-  if (formData.value.id !== undefined) {
+  if (formDataLocale.value.id !== undefined) {
     const payload = {
-      guestId: formData.value.id,
-      ...formData.value,
+      guestId: formDataLocale.value.id,
+      ...formDataLocale.value,
     }
     emit('submit', payload)
-  } else if (formData.value.selectedGuestFromOrder !== undefined) {
+  } else if (formDataLocale.value.selectedGuestFromOrder !== undefined) {
     const payload = {
-      id: formData.value.selectedGuestFromOrder,
+      id: formDataLocale.value.selectedGuestFromOrder,
     }
     emit('submit', payload)
-  } else if (formData.value.selectedGuestFromOrder === undefined) {
+  } else if (formDataLocale.value.selectedGuestFromOrder === undefined) {
     const payload = {
-      ...formData.value,
+      ...formDataLocale.value,
     }
     emit('submit', payload)
   }
@@ -135,11 +135,11 @@ const guestsOptions = computed<SelectOption[]>(
 
 const resetForm = () => {
   emit('clear')
-  formData.value.countryId = undefined
-  formData.value.fullName = ''
-  formData.value.gender = undefined
-  formData.value.age = undefined
-  formData.value.selectedGuestFromOrder = undefined
+  formDataLocale.value.countryId = undefined
+  formDataLocale.value.fullName = ''
+  formDataLocale.value.gender = undefined
+  formDataLocale.value.age = undefined
+  formDataLocale.value.selectedGuestFromOrder = undefined
   ageType.value = 0
   handleChangeAgeType(ageType.value)
   nextTick(() => {
@@ -156,15 +156,16 @@ const closeModal = () => {
 }
 
 const onChangeSelectGuest = (value: any) => {
-  formData.value.selectedGuestFromOrder = value ? Number(value) : undefined
-  const getCurrentGuestData = props.orderGuests?.filter((guest: Guest) => guest.id === formData.value.selectedGuestFromOrder)
+  formDataLocale.value.selectedGuestFromOrder = value ? Number(value) : undefined
+  const getCurrentGuestData = props.orderGuests?.filter((guest: Guest) =>
+    guest.id === formDataLocale.value.selectedGuestFromOrder)
   if (getCurrentGuestData && getCurrentGuestData.length > 0) {
     const [firstGuest] = getCurrentGuestData
-    formData.value.fullName = firstGuest.fullName
-    formData.value.age = firstGuest.age
-    formData.value.countryId = firstGuest.countryId
-    formData.value.gender = firstGuest.gender
-    formData.value.isAdult = firstGuest.isAdult
+    formDataLocale.value.fullName = firstGuest.fullName
+    formDataLocale.value.age = firstGuest.age
+    formDataLocale.value.countryId = firstGuest.countryId
+    formDataLocale.value.gender = firstGuest.gender
+    formDataLocale.value.isAdult = firstGuest.isAdult
     localAgeType.value = undefined
   } else {
     resetForm()
@@ -189,13 +190,13 @@ watch(() => props.opened, () => {
     <template #title>{{ titleText }}</template>
     <form class="row g-3">
       <div
-        v-if="orderGuests && guestsOptions.length > 0 && formData.id === undefined"
+        v-if="orderGuests && guestsOptions.length > 0 && formDataLocale.id === undefined"
         class="col-md-12 guest-select-wrapper"
       >
         <SelectComponent
           :options="guestsOptions"
           :label="inputSelectText"
-          :value="formData.selectedGuestFromOrder"
+          :value="formDataLocale.selectedGuestFromOrder"
           :allow-empty-item="true"
           empty-item="Создать нового гостя"
           @change="(value) => {
@@ -207,11 +208,11 @@ watch(() => props.opened, () => {
         <SelectComponent
           :options="countryOptions"
           label="Гражданство"
-          :disabled="!!formData.selectedGuestFromOrder"
-          :value="formData.countryId"
+          :disabled="!!formDataLocale.selectedGuestFromOrder"
+          :value="formDataLocale.countryId"
           required
           @change="(value, event) => {
-            formData.countryId = value ? Number(value) : value
+            formDataLocale.countryId = value ? Number(value) : value
             isDataValid(event, value)
           }"
         />
@@ -221,12 +222,12 @@ watch(() => props.opened, () => {
           <label for="full_name">ФИО</label>
           <input
             id="full_name"
-            v-model="formData.fullName"
-            :disabled="!!formData.selectedGuestFromOrder"
+            v-model="formDataLocale.fullName"
+            :disabled="!!formDataLocale.selectedGuestFromOrder"
             class="form-control"
             required
-            @input="isDataValid($event.target, formData.fullName)"
-            @blur="isDataValid($event.target, formData.fullName)"
+            @input="isDataValid($event.target, formDataLocale.fullName)"
+            @blur="isDataValid($event.target, formDataLocale.fullName)"
           >
         </div>
       </div>
@@ -234,11 +235,11 @@ watch(() => props.opened, () => {
         <SelectComponent
           :options="genderOptions"
           label="Пол"
-          :disabled="!!formData.selectedGuestFromOrder"
-          :value="formData.gender"
+          :disabled="!!formDataLocale.selectedGuestFromOrder"
+          :value="formDataLocale.gender"
           required
           @change="(value, event) => {
-            formData.gender = value ? Number(value) : value
+            formDataLocale.gender = value ? Number(value) : value
             isDataValid(event, value)
           }"
         />
@@ -247,7 +248,7 @@ watch(() => props.opened, () => {
         <SelectComponent
           :options="ageTypeOptions"
           label="Тип"
-          :disabled="!!formData.selectedGuestFromOrder"
+          :disabled="!!formDataLocale.selectedGuestFromOrder"
           :value="ageType"
           @change="(value, event) => {
             handleChangeAgeType(Number(value))
@@ -261,21 +262,21 @@ watch(() => props.opened, () => {
           <label for="child_age">Возраст</label>
           <input
             id="child_age"
-            v-model="formData.age"
-            :disabled="!!formData.selectedGuestFromOrder || formData.isAdult || isNaN(ageType)"
+            v-model="formDataLocale.age"
+            :disabled="!!formDataLocale.selectedGuestFromOrder || formDataLocale.isAdult || isNaN(ageType)"
             type="number"
             class="form-control"
             autocomplete="off"
-            :required="formData.isAdult === false"
+            :required="formDataLocale.isAdult === false"
             min="0"
             max="18"
-            @input="isDataValid($event.target, formData.age, ageValidate())"
-            @blur="isDataValid($event.target, formData.age, ageValidate())"
+            @input="isDataValid($event.target, formDataLocale.age, ageValidate())"
+            @blur="isDataValid($event.target, formDataLocale.age, ageValidate())"
           >
         </div>
       </div>
     </form>
-    <template v-if="formData.id === undefined" #actions-start>
+    <template v-if="formDataLocale.id === undefined" #actions-start>
       <button class="btn btn-default" type="button" :disabled="isSubmiting" @click="resetForm">
         Сбросить
       </button>
