@@ -26,8 +26,6 @@ export default defineConfig(({ command }) => ({
     laravel({
       input: [
         'resources/assets/jquery.ts',
-        'resources/assets/tinymce.js',
-        'resources/assets/tinymce-content.scss',
         'resources/views/auth/login/login.scss',
         'resources/views/default/grid/grid.scss',
         'resources/views/default/form/form.scss',

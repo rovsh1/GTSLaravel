@@ -1,28 +1,11 @@
-import type { TinyMCE } from 'tinymce'
+import { ZodRawShape } from 'zod/lib/types'
 
 declare global {
   interface JQuery extends JQueryStatic {
-    elementCity(options: any): JQuery<HTMLElement>
-
-    childCombo(options: any): JQuery<HTMLElement>
-
-    coordinatesInput(options: any): JQuery<HTMLElement>
-
-    cardContacts(options: any = {}): JQuery<HTMLElement>
-
-    sortable(options: any): JQuery<HTMLElement>
-
     update(): void
-
-    deleteButton(): void
-
-    multiselect(options: { popupCls: string }): JQuery<HTMLElement>
   }
 
   interface Window {
-    get_meta_content(name: string, parse?: boolean): string | any
-
-    get_url_parameter(name: string, url?: string): string | null
 
     WindowDialog(options: any): void
 
@@ -41,6 +24,7 @@ declare global {
     $: JQueryStatic
     jQuery: JQueryStatic
 
-    tinymce: TinyMCE
+    [key: string]: ZodRawShape
+
   }
 }
