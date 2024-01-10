@@ -1,9 +1,12 @@
-DELETE
-FROM hotel_seasons
-WHERE contract_id = 744;
+# DELETE
+# FROM hotel_seasons
+# WHERE contract_id = 744;
+INSERT INTO `hotel_contracts` (`id`, `hotel_id`, `status`, `date_start`, `date_end`, `created_at`, `updated_at`)
+VALUES (9999, 75, 1, '2024-01-01', '2024-12-31', NULL, NULL);
+
 INSERT INTO `hotel_seasons` (`id`, `contract_id`, `name`, `date_start`, `date_end`, `created_at`, `updated_at`)
-VALUES (1915, 744, 'HIGH', '2023-10-01', '2023-11-30', NULL, NULL),
-       (1916, 744, 'LOW', '2023-12-01', '2023-12-31', NULL, NULL);
+VALUES (1915, 9999, 'HIGH', '2024-01-01', '2024-06-30', NULL, NULL),
+       (1916, 9999, 'LOW', '2024-07-01', '2024-12-31', NULL, NULL);
 
 INSERT INTO `hotel_price_rates` (`id`, `hotel_id`)
 VALUES (521, 75);
