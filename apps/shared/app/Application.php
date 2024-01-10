@@ -31,7 +31,9 @@ class Application extends \Illuminate\Foundation\Application
 
     public function resourcePath($path = ''): string
     {
-        return $this->joinPaths($this->packagePath . DIRECTORY_SEPARATOR . 'resources', $path);
+        $basePath = $this->packagePath !== null ? $this->packagePath : $this->basePath;
+
+        return $this->joinPaths($basePath . DIRECTORY_SEPARATOR . 'resources', $path);
     }
 
 //    public function viewPath($path = ''){}
