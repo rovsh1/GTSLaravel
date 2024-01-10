@@ -1,3 +1,5 @@
+UPDATE `hotels` SET markup_settings = '{"id":75,"vat":12,"touristTax":15,"earlyCheckIn":[{"timePeriod":{"from":"05:00","to":"14:00"},"priceMarkup":50},{"timePeriod":{"from":"00:00","to":"05:00"},"priceMarkup":100}],"lateCheckOut":[{"timePeriod":{"from":"12:00","to":"18:00"},"priceMarkup":50},{"timePeriod":{"from":"18:00","to":"24:00"},"priceMarkup":100}],"cancelPeriods":[{"period":"2022-10-01T00:00:00+00:00\/P1D\/2023-12-31T00:00:00+00:00","noCheckInMarkup":{"percent":100,"cancelPeriodType":1},"dailyMarkups":[{"percent":100,"cancelPeriodType":1,"daysCount":2}]},{"period":"2023-12-31T21:00:00+00:00\/P1D\/2024-12-30T21:00:00+00:00","noCheckInMarkup":{"percent":100,"cancelPeriodType":1},"dailyMarkups":[{"percent":100,"cancelPeriodType":1,"daysCount":2}]}]}' WHERE id = 75;
+
 UPDATE hotel_contracts SET status = 2 WHERE id = 744;
 DELETE FROM hotel_seasons WHERE contract_id = 744;
 
