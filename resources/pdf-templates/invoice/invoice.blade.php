@@ -38,8 +38,20 @@
             width: 10%;
         }
 
+        .invoice-wrapper .w-15 {
+            width: 15%;
+        }
+
         .invoice-wrapper .w-17 {
             width: 17.5%;
+        }
+
+        .invoice-wrapper .w-25 {
+            width: 25%;
+        }
+
+        .invoice-wrapper .w-28 {
+            width: 28%;
         }
 
         .invoice-wrapper .w-45 {
@@ -52,6 +64,18 @@
 
         .invoice-wrapper .w-50 {
             width: 50%;
+        }
+
+        .invoice-wrapper .w-72 {
+            width: 72%;
+        }
+
+        .invoice-wrapper .w-75 {
+            width: 75%;
+        }
+
+        .invoice-wrapper .w-85 {
+            width: 85%;
         }
 
         .invoice-wrapper .text-right {
@@ -155,20 +179,46 @@
             </div>
         </div>
         <div class="invoice-content">
-            <div class="client-info clear-both">
-                <div class="column" style="width: 15%;">
-                    <p>{{ __('Клиент') }}:</p>
-                    <p>{{ __('Договор') }}:</p>
-                    <p>{{ __('Адрес') }}:</p>
-                    <p>{{ __('Телефон') }}:</p>
-                    <p>Email:</p>
+            <div class="client-info">
+                <div class="clear-both">
+                    <div class="column w-15">
+                        <p>{{ __('Клиент') }}:</p>
+                    </div>
+                    <div class="column w-85">
+                        <p><b>{{ $client->name }}</b></p>
+                    </div>
                 </div>
-                <div class="column" style="width: 85%;">
-                    <p><b>{{ $client->name }}</b></p>
-                    <p>{{ $client->contractNumber }}</p>
-                    <p>{{ $client->address }}</p>
-                    <p>{{ $client->phone }}</p>
-                    <p><a href="mailto:{{ $client->email }}">{{ $client->email }}</a></p>
+                <div class="clear-both">
+                    <div class="column w-15">
+                        <p>{{ __('Договор') }}:</p>
+                    </div>
+                    <div class="column w-85">
+                        <p>{{ $client->contractNumber }}</p>
+                    </div>
+                </div>
+                <div class="clear-both">
+                    <div class="column w-15">
+                        <p>{{ __('Адрес') }}:</p>
+                    </div>
+                    <div class="column w-85">
+                        <p>{{ $client->address }}</p>
+                    </div>
+                </div>
+                <div class="clear-both">
+                    <div class="column w-15">
+                        <p>{{ __('Телефон') }}:</p>
+                    </div>
+                    <div class="column w-85">
+                        <p>{{ $client->phone }}</p>
+                    </div>
+                </div>
+                <div class="clear-both">
+                    <div class="column w-15">
+                        <p>Email:</p>
+                    </div>
+                    <div class="column w-85">
+                        <p><a href="mailto:{{ $client->email }}">{{ $client->email }}</a></p>
+                    </div>
                 </div>
             </div>
 
@@ -189,57 +239,176 @@
                 </i>
             </div>
             <div class="additional-info clear-both">
-                <div class="column" style="width: 28%;">
-                    <p>{{ __('Бенефициар') }}:</p>
-                    <p>{{ __('Адрес') }}:</p>
-                    <p>{{ __('Тел') }}:</p>
-                    <p>{{ __('ИНН') }}:</p>
-                    <p>{{ __('ОКЭД') }}:</p>
-                    <br/>
-                    <p>{{ __('Банк') }}:</p>
-                    <p>{{ __('Адрес') }}:</p>
-                    <p>{{ __('МФО') }}:</p>
-                    <p>{{ __('Код ЦБУ') }}:</p>
-                    <br/>
-                    <p>{{ __('Р/с в :currency', ['currency' => \Sdk\Shared\Enum\CurrencyEnum::UZS->name]) }}:</p>
-                    <p>{{__('Р/с в :currency', ['currency' => \Sdk\Shared\Enum\CurrencyEnum::USD->name]) }}:</p>
-                    <p>{{ __('Р/с в :currency', ['currency' => \Sdk\Shared\Enum\CurrencyEnum::EUR->name]) }}:</p>
-                    <p>{{ __('Р/с в :currency', ['currency' => \Sdk\Shared\Enum\CurrencyEnum::RUB->name]) }}:</p>
-                    <p>SWIFT:</p>
-                    <br/>
-                    <p>{{ __('Банк корреспондент') }}:</p>
-                    <p>{{ __('БИК') }}:</p>
-                    <p>{{ __('Телекс') }}: </p>
-                    <p>SWIFT:</p>
-                    <p>{{ __('Кор.сч. в :currency', ['currency' => \Sdk\Shared\Enum\CurrencyEnum::USD->name]) }}:</p>
-                    <p>{{ __('Кор.сч. в :currency', ['currency' => \Sdk\Shared\Enum\CurrencyEnum::EUR->name]) }}:</p>
-                    <p>{{ __('Кор.сч. в :currency', ['currency' => \Sdk\Shared\Enum\CurrencyEnum::RUB->name]) }}:</p>
+                <div class="clear-both">
+                    <div class="column w-28">
+                        <p>{{ __('Бенефициар') }}:</p>
+                    </div>
+                    <div class="column w-72">
+                        <p><b>ООО «GOTOSTANS»</b></p>
+                    </div>
                 </div>
-                <div class="column" style="width: 72%;">
-                    <p><b>ООО «GOTOSTANS»</b></p>
-                    <p>д.104A, ул. Кичик Бешагоч, Ташкент, 100015, Узбекистан</p>
-                    <p>+998 78 1209012</p>
-                    <p>305768069</p>
-                    <p>79900</p>
-                    <br/>
-                    <p>ЧАКБ «ORIENT FINANCE BANK» Мирабадский филиал </p>
-                    <p>7А, ул. Якуб Колас, г. Ташкент, 100023, Узбекистан </p>
-                    <p>01071</p>
-                    <p>11795</p>
-                    <br/>
-                    <p>20208000300934341001</p>
-                    <p>20208840800934341002</p>
-                    <p>20208978100934341002</p>
-                    <p>20208643900934341002</p>
-                    <p>ORFBUZ22</p>
-                    <br/>
-                    <p>АКБ "Азия-Инвест Банк"</p>
-                    <p>044525234</p>
-                    <p>914624 ASINV RU</p>
-                    <p>ASIJRUMM</p>
-                    <p>30111840800000002535</p>
-                    <p>30111978400000002535</p>
-                    <p>30111810500000002535</p>
+                <div class="clear-both">
+                    <div class="column w-28">
+                        <p>{{ __('Адрес') }}:</p>
+                    </div>
+                    <div class="column w-72">
+                        <p>д.104A, ул. Кичик Бешагоч, Ташкент, 100015, Узбекистан</p>
+                    </div>
+                </div>
+                <div class="clear-both">
+                    <div class="column w-28">
+                        <p>{{ __('Тел') }}:</p>
+                    </div>
+                    <div class="column w-72">
+                        <p>+998 78 1209012</p>
+                    </div>
+                </div>
+                <div class="clear-both">
+                    <div class="column w-28">
+                        <p>{{ __('ИНН') }}:</p>
+                    </div>
+                    <div class="column w-72">
+                        <p>305768069</p>
+                    </div>
+                </div>
+                <div class="clear-both">
+                    <div class="column w-28">
+                        <p>{{ __('ОКЭД') }}:</p>
+                    </div>
+                    <div class="column w-72">
+                        <p>79900</p>
+                    </div>
+                </div>
+                <br/>
+                <div class="clear-both">
+                    <div class="column w-28">
+                        <p>{{ __('Банк') }}:</p>
+                    </div>
+                    <div class="column w-72">
+                        <p>ЧАКБ «ORIENT FINANCE BANK» Мирабадский филиал</p>
+                    </div>
+                </div>
+                <div class="clear-both">
+                    <div class="column w-28">
+                        <p>{{ __('Адрес') }}:</p>
+                    </div>
+                    <div class="column w-72">
+                        <p>7А, ул. Якуб Колас, г. Ташкент, 100023, Узбекистан</p>
+                    </div>
+                </div>
+                <div class="clear-both">
+                    <div class="column w-28">
+                        <p>{{ __('МФО') }}:</p>
+                    </div>
+                    <div class="column w-72">
+                        <p>01071</p>
+                    </div>
+                </div>
+                <div class="clear-both">
+                    <div class="column w-28">
+                        <p>{{ __('Код ЦБУ') }}:</p>
+                    </div>
+                    <div class="column w-72">
+                        <p>11795</p>
+                    </div>
+                </div>
+                <br/>
+                <div class="clear-both">
+                    <div class="column w-28">
+                        <p>{{ __('Р/с в :currency', ['currency' => \Sdk\Shared\Enum\CurrencyEnum::UZS->name]) }}:</p>
+                    </div>
+                    <div class="column w-72">
+                        <p>20208000300934341001</p>
+                    </div>
+                </div>
+                <div class="clear-both">
+                    <div class="column w-28">
+                        <p>{{__('Р/с в :currency', ['currency' => \Sdk\Shared\Enum\CurrencyEnum::USD->name]) }}:</p>
+                    </div>
+                    <div class="column w-72">
+                        <p>20208840800934341002</p>
+                    </div>
+                </div>
+                <div class="clear-both">
+                    <div class="column w-28">
+                        <p>{{ __('Р/с в :currency', ['currency' => \Sdk\Shared\Enum\CurrencyEnum::EUR->name]) }}:</p>
+                    </div>
+                    <div class="column w-72">
+                        <p>20208978100934341002</p>
+                    </div>
+                </div>
+                <div class="clear-both">
+                    <div class="column w-28">
+                        <p>{{ __('Р/с в :currency', ['currency' => \Sdk\Shared\Enum\CurrencyEnum::RUB->name]) }}:</p>
+                    </div>
+                    <div class="column w-72">
+                        <p>20208643900934341002</p>
+                    </div>
+                </div>
+                <div class="clear-both">
+                    <div class="column w-28">
+                        <p>SWIFT:</p>
+                    </div>
+                    <div class="column w-72">
+                        <p>ORFBUZ22</p>
+                    </div>
+                </div>
+                <br/>
+                <div class="clear-both">
+                    <div class="column w-28">
+                        <p>{{ __('Банк корреспондент') }}:</p>
+                    </div>
+                    <div class="column w-72">
+                        <p>АКБ "Азия-Инвест Банк"</p>
+                    </div>
+                </div>
+                <div class="clear-both">
+                    <div class="column w-28">
+                        <p>{{ __('БИК') }}:</p>
+                    </div>
+                    <div class="column w-72">
+                        <p>044525234</p>
+                    </div>
+                </div>
+                <div class="clear-both">
+                    <div class="column w-28">
+                        <p>{{ __('Телекс') }}:</p>
+                    </div>
+                    <div class="column w-72">
+                        <p>914624 ASINV RU</p>
+                    </div>
+                </div>
+                <div class="clear-both">
+                    <div class="column w-28">
+                        <p>SWIFT:</p>
+                    </div>
+                    <div class="column w-72">
+                        <p>ASIJRUMM</p>
+                    </div>
+                </div>
+                <div class="clear-both">
+                    <div class="column w-28">
+                        <p>{{ __('Кор.сч. в :currency', ['currency' => \Sdk\Shared\Enum\CurrencyEnum::USD->name]) }}:</p>
+                    </div>
+                    <div class="column w-72">
+                        <p>30111840800000002535</p>
+                    </div>
+                </div>
+                <div class="clear-both">
+                    <div class="column w-28">
+                        <p>{{ __('Кор.сч. в :currency', ['currency' => \Sdk\Shared\Enum\CurrencyEnum::EUR->name]) }}:</p>
+                    </div>
+                    <div class="column w-72">
+                        <p>30111978400000002535</p>
+                    </div>
+                </div>
+                <div class="clear-both">
+                    <div class="column w-28">
+                        <p>{{ __('Кор.сч. в :currency', ['currency' => \Sdk\Shared\Enum\CurrencyEnum::RUB->name]) }}:</p>
+                    </div>
+                    <div class="column w-72">
+                        <p>30111810500000002535</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -261,14 +430,26 @@
             </div>
             <div style="margin-top: -10px;">
                 <div class="clear-both">
-                    <div class="column" style="width: 25%;">
+                    <div class="column w-25">
                         <p>{{ __('Менеджер') }}:</p>
+                    </div>
+                    <div class="column w-75">
+                        <p><b>{{ $manager->fullName }}</b></p>
+                    </div>
+                </div>
+                <div class="clear-both">
+                    <div class="column w-25">
                         <p>E-mail:</p>
+                    </div>
+                    <div class="column w-75">
+                        <p>{{ $manager->email }}</p>
+                    </div>
+                </div>
+                <div class="clear-both">
+                    <div class="column w-25">
                         <p>{{ __('Мобильный номер') }}:</p>
                     </div>
-                    <div class="column" style="width: 75%;">
-                        <p><b>{{ $manager->fullName }}</b></p>
-                        <p>{{ $manager->email }}</p>
+                    <div class="column w-75">
                         <p>{{ $manager->phone }}</p>
                     </div>
                 </div>

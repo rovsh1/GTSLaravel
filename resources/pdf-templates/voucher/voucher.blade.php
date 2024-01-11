@@ -32,6 +32,14 @@
             float: left;
         }
 
+        .voucher-wrapper .w-25 {
+            width: 25%;
+        }
+
+        .voucher-wrapper .w-75 {
+            width: 75%;
+        }
+
         .voucher-footer {
             margin-top: 30px;
         }
@@ -122,15 +130,29 @@
             @endforeach
         </div>
         <div class="voucher-footer">
-            <div class="column" style="width: 25%;">
-                <p>{{ __('Менеджер') }}:</p>
-                <p>E-mail:</p>
-                <p>{{ __('Мобильный номер') }}:</p>
+            <div class="clear-both">
+                <div class="column w-25">
+                    <p>{{ __('Менеджер') }}:</p>
+                </div>
+                <div class="column w-75">
+                    <p><b>{{ $manager->fullName }}</b></p>
+                </div>
             </div>
-            <div class="column" style="width: 75%;">
-                <p><b>{{ $manager->fullName }}</b></p>
-                <p>{{ $manager->email }}</p>
-                <p>{{ $manager->phone }}</p>
+            <div class="clear-both">
+                <div class="column w-25">
+                    <p>E-mail:</p>
+                </div>
+                <div class="column w-75">
+                    <p>{{ $manager->email }}</p>
+                </div>
+            </div>
+            <div class="clear-both">
+                <div class="column w-25">
+                    <p>{{ __('Мобильный номер') }}:</p>
+                </div>
+                <div class="column w-75">
+                    <p>{{ $manager->phone }}</p>
+                </div>
             </div>
         </div>
     </div>
