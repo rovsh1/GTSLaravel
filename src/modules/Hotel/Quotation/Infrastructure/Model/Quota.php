@@ -58,9 +58,9 @@ class Quota extends Model
     ];
 
     protected $appends = [
-        'count_reserved',
-        'count_booked',
-        'count_available',
+//        'count_reserved',
+//        'count_booked',
+//        'count_available',
     ];
 
     protected $attributes = [
