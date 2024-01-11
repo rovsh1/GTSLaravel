@@ -119,7 +119,7 @@ class ProfileController extends Controller
     {
         $fileStorageAdapter = app(FileStorageAdapterInterface::class);
         $fileDto = $fileStorageAdapter->updateOrCreate(
-            $model->avatar,
+            $model->avatar?->guid,
             $uploadedFile->getClientOriginalName(),
             $uploadedFile->get()
         );
