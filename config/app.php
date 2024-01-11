@@ -186,6 +186,7 @@ return [
          * Package Service Providers...
          */
         \App\Shared\Providers\HorizonServiceProvider::class,
+        \Pkg\Supplier\Traveline\TravelineServiceProvider::class,
 
         /*
          * Application Service Providers...

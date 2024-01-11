@@ -49,7 +49,7 @@
       "App\\Shared\\": "apps/shared/app/",
       "Module\\": "src/modules/",
       "Supplier\\": "src/suppliers/",
-      "Pkg\\Traveline\\": "src/packages/traveline/src",
+      "Pkg\\Supplier\\Traveline\\": "packages/supplier/traveline/src",
       "Support\\": "src/support/",
       "Services\\": "src/services/",
       "Shared\\": "src/shared/",

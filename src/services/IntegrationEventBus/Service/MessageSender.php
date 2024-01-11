@@ -3,6 +3,7 @@
 namespace Services\IntegrationEventBus\Service;
 
 use App\Shared\Contracts\Module\ModuleAdapterInterface;
+use Pkg\Supplier\Traveline\Contracts\IntegrationEventDispatcherInterface as TravelineEventDispatcher;
 use Sdk\Module\Contracts\Event\IntegrationEventInterface;
 use Sdk\Module\Event\IntegrationEventMessage;
 use Services\IntegrationEventBus\Entity\Message;
@@ -30,6 +31,7 @@ class MessageSender
                 dd($e);
             }
         }
+        app(TravelineEventDispatcher::class)->dispatch($event->event);
     }
 
     private function isDispatchableModule(ModuleAdapterInterface $moduleAdapter): bool
@@ -45,7 +47,7 @@ class MessageSender
 
         return new IntegrationEventMessage(
             module: $message->module(),
-            event: unserialize($message->payload()),
+            event: unserialize($message->payload(), ['allowed_classes' => true]),
             context: $message->context()
         );
     }

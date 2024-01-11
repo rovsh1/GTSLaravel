@@ -2,7 +2,7 @@
 
 namespace App\Hotel\Http\Controllers;
 
-use App\Api\Repositories\Hotel\RoomImageRepository;
+use App\Admin\Repositories\Hotel\RoomImageRepository;
 use App\Hotel\Http\Requests\UploadImagesRequest;
 use App\Hotel\Http\Resources\HotelImage;
 use App\Hotel\Http\Resources\Room as RoomResource;
