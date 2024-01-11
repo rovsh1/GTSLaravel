@@ -3,8 +3,8 @@
 namespace App\Shared\Support\Facades;
 
 use Illuminate\Support\Facades\Facade;
-use Sdk\Shared\Contracts\Adapter\MailAdapterInterface;
 use Sdk\Shared\Dto\Mail\MailMessageDto;
+use Shared\Contracts\Adapter\MailAdapterInterface;
 
 /**
  * @method static bool send(MailMessageDto $messageDto)

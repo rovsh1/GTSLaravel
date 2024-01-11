@@ -50,6 +50,7 @@
       "Module\\": "src/modules/",
       "Supplier\\": "src/suppliers/",
       "Pkg\\Supplier\\Traveline\\": "packages/supplier/traveline/src",
+      "Pkg\\MailManager\\": "packages/support/mail-manager/src",
       "Support\\": "src/support/",
       "Services\\": "src/services/",
       "Shared\\": "src/shared/",

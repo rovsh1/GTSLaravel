@@ -12,8 +12,8 @@ use Module\Client\Shared\Domain\Repository\ClientRequisitesRepositoryInterface;
 use Module\Client\Shared\Domain\ValueObject\OrderId;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
-use Sdk\Shared\Contracts\Adapter\MailAdapterInterface;
 use Sdk\Shared\Dto\Mail\AttachmentDto;
+use Shared\Contracts\Adapter\MailAdapterInterface;
 
 class SendInvoiceToClient implements UseCaseInterface
 {

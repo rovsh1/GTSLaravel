@@ -12,8 +12,9 @@ use Services\ApplicationsConstants\ApplicationConstantManager;
 use Services\CompanyRequisites\CompanyRequisiteManager;
 use Services\CurrencyRate\CurrencyRateServiceProvider;
 use Services\IntegrationEventBus\IntegrationEventBusServiceProvider;
+use Shared\Contracts\Adapter\MailAdapterInterface;
+use Shared\Support\Adapter\MailAdapter;
 use Support\LocaleTranslator\TranslationServiceProvider;
-use Support\MailManager\MailManagerServiceProvider;
 
 class CoreServiceProvider extends ServiceProvider
 {
@@ -30,11 +31,11 @@ class CoreServiceProvider extends ServiceProvider
 
         $this->app->singleton(ApplicationConstantsInterface::class, ApplicationConstantManager::class);
         $this->app->singleton(CompanyRequisitesInterface::class, CompanyRequisiteManager::class);
+        $this->app->singleton(MailAdapterInterface::class, MailAdapter::class);
     }
 
     private function registerSupport(): void
     {
-        $this->app->register(MailManagerServiceProvider::class);
         $this->app->register(TranslationServiceProvider::class);
 
         $this->app->singleton(FileStorageAdapterInterface::class, FileStorageAdapter::class);

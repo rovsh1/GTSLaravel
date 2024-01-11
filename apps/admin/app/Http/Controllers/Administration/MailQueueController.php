@@ -13,7 +13,7 @@ use App\Admin\Support\View\Layout as LayoutContract;
 use App\Shared\Support\Facades\MailAdapter;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Support\MailManager\Model\QueueMessage;
+use Pkg\MailManager\Model\QueueMessage;
 
 class MailQueueController extends Controller
 {

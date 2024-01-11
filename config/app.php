@@ -187,6 +187,7 @@ return [
          */
         \App\Shared\Providers\HorizonServiceProvider::class,
         \Pkg\Supplier\Traveline\TravelineServiceProvider::class,
+        \Pkg\MailManager\MailManagerServiceProvider::class,
 
         /*
          * Application Service Providers...

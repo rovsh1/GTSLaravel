@@ -15,8 +15,8 @@ use Sdk\Booking\ValueObject\OrderId;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
-use Sdk\Shared\Contracts\Adapter\MailAdapterInterface;
 use Sdk\Shared\Dto\Mail\AttachmentDto;
+use Shared\Contracts\Adapter\MailAdapterInterface;
 
 class SendVoucher implements UseCaseInterface
 {

@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Sdk\Shared\Dto\Mail;
 
-class MailMessageDto
+final class MailMessageDto
 {
     /**
      * @param string[] $to
