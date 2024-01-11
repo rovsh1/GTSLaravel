@@ -217,7 +217,14 @@ class BookingController extends AbstractHotelController
     private function searchForm()
     {
         return (new SearchForm())
-            ->hidden('hotel_room_id', ['label' => 'Тип номера'])
+            ->select(
+                'hotel_room_id',
+                [
+                    'label' => 'Тип номера',
+                    'items' => Room::whereHotelId($this->getHotel()->id)->get(),
+                    'emptyItem' => ''
+                ]
+            )
             ->select('status', ['label' => 'Статус', 'items' => BookingAdapter::getStatuses(), 'emptyItem' => ''])
             ->dateRange('start_period', ['label' => 'Дата заезда'])
             ->dateRange('end_period', ['label' => 'Дата выезда'])

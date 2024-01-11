@@ -49,8 +49,10 @@
       "App\\Shared\\": "apps/shared/app/",
       "Module\\": "src/modules/",
       "Supplier\\": "src/suppliers/",
+      "Pkg\\Traveline\\": "src/packages/traveline/src",
       "Support\\": "src/support/",
       "Services\\": "src/services/",
+      "Shared\\": "src/shared/",
       "Sdk\\": "src/sdk",
       "Database\\Factories\\": "database/factories/",
       "Database\\Seeders\\": "database/seeders/"
