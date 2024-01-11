@@ -1,6 +1,6 @@
 <?php
 
-namespace Services\IntegrationEventBus\Enums;
+namespace Pkg\IntegrationEventBus\Enums;
 
 enum MessageStatusEnum: int
 {

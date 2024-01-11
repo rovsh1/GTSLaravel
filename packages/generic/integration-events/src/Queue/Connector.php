@@ -1,9 +1,9 @@
 <?php
 
-namespace Services\IntegrationEventBus\Queue;
+namespace Pkg\IntegrationEventBus\Queue;
 
 use Illuminate\Queue\Connectors\ConnectorInterface;
-use Services\IntegrationEventBus\Service\MessageSender;
+use Pkg\IntegrationEventBus\Service\MessageSender;
 
 class Connector implements ConnectorInterface
 {

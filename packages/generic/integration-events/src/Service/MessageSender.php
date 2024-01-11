@@ -1,12 +1,12 @@
 <?php
 
-namespace Services\IntegrationEventBus\Service;
+namespace Pkg\IntegrationEventBus\Service;
 
 use App\Shared\Contracts\Module\ModuleAdapterInterface;
+use Pkg\IntegrationEventBus\Entity\Message;
 use Pkg\Supplier\Traveline\Contracts\IntegrationEventDispatcherInterface as TravelineEventDispatcher;
 use Sdk\Module\Contracts\Event\IntegrationEventInterface;
 use Sdk\Module\Event\IntegrationEventMessage;
-use Services\IntegrationEventBus\Entity\Message;
 
 class MessageSender
 {

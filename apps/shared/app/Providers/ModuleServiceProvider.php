@@ -13,7 +13,7 @@ use Sdk\Shared\Contracts\Service\TranslatorInterface;
 use Shared\Contracts\Adapter\MailAdapterInterface;
 
 /**
- * @see \Services\IntegrationEventBus\Service\MessageSender
+ * @see \Pkg\IntegrationEventBus\Service\MessageSender
  */
 class ModuleServiceProvider extends ServiceProvider
 {

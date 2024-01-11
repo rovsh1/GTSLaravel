@@ -1,13 +1,13 @@
 <?php
 
-namespace Services\IntegrationEventBus\Queue;
+namespace Pkg\IntegrationEventBus\Queue;
 
 use Illuminate\Contracts\Queue\Queue as QueueContract;
 use Illuminate\Queue\Queue as Base;
 use Illuminate\Redis\Connections\Connection;
 use Illuminate\Support\Facades\Redis;
-use Services\IntegrationEventBus\Entity\Message;
-use Services\IntegrationEventBus\Service\MessageSender;
+use Pkg\IntegrationEventBus\Entity\Message;
+use Pkg\IntegrationEventBus\Service\MessageSender;
 
 class Queue extends Base implements QueueContract
 {
