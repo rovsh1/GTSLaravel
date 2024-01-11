@@ -636,16 +636,16 @@
         },
         {
             "name": "gsdk/file-storage",
-            "version": "1.0.5",
+            "version": "1.0.7",
             "source": {
                 "type": "git",
                 "url": "https://gitlab.com/gsdk/file-storage.git",
-                "reference": "5a77b80e85e94950c881e307efe793092932df97"
+                "reference": "ddd6d107e3d1d13abf5ff4db47da1c30f26e6d97"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://gitlab.com/api/v4/projects/gsdk%2Ffile-storage/repository/archive.zip?sha=5a77b80e85e94950c881e307efe793092932df97",
-                "reference": "5a77b80e85e94950c881e307efe793092932df97",
+                "url": "https://gitlab.com/api/v4/projects/gsdk%2Ffile-storage/repository/archive.zip?sha=ddd6d107e3d1d13abf5ff4db47da1c30f26e6d97",
+                "reference": "ddd6d107e3d1d13abf5ff4db47da1c30f26e6d97",
                 "shasum": ""
             },
             "require": {
@@ -673,9 +673,9 @@
             ],
             "support": {
                 "issues": "https://gitlab.com/gsdk/file-storage/-/issues",
-                "source": "https://gitlab.com/gsdk/file-storage/-/tree/v1.0.5"
+                "source": "https://gitlab.com/gsdk/file-storage/-/tree/v1.0.7"
             },
-            "time": "2024-01-11T12:11:08+00:00"
+            "time": "2024-01-11T12:53:01+00:00"
         },
         {
             "name": "gsdk/filemanager",
