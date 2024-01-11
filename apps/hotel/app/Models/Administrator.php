@@ -64,7 +64,8 @@ class Administrator extends Authenticatable
 
     public function isActive(): bool
     {
-        return (bool)$this->status;
+//        return (bool)$this->status;
+        return true;
     }
 
     public function setAttribute($key, $value)
