@@ -20,7 +20,6 @@ declare global {
       in_array<T = string | number>(value: T, array: T[]): boolean
     }
 
-    google: any
     $: JQueryStatic
     jQuery: JQueryStatic
 

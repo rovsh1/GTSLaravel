@@ -7,12 +7,9 @@ module.exports = defineConfig({
     jquery: true,
   },
   globals: {
-    get_meta_content: 'readonly',
-    get_url_parameter: 'readonly',
     WindowDialog: 'readonly',
     MessageConfirm: 'readonly',
     MessageBox: 'readonly',
-    google: 'readonly',
     is_function: 'readonly',
     in_array: 'readonly',
   },
