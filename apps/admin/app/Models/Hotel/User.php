@@ -17,6 +17,10 @@ class User extends Model
 
     protected $table = 'hotel_administrators';
 
+    protected $attributes = [
+        'status' => 1,
+    ];
+
     protected $fillable = [
         'hotel_id',
         'presentation',
