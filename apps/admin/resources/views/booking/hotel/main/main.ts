@@ -40,7 +40,7 @@ $(() => {
     const { result: isConfirmed, toggleLoading } = await showConfirmDialog('Удалить запись?', 'btn-danger')
     if (isConfirmed) {
       toggleLoading()
-      await axios.delete('/hotel-booking/bulk', { data: { ids: selectedBookings } })
+      await axios.delete('/service-booking/bulk', { data: { ids: selectedBookings } })
       location.reload()
     }
   })
@@ -69,7 +69,7 @@ $(() => {
     e.preventDefault()
     const bookingId = $(e.currentTarget).parent().parent().parent()
       .data('id')
-    const { data: requests } = await axios.get<BookingRequest[]>(`/hotel-booking/${bookingId}/request/list`)
+    const { data: requests } = await axios.get<BookingRequest[]>(`/service-booking/${bookingId}/request/list`)
     const popoverContentDownload: Array<PopoverItem> = []
     const groupedRequests: { [type: string]: BookingRequest[] } = requests.reduce((result, request) => {
       const resultItem = result
@@ -115,7 +115,7 @@ $(() => {
     e.preventDefault()
     const bookingId = $(e.currentTarget).parent().parent().parent()
       .data('id')
-    const { data: availableActions } = await axios.get<BookingAvailableActionsResponse>(`/hotel-booking/${bookingId}/actions/available`)
+    const { data: availableActions } = await axios.get<BookingAvailableActionsResponse>(`/service-booking/${bookingId}/actions/available`)
     const popoverContentSend: Array<PopoverItem> = []
     let requestText
     if (availableActions.canSendBookingRequest) {
@@ -132,7 +132,7 @@ $(() => {
         text: requestText,
         buttonText: 'Отправить',
         callback: async () => {
-          await axios.post(`/hotel-booking/${bookingId}/request`)
+          await axios.post(`/service-booking/${bookingId}/request`)
           location.reload()
         },
       }
