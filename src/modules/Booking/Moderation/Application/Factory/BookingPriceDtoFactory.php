@@ -9,10 +9,10 @@ use Module\Booking\Moderation\Application\Dto\PriceItemDto;
 use Module\Booking\Moderation\Application\Dto\ProfitItemDto;
 use Sdk\Booking\ValueObject\BookingPriceItem;
 use Sdk\Booking\ValueObject\BookingPrices;
-use Sdk\Shared\Contracts\Adapter\CurrencyRateAdapterInterface;
 use Sdk\Shared\Contracts\Service\TranslatorInterface;
 use Sdk\Shared\Dto\CurrencyDto;
 use Sdk\Shared\Enum\CurrencyEnum;
+use Shared\Contracts\Adapter\CurrencyRateAdapterInterface;
 
 class BookingPriceDtoFactory
 {

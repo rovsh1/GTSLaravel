@@ -8,21 +8,16 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Module\Hotel\Moderation\Infrastructure\Command\RefreshRatingsCommand;
 use Sdk\Module\Services\NamespaceReader;
-use Services\CurrencyRate\UpdateRatesCommand;
 use Support\LocaleTranslator\LocaleSyncCommand;
 
 class Kernel extends ConsoleKernel
 {
     protected $commands = [
         LocaleSyncCommand::class,
-        UpdateRatesCommand::class,
         RefreshRatingsCommand::class,
     ];
 
-    protected function schedule(Schedule $schedule)
-    {
-        $schedule->command(UpdateRatesCommand::class)->dailyAt('00:10');
-    }
+    protected function schedule(Schedule $schedule) {}
 
     protected function commands()
     {

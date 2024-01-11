@@ -51,6 +51,7 @@
       "Supplier\\": "src/suppliers/",
       "Pkg\\Supplier\\Traveline\\": "packages/supplier/traveline/src",
       "Pkg\\MailManager\\": "packages/support/mail-manager/src",
+      "Pkg\\CurrencyRate\\": "packages/generic/currency-rate/src",
       "Pkg\\IntegrationEventBus\\": "packages/generic/integration-events/src",
       "Support\\": "src/support/",
       "Services\\": "src/services/",

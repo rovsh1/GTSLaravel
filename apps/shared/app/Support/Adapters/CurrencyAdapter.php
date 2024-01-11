@@ -2,9 +2,9 @@
 
 namespace App\Shared\Support\Adapters;
 
-use Sdk\Shared\Contracts\Adapter\CurrencyRateAdapterInterface;
+use Pkg\CurrencyRate\ValueObject\CountryEnum;
 use Sdk\Shared\Enum\CurrencyEnum;
-use Services\CurrencyRate\ValueObject\CountryEnum;
+use Shared\Contracts\Adapter\CurrencyRateAdapterInterface;
 
 class CurrencyAdapter
 {
