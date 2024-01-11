@@ -4,18 +4,17 @@ declare(strict_types=1);
 
 namespace Sdk\Shared\Dto;
 
-use Module\Shared\Support\Dto\AbstractEnumDto;
 use Sdk\Shared\Contracts\Service\TranslatorInterface;
 use Sdk\Shared\Enum\CurrencyEnum;
 
-class CurrencyDto extends AbstractEnumDto
+class CurrencyDto
 {
-    public function __construct(public readonly int $id, int|string $value, string $name)
-    {
-        parent::__construct($value, $name);
-    }
+    public function __construct(
+        public readonly int $id,
+        public readonly int|string $value,
+        public readonly string $name,
+    ) {}
 
-    //@todo remove from here
     public static function fromEnum(\BackedEnum $enum, TranslatorInterface $translator): static
     {
         assert($enum instanceof CurrencyEnum);
