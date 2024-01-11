@@ -38,7 +38,7 @@
                         </div>
                     </div>
                     <div class="buttons">
-                        <a href="" class="btn btn-light">Описание</a>
+                        <a href="https://www.gotostans.com/ru/hotel/{{ $room->hotel_id }}/" target="_blank" class="btn btn-light">Описание</a>
                         <a href="{{ route('images.index', ['room_id' => $room->id]) }}" class="btn btn-light">Фотографии</a>
                     </div>
                 </div>
