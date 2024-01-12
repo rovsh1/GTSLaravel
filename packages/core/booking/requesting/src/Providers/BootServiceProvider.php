@@ -26,14 +26,21 @@ class BootServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-//        View::addLocation(__DIR__ . '../../resources/pdf-templates');
-        View::addNamespace('BookingRequesting', __DIR__ . '/../../resources/views');
-//        View::addLocation(base_path('resources/pdf-templates'));
+        $this->registerViews();
+        $this->registerServices();
+    }
 
+    protected function registerServices(): void
+    {
         $this->app->singleton(RequestFactory::class);
         $this->app->singleton(RequestRepositoryInterface::class, RequestRepository::class);
         $this->app->singleton(AdministratorAdapterInterface::class, AdministratorAdapter::class);
         $this->app->singleton(ChangesStorageInterface::class, ChangesStorage::class);
+    }
+
+    protected function registerViews(): void
+    {
+        View::addNamespace('BookingRequesting', __DIR__ . '/../../resources/views');
     }
 
     protected function registerMigrations(): void
