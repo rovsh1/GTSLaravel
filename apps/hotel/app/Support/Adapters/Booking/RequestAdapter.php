@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Hotel\Support\Adapters\Booking;
 
-use Module\Booking\Requesting\Application\UseCase\GetBookingRequests;
-use Module\Booking\Requesting\Application\UseCase\GetDocumentFileInfo;
+use Pkg\Booking\Requesting\Application\UseCase\GetBookingRequests;
+use Pkg\Booking\Requesting\Application\UseCase\GetDocumentFileInfo;
 
 class RequestAdapter
 {

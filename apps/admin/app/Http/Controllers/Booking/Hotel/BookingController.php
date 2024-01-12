@@ -34,7 +34,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use Module\Booking\Requesting\Domain\Service\RequestingRules;
+use Pkg\Booking\Requesting\Domain\Service\RequestingRules;
 use Sdk\Booking\Enum\QuotaProcessingMethodEnum;
 use Sdk\Booking\Enum\StatusEnum;
 use Sdk\Shared\Enum\CurrencyEnum;

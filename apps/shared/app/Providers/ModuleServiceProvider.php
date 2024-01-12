@@ -28,12 +28,15 @@ class ModuleServiceProvider extends ServiceProvider
         'ClientPayment' => 'Client/Payment',
         'BookingModeration' => 'Booking/Moderation',
         'BookingPricing' => 'Booking/Pricing',
-        'BookingRequesting' => 'Booking/Requesting',
         'BookingNotification' => 'Booking/Notification',
         'BookingEventSourcing' => 'Booking/EventSourcing',
         'BookingInvoicing' => 'Booking/Invoicing',
         'SupplierModeration' => 'Supplier/Moderation',
 //        'Traveline' => 'Traveline',
+    ];
+
+    private array $pkgModules = [
+        'BookingRequesting' => 'Booking\\Requesting',
     ];
 
     protected array $shared = [
@@ -59,14 +62,38 @@ class ModuleServiceProvider extends ServiceProvider
 
         $modules = app()->modules();
         $monolithFactory = new ModuleAdapterFactory(
-            modulesPath: $this->app->modulesPath(),
-            modulesNamespace: 'Module',
             sharedContainer: $kernel->getContainer()
         );
 
+        $this->registerSrcModules($modules, $monolithFactory);
+        $this->registerPackageModules($modules, $monolithFactory);
+    }
+
+    private function registerPackageModules($modules, $monolithFactory): void
+    {
+        foreach ($this->pkgModules as $name => $ns) {
+            $adapter = $monolithFactory->build(
+                $name,
+                "",
+                'Pkg\\' . $ns,
+                $configs[$name] ?? []
+            );
+            $modules->register($adapter);
+        }
+    }
+
+    private function registerSrcModules($modules, $monolithFactory): void
+    {
+        $modulesPath = $this->app->modulesPath();
+        $modulesNamespace = 'Module';
         $configs = config('modules');
         foreach ($this->modules as $name => $path) {
-            $adapter = $monolithFactory->build($name, $path, $configs[$name] ?? []);
+            $adapter = $monolithFactory->build(
+                $name,
+                "$modulesPath/$path",
+                $modulesNamespace . '\\' . str_replace(DIRECTORY_SEPARATOR, '\\', $path),
+                $configs[$name] ?? []
+            );
             $modules->register($adapter);
         }
     }
