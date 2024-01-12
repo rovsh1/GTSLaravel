@@ -1,6 +1,6 @@
 <?php
 
-namespace Sdk\Module\Contracts\Event;
+namespace Sdk\Shared\Contracts\Event;
 
 interface IntegrationEventInterface
 {

@@ -6,8 +6,8 @@ use Sdk\Booking\IntegrationEvent\ClientPriceChanged;
 use Sdk\Booking\IntegrationEvent\RequestSent;
 use Sdk\Booking\IntegrationEvent\StatusUpdated;
 use Sdk\Booking\IntegrationEvent\SupplierPriceChanged;
-use Sdk\Module\Contracts\Event\IntegrationEventInterface;
 use Sdk\Module\Contracts\Support\ContainerInterface;
+use Sdk\Shared\Contracts\Event\IntegrationEventInterface;
 
 class DescriptorFactory
 {

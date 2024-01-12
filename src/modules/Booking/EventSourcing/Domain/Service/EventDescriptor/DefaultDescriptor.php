@@ -3,7 +3,7 @@
 namespace Module\Booking\EventSourcing\Domain\Service\EventDescriptor;
 
 use Sdk\Booking\IntegrationEvent\BookingCreated;
-use Sdk\Module\Contracts\Event\IntegrationEventInterface;
+use Sdk\Shared\Contracts\Event\IntegrationEventInterface;
 
 class DefaultDescriptor extends AbstractDescriptor implements DescriptorInterface
 {

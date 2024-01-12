@@ -7,8 +7,8 @@ use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Sdk\Booking\Enum\StatusEnum;
 use Sdk\Booking\IntegrationEvent\BookingEventInterface;
 use Sdk\Booking\ValueObject\BookingId;
-use Sdk\Module\Contracts\Event\IntegrationEventListenerInterface;
-use Sdk\Module\Event\IntegrationEventMessage;
+use Sdk\Shared\Contracts\Event\IntegrationEventListenerInterface;
+use Sdk\Shared\Event\IntegrationEventMessage;
 
 class RegisterChangesListener implements IntegrationEventListenerInterface
 {

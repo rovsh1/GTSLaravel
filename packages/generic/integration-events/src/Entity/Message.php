@@ -9,7 +9,7 @@ class Message
     public function __construct(
         private readonly string $id,
         private MessageStatusEnum $status,
-        private readonly string $module,
+        private readonly string $originator,
         private readonly string $event,
         private readonly string $payload,
         private readonly array $context
@@ -20,9 +20,9 @@ class Message
         return $this->id;
     }
 
-    public function module(): string
+    public function originator(): string
     {
-        return $this->module;
+        return $this->originator;
     }
 
     public function event(): string
@@ -62,7 +62,7 @@ class Message
         return [
             'id' => $this->id,
             'status' => $this->status->value,
-            'module' => $this->module,
+            'originator' => $this->originator,
             'event' => $this->event,
             'payload' => $this->payload,
             'context' => $this->context,
@@ -74,7 +74,7 @@ class Message
         return new Message(
             id: $payload['id'],
             status: MessageStatusEnum::from($payload['status']),
-            module: $payload['module'],
+            originator: $payload['originator'],
             event: $payload['event'],
             payload: $payload['payload'],
             context: $payload['context'],

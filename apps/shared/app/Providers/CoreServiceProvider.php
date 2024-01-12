@@ -3,8 +3,10 @@
 namespace App\Shared\Providers;
 
 use Module\Shared\Infrastructure\Adapter\FileStorageAdapter;
+use Pkg\IntegrationEventBus\Service\IntegrationEventPublisher;
 use Sdk\Module\Support\ServiceProvider;
 use Sdk\Shared\Contracts\Adapter\FileStorageAdapterInterface;
+use Sdk\Shared\Contracts\Event\IntegrationEventPublisherInterface;
 use Sdk\Shared\Contracts\Service\ApplicationConstantsInterface;
 use Sdk\Shared\Contracts\Service\CompanyRequisitesInterface;
 use Services\ApplicationsConstants\ApplicationConstantManager;
@@ -29,6 +31,7 @@ class CoreServiceProvider extends ServiceProvider
         $this->app->singleton(CompanyRequisitesInterface::class, CompanyRequisiteManager::class);
         $this->app->singleton(MailAdapterInterface::class, MailAdapter::class);
         $this->app->singleton(CurrencyRateAdapterInterface::class, CurrencyRateAdapter::class);
+        $this->app->singleton(IntegrationEventPublisherInterface::class, IntegrationEventPublisher::class);
     }
 
     private function registerSupport(): void

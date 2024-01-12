@@ -1,13 +1,13 @@
 <?php
 
-namespace Sdk\Module\Event;
+namespace Sdk\Shared\Event;
 
-use Sdk\Module\Contracts\Event\IntegrationEventInterface;
+use Sdk\Shared\Contracts\Event\IntegrationEventInterface;
 
 final class IntegrationEventMessage
 {
     public function __construct(
-        public readonly string $module,
+        public readonly string $originator,
         public readonly IntegrationEventInterface $event,
         public readonly array $context,
     ) {}

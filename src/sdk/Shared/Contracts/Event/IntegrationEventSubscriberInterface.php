@@ -1,8 +1,8 @@
 <?php
 
-namespace Sdk\Module\Contracts\Event;
+namespace Sdk\Shared\Contracts\Event;
 
-use Sdk\Module\Event\IntegrationEventMessage;
+use Sdk\Shared\Event\IntegrationEventMessage;
 
 interface IntegrationEventSubscriberInterface
 {

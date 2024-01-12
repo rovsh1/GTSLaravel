@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pkg\Supplier\Traveline\Support\EventDispatcher;
 
 use Pkg\Supplier\Traveline\Contracts\IntegrationEventDispatcherInterface;
-use Sdk\Module\Contracts\Event\IntegrationEventInterface;
+use Sdk\Shared\Contracts\Event\IntegrationEventInterface;
 
 class IntegrationEventDispatcher implements IntegrationEventDispatcherInterface
 {

@@ -6,8 +6,8 @@ use Module\Booking\Requesting\Domain\Service\ChangesStorageInterface;
 use Sdk\Booking\Enum\StatusEnum;
 use Sdk\Booking\IntegrationEvent\StatusUpdated;
 use Sdk\Booking\ValueObject\BookingId;
-use Sdk\Module\Contracts\Event\IntegrationEventListenerInterface;
-use Sdk\Module\Event\IntegrationEventMessage;
+use Sdk\Shared\Contracts\Event\IntegrationEventListenerInterface;
+use Sdk\Shared\Event\IntegrationEventMessage;
 
 class ClearChangesListener implements IntegrationEventListenerInterface
 {

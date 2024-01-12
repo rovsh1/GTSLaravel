@@ -13,7 +13,7 @@ use Sdk\Booking\IntegrationEvent\HotelBooking\PeriodChanged as IntegrationEvent;
 use Sdk\Booking\Support\Event\AbstractDetailsEvent;
 use Sdk\Booking\ValueObject\HotelBooking\BookingPeriod;
 use Sdk\Module\Contracts\Event\HasIntegrationEventInterface;
-use Sdk\Module\Contracts\Event\IntegrationEventInterface;
+use Sdk\Shared\Contracts\Event\IntegrationEventInterface;
 
 class PeriodChanged extends AbstractDetailsEvent implements PriceBecomeDeprecatedEventInterface,
                                                             BookingDateChangedEventInterface,

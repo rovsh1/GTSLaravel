@@ -2,8 +2,8 @@
 
 namespace Sdk\Module\Support\Providers;
 
-use Sdk\Module\Contracts\Event\IntegrationEventSubscriberInterface;
 use Sdk\Module\Support\ServiceProvider;
+use Sdk\Shared\Contracts\Event\IntegrationEventSubscriberInterface;
 
 class IntegrationEventServiceProvider extends ServiceProvider
 {

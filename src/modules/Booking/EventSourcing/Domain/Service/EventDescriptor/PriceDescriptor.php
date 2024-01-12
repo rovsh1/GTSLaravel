@@ -6,7 +6,7 @@ use Module\Booking\EventSourcing\Domain\ValueObject\EventGroupEnum;
 use Sdk\Booking\Dto\PriceDto;
 use Sdk\Booking\IntegrationEvent\ClientPriceChanged;
 use Sdk\Booking\IntegrationEvent\SupplierPriceChanged;
-use Sdk\Module\Contracts\Event\IntegrationEventInterface;
+use Sdk\Shared\Contracts\Event\IntegrationEventInterface;
 
 class PriceDescriptor extends AbstractDescriptor implements DescriptorInterface
 {

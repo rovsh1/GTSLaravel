@@ -2,7 +2,7 @@
 
 namespace App\Shared\Contracts\Module;
 
-use Sdk\Module\Event\IntegrationEventMessage;
+use Sdk\Shared\Event\IntegrationEventMessage;
 
 interface ModuleAdapterInterface
 {

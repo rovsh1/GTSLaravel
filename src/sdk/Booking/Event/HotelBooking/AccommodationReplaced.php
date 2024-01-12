@@ -7,7 +7,7 @@ use Sdk\Booking\Contracts\Event\QuotaChangedEventInterface;
 use Sdk\Booking\Entity\HotelAccommodation;
 use Sdk\Booking\IntegrationEvent\HotelBooking\AccommodationReplaced as IntegrationEvent;
 use Sdk\Module\Contracts\Event\HasIntegrationEventInterface;
-use Sdk\Module\Contracts\Event\IntegrationEventInterface;
+use Sdk\Shared\Contracts\Event\IntegrationEventInterface;
 
 class AccommodationReplaced extends AbstractAccommodationEvent implements QuotaChangedEventInterface,
                                                                           PriceBecomeDeprecatedEventInterface,

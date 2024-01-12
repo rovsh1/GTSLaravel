@@ -6,6 +6,7 @@ use App\Shared\Support\Module\Monolith\ModuleAdapterFactory;
 use App\Shared\Support\Module\Monolith\SharedKernel;
 use Illuminate\Support\ServiceProvider;
 use Sdk\Shared\Contracts\Adapter\FileStorageAdapterInterface;
+use Sdk\Shared\Contracts\Event\IntegrationEventPublisherInterface;
 use Sdk\Shared\Contracts\Service\ApplicationConstantsInterface;
 use Sdk\Shared\Contracts\Service\CompanyRequisitesInterface;
 use Sdk\Shared\Contracts\Service\TranslatorInterface;
@@ -42,6 +43,7 @@ class ModuleServiceProvider extends ServiceProvider
         FileStorageAdapterInterface::class,
         ApplicationConstantsInterface::class,
         CompanyRequisitesInterface::class,
+        IntegrationEventPublisherInterface::class,
     ];
 
     public function register(): void

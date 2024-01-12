@@ -4,8 +4,8 @@ namespace Module\Booking\EventSourcing\Domain\Service\EventDescriptor;
 
 use Module\Booking\EventSourcing\Domain\ValueObject\EventGroupEnum;
 use Sdk\Booking\IntegrationEvent\RequestSent;
-use Sdk\Module\Contracts\Event\IntegrationEventInterface;
 use Sdk\Shared\Contracts\Adapter\FileStorageAdapterInterface;
+use Sdk\Shared\Contracts\Event\IntegrationEventInterface;
 use Sdk\Shared\Contracts\Service\TranslatorInterface;
 
 class RequestDescriptor extends AbstractDescriptor implements DescriptorInterface
