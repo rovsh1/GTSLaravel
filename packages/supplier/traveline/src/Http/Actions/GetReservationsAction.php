@@ -2,20 +2,31 @@
 
 namespace Pkg\Supplier\Traveline\Http\Actions;
 
-use Pkg\Supplier\Traveline\Http\Requests\GetReservationsActionRequest;
-use Sdk\Module\Contracts\PortGateway\PortGatewayInterface;
+use Pkg\Supplier\Traveline\Exception\HotelNotConnectedException;
+use Pkg\Supplier\Traveline\Http\Request\GetReservationsActionRequest;
+use Pkg\Supplier\Traveline\Http\Response\GetReservationsActionResponse;
+use Pkg\Supplier\Traveline\Http\Response\HotelNotConnectedToChannelManagerResponse;
+use Pkg\Supplier\Traveline\Service\BookingService;
 
 class GetReservationsAction
 {
-    public function __construct(private PortGatewayInterface $portGateway) {}
+    public function __construct(
+        private readonly BookingService $bookingService,
+    ) {}
 
     public function handle(GetReservationsActionRequest $request)
     {
-        return $this->portGateway->request('traveline/getReservations', [
-            'reservation_id' => $request->getReservationId(),
-            'hotel_id' => $request->getHotelId(),
-            'date_update' => $request->getStartTime(),
-        ]);
+        try {
+            $reservations = $this->bookingService->getReservations(
+                $request->reservation_id,
+                $request->hotel_id,
+                $request->date_update
+            );
+        } catch (HotelNotConnectedException $exception) {
+            return new HotelNotConnectedToChannelManagerResponse();
+        }
+
+        return new GetReservationsActionResponse($reservations);
     }
 
 }

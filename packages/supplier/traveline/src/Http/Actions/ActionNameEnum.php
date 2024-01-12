@@ -2,10 +2,10 @@
 
 namespace Pkg\Supplier\Traveline\Http\Actions;
 
-use Pkg\Supplier\Traveline\Http\Requests\ConfirmBookingsActionRequest;
-use Pkg\Supplier\Traveline\Http\Requests\GetReservationsActionRequest;
-use Pkg\Supplier\Traveline\Http\Requests\GetRoomsAndRatePlansActionRequest;
-use Pkg\Supplier\Traveline\Http\Requests\UpdateActionRequest;
+use Pkg\Supplier\Traveline\Http\Request\ConfirmBookingsActionRequest;
+use Pkg\Supplier\Traveline\Http\Request\GetReservationsActionRequest;
+use Pkg\Supplier\Traveline\Http\Request\GetRoomsAndRatePlansActionRequest;
+use Pkg\Supplier\Traveline\Http\Request\UpdateActionRequest;
 use Illuminate\Http\Request;
 
 enum ActionNameEnum: string

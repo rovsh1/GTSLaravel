@@ -2,18 +2,25 @@
 
 namespace Pkg\Supplier\Traveline\Http\Actions;
 
-use Pkg\Supplier\Traveline\Http\Requests\GetRoomsAndRatePlansActionRequest;
-use Sdk\Module\Contracts\PortGateway\PortGatewayInterface;
+use Pkg\Supplier\Traveline\Exception\HotelNotConnectedException;
+use Pkg\Supplier\Traveline\Http\Request\GetRoomsAndRatePlansActionRequest;
+use Pkg\Supplier\Traveline\Http\Response\GetRoomsAndRatePlansActionResponse;
+use Pkg\Supplier\Traveline\Http\Response\HotelNotExistInChannelResponse;
+use Pkg\Supplier\Traveline\Service\HotelService;
 
 class GetRoomsAndRatePlansAction
 {
-    public function __construct(private PortGatewayInterface $portGateway) {}
+    public function __construct(private readonly HotelService $hotelService) {}
 
     public function handle(GetRoomsAndRatePlansActionRequest $request)
     {
-        return $this->portGateway->request('traveline/getRoomsAndRatePlans', [
-            'hotel_id' => $request->getHotelId()
-        ]);
+        try {
+            $roomsAndRatePlans = $this->hotelService->getHotelRoomsAndRatePlans($request->getHotelId());
+        } catch (HotelNotConnectedException $e) {
+            return new HotelNotExistInChannelResponse();
+        }
+
+        return new GetRoomsAndRatePlansActionResponse($roomsAndRatePlans);
     }
 
 }

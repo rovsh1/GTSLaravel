@@ -2,7 +2,13 @@
 
 namespace Pkg\Supplier\Traveline;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 use Illuminate\Support\ServiceProvider;
+use Pkg\Supplier\Traveline\Adapters\HotelAdapter;
+use Pkg\Supplier\Traveline\Adapters\TravelineAdapter;
+use Pkg\Supplier\Traveline\Repository\HotelRepository;
+use Pkg\Supplier\Traveline\Service\QuotaAndPriceUpdater;
 
 class TravelineServiceProvider extends ServiceProvider
 {
@@ -28,6 +34,23 @@ class TravelineServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->bootMigrations();
+
+        $this->app->bind(ClientInterface::class, Client::class);
+
+        $this->app->singleton(TravelineAdapter::class, function ($app) {
+            return new TravelineAdapter(
+                $app->make(ClientInterface::class),
+                config('suppliers.traveline.notifications_url')
+            );
+        });
+
+        $this->app->singleton(QuotaAndPriceUpdater::class, function ($app) {
+            return new QuotaAndPriceUpdater(
+                $app->make(HotelAdapter::class),
+                $app->make(HotelRepository::class),
+                config('suppliers.traveline.is_prices_for_residents')
+            );
+        });
     }
 
     /**

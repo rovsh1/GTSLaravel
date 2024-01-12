@@ -48,7 +48,6 @@
       "App\\Api\\": "apps/api/app/",
       "App\\Shared\\": "apps/shared/app/",
       "Module\\": "src/modules/",
-      "Supplier\\": "src/suppliers/",
       "Pkg\\Supplier\\Traveline\\": "packages/supplier/traveline/src",
       "Pkg\\MailManager\\": "packages/support/mail-manager/src",
       "Pkg\\CurrencyRate\\": "packages/generic/currency-rate/src",

@@ -2,19 +2,29 @@
 
 namespace Pkg\Supplier\Traveline\Http\Actions;
 
-use Pkg\Supplier\Traveline\Http\Requests\UpdateActionRequest;
-use Sdk\Module\Contracts\PortGateway\PortGatewayInterface;
+use Pkg\Supplier\Traveline\Exception\HotelNotConnectedException;
+use Pkg\Supplier\Traveline\Http\Request\UpdateActionRequest;
+use Pkg\Supplier\Traveline\Http\Response\EmptySuccessResponse;
+use Pkg\Supplier\Traveline\Http\Response\ErrorResponse;
+use Pkg\Supplier\Traveline\Http\Response\HotelNotConnectedToChannelManagerResponse;
+use Pkg\Supplier\Traveline\Service\QuotaAndPriceUpdater;
 
 class UpdateAction
 {
-    public function __construct(private PortGatewayInterface $portGateway) {}
+    public function __construct(private QuotaAndPriceUpdater $quotaUpdaterService) {}
 
     public function handle(UpdateActionRequest $request)
     {
-        return $this->portGateway->request('traveline/update', [
-            'hotel_id' => $request->getHotelId(),
-            'updates' => $request->getUpdates(),
-        ]);
+        try {
+            $errors = $this->quotaUpdaterService->updateQuotasAndPlans($request->getHotelId(), $request->getUpdates());
+        } catch (HotelNotConnectedException $exception) {
+            return new HotelNotConnectedToChannelManagerResponse();
+        }
+        if (empty($errors)) {
+            return new EmptySuccessResponse();
+        }
+
+        return new ErrorResponse($errors);
     }
 
 }
