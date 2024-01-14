@@ -28,7 +28,7 @@ class Layout
     public static function bodyClass(): string
     {
         $cls = [];
-        $cls[] = Sidebar::isExpanded() ? 'sitemap-disable-animation sitemap-expanded' : '';
+        $cls[] = Sidebar::isExpanded() ? 'sitemap-expanded' : '';
 
         return implode(' ', $cls);
     }

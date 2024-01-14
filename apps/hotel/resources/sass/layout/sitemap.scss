@@ -21,7 +21,7 @@
   top: 0;
   left: 0;
   z-index: 290;
-  width: 48px;
+  width: 225px;
   height: calc(100vh - 47px);
   background: #fff;
   opacity: 1;
@@ -102,86 +102,11 @@ body.sitemap-expanded .sitemap {
   transform: rotate(180deg);
 }
 
-.btn-sitemap-toggle-switch-hover-effect {
-  position: absolute;
-  right: -12px;
-  bottom: 55px;
-  z-index: 99;
-  border-radius: 50%;
-  background-color: #fff;
-  transition: all ease-in 0.2s;
-
-  &:hover {
-    background-color: #007bff;
-    color: #fff;
-  }
-
-  .btn-sitemap-toggle-switch {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 24px;
-    height: 24px;
-    padding: 0;
-    border-radius: 50%;
-    background-color: transparent;
-    box-shadow: rgba(9, 30, 66, 8%) 0 0 0 1px, rgba(9, 30, 66, 8%) 0 2px 4px 1px;
-    line-height: 1;
-    text-align: center;
-    cursor: pointer;
-    user-select: none;
-    transition: all ease-in-out 0.5s;
-
-    i {
-      margin-left: 1px;
-      font-weight: bold;
-      font-size: 17px;
-    }
-  }
-}
-
-
 .main-menu-wrapper {
   overflow: visible;
 }
 
-.btn-sitemap-toggle-switch-wrapper {
-  position: relative;
-  height: 100%;
-}
-
 body.sitemap-expanded .sitemap-wrapper {
-  width: 328px;
   opacity: 1;
   visibility: visible;
-}
-
-body.sitemap-disable-animation .sitemap-wrapper .main-wrapper {
-  transition: none;
-}
-
-body.sitemap-disable-animation .btn-sitemap-toggle-switch {
-  transition: none;
-}
-
-body.sitemap-disable-animation .sitemap-wrapper {
-  transition: none;
-}
-
-body.sitemap-expanded.sitemap-absolute-mode .sitemap-wrapper {
-  width: 48px;
-}
-
-body.sitemap-expanded.sitemap-absolute-mode .sitemap .main-wrapper {
-  width: 280px;
-}
-
-body.sitemap-absolute-mode .sitemap .main-wrapper {
-  position: absolute;
-  top: 0;
-  left: 48px;
-  overflow: visible;
-  width: 0;
-  height: calc(100vh - 47px);
-  background-color: #fff;
 }
