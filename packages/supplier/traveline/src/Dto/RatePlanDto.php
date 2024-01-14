@@ -2,15 +2,26 @@
 
 namespace Pkg\Supplier\Traveline\Dto;
 
-use Custom\Framework\Foundation\Support\Dto\Attributes\MapOutputName;
-use Custom\Framework\Foundation\Support\Dto\Dto;
+use Module\Hotel\Moderation\Application\Dto\PriceRateDto;
 
-class RatePlanDto extends Dto
+final class RatePlanDto
 {
     public function __construct(
-        #[MapOutputName('ratePlanId')]
-        public readonly int    $id,
-        #[MapOutputName('ratePlanName')]
-        public readonly string $name,
+        public readonly int $ratePlanId,
+        public readonly string $ratePlanName,
     ) {}
+
+    public static function fromHotelPriceRate(PriceRateDto $priceRate): self
+    {
+        return new self($priceRate->id, $priceRate->name);
+    }
+
+    /**
+     * @param PriceRateDto[] $items
+     * @return array
+     */
+    public static function collection(array $items): array
+    {
+        return array_map(fn(PriceRateDto $item) => self::fromHotelPriceRate($item), $items);
+    }
 }

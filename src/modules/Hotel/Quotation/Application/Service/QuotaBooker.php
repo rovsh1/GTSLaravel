@@ -2,22 +2,20 @@
 
 namespace Module\Hotel\Quotation\Application\Service;
 
+use Carbon\CarbonPeriod;
 use Illuminate\Support\Facades\DB;
 use Module\Hotel\Quotation\Application\Dto\BookingRoomDto;
 use Module\Hotel\Quotation\Application\Exception\BookingQuotaException;
 use Module\Hotel\Quotation\Application\RequestDto\BookRequestDto;
 use Module\Hotel\Quotation\Application\RequestDto\ReserveRequestDto;
-use Module\Hotel\Quotation\Domain\Repository\QuotaRepositoryInterface;
-use Module\Hotel\Quotation\Domain\ValueObject\BookingId;
+use Module\Hotel\Quotation\Application\Service\Factory\SupplierFactory;
 use Module\Hotel\Quotation\Domain\ValueObject\BookingPeriod;
-use Module\Hotel\Quotation\Domain\ValueObject\RoomId;
 
 class QuotaBooker
 {
     public function __construct(
-        private readonly QuotaRepositoryInterface $quotaRepository
-    ) {
-    }
+        private readonly SupplierFactory $supplierFactory
+    ) {}
 
     public function book(BookRequestDto $requestDto): void
     {
@@ -31,22 +29,18 @@ class QuotaBooker
 
     private function method(string $method, BookRequestDto|ReserveRequestDto $requestDto): void
     {
-        $bookingId = new BookingId($requestDto->bookingId);
-        $bookingPeriod = new BookingPeriod(
-            \DateTimeImmutable::createFromInterface($requestDto->bookingPeriod->getStartDate()),
-            \DateTimeImmutable::createFromInterface($requestDto->bookingPeriod->getEndDate()),
-        );
+        DB::transaction(function () use ($method, $requestDto) {
+            $booker = $this->supplierFactory->booker($requestDto->hotelId);
 
-        DB::transaction(function () use ($method, $requestDto, $bookingId, $bookingPeriod) {
-            $this->quotaRepository->cancelBooking($bookingId);
+            $booker->cancelBooking($requestDto->bookingId);
 
-            $this->ensureHasRoomQuota($requestDto->bookingRooms, $bookingPeriod);
+            $this->ensureHasRoomQuota($booker, $requestDto->bookingRooms, $requestDto->bookingPeriod);
 
             foreach ($requestDto->bookingRooms as $roomDto) {
-                $this->quotaRepository->$method(
-                    $bookingId,
-                    new RoomId($roomDto->roomId),
-                    $bookingPeriod,
+                $booker->$method(
+                    $requestDto->bookingId,
+                    $roomDto->roomId,
+                    $requestDto->bookingPeriod,
                     $roomDto->count
                 );
             }
@@ -59,14 +53,14 @@ class QuotaBooker
      * @return void
      * @throws BookingQuotaException
      */
-    private function ensureHasRoomQuota(array $bookingRooms, BookingPeriod $bookingPeriod): void
-    {
+    private function ensureHasRoomQuota(
+        SupplierQuotaBookerInterface $booker,
+        array $bookingRooms,
+        CarbonPeriod $bookingPeriod
+    ): void {
         foreach ($bookingRooms as $roomDto) {
-            if (!$this->quotaRepository->hasAvailable(
-                new RoomId($roomDto->roomId),
-                $bookingPeriod,
-                $roomDto->count
-            )) {
+            $hasAvailable = $booker->hasAvailable($roomDto->roomId, $bookingPeriod, $roomDto->count);
+            if (!$hasAvailable) {
                 throw new BookingQuotaException();
 //                throw new Exception("Room [$roomDto->roomId] quota not found");
             }

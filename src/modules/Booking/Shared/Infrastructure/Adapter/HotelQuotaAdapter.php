@@ -13,9 +13,9 @@ use Module\Hotel\Quotation\Application\UseCase\ReserveQuota;
 
 class HotelQuotaAdapter implements HotelQuotaAdapterInterface
 {
-    public function getAvailableCount(int $roomId, CarbonPeriod $period): int
+    public function getAvailableCount(int $hotelId, int $roomId, CarbonPeriod $period): int
     {
-        return app(GetAvailableCount::class)->execute($roomId, $period);
+        return app(GetAvailableCount::class)->execute($hotelId, $roomId, $period);
     }
 
     public function book(BookRequestDto $requestDto): void

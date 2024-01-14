@@ -8,7 +8,7 @@ use Module\Hotel\Quotation\Application\RequestDto\ReserveRequestDto;
 
 interface HotelQuotaAdapterInterface
 {
-    public function getAvailableCount(int $roomId, CarbonPeriod $period): int;
+    public function getAvailableCount(int $hotelId, int $roomId, CarbonPeriod $period): int;
 
     public function book(BookRequestDto $requestDto): void;
 

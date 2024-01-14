@@ -3,6 +3,7 @@
 namespace Pkg\Supplier\Traveline\Http\Request;
 
 use Pkg\Supplier\Traveline\Dto\Request\Update;
+use Pkg\Supplier\Traveline\Exception\InvalidHotelRoomCode;
 
 class UpdateActionRequest extends AbstractTravelineRequest
 {
@@ -19,6 +20,10 @@ class UpdateActionRequest extends AbstractTravelineRequest
         return $this->getData()['hotelId'];
     }
 
+    /**
+     * @return Update[]
+     * @throws InvalidHotelRoomCode
+     */
     public function getUpdates(): array
     {
         $updates = $this->getData()['updates'] ?? [];

@@ -6,6 +6,7 @@ namespace Sdk\Booking\Event\HotelBooking;
 
 use Sdk\Booking\Contracts\Entity\DetailsInterface;
 use Sdk\Booking\Contracts\Event\PriceBecomeDeprecatedEventInterface;
+use Sdk\Booking\Contracts\Event\QuotaChangedEventInterface;
 use Sdk\Booking\Dto\PeriodDto;
 use Sdk\Booking\Entity\Details\HotelBooking;
 use Sdk\Booking\Event\BookingDateChangedEventInterface;
@@ -17,6 +18,7 @@ use Sdk\Module\Contracts\Event\IntegrationEventInterface;
 
 class PeriodChanged extends AbstractDetailsEvent implements PriceBecomeDeprecatedEventInterface,
                                                             BookingDateChangedEventInterface,
+                                                            QuotaChangedEventInterface,
                                                             HasIntegrationEventInterface
 {
     public function __construct(

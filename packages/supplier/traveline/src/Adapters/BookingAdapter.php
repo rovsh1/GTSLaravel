@@ -6,6 +6,7 @@ namespace Pkg\Supplier\Traveline\Adapters;
 
 use Carbon\CarbonInterface;
 use Carbon\CarbonPeriod;
+use Module\Booking\Moderation\Application\UseCase\GetBooking;
 use Pkg\Supplier\Traveline\Dto\ReservationDto;
 use Pkg\Supplier\Traveline\Models\TravelineReservation;
 
@@ -63,7 +64,7 @@ class BookingAdapter
 
     public function getActiveReservationById(int $id): ?ReservationDto
     {
-        $reservation = TravelineReservation::whereReservationId($id)->first();
+        $reservation = app(GetBooking::class)->execute($id);
         if ($reservation === null) {
             return null;
         }

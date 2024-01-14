@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Hotel\Moderation\Infrastructure\Repository;
 
+use Illuminate\Support\Facades\DB;
 use Module\Hotel\Moderation\Domain\Hotel\Factory\PriceRateFactory;
 use Module\Hotel\Moderation\Domain\Hotel\Repository\PriceRateRepositoryInterface;
 use Module\Hotel\Moderation\Domain\Hotel\ValueObject\HotelId;
@@ -17,7 +18,10 @@ class PriceRateRepository implements PriceRateRepositoryInterface
 
     public function existsByRoomAndRate(int $roomId, int $rateId): bool
     {
-        // TODO: Implement existsByRoomAndRate() method.
+        return DB::table('hotel_price_rate_rooms')
+            ->where('room_id', $roomId)
+            ->where('rate_id', $rateId)
+            ->exists();
     }
 
     public function get(HotelId $hotelId): array

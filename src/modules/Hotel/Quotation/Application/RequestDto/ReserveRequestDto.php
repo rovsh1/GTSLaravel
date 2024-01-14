@@ -16,6 +16,7 @@ final class ReserveRequestDto
      */
     public function __construct(
         public readonly int $bookingId,
+        public readonly int $hotelId,
         public readonly CarbonPeriod $bookingPeriod,
         public readonly array $bookingRooms,
     ) {

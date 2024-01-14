@@ -11,4 +11,9 @@ class HotelAdapter implements HotelAdapterInterface
     {
         return (bool)Room::find($roomId);
     }
+
+    public function getRoomHotelId(int $roomId): ?int
+    {
+        return Room::whereId($roomId)->toBase()->first()?->hotel_id;
+    }
 }

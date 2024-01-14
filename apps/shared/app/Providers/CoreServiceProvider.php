@@ -11,8 +11,10 @@ use Services\ApplicationsConstants\ApplicationConstantManager;
 use Services\CompanyRequisites\CompanyRequisiteManager;
 use Shared\Contracts\Adapter\CurrencyRateAdapterInterface;
 use Shared\Contracts\Adapter\MailAdapterInterface;
+use Shared\Contracts\Adapter\TravelineAdapterInterface;
 use Shared\Support\Adapter\CurrencyRateAdapter;
 use Shared\Support\Adapter\MailAdapter;
+use Shared\Support\Adapter\TravelineAdapter;
 use Support\LocaleTranslator\TranslationServiceProvider;
 
 class CoreServiceProvider extends ServiceProvider
@@ -29,6 +31,7 @@ class CoreServiceProvider extends ServiceProvider
         $this->app->singleton(CompanyRequisitesInterface::class, CompanyRequisiteManager::class);
         $this->app->singleton(MailAdapterInterface::class, MailAdapter::class);
         $this->app->singleton(CurrencyRateAdapterInterface::class, CurrencyRateAdapter::class);
+        $this->app->singleton(TravelineAdapterInterface::class, TravelineAdapter::class);
     }
 
     private function registerSupport(): void

@@ -39,10 +39,6 @@ class SetDatePrice implements UseCaseInterface
                 'date' => $date
             ],
             [
-                'date' => $date,
-                'group_id' => $group->id,
-                'season_id' => $seasonId,
-                'room_id' => $roomId,
                 'price' => $price,
             ]
         );

@@ -48,7 +48,7 @@ class GetAvailableRooms implements UseCaseInterface
 
         return array_values(array_filter(
             $rooms,
-            fn($room) => $this->roomQuotaAdapter->getAvailableCount($room->id, $period) > 0,
+            fn($room) => $this->roomQuotaAdapter->getAvailableCount($room->hotelId, $room->id, $period) > 0,
         ));
     }
 }

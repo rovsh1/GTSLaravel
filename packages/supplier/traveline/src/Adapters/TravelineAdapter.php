@@ -3,9 +3,8 @@
 namespace Pkg\Supplier\Traveline\Adapters;
 
 use GuzzleHttp\ClientInterface;
-use Supplier\Traveline\Domain\Adapter\TravelineAdapterInterface;
 
-class TravelineAdapter implements TravelineAdapterInterface
+class TravelineAdapter
 {
     public function __construct(
         private readonly ClientInterface $httpClient,

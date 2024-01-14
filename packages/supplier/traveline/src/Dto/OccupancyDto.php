@@ -2,9 +2,7 @@
 
 namespace Pkg\Supplier\Traveline\Dto;
 
-use Custom\Framework\Foundation\Support\Dto\Dto;
-
-class OccupancyDto extends Dto
+final class OccupancyDto
 {
     private const DEFAULT_BED_TYPE = 'adultBed';
 
@@ -14,16 +12,13 @@ class OccupancyDto extends Dto
         public readonly string $bedType = self::DEFAULT_BED_TYPE,
     ) {}
 
-    public static function createByGuestsNumber(int $roomId, int $guestsNumber)
+    public static function createByGuestsNumber(int $roomId, int $guestsNumber): array
     {
         $occupancies = [];
         for ($i = 1; $i <= $guestsNumber; $i++) {
-            $occupancies[] = [
-                'code' => (string)(new HotelRoomCodeDto($roomId, $i)),
-                'personQuantity' => $i
-            ];
+            $occupancies[] = new self((string)(new HotelRoomCodeDto($roomId, $i)), $i,);
         }
 
-        return static::collection($occupancies);
+        return $occupancies;
     }
 }

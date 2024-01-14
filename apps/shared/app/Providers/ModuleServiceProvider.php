@@ -11,6 +11,7 @@ use Sdk\Shared\Contracts\Service\CompanyRequisitesInterface;
 use Sdk\Shared\Contracts\Service\TranslatorInterface;
 use Shared\Contracts\Adapter\CurrencyRateAdapterInterface;
 use Shared\Contracts\Adapter\MailAdapterInterface;
+use Shared\Contracts\Adapter\TravelineAdapterInterface;
 
 /**
  * @see \Pkg\IntegrationEventBus\Service\MessageSender
@@ -42,6 +43,7 @@ class ModuleServiceProvider extends ServiceProvider
         FileStorageAdapterInterface::class,
         ApplicationConstantsInterface::class,
         CompanyRequisitesInterface::class,
+        TravelineAdapterInterface::class,
     ];
 
     public function register(): void

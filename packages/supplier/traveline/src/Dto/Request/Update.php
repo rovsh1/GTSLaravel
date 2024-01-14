@@ -18,7 +18,8 @@ class Update
         public readonly ?bool $closed,
         /** @var Price[]|null $prices */
         public readonly ?array $prices,
-        public readonly ?int $quota
+        public readonly ?int $quota,
+        public readonly ?int $releaseDays,
     ) {}
 
     public function getDatePeriod(): CarbonPeriod
@@ -29,6 +30,11 @@ class Update
     public function hasQuota(): bool
     {
         return $this->quota !== null;
+    }
+
+    public function hasReleaseDays(): bool
+    {
+        return $this->releaseDays !== null;
     }
 
     public function hasPrices(): bool
@@ -52,15 +58,21 @@ class Update
             ? Price::collectionFromArray($data['prices'])
             : null;
 
+        $isClosed = $data['closed'] ?? null;
+        if ($isClosed !== null && is_string($isClosed)) {
+            $isClosed = $isClosed === 'true';
+        }
+
         return new self(
             new Carbon($data['startDateYmd']),
             new Carbon($data['endDateYmd']),
             $data['roomTypeId'],
             $data['ratePlanId'] ?? null,
             $data['currencyCode'] ?? null,
-            $data['closed'] ?? null,
+            $isClosed,
             $prices,
             $data['quota'] ?? null,
+            $data['minimumAdvanceBooking'] ?? null,
         );
     }
 

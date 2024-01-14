@@ -2,6 +2,7 @@
 
 namespace Module\Hotel\Moderation\Infrastructure\Models;
 
+use Carbon\CarbonInterface;
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -27,11 +28,6 @@ class Season extends Model
         'date_end' => 'date',
     ];
 
-    public function period(): Attribute
-    {
-        return Attribute::get(fn() => new CarbonPeriod($this->date_start, $this->date_end, 'P1D'));
-    }
-
     protected static function booted()
     {
         static::addGlobalScope('default', function (Builder $builder) {
@@ -40,6 +36,21 @@ class Season extends Model
                 ->join('hotel_contracts', 'hotel_contracts.id', '=', 'hotel_seasons.contract_id')
                 ->addSelect('hotel_contracts.hotel_id');
         });
+    }
+
+    public function scopeWhereDateStart(Builder $builder, string $operator, CarbonInterface $date): void
+    {
+        $builder->where('hotel_seasons.date_start', $operator, $date);
+    }
+
+    public function scopeWhereDateEnd(Builder $builder, string $operator, CarbonInterface $date): void
+    {
+        $builder->where('hotel_seasons.date_end', $operator, $date);
+    }
+
+    public function period(): Attribute
+    {
+        return Attribute::get(fn() => new CarbonPeriod($this->date_start, $this->date_end, 'P1D'));
     }
 
     public function scopeWhereRoomId(Builder $builder, int $roomId): void

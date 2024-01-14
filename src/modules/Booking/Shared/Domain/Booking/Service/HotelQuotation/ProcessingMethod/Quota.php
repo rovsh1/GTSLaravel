@@ -28,6 +28,7 @@ class Quota implements QuotaProcessingMethodInterface
             $this->quotaAdapter->book(
                 new BookRequestDto(
                     bookingId: $booking->id()->value(),
+                    hotelId: $details->hotelInfo()->id(),
                     bookingPeriod: $this->buildRequestPeriod($details->bookingPeriod()),
                     bookingRooms: $this->buildRequestRooms($details)
                 )
@@ -38,6 +39,7 @@ class Quota implements QuotaProcessingMethodInterface
             $this->quotaAdapter->reserve(
                 new ReserveRequestDto(
                     bookingId: $booking->id()->value(),
+                    hotelId: $details->hotelInfo()->id(),
                     bookingPeriod: $this->buildRequestPeriod($details->bookingPeriod()),
                     bookingRooms: $this->buildRequestRooms($details)
                 )

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Module\Hotel\Moderation\Application\Service;
 
 use App\Admin\Models\Hotel\Room;
+use Carbon\CarbonPeriod;
 use Module\Hotel\Moderation\Domain\Hotel\Exception\Room\PriceRateNotFound;
 use Module\Hotel\Moderation\Domain\Hotel\Exception\Room\RoomNotFound;
 use Module\Hotel\Moderation\Infrastructure\Models\Price\Group;
@@ -26,6 +27,19 @@ class PriceSetterHelper
     {
         $season = Season::find($seasonId);
         if ($season === null) {
+            throw new EntityNotFoundException('Season not found');
+        }
+    }
+
+    public function ensureSeasonForPeriodExists(int $roomId, CarbonPeriod $period): void
+    {
+        $isSeasonExists = Season::query()
+            ->whereRoomId($roomId)
+            ->whereDateStart('<=', $period->getStartDate())
+            ->whereDateEnd('>=', $period->getEndDate())
+            ->exists();
+
+        if (!$isSeasonExists) {
             throw new EntityNotFoundException('Season not found');
         }
     }
