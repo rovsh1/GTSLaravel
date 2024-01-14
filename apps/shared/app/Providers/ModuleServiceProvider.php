@@ -64,8 +64,6 @@ class ModuleServiceProvider extends ServiceProvider
 
         $modules = app()->modules();
         $monolithFactory = new ModuleAdapterFactory(
-            modulesPath: $this->app->modulesPath(),
-            modulesNamespace: 'Module',
             sharedContainer: $kernel->getContainer()
         );
 
