@@ -25,7 +25,7 @@ class SendBookingNotificationListener
                 \Log::debug('[Traveline] booking event', ['event' => $event]);
                 $this->travelineAdapter->sendReservationNotification();
             },
-            5,
+            2,
         );
     }
 }
