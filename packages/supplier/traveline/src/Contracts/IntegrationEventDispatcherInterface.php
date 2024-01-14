@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Pkg\Supplier\Traveline\Contracts;
 
-use Sdk\Module\Contracts\Event\IntegrationEventInterface;
+use Sdk\Shared\Contracts\Event\IntegrationEventInterface;
 
 interface IntegrationEventDispatcherInterface
 {

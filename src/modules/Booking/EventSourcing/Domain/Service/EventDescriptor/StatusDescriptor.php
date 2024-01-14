@@ -5,7 +5,7 @@ namespace Module\Booking\EventSourcing\Domain\Service\EventDescriptor;
 use Module\Booking\EventSourcing\Domain\ValueObject\EventGroupEnum;
 use Module\Booking\Shared\Domain\Booking\Service\BookingStatusStorageInterface;
 use Sdk\Booking\IntegrationEvent\StatusUpdated;
-use Sdk\Module\Contracts\Event\IntegrationEventInterface;
+use Sdk\Shared\Contracts\Event\IntegrationEventInterface;
 
 class StatusDescriptor extends AbstractDescriptor implements DescriptorInterface
 {

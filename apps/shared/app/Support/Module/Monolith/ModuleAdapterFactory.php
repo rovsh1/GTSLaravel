@@ -9,15 +9,13 @@ use Sdk\Module\Foundation\Support\SharedContainer;
 class ModuleAdapterFactory
 {
     public function __construct(
-        private readonly string $modulesPath,
-        private readonly string $modulesNamespace,
         private readonly SharedContainer $sharedContainer,
     ) {}
 
-    public function build(string $name, string $relativePath, array $config): ModuleAdapter
+    public function build(string $name, string $path, string $namespace, array $config): ModuleAdapter
     {
-        $path = $this->modulesPath . DIRECTORY_SEPARATOR . $relativePath;
-        $namespace = $this->modulesNamespace . '\\' . str_replace(DIRECTORY_SEPARATOR, '\\', $relativePath);
+//        $path = $this->modulesPath . DIRECTORY_SEPARATOR . $relativePath;
+//        $namespace = $this->modulesNamespace . '\\' . str_replace(DIRECTORY_SEPARATOR, '\\', $relativePath);
 
 //        $configPath = $path . DIRECTORY_SEPARATOR . 'config.php';
 //        if (!file_exists($configPath)) {

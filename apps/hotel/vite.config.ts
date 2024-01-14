@@ -10,9 +10,16 @@ import tsconfigPaths from 'vite-tsconfig-paths'
 
 import { scripts } from './package.json'
 
-expand(config({
-  allowEmptyValues: true,
-}))
+const conf = expand(config({
+  allowEmptyValues: false,
+  path: path.resolve(__dirname, '../../.env'),
+})).parsed
+
+Object.assign(process.env, {
+  APP_URL: conf.HO_URL,
+  VITE_API_URL: conf.HO_URL,
+})
+
 // https://github.com/laravel/vite-plugin/pull/57
 console.log(`The Vite server should not be accessed directly. Please visit ${process.env.APP_URL} instead.`)
 export default defineConfig(({ command }) => ({

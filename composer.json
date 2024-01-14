@@ -52,6 +52,7 @@
       "Pkg\\MailManager\\": "packages/support/mail-manager/src",
       "Pkg\\CurrencyRate\\": "packages/generic/currency-rate/src",
       "Pkg\\IntegrationEventBus\\": "packages/generic/integration-events/src",
+      "Pkg\\Booking\\Requesting\\": "packages/core/booking/requesting/src",
       "Support\\": "src/support/",
       "Services\\": "src/services/",
       "Shared\\": "src/shared/",

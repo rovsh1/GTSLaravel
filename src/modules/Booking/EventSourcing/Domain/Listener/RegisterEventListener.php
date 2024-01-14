@@ -5,8 +5,8 @@ namespace Module\Booking\EventSourcing\Domain\Listener;
 use Module\Booking\EventSourcing\Domain\Service\EventDescriptor\DescriptorFactory;
 use Module\Booking\EventSourcing\Domain\Service\HistoryStorageInterface;
 use Sdk\Booking\ValueObject\BookingId;
-use Sdk\Module\Contracts\Event\IntegrationEventListenerInterface;
-use Sdk\Module\Event\IntegrationEventMessage;
+use Sdk\Shared\Contracts\Event\IntegrationEventListenerInterface;
+use Sdk\Shared\Event\IntegrationEventMessage;
 
 class RegisterEventListener implements IntegrationEventListenerInterface
 {

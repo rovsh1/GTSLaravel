@@ -6,6 +6,7 @@ use App\Shared\Support\Module\Monolith\ModuleAdapterFactory;
 use App\Shared\Support\Module\Monolith\SharedKernel;
 use Illuminate\Support\ServiceProvider;
 use Sdk\Shared\Contracts\Adapter\FileStorageAdapterInterface;
+use Sdk\Shared\Contracts\Event\IntegrationEventPublisherInterface;
 use Sdk\Shared\Contracts\Service\ApplicationConstantsInterface;
 use Sdk\Shared\Contracts\Service\CompanyRequisitesInterface;
 use Sdk\Shared\Contracts\Service\TranslatorInterface;
@@ -28,12 +29,15 @@ class ModuleServiceProvider extends ServiceProvider
         'ClientPayment' => 'Client/Payment',
         'BookingModeration' => 'Booking/Moderation',
         'BookingPricing' => 'Booking/Pricing',
-        'BookingRequesting' => 'Booking/Requesting',
         'BookingNotification' => 'Booking/Notification',
         'BookingEventSourcing' => 'Booking/EventSourcing',
         'BookingInvoicing' => 'Booking/Invoicing',
         'SupplierModeration' => 'Supplier/Moderation',
 //        'Traveline' => 'Traveline',
+    ];
+
+    private array $pkgModules = [
+        'BookingRequesting' => 'Booking\\Requesting',
     ];
 
     protected array $shared = [
@@ -44,6 +48,7 @@ class ModuleServiceProvider extends ServiceProvider
         ApplicationConstantsInterface::class,
         CompanyRequisitesInterface::class,
         TravelineAdapterInterface::class,
+        IntegrationEventPublisherInterface::class,
     ];
 
     public function register(): void
@@ -64,9 +69,35 @@ class ModuleServiceProvider extends ServiceProvider
             sharedContainer: $kernel->getContainer()
         );
 
+        $this->registerSrcModules($modules, $monolithFactory);
+        $this->registerPackageModules($modules, $monolithFactory);
+    }
+
+    private function registerPackageModules($modules, $monolithFactory): void
+    {
+        foreach ($this->pkgModules as $name => $ns) {
+            $adapter = $monolithFactory->build(
+                $name,
+                "",
+                'Pkg\\' . $ns,
+                $configs[$name] ?? []
+            );
+            $modules->register($adapter);
+        }
+    }
+
+    private function registerSrcModules($modules, $monolithFactory): void
+    {
+        $modulesPath = $this->app->modulesPath();
+        $modulesNamespace = 'Module';
         $configs = config('modules');
         foreach ($this->modules as $name => $path) {
-            $adapter = $monolithFactory->build($name, $path, $configs[$name] ?? []);
+            $adapter = $monolithFactory->build(
+                $name,
+                "$modulesPath/$path",
+                $modulesNamespace . '\\' . str_replace(DIRECTORY_SEPARATOR, '\\', $path),
+                $configs[$name] ?? []
+            );
             $modules->register($adapter);
         }
     }

@@ -5,14 +5,16 @@ namespace Sdk\Module\Event;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\Event\DomainEventInterface;
 use Sdk\Module\Contracts\Event\HasIntegrationEventInterface;
-use Sdk\Module\Contracts\Event\IntegrationEventPublisherInterface;
+use Sdk\Module\Contracts\ModuleInterface;
 use Sdk\Module\Contracts\Support\ContainerInterface;
+use Sdk\Shared\Contracts\Event\IntegrationEventPublisherInterface;
 
 class DomainEventDispatcher implements DomainEventDispatcherInterface
 {
     private array $listeners = [];
 
     public function __construct(
+        private readonly ModuleInterface $module,
         private readonly ContainerInterface $container,
         private readonly IntegrationEventPublisherInterface $integrationEventPublisher,
     ) {}
@@ -75,6 +77,6 @@ class DomainEventDispatcher implements DomainEventDispatcherInterface
             fn(HasIntegrationEventInterface $e) => $e->integrationEvent(),
             array_filter($events, fn($e) => $e instanceof HasIntegrationEventInterface)
         );
-        $this->integrationEventPublisher->publish(...$integrationEvents);
+        $this->integrationEventPublisher->publish($this->module->name(), ...$integrationEvents);
     }
 }

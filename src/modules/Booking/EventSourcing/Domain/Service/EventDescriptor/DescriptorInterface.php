@@ -2,7 +2,7 @@
 
 namespace Module\Booking\EventSourcing\Domain\Service\EventDescriptor;
 
-use Sdk\Module\Contracts\Event\IntegrationEventInterface;
+use Sdk\Shared\Contracts\Event\IntegrationEventInterface;
 
 interface DescriptorInterface
 {

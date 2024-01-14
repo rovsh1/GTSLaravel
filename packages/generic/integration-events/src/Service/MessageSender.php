@@ -5,8 +5,8 @@ namespace Pkg\IntegrationEventBus\Service;
 use App\Shared\Contracts\Module\ModuleAdapterInterface;
 use Pkg\IntegrationEventBus\Entity\Message;
 use Pkg\Supplier\Traveline\Contracts\IntegrationEventDispatcherInterface as TravelineEventDispatcher;
-use Sdk\Module\Contracts\Event\IntegrationEventInterface;
-use Sdk\Module\Event\IntegrationEventMessage;
+use Sdk\Shared\Contracts\Event\IntegrationEventInterface;
+use Sdk\Shared\Event\IntegrationEventMessage;
 
 class MessageSender
 {
@@ -14,7 +14,7 @@ class MessageSender
 
     public function send(Message $message): void
     {
-        $triggerModule = $message->module();
+        $triggerModule = $message->originator();
         $event = $this->makeIntegrationEvent($message);
 
         /** @var ModuleAdapterInterface $module */
@@ -46,7 +46,7 @@ class MessageSender
         assert(is_subclass_of($eventClass, IntegrationEventInterface::class));
 
         return new IntegrationEventMessage(
-            module: $message->module(),
+            originator: $message->originator(),
             event: unserialize($message->payload(), ['allowed_classes' => true]),
             context: $message->context()
         );

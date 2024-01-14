@@ -13,7 +13,9 @@
             <div class="group-items">
                 <nav>
                     @foreach($group->items() as $item)
-                        <a href="{{ $item->url }}" class="{{ $sitemap->isCurrent($item) ? 'current' : '' }}">{{ $item->text }}</a>
+                        <a href="{{ $item->url }}" class="{{ $sitemap->isCurrent($item) ? 'current' : '' }}">
+                            {{ $item->text }}
+                        </a>
                     @endforeach
                 </nav>
             </div>

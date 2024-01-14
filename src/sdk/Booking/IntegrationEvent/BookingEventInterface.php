@@ -2,7 +2,7 @@
 
 namespace Sdk\Booking\IntegrationEvent;
 
-use Sdk\Module\Contracts\Event\IntegrationEventInterface;
+use Sdk\Shared\Contracts\Event\IntegrationEventInterface;
 
 /**
  * @property int $bookingId

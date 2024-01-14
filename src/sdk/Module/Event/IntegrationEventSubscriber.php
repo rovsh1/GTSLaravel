@@ -2,8 +2,9 @@
 
 namespace Sdk\Module\Event;
 
-use Sdk\Module\Contracts\Event\IntegrationEventSubscriberInterface;
 use Sdk\Module\Contracts\Support\ContainerInterface;
+use Sdk\Shared\Contracts\Event\IntegrationEventSubscriberInterface;
+use Sdk\Shared\Event\IntegrationEventMessage;
 
 class IntegrationEventSubscriber implements IntegrationEventSubscriberInterface
 {

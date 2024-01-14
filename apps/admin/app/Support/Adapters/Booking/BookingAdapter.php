@@ -16,7 +16,7 @@ use Module\Booking\Moderation\Application\UseCase\GetBooking;
 use Module\Booking\Moderation\Application\UseCase\GetStatuses;
 use Module\Booking\Moderation\Application\UseCase\UpdateNote;
 use Module\Booking\Moderation\Application\UseCase\UpdateStatus;
-use Module\Booking\Requesting\Application\UseCase\GetAvailableActions as RequestingActions;
+use Pkg\Booking\Requesting\Application\UseCase\GetAvailableActions as RequestingActions;
 use Sdk\Shared\Enum\CurrencyEnum;
 
 class BookingAdapter

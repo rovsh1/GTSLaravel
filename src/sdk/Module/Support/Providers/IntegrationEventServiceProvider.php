@@ -2,11 +2,14 @@
 
 namespace Sdk\Module\Support\Providers;
 
-use Sdk\Module\Contracts\Event\IntegrationEventSubscriberInterface;
 use Sdk\Module\Support\ServiceProvider;
+use Sdk\Shared\Contracts\Event\IntegrationEventSubscriberInterface;
+use Sdk\Shared\Support\Providers\RegisterListenersTrait;
 
 class IntegrationEventServiceProvider extends ServiceProvider
 {
+    use RegisterListenersTrait;
+
     protected array $listen = [];
 
     protected array $listeners = [];
@@ -16,28 +19,5 @@ class IntegrationEventServiceProvider extends ServiceProvider
         $this->app->resolving(IntegrationEventSubscriberInterface::class, function ($integrationEventSubscriber) {
             $this->registerListeners($integrationEventSubscriber);
         });
-    }
-
-    protected function registerListeners(IntegrationEventSubscriberInterface $integrationEventSubscriber): void
-    {
-        foreach ($this->listen as $eventClass => $listeners) {
-            if (is_array($listeners)) {
-                foreach ($listeners as $listener) {
-                    $integrationEventSubscriber->listen($eventClass, $listener);
-                }
-            } else {
-                $integrationEventSubscriber->listen($eventClass, $listeners);
-            }
-        }
-
-        foreach ($this->listeners as $listener => $events) {
-            if (is_array($events)) {
-                foreach ($events as $event) {
-                    $integrationEventSubscriber->listen($event, $listener);
-                }
-            } else {
-                $integrationEventSubscriber->listen($events, $listener);
-            }
-        }
     }
 }
