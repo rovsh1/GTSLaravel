@@ -8,7 +8,7 @@ use Pkg\MailManager\Mail;
 use Pkg\MailManager\Model\QueueMessage as Model;
 use Pkg\MailManager\ValueObject\MailId;
 use Pkg\MailManager\ValueObject\QueueMailStatusEnum;
-use Sdk\Shared\Contracts\Service\ApplicationContextInterface;
+use Sdk\Shared\Contracts\Context\ContextInterface;
 
 class QueueStorage implements QueueStorageInterface
 {
@@ -16,9 +16,8 @@ class QueueStorage implements QueueStorageInterface
     public const MAX_ATTEMPTS  = 3;
 
     public function __construct(
-        private readonly ApplicationContextInterface $applicationContext
-    ) {
-    }
+        private readonly ContextInterface $context
+    ) {}
 
     public function find(MailId $uuid): ?Mail
     {
@@ -33,7 +32,7 @@ class QueueStorage implements QueueStorageInterface
             'payload' => $mail->serialize(),
             'priority' => $priority,
             'status' => $mail->status()->value,
-            'context' => $this->applicationContext->toArray()
+            'context' => $this->context->toArray()
         ]);
     }
 

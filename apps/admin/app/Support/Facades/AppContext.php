@@ -5,15 +5,12 @@ namespace App\Admin\Support\Facades;
 use App\Admin\Support\Context\ContextManager;
 use App\Admin\Support\View\Form\Form;
 use Illuminate\Support\Facades\Facade;
-use Sdk\Shared\Contracts\Service\ApplicationContextInterface;
-use Sdk\Shared\Enum\Context\ContextChannelEnum;
+use Sdk\Shared\Contracts\Context\ContextInterface;
 use Sdk\Shared\Enum\SourceEnum;
 
 /**
  * @method static string requestId()
  * @method static SourceEnum source()
- * @method static void setSource(SourceEnum $source)
- * @method static void setChannel(ContextChannelEnum $channel)
  * @method static void setHttpHost(string $host)
  * @method static void setHttpUrl(string $url))
  * @method static void setHttpMethod(string $method)
@@ -28,13 +25,12 @@ use Sdk\Shared\Enum\SourceEnum;
  * @method static void setSubmittedForm(Form $form)
  * @method static array toArray()
  *
- * @see ApplicationContextInterface
  * @see ContextManager
  */
 class AppContext extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return ContextManager::class;
+        return ContextInterface::class;
     }
 }

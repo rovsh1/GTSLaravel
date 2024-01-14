@@ -2,8 +2,8 @@
 
 namespace App\Shared\Support\Module\Monolith;
 
-use Module\Booking\Shared\Infrastructure\Support\ModuleContext;
 use Sdk\Module\Contracts\ContextInterface;
+use Sdk\Module\Support\Context\ModuleContext;
 use Sdk\Module\Support\ServiceProvider;
 
 class CommonServiceProvider extends ServiceProvider
@@ -12,5 +12,4 @@ class CommonServiceProvider extends ServiceProvider
     {
         $this->app->singleton(ContextInterface::class, ModuleContext::class);
     }
-
 }

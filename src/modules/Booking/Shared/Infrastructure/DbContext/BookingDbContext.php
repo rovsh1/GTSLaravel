@@ -16,15 +16,15 @@ use Sdk\Booking\ValueObject\CancelConditions;
 use Sdk\Booking\ValueObject\CreatorId;
 use Sdk\Booking\ValueObject\GuestId;
 use Sdk\Booking\ValueObject\OrderId;
+use Sdk\Module\Contracts\ContextInterface;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
-use Sdk\Shared\Contracts\Service\ApplicationContextInterface;
 use Sdk\Shared\Enum\ServiceTypeEnum;
 
 class BookingDbContext implements BookingDbContextInterface
 {
     public function __construct(
         private readonly BookingMapper $bookingMapper,
-        private readonly ApplicationContextInterface $context,
+        private readonly ContextInterface $context,
     ) {}
 
     public function find(BookingId $id): ?Booking

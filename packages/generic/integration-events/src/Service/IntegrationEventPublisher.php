@@ -8,7 +8,6 @@ use Illuminate\Support\Str;
 use Pkg\IntegrationEventBus\Entity\Message;
 use Sdk\Shared\Contracts\Event\IntegrationEventInterface;
 use Sdk\Shared\Contracts\Event\IntegrationEventPublisherInterface;
-use Sdk\Shared\Contracts\Service\ApplicationContextInterface;
 
 class IntegrationEventPublisher implements IntegrationEventPublisherInterface
 {
@@ -18,53 +17,48 @@ class IntegrationEventPublisher implements IntegrationEventPublisherInterface
 
     private bool $async;
 
-    public function __construct(
-        private readonly ApplicationContextInterface $context
-    ) {
+    public function __construct()
+    {
         $this->async = env('INTEGRATION_EVENTS_ASYNC', true);
     }
 
-    public function publish(string $originator, IntegrationEventInterface ...$events): void
+    public function publish(string $originator, IntegrationEventInterface $event, array $context): void
     {
         if ($this->async) {
-            $this->publishAsync($originator, ... $events);
+            $this->publishAsync($originator, $event, $context);
         } else {
-            $this->publishSync($originator, ... $events);
+            $this->publishSync($originator, $event, $context);
         }
     }
 
-    private function publishSync(string $originator, IntegrationEventInterface ...$events): void
+    private function publishSync(string $originator, IntegrationEventInterface $event, array $context): void
     {
         /** @var MessageSender $sender */
         $sender = app(MessageSender::class);
-        foreach ($events as $event) {
-            $sender->send(Message::deserialize([
+        $sender->send(Message::deserialize([
+            'id' => Str::orderedUuid()->toString(),
+            'originator' => $originator,
+            'status' => 0,
+            'event' => $event::class,
+            'payload' => serialize($event),
+            'context' => $context,
+        ]));
+    }
+
+    private function publishAsync(string $originator, IntegrationEventInterface $event, array $context): void
+    {
+        $this->connection()->rPush(
+            self::QUEUE,
+            json_encode([
                 'id' => Str::orderedUuid()->toString(),
                 'originator' => $originator,
                 'status' => 0,
                 'event' => $event::class,
                 'payload' => serialize($event),
-                'context' => $this->context->toArray(),
-            ]));
-        }
-    }
-
-    private function publishAsync(string $originator, IntegrationEventInterface ...$events): void
-    {
-        foreach ($events as $event) {
-            $this->connection()->rPush(
-                self::QUEUE,
-                json_encode([
-                    'id' => Str::orderedUuid()->toString(),
-                    'originator' => $originator,
-                    'status' => 0,
-                    'event' => $event::class,
-                    'payload' => serialize($event),
-                    'context' => $this->context->toArray(),
-                    'timestamp' => time()
-                ])
-            );
-        }
+                'context' => $context,
+                'timestamp' => time()
+            ])
+        );
     }
 
     private function connection(): Connection

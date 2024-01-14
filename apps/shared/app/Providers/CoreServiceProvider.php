@@ -2,10 +2,20 @@
 
 namespace App\Shared\Providers;
 
+use App\Shared\Support\Context\ConsoleContextManager;
+use Module\Shared\Infrastructure\Adapter\AirportAdapter;
+use Module\Shared\Infrastructure\Adapter\CityAdapter;
+use Module\Shared\Infrastructure\Adapter\CountryAdapter;
 use Module\Shared\Infrastructure\Adapter\FileStorageAdapter;
+use Module\Shared\Infrastructure\Adapter\RailwayStationAdapter;
 use Pkg\IntegrationEventBus\Service\IntegrationEventPublisher;
 use Sdk\Module\Support\ServiceProvider;
+use Sdk\Shared\Contracts\Adapter\AirportAdapterInterface;
+use Sdk\Shared\Contracts\Adapter\CityAdapterInterface;
+use Sdk\Shared\Contracts\Adapter\CountryAdapterInterface;
 use Sdk\Shared\Contracts\Adapter\FileStorageAdapterInterface;
+use Sdk\Shared\Contracts\Adapter\RailwayStationAdapterInterface;
+use Sdk\Shared\Contracts\Context\ContextInterface;
 use Sdk\Shared\Contracts\Event\IntegrationEventPublisherInterface;
 use Sdk\Shared\Contracts\Service\ApplicationConstantsInterface;
 use Sdk\Shared\Contracts\Service\CompanyRequisitesInterface;
@@ -23,8 +33,16 @@ class CoreServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
+        if ($this->app->runningInConsole()) {
+            $this->app->singleton(ContextInterface::class, ConsoleContextManager::class);
+        }
+    }
+
+    public function boot(): void
+    {
         $this->registerServices();
         $this->registerSupport();
+        $this->registerAdapters();
     }
 
     private function registerServices(): void
@@ -42,5 +60,13 @@ class CoreServiceProvider extends ServiceProvider
         $this->app->register(TranslationServiceProvider::class);
 
         $this->app->singleton(FileStorageAdapterInterface::class, FileStorageAdapter::class);
+    }
+
+    private function registerAdapters(): void
+    {
+        $this->app->singleton(AirportAdapterInterface::class, AirportAdapter::class);
+        $this->app->singleton(RailwayStationAdapterInterface::class, RailwayStationAdapter::class);
+        $this->app->singleton(CountryAdapterInterface::class, CountryAdapter::class);
+        $this->app->singleton(CityAdapterInterface::class, CityAdapter::class);
     }
 }

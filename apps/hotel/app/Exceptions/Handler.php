@@ -2,6 +2,7 @@
 
 namespace App\Hotel\Exceptions;
 
+use App\Hotel\Support\Context\ContextManager;
 use App\Hotel\Support\Facades\AppContext;
 use App\Hotel\Support\Facades\Layout;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -9,7 +10,6 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Sdk\Module\Foundation\Exception\NotFoundExceptionInterface;
-use Sdk\Shared\Contracts\Service\ApplicationContextInterface;
 use Sdk\Shared\Exception\ApplicationException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
@@ -107,7 +107,7 @@ class Handler extends ExceptionHandler
 
     protected function context(): array
     {
-        if (app()->has(ApplicationContextInterface::class)) {
+        if (app()->has(ContextManager::class)) {
             return AppContext::toArray();
         } else {
             return [];

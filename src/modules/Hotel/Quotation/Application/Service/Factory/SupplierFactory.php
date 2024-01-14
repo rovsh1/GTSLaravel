@@ -9,14 +9,14 @@ use Module\Hotel\Quotation\Application\Service\Supplier\Traveline;
 use Module\Hotel\Quotation\Application\Service\SupplierQuotaBookerInterface;
 use Module\Hotel\Quotation\Application\Service\SupplierQuotaFetcherInterface;
 use Module\Hotel\Quotation\Application\Service\SupplierQuotaUpdaterInterface;
-use Sdk\Module\Contracts\ModuleInterface;
+use Sdk\Module\Contracts\Support\ContainerInterface;
 use Shared\Contracts\Adapter\TravelineAdapterInterface;
 
 class SupplierFactory
 {
     public function __construct(
         private readonly TravelineAdapterInterface $travelineAdapter,
-        private readonly ModuleInterface $module,
+        private readonly ContainerInterface $container,
     ) {}
 
     public function fetcher(int $hotelId): SupplierQuotaFetcherInterface
@@ -34,12 +34,12 @@ class SupplierFactory
         return $this->getSupplier($hotelId);
     }
 
-    private function getSupplier(int $hotelId): SupplierQuotaFetcherInterface|SupplierQuotaUpdaterInterface|SupplierQuotaBookerInterface
-    {
+    private function getSupplier(int $hotelId
+    ): SupplierQuotaFetcherInterface|SupplierQuotaUpdaterInterface|SupplierQuotaBookerInterface {
         if ($this->travelineAdapter->isHotelIntegrationEnabled($hotelId)) {
-            return $this->module->make(Traveline::class);
+            return $this->container->make(Traveline::class);
         }
 
-        return $this->module->make(Gotostans::class);
+        return $this->container->make(Gotostans::class);
     }
 }

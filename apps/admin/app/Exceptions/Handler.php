@@ -2,6 +2,7 @@
 
 namespace App\Admin\Exceptions;
 
+use App\Admin\Support\Context\ContextManager;
 use App\Admin\Support\Facades\AppContext;
 use App\Admin\Support\Facades\Layout;
 use Illuminate\Auth\AuthenticationException;
@@ -10,7 +11,6 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Sdk\Module\Foundation\Exception\NotFoundExceptionInterface;
-use Sdk\Shared\Contracts\Service\ApplicationContextInterface;
 use Sdk\Shared\Exception\ApplicationException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
@@ -108,7 +108,7 @@ class Handler extends ExceptionHandler
 
     protected function context(): array
     {
-        if (app()->has(ApplicationContextInterface::class)) {
+        if (app()->has(ContextManager::class)) {
             return AppContext::toArray();
         } else {
             return [];

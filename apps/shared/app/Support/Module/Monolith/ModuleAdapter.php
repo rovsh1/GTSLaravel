@@ -5,6 +5,7 @@ namespace App\Shared\Support\Module\Monolith;
 use App\Shared\Contracts\Module\ModuleAdapterInterface;
 use Sdk\Module\Contracts\ModuleInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
+use Sdk\Shared\Contracts\Context\ContextInterface;
 use Sdk\Shared\Contracts\Event\IntegrationEventSubscriberInterface;
 use Sdk\Shared\Event\IntegrationEventMessage;
 
@@ -43,11 +44,16 @@ class ModuleAdapter implements ModuleAdapterInterface
 
     public function call(string $method, array $arguments = []): mixed
     {
-        if (is_subclass_of($method, UseCaseInterface::class)) {
-            return $this->module->make($method)->execute(...$arguments);
-        } else {
+        if (!is_subclass_of($method, UseCaseInterface::class)) {
             throw new \Exception('Only use case allowed');
         }
+
+        /**
+         * Передаем контекст приложения в контекст модуля
+         */
+        $this->module->withContext(app(ContextInterface::class)->toArray());
+
+        return $this->module->make($method)->execute(...$arguments);
     }
 
     public function hasSubclass(string $abstract): bool

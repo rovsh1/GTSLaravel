@@ -6,9 +6,7 @@ use App\Shared\Support\Module\ModulesManager;
 
 class UseCaseWrapper
 {
-    public function __construct(private readonly ModulesManager $modules)
-    {
-    }
+    public function __construct(private readonly ModulesManager $modules) {}
 
     public function wrap(string $abstract)
     {
@@ -22,8 +20,7 @@ class UseCaseWrapper
             public function __construct(
                 private readonly ModuleAdapter $moduleAdapter,
                 private readonly string $useCase,
-            ) {
-            }
+            ) {}
 
             public function execute(...$arguments): mixed
             {

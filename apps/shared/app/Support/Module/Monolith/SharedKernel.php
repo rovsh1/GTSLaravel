@@ -3,7 +3,6 @@
 namespace App\Shared\Support\Module\Monolith;
 
 use Illuminate\Contracts\Foundation\Application;
-use Module\Shared\Providers\BootServiceProvider;
 use Sdk\Module\Foundation\Support\SharedContainer;
 
 class SharedKernel
@@ -30,14 +29,6 @@ class SharedKernel
             $resolved->register();
         }
 
-        if (property_exists($provider, 'singletons')) {
-            foreach ($provider->singletons as $key => $value) {
-                $key = is_int($key) ? $value : $key;
-
-                $this->singleton($key, $value);
-            }
-        }
-
         $this->serviceProviders[] = $resolved;
     }
 
@@ -49,12 +40,6 @@ class SharedKernel
             }
         }
         unset($this->serviceProviders);
-    }
-
-    public function singleton($abstract, $concrete = null): void
-    {
-        $this->sharedContainer->singleton($abstract, $concrete);
-        $this->app->bind($abstract, fn() => $this->sharedContainer->get($abstract));
     }
 
     public function getContainer(): SharedContainer
@@ -72,8 +57,5 @@ class SharedKernel
         return new SharedContainer();
     }
 
-    protected function registerServiceProviders(): void
-    {
-        $this->register(BootServiceProvider::class);
-    }
+    protected function registerServiceProviders(): void {}
 }

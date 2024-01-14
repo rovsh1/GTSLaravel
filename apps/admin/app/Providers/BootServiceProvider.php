@@ -3,9 +3,10 @@
 namespace App\Admin\Providers;
 
 use App\Admin\Services\JournalLogger\JournalLoggerServiceProvider;
+use App\Admin\Support\Context\ContextManager;
 use App\Admin\Support\Facades\AppContext;
 use Illuminate\Support\ServiceProvider;
-use Sdk\Shared\Enum\SourceEnum;
+use Sdk\Shared\Contracts\Context\ContextInterface;
 
 class BootServiceProvider extends ServiceProvider
 {
@@ -19,11 +20,11 @@ class BootServiceProvider extends ServiceProvider
         $this->app->register(ViewServiceProvider::class);
         $this->app->register(JournalLoggerServiceProvider::class);
         $this->app->register(HorizonServiceProvider::class);
+        $this->app->singleton(ContextInterface::class, ContextManager::class);
     }
 
     public function boot(): void
     {
-        AppContext::setSource(SourceEnum::ADMIN);
         $this->setRequestContext();
     }
 

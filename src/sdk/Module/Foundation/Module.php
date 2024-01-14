@@ -4,10 +4,10 @@ namespace Sdk\Module\Foundation;
 
 use Illuminate\Support\ServiceProvider;
 use Sdk\Module\Container\Container;
+use Sdk\Module\Contracts\ContextInterface;
 use Sdk\Module\Contracts\ModuleInterface;
 use Sdk\Module\Contracts\Support\ContainerInterface;
 use Sdk\Module\Foundation\Providers\EventServiceProvider;
-use Sdk\Module\Foundation\Providers\SupportServiceProvider;
 use Sdk\Module\Foundation\Support\SharedContainer;
 
 class Module extends Container implements ModuleInterface, ContainerInterface
@@ -170,6 +170,7 @@ class Module extends Container implements ModuleInterface, ContainerInterface
 
     protected function resolve($abstract, $parameters = [], $raiseEvents = true)
     {
+        //@todo add use case wrapper and use module context context
         if (!is_string($abstract)) {
             return parent::resolve($abstract, $parameters, $raiseEvents);
         } elseif ($this->sharedContainer->has($abstract)) {
@@ -184,7 +185,6 @@ class Module extends Container implements ModuleInterface, ContainerInterface
     protected function registerBaseServiceProviders()
     {
         $this->register(EventServiceProvider::class);
-        $this->register(SupportServiceProvider::class);
     }
 
     protected function bootProvider(ServiceProvider $provider)
@@ -203,5 +203,10 @@ class Module extends Container implements ModuleInterface, ContainerInterface
         $this->serviceProviders[] = $provider;
 
         $this->loadedProviders[get_class($provider)] = true;
+    }
+
+    public function withContext(array $context): void
+    {
+        $this->get(ContextInterface::class)->setPrevContext($context);
     }
 }

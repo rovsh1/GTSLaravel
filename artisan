@@ -20,7 +20,7 @@ require __DIR__ . '/vendor/autoload.php';
 /** @var \App\Shared\Application $app */
 $app = require_once __DIR__ . '/bootstrap/app.php';
 //$app->setBasePath($app->corePath());
-$app->setNamespace('App\\Console\\');
+$app->setNamespace('App\\Shared\\');
 
 /*
 |--------------------------------------------------------------------------

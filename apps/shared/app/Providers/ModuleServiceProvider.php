@@ -5,7 +5,11 @@ namespace App\Shared\Providers;
 use App\Shared\Support\Module\Monolith\ModuleAdapterFactory;
 use App\Shared\Support\Module\Monolith\SharedKernel;
 use Illuminate\Support\ServiceProvider;
+use Sdk\Shared\Contracts\Adapter\AirportAdapterInterface;
+use Sdk\Shared\Contracts\Adapter\CityAdapterInterface;
+use Sdk\Shared\Contracts\Adapter\CountryAdapterInterface;
 use Sdk\Shared\Contracts\Adapter\FileStorageAdapterInterface;
+use Sdk\Shared\Contracts\Adapter\RailwayStationAdapterInterface;
 use Sdk\Shared\Contracts\Event\IntegrationEventPublisherInterface;
 use Sdk\Shared\Contracts\Service\ApplicationConstantsInterface;
 use Sdk\Shared\Contracts\Service\CompanyRequisitesInterface;
@@ -49,6 +53,10 @@ class ModuleServiceProvider extends ServiceProvider
         CompanyRequisitesInterface::class,
         TravelineAdapterInterface::class,
         IntegrationEventPublisherInterface::class,
+        AirportAdapterInterface::class,
+        RailwayStationAdapterInterface::class,
+        CountryAdapterInterface::class,
+        CityAdapterInterface::class
     ];
 
     public function register(): void

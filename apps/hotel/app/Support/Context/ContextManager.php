@@ -3,19 +3,24 @@
 namespace App\Hotel\Support\Context;
 
 use App\Hotel\Support\View\Form\FormBuilder;
-use Sdk\Shared\Contracts\Service\ApplicationContextInterface;
+use Sdk\Shared\Contracts\Context\ContextInterface;
+use Sdk\Shared\Contracts\Context\HttpContextInterface;
+use Sdk\Shared\Enum\SourceEnum;
+use Sdk\Shared\Support\ApplicationContext\AbstractContext;
+use Sdk\Shared\Support\ApplicationContext\Concerns\AdministratorContextTrait;
+use Sdk\Shared\Support\ApplicationContext\Concerns\HttpRequestContextTrait;
 
-class ContextManager
+class ContextManager extends AbstractContext implements ContextInterface, HttpContextInterface
 {
+    use AdministratorContextTrait;
+    use HttpRequestContextTrait;
+
     private FormBuilder $submittedForm;
 
-    public function __construct(private readonly ApplicationContextInterface $applicationContext)
+    public function __construct()
     {
-    }
-
-    public function __call(string $name, array $arguments)
-    {
-        $this->applicationContext->$name(...$arguments);
+        $this->generateRequestId();
+        $this->setSource(SourceEnum::HOTEL);
     }
 
     public function setSubmittedForm(FormBuilder $form): void
@@ -30,7 +35,7 @@ class ContextManager
 
     public function toArray(): array
     {
-        $data = $this->applicationContext->toArray();
+        $data = parent::toArray();
         if (isset($this->submittedForm)) {
             $data['formData'] = $this->submittedForm->getData();
         }
