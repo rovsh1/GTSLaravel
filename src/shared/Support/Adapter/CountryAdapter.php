@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Module\Shared\Infrastructure\Adapter;
+namespace Shared\Support\Adapter;
 
-use Module\Shared\Infrastructure\Models\Country;
 use Sdk\Shared\Contracts\Adapter\CountryAdapterInterface;
 use Sdk\Shared\Dto\CountryDto;
+use Shared\Models\Country;
 
 class CountryAdapter implements CountryAdapterInterface
 {

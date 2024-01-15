@@ -2,10 +2,10 @@
 
 namespace Pkg\Booking\EventSourcing\Providers;
 
+use Illuminate\Support\ServiceProvider;
 use Module\Booking\Shared\Providers\BootServiceProvider as SharedBookingServiceProvider;
 use Pkg\Booking\EventSourcing\Domain\Service\HistoryStorageInterface;
 use Pkg\Booking\EventSourcing\Infrastructure\Service\HistoryStorage;
-use Sdk\Module\Support\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Collection;
 /**
  * @template T
  */
-abstract class AbstractEntityFactory implements FactoryInterface
+abstract class AbstractEntityFactory
 {
     /**
      * @var class-string<T> $entity
@@ -28,6 +28,7 @@ abstract class AbstractEntityFactory implements FactoryInterface
         if ($data instanceof Arrayable) {
             $entityData = $data->toArray();
         }
+
         return $this->fromArray($entityData);
     }
 
@@ -42,6 +43,7 @@ abstract class AbstractEntityFactory implements FactoryInterface
         if ($items instanceof Collection) {
             $preparedItems = $items->all();
         }
+
         return array_map(fn($itemData) => $this->createFrom($itemData), $preparedItems);
     }
 
@@ -65,6 +67,7 @@ abstract class AbstractEntityFactory implements FactoryInterface
             $argumentName = $argument->getName();
             $preparedArguments[$argumentName] = $data[$argumentName] ?? null;
         }
+
         return new $this->entity(...$preparedArguments);
     }
 }

@@ -2,9 +2,9 @@
 
 namespace Module\Administrator\Providers;
 
+use Illuminate\Support\ServiceProvider;
 use Module\Administrator\Domain;
 use Module\Administrator\Infrastructure;
-use Sdk\Module\Support\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {

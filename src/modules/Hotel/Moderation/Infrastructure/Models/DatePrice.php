@@ -6,7 +6,7 @@ namespace Module\Hotel\Moderation\Infrastructure\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Module\Shared\Infrastructure\Models\Model;
+use Shared\Models\Model;
 
 class DatePrice extends Model
 {

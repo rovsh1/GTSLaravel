@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Module\Shared\Infrastructure\Adapter;
+namespace Shared\Support\Adapter;
 
-use Module\Shared\Infrastructure\Models\Airport;
 use Sdk\Shared\Contracts\Adapter\AirportAdapterInterface;
 use Sdk\Shared\Dto\AirportInfoDto;
+use Shared\Models\Airport;
 
 class AirportAdapter implements AirportAdapterInterface
 {

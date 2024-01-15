@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Shared\Infrastructure\Adapter;
+namespace Shared\Support\Adapter;
 
 use App\Admin\Models\Reference\City;
 use Sdk\Shared\Contracts\Adapter\CityAdapterInterface;

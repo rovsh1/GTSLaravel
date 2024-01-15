@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Shared\Infrastructure\Models;
+namespace Shared\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;

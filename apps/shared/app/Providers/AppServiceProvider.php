@@ -3,8 +3,8 @@
 namespace App\Shared\Providers;
 
 use App\Shared\Components\Locale\Languages;
+use Illuminate\Support\ServiceProvider;
 use Sdk\Module\Database\Eloquent\MacrosServiceProvider;
-use Sdk\Module\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {

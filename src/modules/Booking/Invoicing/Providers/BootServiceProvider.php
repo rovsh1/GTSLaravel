@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\View;
 use Module\Booking\Invoicing\Domain;
 use Module\Booking\Invoicing\Infrastructure;
 use Module\Booking\Shared\Providers\BootServiceProvider as SharedBookingServiceProvider;
-use Sdk\Module\Support\ServiceProvider;
+use Illuminate\Support\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {

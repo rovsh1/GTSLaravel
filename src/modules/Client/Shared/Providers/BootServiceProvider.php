@@ -8,7 +8,7 @@ use Module\Client\Shared\Domain\Repository\ClientRepositoryInterface;
 use Module\Client\Shared\Domain\Repository\ClientRequisitesRepositoryInterface;
 use Module\Client\Shared\Infrastructure\Repository\ClientRepository;
 use Module\Client\Shared\Infrastructure\Repository\ClientRequisitesRepository;
-use Sdk\Module\Support\ServiceProvider;
+use Illuminate\Support\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Shared\Infrastructure\Adapter;
+namespace Shared\Support\Adapter;
 
 use Gsdk\FileStorage\FileInfo;
 use Gsdk\FileStorage\FileStorage;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Hotel\Moderation\Infrastructure\Models\Price;
 
-use Module\Shared\Infrastructure\Models\Model;
+use Shared\Models\Model;
 
 class Group extends Model
 {

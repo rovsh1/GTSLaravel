@@ -2,8 +2,8 @@
 
 namespace Sdk\Module\Support\Providers;
 
+use Illuminate\Support\ServiceProvider;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
-use Sdk\Module\Support\ServiceProvider;
 use Sdk\Shared\Support\Providers\RegisterListenersTrait;
 
 class DomainEventServiceProvider extends ServiceProvider

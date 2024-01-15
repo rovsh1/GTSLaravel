@@ -1,5 +1,5 @@
 <?php
 
-namespace Module\Shared\Infrastructure\Models;
+namespace Shared\Models;
 
 class Model extends \Sdk\Module\Database\Eloquent\Model { }

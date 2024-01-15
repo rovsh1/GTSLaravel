@@ -5,7 +5,7 @@ namespace Module\Client\Moderation\Providers;
 use Module\Client\Moderation\Domain;
 use Module\Client\Moderation\Infrastructure;
 use Module\Client\Shared\Providers\BootServiceProvider as SharedClientServiceProvider;
-use Sdk\Module\Support\ServiceProvider;
+use Illuminate\Support\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {
