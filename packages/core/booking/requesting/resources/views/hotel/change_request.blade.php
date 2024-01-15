@@ -55,14 +55,17 @@
                                     <td class="top-table-left">Период пребывания:</td>
                                     <td>
                                         @changemark('period')
-
-                                            <b>{{ $bookingPeriod->startDate }}</b> - <b>{{ $bookingPeriod->endDate }}</b>
+                                        <b>{{ $bookingPeriod->startDate }}</b> - <b>{{ $bookingPeriod->endDate }}</b>
                                         @endchangemark
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="top-table-left">Количество ночей:</td>
-                                    <td><b>{{ $bookingPeriod->nightsCount }}</b></td>
+                                    <td>
+                                        @changemark('period')
+                                        <b>{{ $bookingPeriod->nightsCount }}</b>
+                                        @endchangemark
+                                    </td>
                                 </tr>
                             </table>
                         </td>
