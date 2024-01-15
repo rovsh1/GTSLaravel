@@ -126,7 +126,6 @@ class BookingDtoFactory
         ?ConditionDto $roomCheckInCondition
     ): CarbonInterface {
         if ($hotelDefaultCheckInStart === null) {
-            //@todo что тут делать?
             \Log::warning('У отеля отсутствует дефолтное время заезда');
 
             return $period->getStartDate();
@@ -150,7 +149,6 @@ class BookingDtoFactory
         //кол-во ночей считается на 1 день меньше периода
         $endDate = $period->getEndDate()->clone()->subDay();
         if ($hotelDefaultCheckOutEnd === null) {
-            //@todo что тут делать?
             \Log::warning('У отеля отсутствует дефолтное время выезда');
 
             return $endDate;

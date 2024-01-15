@@ -57,19 +57,4 @@ class TravelineReservation extends Model
             });
         });
     }
-
-//    public function scopeWhereHotelId(Builder $builder, int $hotelId)
-//    {
-//        $builder->addSelect("{$this->getTable()}.*");
-//
-//        $joinableTable = 'booking_hotel_details';
-//        $builder->leftJoin(
-//            $joinableTable,
-//            function (JoinClause $join) use ($joinableTable) {
-//                $join->on("{$joinableTable}.booking_id", '=', "{$this->getTable()}.reservation_id");
-//            }
-//        )->addSelect("{$joinableTable}.hotel_id as hotel_id");
-//
-//        $builder->where("{$joinableTable}.hotel_id", $hotelId);
-//    }
 }
