@@ -20,6 +20,8 @@ class BootServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
+        $this->registerMigrations();
+
         $this->app->register(DomainEventServiceProvider::class);
         $this->app->register(IntegrationEventServiceProvider::class);
         $this->app->register(SharedBookingServiceProvider::class);
@@ -27,7 +29,6 @@ class BootServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        $this->registerMigrations();
         $this->registerViews();
         $this->registerServices();
     }
@@ -60,7 +61,7 @@ class BootServiceProvider extends ServiceProvider
     protected function registerMigrations(): void
     {
         if (app()->runningInConsole()) {
-            $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
+            $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
         }
     }
 }
