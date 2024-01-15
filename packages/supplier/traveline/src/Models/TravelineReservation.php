@@ -14,21 +14,15 @@ use Sdk\Module\Database\Eloquent\Model;
  *
  * @property int $id
  * @property int $reservation_id
- * @property TravelineReservationStatusEnum $status
- * @property array $data
+ * @property int $hotel_id
  * @property CarbonInterface|null $accepted_at
  * @property CarbonInterface|null $created_at
  * @property CarbonInterface|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|TravelineReservation newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|TravelineReservation newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|TravelineReservation query()
- * @method static \Illuminate\Database\Eloquent\Builder|TravelineReservation whereAcceptedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|TravelineReservation whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|TravelineReservation whereData($value)
  * @method static \Illuminate\Database\Eloquent\Builder|TravelineReservation whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|TravelineReservation whereReservationId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|TravelineReservation whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|TravelineReservation whereUpdatedAt($value)
  * @method static Builder|TravelineReservation whereHotelId(int $hotelId)
  * @mixin \Eloquent
  */
