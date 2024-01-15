@@ -9,7 +9,7 @@ use App\Admin\Support\Facades\Breadcrumb;
 use App\Admin\Support\Facades\Layout;
 use App\Admin\Support\Facades\Prototypes;
 use App\Admin\Support\View\Layout as LayoutContract;
-use Module\Booking\EventSourcing\Application\UseCase\GetHistory;
+use Pkg\Booking\EventSourcing\Application\UseCase\GetHistory;
 
 class TimelineController extends Controller
 {

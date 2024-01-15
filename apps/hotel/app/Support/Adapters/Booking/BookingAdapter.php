@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Hotel\Support\Adapters\Booking;
 
-use Module\Booking\EventSourcing\Application\UseCase\GetStatusHistory;
 use Module\Booking\Moderation\Application\UseCase\GetAvailableActions as ModerationActions;
 use Module\Booking\Moderation\Application\UseCase\GetBooking;
 use Module\Booking\Moderation\Application\UseCase\GetStatuses;
 use Module\Booking\Moderation\Application\UseCase\UpdateNote;
 use Module\Booking\Moderation\Application\UseCase\UpdateStatus;
+use Pkg\Booking\EventSourcing\Application\UseCase\GetStatusHistory;
 use Pkg\Booking\Requesting\Application\UseCase\GetAvailableActions as RequestingActions;
 
 class BookingAdapter

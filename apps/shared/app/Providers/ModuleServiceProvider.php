@@ -34,7 +34,6 @@ class ModuleServiceProvider extends ServiceProvider
         'BookingModeration' => 'Booking/Moderation',
         'BookingPricing' => 'Booking/Pricing',
         'BookingNotification' => 'Booking/Notification',
-        'BookingEventSourcing' => 'Booking/EventSourcing',
         'BookingInvoicing' => 'Booking/Invoicing',
         'SupplierModeration' => 'Supplier/Moderation',
 //        'Traveline' => 'Traveline',
@@ -42,6 +41,7 @@ class ModuleServiceProvider extends ServiceProvider
 
     private array $pkgModules = [
         'BookingRequesting' => 'Pkg\\Booking\\Requesting\\',
+        'BookingEventSourcing' => 'Pkg\\Booking\\EventSourcing\\',
         'CurrencyRate' => 'Pkg\\CurrencyRate\\',
         'MailManager' => 'Pkg\\MailManager\\',
         'IntegrationEventBus' => 'Pkg\\IntegrationEventBus\\',
