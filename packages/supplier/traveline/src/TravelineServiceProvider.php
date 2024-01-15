@@ -23,7 +23,8 @@ class TravelineServiceProvider extends ServiceProvider
         if (!app()->configurationIsCached()) {
             $this->mergeConfigFrom(__DIR__ . '/../config/suppliers.php', 'suppliers');
         }
-        $this->app->register(RouteServiceProvider::class);
+        //@todo пока перенес в сюда apps/api/app/Providers/BootServiceProvider.php
+//        $this->app->register(RouteServiceProvider::class);
         $this->app->register(EventServiceProvider::class);
     }
 

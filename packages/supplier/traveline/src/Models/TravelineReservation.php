@@ -8,7 +8,6 @@ use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\JoinClause;
 use Sdk\Module\Database\Eloquent\Model;
-use Supplier\Traveline\Infrastructure\Models\TravelineReservationStatusEnum;
 
 /**
  * Supplier\Traveline\Infrastructure\Models\TravelineReservation
@@ -54,11 +53,11 @@ class TravelineReservation extends Model
     {
         $builder->addSelect("{$this->getTable()}.*");
 
-        $joinableTable = 'reservation';
+        $joinableTable = 'booking_hotel_details';
         $builder->leftJoin(
             $joinableTable,
             function (JoinClause $join) use ($joinableTable) {
-                $join->on("{$joinableTable}.id", '=', "{$this->getTable()}.reservation_id");
+                $join->on("{$joinableTable}.booking_id", '=', "{$this->getTable()}.reservation_id");
             }
         )->addSelect("{$joinableTable}.hotel_id as hotel_id");
 

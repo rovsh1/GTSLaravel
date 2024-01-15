@@ -18,11 +18,11 @@ class GetReservationsAction
     {
         try {
             $reservations = $this->bookingService->getReservations(
-                $request->reservation_id,
-                $request->hotel_id,
-                $request->date_update
+                $request->getReservationId(),
+                $request->getHotelId(),
+                $request->getStartTime()
             );
-        } catch (HotelNotConnectedException $exception) {
+        } catch (HotelNotConnectedException) {
             return new HotelNotConnectedToChannelManagerResponse();
         }
 

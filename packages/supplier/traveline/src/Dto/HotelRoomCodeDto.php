@@ -2,7 +2,7 @@
 
 namespace Pkg\Supplier\Traveline\Dto;
 
-use Supplier\Traveline\Domain\Exception\InvalidHotelRoomCode;
+use Pkg\Supplier\Traveline\Exception\InvalidHotelRoomCode;
 
 final class HotelRoomCodeDto implements \Stringable
 {

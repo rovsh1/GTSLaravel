@@ -2,9 +2,7 @@
 
 namespace Pkg\Supplier\Traveline\Dto\Reservation\Room;
 
-use Custom\Framework\Foundation\Support\Dto\Dto;
-
-class GuestDto extends Dto
+class GuestDto
 {
     public function __construct(
         public readonly string $firstName,
@@ -14,4 +12,15 @@ class GuestDto extends Dto
         public readonly ?string $phone = null,
         public readonly bool $isChild = false,
     ) {}
+
+    public static function from(): static
+    {
+        return new static();
+    }
+
+    public static function collection(array $guests): array
+    {
+        return [];
+//        return array_map(fn())
+    }
 }

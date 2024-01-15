@@ -5,13 +5,19 @@ declare(strict_types=1);
 namespace Pkg\Supplier\Traveline\Adapters;
 
 use Carbon\CarbonInterface;
-use Carbon\CarbonPeriod;
+use Illuminate\Database\Eloquent\Builder;
 use Module\Booking\Moderation\Application\UseCase\GetBooking;
+use Module\Booking\Moderation\Application\UseCase\GetBookingByIds;
+use Module\Booking\Moderation\Application\UseCase\HotelBooking\ConfirmBookingBySupplier;
 use Pkg\Supplier\Traveline\Dto\ReservationDto;
+use Pkg\Supplier\Traveline\Factory\BookingDtoFactory;
 use Pkg\Supplier\Traveline\Models\TravelineReservation;
 
 class BookingAdapter
 {
+    public function __construct(
+        private readonly BookingDtoFactory $dtoFactory
+    ) {}
 
     /**
      * Бронирования делаются в вашей системы из свободной квоты, передаются в средство размещения автоматически и не нуждаются в дополнительном подтверждении со стороны отеля. Задача данной функции обеспечить подтверждение факта успешности технической доставки бронирования из вашей системы в менеджер каналов.
@@ -34,107 +40,67 @@ class BookingAdapter
         $reservation = Reservation::find($id);
         if ($status === TravelineReservationStatusEnum::New) {
             $reservation->changeStatus(ReservationStatusEnum::Confirmed);
+            app(ConfirmBookingBySupplier::class)->execute($id);
 
             return;
         }
         if ($reservation->status === ReservationStatusEnum::WaitingProcessing) {
             $reservation->changeStatus(ReservationStatusEnum::Confirmed);
+            app(ConfirmBookingBySupplier::class)->execute($id);
         }
     }
 
     public function getActiveReservations(): array
     {
-        $reservations = TravelineReservation::whereNull('accepted_at')->get();
+        $reservationIds = TravelineReservation::whereNull('accepted_at')
+            ->get()
+            ->pluck('reservation_id')
+            ->toArray();
 
-        $preparedReservations = $this->prepareReservationCollection($reservations);
+        $reservations = app(GetBookingByIds::class)->execute($reservationIds);
 
-        return ReservationDto::collection($preparedReservations)->all();
+        return $this->dtoFactory->collection($reservations);
     }
 
     public function getActiveReservationsByHotelId(int $hotelId): array
     {
-        $reservations = TravelineReservation::whereNull('accepted_at')
+        $reservationIds = TravelineReservation::whereNull('accepted_at')
             ->whereHotelId($hotelId)
-            ->get();
+            ->get()
+            ->pluck('reservation_id')
+            ->toArray();
 
-        $preparedReservations = $this->prepareReservationCollection($reservations);
+        $reservations = app(GetBookingByIds::class)->execute($reservationIds);
 
-        return ReservationDto::collection($preparedReservations)->all();
+        return $this->dtoFactory->collection($reservations);
     }
 
-    public function getActiveReservationById(int $id): ?ReservationDto
+    public function getReservationById(int $id): ?ReservationDto
     {
         $reservation = app(GetBooking::class)->execute($id);
         if ($reservation === null) {
             return null;
         }
 
-        return ReservationDto::from($reservation->data);
+        return $this->dtoFactory->build($reservation);
     }
 
     public function getUpdatedReservations(CarbonInterface $startDate, ?int $hotelId = null): array
     {
-        $reservations = TravelineReservation::query()
+        $reservationIds = TravelineReservation::query()
             ->where(function (Builder $builder) use ($hotelId) {
                 if ($hotelId !== null) {
                     $builder->whereHotelId($hotelId);
                 }
             })
+            //@todo дату обновления нужно проверять в таблице броней
             ->where('updated_at', '>=', $startDate)
-            ->get();
+            ->get()
+            ->pluck('reservation_id')
+            ->toArray();
 
-        $preparedReservations = $this->prepareReservationCollection($reservations);
+        $reservations = app(GetBookingByIds::class)->execute($reservationIds);
 
-        return ReservationDto::collection($preparedReservations)->all();
-    }
-
-    /**
-     * @param array $reservations
-     * @return ReservationDto[]
-     */
-    private function buildReservationDtos(array $reservations): array
-    {
-        return array_map(function ($reservation) {
-            $customerDto = \Supplier\Traveline\Application\Dto\Reservation\CustomerDto::from(
-                $reservation->reservation->client
-            );
-            $rooms = array_map(function ($room) use ($customerDto, $reservation) {
-                $bookingPerDayPrices = $this->buildRoomPerDayPrices(
-                    $reservation->reservation->reservationPeriod,
-                    $room->priceNetto
-                );
-
-                return \Supplier\Traveline\Application\Dto\Reservation\RoomDto::from($room)->additional([
-                    'customer' => $customerDto,
-                    'bookingPerDayPrices' => $bookingPerDayPrices
-                ]);
-            }, $reservation->rooms);
-
-            return ReservationDto::from($reservation->reservation)->additional([
-                'roomStays' => $rooms,
-                //@hack @todo заменить на получение валюты брони
-                'currencyCode' => 'UZS'
-            ]);
-        }, $reservations);
-    }
-
-    /**
-     * @param CarbonPeriod $period
-     * @return \Supplier\Traveline\Application\Dto\Reservation\Room\DayPriceDto[]
-     */
-    private function buildRoomPerDayPrices(CarbonPeriod $period, float $allDaysPrice): array
-    {
-        //todo вынести в бронирование цену за один день (средняя стоимость дня) в домене
-        $countDays = $period->count();
-        $dailyPrice = $allDaysPrice / $countDays;
-        $prices = [];
-        foreach ($period as $date) {
-            $prices[] = new \Supplier\Traveline\Application\Dto\Reservation\Room\DayPriceDto(
-                $date->format('Y-m-d'),
-                $dailyPrice
-            );
-        }
-
-        return $prices;
+        return $this->dtoFactory->collection($reservations);
     }
 }

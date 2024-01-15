@@ -8,14 +8,13 @@ namespace Pkg\Supplier\Traveline\Service;
 use Carbon\CarbonInterface;
 use Pkg\Supplier\Traveline\Adapters\BookingAdapter;
 use Pkg\Supplier\Traveline\Dto\Request\Reservation;
+use Pkg\Supplier\Traveline\Dto\ReservationDto;
+use Pkg\Supplier\Traveline\Exception\HotelNotConnectedException;
 use Pkg\Supplier\Traveline\Http\Response\Error\TravelineResponseErrorInterface;
 use Pkg\Supplier\Traveline\Repository\HotelRepository;
-use Supplier\Traveline\Application\Dto\ReservationDto;
-use Supplier\Traveline\Domain\Exception\HotelNotConnectedException;
 
 class BookingService
 {
-
     /**
      * @var TravelineResponseErrorInterface[] $errors
      */
@@ -49,7 +48,7 @@ class BookingService
         } elseif ($dateUpdate === null && $hotelId !== null) {
             $reservations = $this->adapter->getActiveReservationsByHotelId($hotelId);
         } elseif ($reservationId !== null) {
-            $reservation = $this->adapter->getActiveReservationById($reservationId);
+            $reservation = $this->adapter->getReservationById($reservationId);
             if ($reservation !== null) {
                 $reservations[] = $reservation;
             }
