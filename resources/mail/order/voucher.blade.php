@@ -22,13 +22,10 @@
                       style="font-size: 14px; line-height: 140%; text-align: left; word-wrap: break-word;">
                       <p style="line-height: 140%;"> </p>
                       <p style="line-height: 140%;">
-                        <span style="line-height: 19.6px;">{{ __('Уважаемый :client, добрый день!',
-                          ['client' => $client->name]) }}</span>
+                        <span style="line-height: 19.6px;">{{ __('Уважаемый :client, добрый день!', ['client' => $client->name]) }}</span>
                       </p>
                       <p style="line-height: 140%;">
-                      <p style="line-height: 19.6px;">{{ __('Ваши брони
-                        подтверждены, отправляем Вам ваучер') }} - <a href="{{ $voucher->fileUrl }}" target="_blank">по
-                          ссылке</a></p>
+                      <p style="line-height: 19.6px;">{{ __('Ваши брони подтверждены, отправляем Вам ваучер') }} - <a href="{{ $voucher->fileUrl }}" target="_blank">по ссылке</a></p>
                       </p>
                       <p style="line-height: 140%;"> </p>
                     </div>
@@ -63,8 +60,7 @@
                     <div class="v-text-align v-line-height v-font-size"
                       style="font-size: 13px; line-height: 140%; text-align: left; word-wrap: break-word;">
                       <p style="line-height: 140%;">
-                        <span style="line-height: 18.2px;">{{ __('Номер ваучера: :id', ['id' =>
-                          $voucher->number]) }}</span> 
+                        <span style="line-height: 18.2px;">{{ __('Номер ваучера: :id', ['id' => $voucher->number]) }}</span> 
                       </p>
                     </div>
                   </td>
@@ -104,8 +100,7 @@
                     <div class="v-text-align v-line-height v-font-size"
                       style="font-size: 13px; line-height: 140%; text-align: left; word-wrap: break-word;">
                       <p style="line-height: 140%;">
-                        <span style="line-height: 18.2px;">{{ __('Дата создания: :createdAt', ['createdAt'
-                          => $voucher->createdAt]) }}</span> 
+                        <span style="line-height: 18.2px;">{{ __('Дата создания: :createdAt', ['createdAt' => $voucher->createdAt]) }}</span> 
                       </p>
                     </div>
                   </td>
@@ -211,8 +206,7 @@
                     <div class="v-text-align v-line-height v-font-size"
                       style="font-size: 13px; line-height: 140%; text-align: left; word-wrap: break-word;">
                       <p style="line-height: 140%;">
-                        <span style="line-height: 18.2px;">{{ __('Общая сумма: :amount :currency', ['amount'
-                          => $service->price->total, 'currency' => $service->price->currency]) }}</span> 
+                        <span style="line-height: 18.2px;">{{ __('Общая сумма: :amount :currency', ['amount' => $service->price->total, 'currency' => $service->price->currency]) }}</span> 
                       </p>
                     </div>
                   </td>
@@ -252,8 +246,7 @@
                     <div class="v-text-align v-line-height v-font-size"
                       style="font-size: 13px; line-height: 140%; text-align: left; word-wrap: break-word;">
                       <p style="line-height: 140%;">
-                        <span style="line-height: 18.2px;">{{ __('Статус брони: {Бронь.Статус}', [])
-                          }}</span> 
+                        <span style="line-height: 18.2px;">{{ __('Статус брони: {Бронь.Статус}', []) }}</span> 
                       </p>
                     </div>
                   </td>
@@ -287,8 +280,7 @@
                     <div class="v-text-align v-line-height v-font-size"
                       style="font-size: 14px; line-height: 140%; text-align: left; word-wrap: break-word;">
                       <p style="line-height: 140%;">
-                        <span style="line-height: 19.6px;">{{ __('С детальной информацией об услугах можете
-                          ознакомиться во вложенном файле.') }}</span>
+                        <span style="line-height: 19.6px;">{{ __('С детальной информацией об услугах можете ознакомиться во вложенном файле.') }}</span>
                       </p>
                       <p style="line-height: 140%;"> </p>
                     </div>
