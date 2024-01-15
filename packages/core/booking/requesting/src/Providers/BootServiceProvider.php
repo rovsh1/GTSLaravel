@@ -9,11 +9,11 @@ use Pkg\Booking\Requesting\Domain\Adapter\AdministratorAdapterInterface;
 use Pkg\Booking\Requesting\Domain\Factory\RequestFactoryInterface;
 use Pkg\Booking\Requesting\Domain\Repository\RequestRepositoryInterface;
 use Pkg\Booking\Requesting\Domain\Service\ChangesStorageInterface;
-use Pkg\Booking\Requesting\Infrastructure\Adapter\AdministratorAdapter;
-use Pkg\Booking\Requesting\Infrastructure\Repository\RequestRepository;
-use Pkg\Booking\Requesting\Infrastructure\Service\ChangesStorage;
-use Pkg\Booking\Requesting\Service\ChangeMarkRenderer;
+use Pkg\Booking\Requesting\Repository\RequestRepository;
+use Pkg\Booking\Requesting\Service\ChangesStorage;
 use Pkg\Booking\Requesting\Service\RequestFactory;
+use Pkg\Booking\Requesting\Service\TemplateRenderer\ChangeMarkRenderer;
+use Pkg\Booking\Requesting\Support\Adapter\AdministratorAdapter;
 use Sdk\Module\Support\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
