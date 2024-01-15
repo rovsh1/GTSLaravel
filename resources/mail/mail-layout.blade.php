@@ -279,12 +279,13 @@
 
 <body class="clean-body u_body"
   style="margin: 0;padding: 0;-webkit-text-size-adjust: 100%;background-color: #e7e7e7;color: #000000">
-  <table id="u_body"
+  <table
     style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 320px;Margin: 0 auto;background-color: #e7e7e7;width:100%"
     cellpadding="0" cellspacing="0">
     <tbody>
       <tr style="vertical-align: top">
         <td style="word-break: break-word;border-collapse: collapse !important;vertical-align: top">
+          <!-- header -->
           <div class="u-row-container" style="padding: 0px;background-color: transparent">
             <div class="u-row"
               style="margin: 0 auto;min-width: 320px;max-width: 600px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;">
@@ -295,12 +296,13 @@
                   <div style="background-color: #ffffff;height: 100%;width: 100% !important;">
                     <div class="v-col-border"
                       style="box-sizing: border-box; height: 100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;">
-                      <table id="u_content_image_1" style="font-family:arial,helvetica,sans-serif;" role="presentation"
-                        cellpadding="0" cellspacing="0" width="100%" border="0">
+                      <table class="u_content_image_1"
+                        style="font-family:arial,helvetica,sans-serif;border-bottom: 1px solid #0e80f6;"
+                        role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
                         <tbody>
                           <tr>
                             <td class="v-container-padding-padding"
-                              style="overflow-wrap:break-word;word-break:break-word;padding:50px 10px 40px;font-family:arial,helvetica,sans-serif;"
+                              style="overflow-wrap:break-word;word-break:break-word;padding:35px 10px 35px;font-family:arial,helvetica,sans-serif;"
                               align="left">
                               <table width="100%" cellpadding="0" cellspacing="0" border="0">
                                 <tr>
@@ -308,7 +310,6 @@
                                     <img align="center" border="0" src="images/logo.png" alt="image" title="image"
                                       style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 100%;max-width: 200px;"
                                       width="200px" class="v-src-width v-src-max-width" />
-
                                   </td>
                                 </tr>
                               </table>
@@ -323,104 +324,102 @@
             </div>
           </div>
 
-          <div class="u-row-container" style="padding: 0px;">
+          @yield('content')
 
-            @yield('content')
+          <!-- footer -->
+          <div class="u-row-container" style="padding: 0px;background-color: transparent">
+            <div class="u-row"
+              style="margin: 0 auto;min-width: 320px;max-width: 600px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;">
+              <div
+                style="border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;">
+                <div class="u-col u-col-100"
+                  style="max-width: 320px;min-width: 600px;display: table-cell;vertical-align: top;">
+                  <div
+                    style="background-color: #0e80f6;height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
+                    <div class="v-col-border"
+                      style="box-sizing: border-box; height: 100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
+                      <table class="u_content_heading_4" style="font-family:arial,helvetica,sans-serif;"
+                        role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
+                        <tbody>
+                          <tr>
+                            <td class="v-container-padding-padding"
+                              style="overflow-wrap:break-word;word-break:break-word;padding:40px 10px 10px 40px;font-family:arial,helvetica,sans-serif;"
+                              align="left">
 
-            <div class="u-row-container" style="padding: 0px;background-color: transparent">
-              <div class="u-row"
-                style="margin: 0 auto;min-width: 320px;max-width: 600px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;">
-                <div
-                  style="border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;">
-                  <div class="u-col u-col-100"
-                    style="max-width: 320px;min-width: 600px;display: table-cell;vertical-align: top;">
-                    <div
-                      style="background-color: #0e80f6;height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
-                      <div class="v-col-border"
-                        style="box-sizing: border-box; height: 100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
-                        <table id="" class="u_content_heading_4" style="font-family:arial,helvetica,sans-serif;"
-                          role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
-                          <tbody>
-                            <tr>
-                              <td class="v-container-padding-padding"
-                                style="overflow-wrap:break-word;word-break:break-word;padding:40px 10px 10px 40px;font-family:arial,helvetica,sans-serif;"
-                                align="left">
+                              <h1 class="v-text-align v-line-height v-font-size"
+                                style="margin: 0px; color: #ffffff; line-height: 140%; text-align: left; word-wrap: break-word; font-size: 22px; font-weight: 400;">
+                                <span>Благодарим за сотрудничество,</span>
+                              </h1>
 
-                                <h1 class="v-text-align v-line-height v-font-size"
-                                  style="margin: 0px; color: #ffffff; line-height: 140%; text-align: left; word-wrap: break-word; font-size: 22px; font-weight: 400;">
-                                  <span>Благодарим за сотрудничество,</span>
-                                </h1>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <table class="u_content_text_14" style="font-family:arial,helvetica,sans-serif;"
+                        role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
+                        <tbody>
+                          <tr>
+                            <td class="v-container-padding-padding"
+                              style="overflow-wrap:break-word;word-break:break-word;padding:10px 60px 25px 40px;font-family:arial,helvetica,sans-serif;"
+                              align="left">
 
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                        <table id="" class="u_content_text_14" style="font-family:arial,helvetica,sans-serif;"
-                          role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
-                          <tbody>
-                            <tr>
-                              <td class="v-container-padding-padding"
-                                style="overflow-wrap:break-word;word-break:break-word;padding:10px 60px 25px 40px;font-family:arial,helvetica,sans-serif;"
-                                align="left">
-
-                                <div class="v-text-align v-line-height v-font-size"
-                                  style="font-size: 14px; color: #fff; line-height: 170%; text-align: left; word-wrap: break-word;">
-                                  <p style="line-height: 170%;"><span style="line-height: 23.8px;"></span><span
-                                      style="line-height: 23.8px;"></span><span style="line-height: 23.8px;">С
-                                      уважением, команда GTS</span></p>
+                              <div class="v-text-align v-line-height v-font-size"
+                                style="font-size: 14px; color: #fff; line-height: 170%; text-align: left; word-wrap: break-word;">
+                                <p style="line-height: 170%;">
+                                  <span style="line-height: 23.8px;"></span>
+                                  <span style="line-height: 23.8px;"></span>
+                                  <span style="line-height: 23.8px;">
+                                    {{ __('С уважением, :manager', ['manager' => $manager->fullName]) }}
+                                  </span>
+                                </p>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <table class="u_content_social_1" style="font-family:arial,helvetica,sans-serif;"
+                        role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
+                        <tbody>
+                          <tr>
+                            <td class="v-container-padding-padding"
+                              style="overflow-wrap:break-word;word-break:break-word;padding:0px 10px 20px 40px;font-family:arial,helvetica,sans-serif;"
+                              align="left">
+                              <div align="left">
+                                <div style="display: table; max-width:167px;">
+                                  <table align="left" border="0" cellspacing="0" cellpadding="0" width="32" height="32"
+                                    style="width: 32px !important;height: 32px !important;display: inline-block;border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;margin-right: 10px">
+                                    <tbody>
+                                      <tr style="vertical-align: top">
+                                        <td align="left" valign="middle"
+                                          style="word-break: break-word;border-collapse: collapse !important;vertical-align: top">
+                                          <a href="mailto:{{ $manager->email }}" title="Почта" target="_blank">
+                                            <img src="images/mail.png" alt="Почта" title="Почта" width="32"
+                                              style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important">
+                                          </a>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                  <table align="left" border="0" cellspacing="0" cellpadding="0" width="32" height="32"
+                                    style="width: 32px !important;height: 32px !important;display: inline-block;border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;margin-right: 10px">
+                                    <tbody>
+                                      <tr style="vertical-align: top">
+                                        <td align="left" valign="middle"
+                                          style="word-break: break-word;border-collapse: collapse !important;vertical-align: top">
+                                          <a href="tel:{{ $manager->phone }}" title="Телефон" target="_blank">
+                                            <img src="images/phone.png" alt="Телефон" title="Телефон" width="32"
+                                              style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important">
+                                          </a>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
                                 </div>
-
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                        <table id="" class="u_content_social_1" style="font-family:arial,helvetica,sans-serif;"
-                          role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
-                          <tbody>
-                            <tr>
-                              <td class="v-container-padding-padding"
-                                style="overflow-wrap:break-word;word-break:break-word;padding:0px 10px 20px 40px;font-family:arial,helvetica,sans-serif;"
-                                align="left">
-
-                                <div align="left">
-                                  <div style="display: table; max-width:167px;">
-                                    <table align="left" border="0" cellspacing="0" cellpadding="0" width="32"
-                                      height="32"
-                                      style="width: 32px !important;height: 32px !important;display: inline-block;border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;margin-right: 10px">
-                                      <tbody>
-                                        <tr style="vertical-align: top">
-                                          <td align="left" valign="middle"
-                                            style="word-break: break-word;border-collapse: collapse !important;vertical-align: top">
-                                            <a href="mailto:test@gmail.com" title="Почта" target="_blank">
-                                              <img src="images/mail.png" alt="Почта" title="Почта" width="32"
-                                                style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important">
-                                            </a>
-                                          </td>
-                                        </tr>
-                                      </tbody>
-                                    </table>
-                                    <table align="left" border="0" cellspacing="0" cellpadding="0" width="32"
-                                      height="32"
-                                      style="width: 32px !important;height: 32px !important;display: inline-block;border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;margin-right: 10px">
-                                      <tbody>
-                                        <tr style="vertical-align: top">
-                                          <td align="left" valign="middle"
-                                            style="word-break: break-word;border-collapse: collapse !important;vertical-align: top">
-                                            <a href="tel:+80988454545" title="Телефон" target="_blank">
-                                              <img src="images/phone.png" alt="Телефон" title="Телефон" width="32"
-                                                style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important">
-                                            </a>
-                                          </td>
-                                        </tr>
-                                      </tbody>
-                                    </table>
-                                  </div>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
                     </div>
                   </div>
                 </div>
