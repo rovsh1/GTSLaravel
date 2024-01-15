@@ -2,7 +2,6 @@
 
 namespace Pkg\IntegrationEventBus\Service;
 
-use App\Shared\Contracts\Module\ModuleAdapterInterface;
 use Pkg\IntegrationEventBus\Entity\Message;
 use Pkg\Supplier\Traveline\Contracts\IntegrationEventDispatcherInterface as TravelineEventDispatcher;
 use Sdk\Shared\Contracts\Event\IntegrationEventInterface;
@@ -17,12 +16,11 @@ class MessageSender
         $triggerModule = $message->originator();
         $event = $this->makeIntegrationEvent($message);
 
-        /** @var ModuleAdapterInterface $module */
-        foreach (app()->modules() as $module) {
-            if ($module->is($triggerModule) || !$this->isDispatchableModule($module)) {
+        foreach ($this->availableModules as $name) {
+            if ($name === $triggerModule) {
                 continue;
             }
-
+            $module = module($name);
             $module->boot();
 
             try {
@@ -32,11 +30,6 @@ class MessageSender
             }
         }
         app(TravelineEventDispatcher::class)->dispatch($event->event);
-    }
-
-    private function isDispatchableModule(ModuleAdapterInterface $moduleAdapter): bool
-    {
-        return in_array($moduleAdapter->name(), $this->availableModules);
     }
 
     private function makeIntegrationEvent(Message $message): IntegrationEventMessage

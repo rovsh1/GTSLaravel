@@ -1,35 +1,33 @@
 <?php
 
-namespace App\Shared\Support\Module\Monolith;
-
-use App\Shared\Support\Module\ModulesManager;
+namespace Shared\Support\Module;
 
 class UseCaseWrapper
 {
-    public function __construct(private readonly ModulesManager $modules) {}
+    public function __construct(private readonly ModuleRepository $modules) {}
 
     public function wrap(string $abstract)
     {
-        $moduleAdapter = $this->findByNamespace($abstract);
-        if (!$moduleAdapter) {
+        $module = $this->findByNamespace($abstract);
+        if (!$module) {
             throw new \LogicException("Module not found by abstract [$abstract]");
         }
-        $moduleAdapter->boot();
+        $module->boot();
 
-        return new class($moduleAdapter, $abstract) {
+        return new class($module, $abstract) {
             public function __construct(
-                private readonly ModuleAdapter $moduleAdapter,
+                private readonly Module $module,
                 private readonly string $useCase,
             ) {}
 
             public function execute(...$arguments): mixed
             {
-                return $this->moduleAdapter->call($this->useCase, $arguments);
+                return $this->module->callUseCase($this->useCase, $arguments);
             }
         };
     }
 
-    private function findByNamespace(string $abstract): ?ModuleAdapter
+    private function findByNamespace(string $abstract): ?Module
     {
         foreach ($this->modules as $module) {
             if ($module->hasSubclass($abstract)) {

@@ -4,6 +4,7 @@ namespace Pkg\Booking\Requesting\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\ServiceProvider;
 use Module\Booking\Shared\Providers\BootServiceProvider as SharedBookingServiceProvider;
 use Pkg\Booking\Requesting\Domain\Adapter\AdministratorAdapterInterface;
 use Pkg\Booking\Requesting\Domain\Factory\RequestFactoryInterface;
@@ -14,13 +15,13 @@ use Pkg\Booking\Requesting\Service\ChangesStorage;
 use Pkg\Booking\Requesting\Service\RequestFactory;
 use Pkg\Booking\Requesting\Service\TemplateRenderer\ChangeMarkRenderer;
 use Pkg\Booking\Requesting\Support\Adapter\AdministratorAdapter;
-use Shared\Support\Module\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
         $this->registerMigrations();
+
         $this->app->register(DomainEventServiceProvider::class);
         $this->app->register(IntegrationEventServiceProvider::class);
         $this->app->register(SharedBookingServiceProvider::class);
@@ -59,7 +60,7 @@ class BootServiceProvider extends ServiceProvider
 
     protected function registerMigrations(): void
     {
-        if (app()->runningInConsole()) {
+        if ($this->app->runningInConsole()) {
             $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
         }
     }

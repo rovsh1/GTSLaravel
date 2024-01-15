@@ -5,9 +5,10 @@ namespace Pkg\CurrencyRate\UseCase;
 use DateTimeInterface;
 use Pkg\CurrencyRate\Service\RatioCalculator;
 use Pkg\CurrencyRate\ValueObject\CountryEnum;
+use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 use Sdk\Shared\Enum\CurrencyEnum;
 
-class ConvertNetRate
+class ConvertNetRate implements UseCaseInterface
 {
     private RatioCalculator $ratioCalculator;
 

@@ -2,6 +2,7 @@
 
 namespace Pkg\IntegrationEventBus;
 
+use Illuminate\Queue\QueueManager;
 use Illuminate\Support\ServiceProvider;
 use Pkg\IntegrationEventBus\Queue\Connector as IntegrationEventConnector;
 use Pkg\IntegrationEventBus\Service\MessageSender;
@@ -25,7 +26,7 @@ class IntegrationEventBusServiceProvider extends ServiceProvider
 
     protected function registerManager(): void
     {
-        $this->app->resolving('queue', function ($manager) {
+        $this->callAfterResolving(QueueManager::class, function ($manager) {
             $manager->addConnector('integrationEvent', function () {
                 return app()->make(IntegrationEventConnector::class);
             });

@@ -2,17 +2,23 @@
 
 namespace Shared\Support\Module;
 
-use Illuminate\Container\Container;
-use Illuminate\Contracts\Foundation\CachesConfiguration;
-use Illuminate\Contracts\Foundation\CachesRoutes;
+use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Queue\QueueManager;
 
-class Application extends Container implements CachesConfiguration, CachesRoutes
+trait HackBindingsTrait
 {
-    use ApplicationTrait;
+    private array $rootAbstracts = [
+        'migrator',
+        QueueManager::class,
+        Schedule::class
+    ];
 
-    public function __construct()
+    protected function registerHackBindings(): void
     {
         $this->bind('config', fn() => app('config'));
+        foreach ($this->rootAbstracts as $key) {
+            app()->afterResolving($key, fn($instance) => $this->fireAfterResolvingCallbacks($key, $instance));
+        }
     }
 
     public function configurationIsCached()

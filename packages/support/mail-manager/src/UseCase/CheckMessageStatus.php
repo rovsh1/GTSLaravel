@@ -6,8 +6,9 @@ use Pkg\MailManager\Contracts\QueueStorageInterface;
 use Pkg\MailManager\Dto\QueueMessageStatusDto;
 use Pkg\MailManager\ValueObject\MailId;
 use Pkg\MailManager\ValueObject\QueueMailStatusEnum;
+use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
-class CheckMessageStatus
+class CheckMessageStatus implements UseCaseInterface
 {
     public function __construct(
         private readonly QueueStorageInterface $queueStorage,

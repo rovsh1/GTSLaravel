@@ -1,6 +1,6 @@
 <?php
 
-namespace Sdk\Module\Foundation\Support;
+namespace Shared\Support\Module;
 
 use Illuminate\Container\Container;
 

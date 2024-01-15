@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Shared\Support\Module;
-
-use App\Shared\Contracts\Module\ModuleAdapterInterface;
+namespace Shared\Support\Module;
 
 trait ModulesCollectionTrait
 {
     /**
-     * @var ModuleAdapterInterface[]
+     * @var Module[]
      */
     protected array $modules = [];
 
@@ -15,7 +13,6 @@ trait ModulesCollectionTrait
 
     public function has(string $name): bool
     {
-        /** @var ModuleAdapterInterface $module */
         foreach ($this->modules as $module) {
             if ($module->is($name)) {
                 return true;
@@ -25,9 +22,8 @@ trait ModulesCollectionTrait
         return false;
     }
 
-    public function get(string $name): ?ModuleAdapterInterface
+    public function get(string $name): ?Module
     {
-        /** @var ModuleAdapterInterface $module */
         foreach ($this->modules as $module) {
             if ($module->is($name)) {
                 return $module;
@@ -42,7 +38,7 @@ trait ModulesCollectionTrait
         return $this->modules;
     }
 
-    public function current(): ModuleAdapterInterface
+    public function current(): Module
     {
         return $this->modules[$this->position];
     }

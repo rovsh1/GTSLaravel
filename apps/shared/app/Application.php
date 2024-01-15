@@ -2,10 +2,10 @@
 
 namespace App\Shared;
 
-use App\Shared\Contracts\Module\ModuleAdapterInterface;
-use App\Shared\Support\Module\ModulesManager;
-use App\Shared\Support\Module\Monolith\UseCaseWrapper;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
+use Shared\Support\Module\Module;
+use Shared\Support\Module\ModuleRepository;
+use Shared\Support\Module\UseCaseWrapper;
 
 class Application extends \Illuminate\Foundation\Application
 {
@@ -53,14 +53,14 @@ class Application extends \Illuminate\Foundation\Application
         return $this->basePath('src/modules' . ($path != '' ? DIRECTORY_SEPARATOR . $path : ''));
     }
 
-    public function module(string $name): ?ModuleAdapterInterface
+    public function module(string $name): ?Module
     {
         return $this->modules->get($name);
     }
 
-    public function modules(): ModulesManager
+    public function modules(): ModuleRepository
     {
-        return $this->instances[ModulesManager::class];
+        return $this->instances[ModuleRepository::class];
     }
 
     public function build($concrete)
@@ -76,8 +76,8 @@ class Application extends \Illuminate\Foundation\Application
 
     private function registerModules(): void
     {
-        $this->instance(ModulesManager::class, new ModulesManager());
-        $this->alias(ModulesManager::class, 'modules');
+        $this->instance(ModuleRepository::class, new ModuleRepository());
+        $this->alias(ModuleRepository::class, 'modules');
     }
 
     protected function bindPathsInContainer()

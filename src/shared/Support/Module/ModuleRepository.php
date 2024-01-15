@@ -1,20 +1,17 @@
 <?php
 
-namespace App\Shared\Support\Module;
+namespace Shared\Support\Module;
 
-use App\Shared\Contracts\Module\ModuleAdapterInterface;
 use Exception;
 use Sdk\Module\Contracts\ModuleInterface;
 
-class ModulesManager implements \Iterator
+class ModuleRepository implements \Iterator
 {
     use ModulesCollectionTrait;
 
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
-    public function register(ModuleAdapterInterface $module): void
+    public function register(Module $module): void
     {
         $this->modules[] = $module;
     }
