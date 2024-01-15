@@ -6,12 +6,17 @@ namespace Pkg\Supplier\Traveline\Adapters;
 
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
+use Module\Booking\Moderation\Application\Dto\GuestDto;
+use Module\Booking\Moderation\Application\Dto\ServiceBooking\BookingDto;
 use Module\Booking\Moderation\Application\UseCase\GetBooking;
 use Module\Booking\Moderation\Application\UseCase\GetBookingByIds;
 use Module\Booking\Moderation\Application\UseCase\HotelBooking\ConfirmBookingBySupplier;
+use Module\Booking\Moderation\Application\UseCase\HotelBooking\GetGuests;
 use Pkg\Supplier\Traveline\Dto\ReservationDto;
 use Pkg\Supplier\Traveline\Factory\BookingDtoFactory;
 use Pkg\Supplier\Traveline\Models\TravelineReservation;
+use Pkg\Supplier\Traveline\Models\TravelineReservationStatusEnum;
+use Sdk\Booking\Enum\StatusEnum;
 
 class BookingAdapter
 {
@@ -26,26 +31,22 @@ class BookingAdapter
      * @param int $id
      * @return void
      */
-    public function confirmReservation(int $id, string $status): void
+    public function confirmReservation(int $id, TravelineReservationStatusEnum $status): void
     {
         $existReservation = TravelineReservation::whereReservationId($id)->exists();
         if (!$existReservation) {
             throw new \RuntimeException('Traveline reservation not found', 0);
         }
-        TravelineReservation::whereReservationId($id)
-            ->whereStatus($status)
-            ->update(['accepted_at' => now()]);
+        TravelineReservation::whereReservationId($id)->update(['accepted_at' => now()]);
 
-        /** @var Reservation $reservation */
-        $reservation = Reservation::find($id);
-        if ($status === TravelineReservationStatusEnum::New) {
-            $reservation->changeStatus(ReservationStatusEnum::Confirmed);
+        if ($status === TravelineReservationStatusEnum::NEW) {
             app(ConfirmBookingBySupplier::class)->execute($id);
 
             return;
         }
-        if ($reservation->status === ReservationStatusEnum::WaitingProcessing) {
-            $reservation->changeStatus(ReservationStatusEnum::Confirmed);
+
+        $reservation = $this->getBooking($id);
+        if ($reservation->status->id === StatusEnum::WAITING_PROCESSING->value) {
             app(ConfirmBookingBySupplier::class)->execute($id);
         }
     }
@@ -77,7 +78,7 @@ class BookingAdapter
 
     public function getReservationById(int $id): ?ReservationDto
     {
-        $reservation = app(GetBooking::class)->execute($id);
+        $reservation = $this->getBooking($id);
         if ($reservation === null) {
             return null;
         }
@@ -93,7 +94,6 @@ class BookingAdapter
                     $builder->whereHotelId($hotelId);
                 }
             })
-            //@todo дату обновления нужно проверять в таблице броней
             ->where('updated_at', '>=', $startDate)
             ->get()
             ->pluck('reservation_id')
@@ -102,5 +102,19 @@ class BookingAdapter
         $reservations = app(GetBookingByIds::class)->execute($reservationIds);
 
         return $this->dtoFactory->collection($reservations);
+    }
+
+    /**
+     * @param int $bookingId
+     * @return GuestDto[]
+     */
+    public function getBookingGuests(int $bookingId): array
+    {
+        return app(GetGuests::class)->execute($bookingId);
+    }
+
+    private function getBooking(int $id): ?BookingDto
+    {
+        return app(GetBooking::class)->execute($id);
     }
 }

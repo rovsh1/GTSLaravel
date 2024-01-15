@@ -6,7 +6,7 @@ namespace Pkg\Supplier\Traveline\Models;
 
 enum TravelineReservationStatusEnum: string
 {
-    case New = 'new';
-    case Modified = 'modified';
-    case Cancelled = 'cancelled';
+    case NEW = 'new';
+    case MODIFIED = 'modified';
+    case CANCELLED = 'cancelled';
 }

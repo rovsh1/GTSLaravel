@@ -9,9 +9,8 @@ return new class extends Migration {
     {
         Schema::create('traveline_reservations', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('reservation_id')->unique();
-            $table->enum('status', ['new', 'modified', 'cancelled'])->default('new');
-            $table->json('data');
+            $table->unsignedInteger('hotel_id');
+            $table->unsignedBigInteger('reservation_id')->unique();
             $table->timestamp('accepted_at')->nullable();
             $table->timestamps();
         });

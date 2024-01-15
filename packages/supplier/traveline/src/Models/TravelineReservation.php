@@ -6,7 +6,7 @@ namespace Pkg\Supplier\Traveline\Models;
 
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Query\JoinClause;
+use Illuminate\Database\Query\Builder as Query;
 use Sdk\Module\Database\Eloquent\Model;
 
 /**
@@ -38,29 +38,38 @@ class TravelineReservation extends Model
 
     protected $fillable = [
         'reservation_id',
-        'status',
-        'data',
+        'hotel_id',
         'accepted_at'
     ];
 
     protected $casts = [
-        'status' => TravelineReservationStatusEnum::class,
-        'data' => 'array',
         'accepted_at' => 'datetime'
     ];
 
-    public function scopeWhereHotelId(Builder $builder, int $hotelId)
+    protected static function booted()
     {
-        $builder->addSelect("{$this->getTable()}.*");
-
-        $joinableTable = 'booking_hotel_details';
-        $builder->leftJoin(
-            $joinableTable,
-            function (JoinClause $join) use ($joinableTable) {
-                $join->on("{$joinableTable}.booking_id", '=', "{$this->getTable()}.reservation_id");
-            }
-        )->addSelect("{$joinableTable}.hotel_id as hotel_id");
-
-        $builder->where("{$joinableTable}.hotel_id", $hotelId);
+        static::addGlobalScope('default', function (Builder $builder) {
+            $builder->whereExists(function (Query $query) {
+                $query->selectRaw(1)
+                    ->from('traveline_hotels')
+                    ->whereColumn('traveline_hotels.hotel_id', 'traveline_reservations.hotel_id')
+                    ->whereColumn('traveline_reservations.created_at', '>=', 'traveline_hotels.created_at');
+            });
+        });
     }
+
+//    public function scopeWhereHotelId(Builder $builder, int $hotelId)
+//    {
+//        $builder->addSelect("{$this->getTable()}.*");
+//
+//        $joinableTable = 'booking_hotel_details';
+//        $builder->leftJoin(
+//            $joinableTable,
+//            function (JoinClause $join) use ($joinableTable) {
+//                $join->on("{$joinableTable}.booking_id", '=', "{$this->getTable()}.reservation_id");
+//            }
+//        )->addSelect("{$joinableTable}.hotel_id as hotel_id");
+//
+//        $builder->where("{$joinableTable}.hotel_id", $hotelId);
+//    }
 }
