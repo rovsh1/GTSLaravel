@@ -57,28 +57,8 @@ class TravelineServiceProvider extends ServiceProvider
         });
     }
 
-    /**
-     * Register Sanctum's migration files.
-     *
-     * @return void
-     */
     protected function bootMigrations()
     {
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
-    }
-
-    /**
-     * Register database migration paths.
-     *
-     * @param array|string $paths
-     * @return void
-     */
-    protected function loadMigrationsFrom($paths)
-    {
-        $this->callAfterResolving('migrator', function ($migrator) use ($paths) {
-            foreach ((array)$paths as $path) {
-                $migrator->path($path);
-            }
-        });
     }
 }
