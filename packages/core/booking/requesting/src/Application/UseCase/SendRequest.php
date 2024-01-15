@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pkg\Booking\Requesting\Application\UseCase;
 
 use Module\Booking\Shared\Domain\Booking\Service\BookingUnitOfWorkInterface;
-use Pkg\Booking\Requesting\Domain\Factory\RequestFactory;
+use Pkg\Booking\Requesting\Domain\Factory\RequestFactoryInterface;
 use Pkg\Booking\Requesting\Domain\Service\RequestingRules;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
@@ -14,7 +14,7 @@ class SendRequest implements UseCaseInterface
 {
     public function __construct(
         private readonly BookingUnitOfWorkInterface $bookingUnitOfWork,
-        private readonly RequestFactory $requestFactory,
+        private readonly RequestFactoryInterface $requestFactory,
         private readonly RequestingRules $requestRules,
     ) {}
 

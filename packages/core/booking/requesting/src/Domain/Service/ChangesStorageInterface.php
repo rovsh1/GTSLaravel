@@ -12,6 +12,10 @@ interface ChangesStorageInterface
 {
     public function find(ChangesIdentifier $identifier): ?Changes;
 
+    public function exists(ChangesIdentifier $identifier): bool;
+
+    public function remove(ChangesIdentifier $identifier): void;
+
     public function store(Changes $changes): void;
 
     public function clear(BookingId $bookingId): void;

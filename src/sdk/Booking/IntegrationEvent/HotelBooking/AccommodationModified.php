@@ -11,6 +11,8 @@ final class AccommodationModified extends AbstractBookingEvent
         public readonly int $accommodationId,
         public readonly int $roomId,
         public readonly string $roomName,
+        public readonly array $beforePayload,
+        public readonly array $afterPayload,
     ) {
         parent::__construct($bookingId);
     }

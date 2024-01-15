@@ -9,6 +9,11 @@ final class ChangesIdentifier
         private readonly string $field,
     ) {}
 
+    public static function make(int $bookingId, string $field): ChangesIdentifier
+    {
+        return new ChangesIdentifier($bookingId, $field);
+    }
+
     public function bookingId(): int
     {
         return $this->bookingId;

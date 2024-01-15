@@ -2,6 +2,7 @@
 
 namespace Module\Booking\Shared\Domain\Booking\Service\IntegrationEventMapper;
 
+use Sdk\Booking\Event\HotelBooking\AccommodationDetailsEdited;
 use Sdk\Booking\Event\HotelBooking\GuestBinded as AccommodationGuestBinded;
 use Sdk\Booking\Event\HotelBooking\GuestUnbinded as AccommodationGuestUnbinded;
 use Sdk\Booking\Event\PriceUpdated;
@@ -30,6 +31,7 @@ class MapperFactory
         return match ($event) {
             AccommodationGuestBinded::class => AccommodationGuestBindedMapper::class,
             AccommodationGuestUnbinded::class => AccommodationGuestUnbindedMapper::class,
+            AccommodationDetailsEdited::class => AccommodationModifiedMapper::class,
             TransferGuestBinded::class => TransferGuestBindedMapper::class,
             TransferGuestUnbinded::class => TransferGuestUnbindedMapper::class,
             AirportGuestBinded::class => AirportGuestBindedMapper::class,

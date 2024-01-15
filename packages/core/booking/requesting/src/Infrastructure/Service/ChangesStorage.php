@@ -24,6 +24,11 @@ class ChangesStorage implements ChangesStorageInterface
         ) : null;
     }
 
+    public function exists(ChangesIdentifier $identifier): bool
+    {
+        return (bool)$this->findModel($identifier);
+    }
+
     public function store(Changes $changes): void
     {
         $model = $this->findModel($changes->identifier());

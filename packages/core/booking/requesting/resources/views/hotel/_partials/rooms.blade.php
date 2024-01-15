@@ -11,7 +11,9 @@
                 <b>{{ $room->name }}</b>
             </td>
             <td>
-                Время заезда: {{ $room->checkInTime }}
+                @changemark("accommodation[$room->accommodationId].earlyCheckIn")
+                    Время заезда: {{ $room->checkInTime }}
+                @endchangemark
             </td>
         </tr>
         <tr>
@@ -20,7 +22,9 @@
                 Тариф: {{ $room->rate }}
             </td>
             <td>
-                Время выезда: {{ $room->checkOutTime }}
+                @changemark("accommodation[$room->accommodationId].lateCheckOut")
+                    Время выезда: {{ $room->checkOutTime }}
+                @endchangemark
             </td>
         </tr>
         <tr>

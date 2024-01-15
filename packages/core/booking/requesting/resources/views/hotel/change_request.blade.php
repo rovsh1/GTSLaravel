@@ -53,7 +53,11 @@
                                 </tr>
                                 <tr>
                                     <td class="top-table-left">Период пребывания:</td>
-                                    <td><b>{{ $bookingPeriod->startDate }}</b> - <b>{{ $bookingPeriod->endDate }}</b>
+                                    <td>
+                                        @changemark('period')
+
+                                            <b>{{ $bookingPeriod->startDate }}</b> - <b>{{ $bookingPeriod->endDate }}</b>
+                                        @endchangemark
                                     </td>
                                 </tr>
                                 <tr>

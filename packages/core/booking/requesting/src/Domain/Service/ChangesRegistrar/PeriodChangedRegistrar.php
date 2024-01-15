@@ -35,7 +35,7 @@ class PeriodChangedRegistrar extends AbstractRegistrar
     {
         return "Период изменен {$this->periodPresentation($periodBefore)} "
             . self::DIFF_SEPARATOR
-            . "  {$this->periodPresentation($periodAfter)}";
+            . " {$this->periodPresentation($periodAfter)}";
     }
 
     private function periodPresentation(array $payload): string

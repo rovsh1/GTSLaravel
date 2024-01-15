@@ -1,6 +1,6 @@
 <?php
 
-namespace Pkg\Booking\Requesting\Domain\Factory;
+namespace Pkg\Booking\Requesting\Service;
 
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Shared\Service\TemplateCompilerInterface;
@@ -8,6 +8,7 @@ use Pkg\Booking\Requesting\Domain\Entity\BookingRequest;
 use Pkg\Booking\Requesting\Domain\Event\BookingRequestSent;
 use Pkg\Booking\Requesting\Domain\Event\CancelRequestSent;
 use Pkg\Booking\Requesting\Domain\Event\ChangeRequestSent;
+use Pkg\Booking\Requesting\Domain\Factory\RequestFactoryInterface;
 use Pkg\Booking\Requesting\Domain\Repository\RequestRepositoryInterface;
 use Pkg\Booking\Requesting\Domain\Service\TemplateDataFactory;
 use Sdk\Booking\Enum\RequestTypeEnum;
@@ -16,7 +17,7 @@ use Sdk\Shared\Contracts\Adapter\FileStorageAdapterInterface;
 use Sdk\Shared\Enum\ServiceTypeEnum;
 use Sdk\Shared\ValueObject\File;
 
-class RequestFactory
+class RequestFactory implements RequestFactoryInterface
 {
     public function __construct(
         private readonly TemplateCompilerInterface $templateCompiler,
@@ -24,16 +25,19 @@ class RequestFactory
         private readonly RequestRepositoryInterface $requestRepository,
         private readonly FileStorageAdapterInterface $fileStorageAdapter,
         private readonly DomainEventDispatcherInterface $eventDispatcher,
+        private readonly ChangeMarkRenderer $changeMarkRenderer,
     ) {}
 
     public function generate(Booking $booking, RequestTypeEnum $requestType): BookingRequest
     {
         $this->requestRepository->archiveByBooking($booking->id());
 
+        $this->changeMarkRenderer->boot($booking);
         $fileDto = $this->fileStorageAdapter->create(
             $this->getFilename($booking, $requestType),
             $this->generateContent($booking, $requestType)
         );
+        $this->changeMarkRenderer->reset();
 
         $request = $this->requestRepository->create($booking->id(), $requestType, new File($fileDto->guid));
         $this->dispatchEvent($request, $booking);
