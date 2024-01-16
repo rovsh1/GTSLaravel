@@ -21,6 +21,7 @@ class TravelineServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->bootMigrations();
         $this->mergeConfigFrom(__DIR__ . '/../config/traveline.php', 'suppliers.traveline');
         //@todo пока перенес в сюда apps/api/app/Providers/BootServiceProvider.php
 //        $this->app->register(RouteServiceProvider::class);
@@ -34,8 +35,6 @@ class TravelineServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->bootMigrations();
-
         $this->app->bind(ClientInterface::class, Client::class);
 
         $this->app->singleton(TravelineAdapter::class, function ($app) {

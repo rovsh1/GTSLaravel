@@ -23,8 +23,6 @@ use Sdk\Booking\ValueObject\HotelBooking\RoomPrices;
 
 class DetailsDtoFactory
 {
-    private array $accommodationGuests = [];
-
     public function __construct(
         private readonly AccommodationRepositoryInterface $accommodationRepository,
         private readonly GuestRepositoryInterface $guestRepository,
