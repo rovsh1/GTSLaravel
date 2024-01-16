@@ -8,7 +8,6 @@ use Illuminate\Contracts\Foundation\CachesRoutes;
 use Sdk\Module\Contracts\ContextInterface;
 use Sdk\Module\Contracts\ModuleInterface;
 use Sdk\Module\Contracts\Support\ContainerInterface;
-use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 use Sdk\Module\Foundation\Providers\EventServiceProvider;
 use Sdk\Module\Support\Context\ModuleContext;
 use Sdk\Shared\Contracts\Event\IntegrationEventSubscriberInterface;
@@ -102,20 +101,6 @@ class Module extends Container implements ModuleInterface, ContainerInterface, C
         $this->bind(ModuleInterface::class, fn() => $this);
         $this->bind(ContainerInterface::class, fn() => $this);
         $this->singleton(ContextInterface::class, ModuleContext::class);
-    }
-
-    public function callUseCase(string $method, array $arguments = []): mixed
-    {
-        if (!is_subclass_of($method, UseCaseInterface::class)) {
-            throw new \Exception('Only use case allowed');
-        }
-
-        /**
-         * Передаем контекст приложения в контекст модуля
-         */
-        $this->withContext(app(\Sdk\Shared\Contracts\Context\ContextInterface::class)->toArray());
-
-        return $this->make($method)->execute(...$arguments);
     }
 
     public function dispatchEvent(IntegrationEventMessage $message): void
