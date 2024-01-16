@@ -38,4 +38,15 @@ class ModuleRepository implements \Iterator
 
         $module->boot();
     }
+
+    public function findByNamespace(string $abstract): ?Module
+    {
+        foreach ($this->modules as $module) {
+            if ($module->hasSubclass($abstract)) {
+                return $module;
+            }
+        }
+
+        return null;
+    }
 }

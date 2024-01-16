@@ -8,7 +8,7 @@ class UseCaseWrapper
 
     public function wrap(string $abstract)
     {
-        $module = $this->findByNamespace($abstract);
+        $module = $this->modules->findByNamespace($abstract);
         if (!$module) {
             throw new \LogicException("Module not found by abstract [$abstract]");
         }
@@ -25,16 +25,5 @@ class UseCaseWrapper
                 return $this->module->callUseCase($this->useCase, $arguments);
             }
         };
-    }
-
-    private function findByNamespace(string $abstract): ?Module
-    {
-        foreach ($this->modules as $module) {
-            if ($module->hasSubclass($abstract)) {
-                return $module;
-            }
-        }
-
-        return null;
     }
 }
