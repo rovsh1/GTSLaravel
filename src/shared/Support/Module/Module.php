@@ -14,7 +14,7 @@ use Sdk\Module\Support\Context\ModuleContext;
 use Sdk\Shared\Contracts\Event\IntegrationEventSubscriberInterface;
 use Sdk\Shared\Event\IntegrationEventMessage;
 
-class Module extends Container implements ModuleInterface, CachesConfiguration, CachesRoutes
+class Module extends Container implements ModuleInterface, ContainerInterface, CachesConfiguration, CachesRoutes
 {
     use ApplicationTrait;
     use HackBindingsTrait;
