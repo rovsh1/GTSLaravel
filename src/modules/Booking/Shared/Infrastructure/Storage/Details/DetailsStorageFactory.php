@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Infrastructure\Storage\Details;
 
-use Sdk\Module\Contracts\Support\ContainerInterface;
+use Sdk\Module\Contracts\ModuleInterface;
 use Sdk\Shared\Enum\ServiceTypeEnum;
 
 class DetailsStorageFactory
 {
     public function __construct(
-        private readonly ContainerInterface $container
-    ) {
-    }
+        private readonly ModuleInterface $container
+    ) {}
 
     public function build(ServiceTypeEnum $serviceType): mixed
     {

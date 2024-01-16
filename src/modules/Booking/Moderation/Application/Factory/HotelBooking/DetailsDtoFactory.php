@@ -12,22 +12,23 @@ use Module\Booking\Moderation\Application\Dto\Details\AccommodationDto;
 use Module\Booking\Moderation\Application\Dto\Details\BookingPeriodDto;
 use Module\Booking\Moderation\Application\Dto\Details\ExternalNumberDto;
 use Module\Booking\Moderation\Application\Dto\Details\HotelInfoDto;
+use Module\Booking\Moderation\Application\Dto\GuestDto;
 use Module\Booking\Moderation\Application\Dto\ServiceBooking\HotelBookingDto;
 use Module\Booking\Shared\Domain\Booking\Repository\AccommodationRepositoryInterface;
 use Module\Booking\Shared\Domain\Guest\Repository\GuestRepositoryInterface;
 use Sdk\Booking\Entity\Details\HotelBooking;
-use Sdk\Booking\ValueObject\GuestId;
 use Sdk\Booking\ValueObject\HotelBooking\AccommodationCollection;
 use Sdk\Booking\ValueObject\HotelBooking\RoomPriceDayPart;
 use Sdk\Booking\ValueObject\HotelBooking\RoomPrices;
 
 class DetailsDtoFactory
 {
+    private array $accommodationGuests = [];
+
     public function __construct(
         private readonly AccommodationRepositoryInterface $accommodationRepository,
         private readonly GuestRepositoryInterface $guestRepository,
-    ) {
-    }
+    ) {}
 
     public function build(HotelBooking $details): HotelBookingDto
     {
@@ -54,10 +55,11 @@ class DetailsDtoFactory
     {
         $dtos = [];
         foreach ($accommodations as $accommodation) {
+            $guests = $this->guestRepository->get($accommodation->guestIds());
             $dtos[] = new AccommodationDto(
                 id: $accommodation->id()->value(),
                 roomInfo: RoomInfoDto::fromDomain($accommodation->roomInfo()),
-                guestIds: $accommodation->guestIds()->map(fn(GuestId $id) => $id->value()),
+                guests: GuestDto::collectionFromDomain($guests),
                 details: AccommodationDetailsDto::fromDomain($accommodation->details()),
                 price: $this->buildHotelRoomPriceDto($accommodation->prices())
             );
