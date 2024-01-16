@@ -196,6 +196,7 @@ class BookingController extends Controller
                 'creator' => Administrator::find($booking->creatorId),
                 'editUrl' => $this->isAllowed('update') ? $this->prototype->route('edit', $id) : null,
                 'deleteUrl' => $this->isAllowed('delete') ? $this->prototype->route('destroy', $id) : null,
+                'timelineUrl' => route('service-booking.timeline', $id),
             ]);
     }
 
