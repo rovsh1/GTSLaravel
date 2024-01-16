@@ -2,6 +2,8 @@
 
 namespace Pkg\Supplier\Traveline\Dto\Reservation\Room;
 
+use Module\Booking\Moderation\Application\Dto\GuestDto as BookingGuestDto;
+
 class GuestDto
 {
     public function __construct(
@@ -13,20 +15,20 @@ class GuestDto
         public readonly bool $isChild = false,
     ) {}
 
-    public static function from(string $fullName): static
+    public static function from(BookingGuestDto $guest): static
     {
-        [$name, $lastName, $middleName] = self::getFullNameParts($fullName);
+        [$name, $lastName, $middleName] = self::getFullNameParts($guest->fullName);
 
-        return new static($name, $lastName, $middleName);
+        return new static($name, $lastName, $middleName, isChild: !$guest->isAdult);
     }
 
     /**
-     * @param string[] $guests
+     * @param BookingGuestDto[] $guests
      * @return GuestDto[]
      */
     public static function collection(array $guests): array
     {
-        return array_map(fn(string $fullName) => self::from($fullName), $guests);
+        return array_map(fn(BookingGuestDto $guest) => self::from($guest), $guests);
     }
 
     private static function getFullNameParts(string $fullName): array

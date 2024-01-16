@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\UseCase;
 
-use Module\Booking\Moderation\Application\Dto\ServiceBooking\BookingDto;
 use Module\Booking\Moderation\Application\Factory\BookingDtoFactory;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Sdk\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\BookingIdCollection;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
-use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
 class GetBookingByIds implements UseCaseInterface
 {
@@ -20,16 +19,9 @@ class GetBookingByIds implements UseCaseInterface
 
     public function execute(array $ids): array
     {
-        return array_map(fn(int $id) => $this->getBookingDto(new BookingId($id)), $ids);
-    }
+        $bookingIds = array_map(fn(int $id) => new BookingId($id), $ids);
+        $bookings = $this->repository->getBookings(new BookingIdCollection($bookingIds));
 
-    private function getBookingDto(BookingId $id): BookingDto
-    {
-        $booking = $this->repository->find($id);
-        if ($booking === null) {
-            throw new EntityNotFoundException("Booking not found [$id]");
-        }
-
-        return $this->factory->createFromEntity($booking);
+        return $this->factory->collection($bookings);
     }
 }

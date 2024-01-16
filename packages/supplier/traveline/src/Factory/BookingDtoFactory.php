@@ -98,16 +98,8 @@ class BookingDtoFactory
         HotelInfoDto $hotelInfo,
         AccommodationDto $accommodation
     ): array {
-        $startDate = $this->getPeriodStartDateByCheckInCondition(
-            $period,
-            $hotelInfo->checkInTime,
-            $accommodation->details->earlyCheckIn
-        );
-        $endDate = $this->getPeriodEndDateByCheckOutCondition(
-            $period,
-            $hotelInfo->checkOutTime,
-            $accommodation->details->lateCheckOut
-        );
+        $startDate = $this->getPeriodStartDateByCheckInCondition($period, $hotelInfo->checkInTime, $accommodation->details->earlyCheckIn);
+        $endDate = $this->getPeriodEndDateByCheckOutCondition($period, $hotelInfo->checkOutTime, $accommodation->details->lateCheckOut);
         $preparedPeriod = new CarbonPeriod($startDate, $endDate, 'P1D');
 
         $countDays = $preparedPeriod->count();

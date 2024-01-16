@@ -6,12 +6,10 @@ namespace Pkg\Supplier\Traveline\Adapters;
 
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
-use Module\Booking\Moderation\Application\Dto\GuestDto;
 use Module\Booking\Moderation\Application\Dto\ServiceBooking\BookingDto;
 use Module\Booking\Moderation\Application\UseCase\GetBooking;
 use Module\Booking\Moderation\Application\UseCase\GetBookingByIds;
 use Module\Booking\Moderation\Application\UseCase\HotelBooking\ConfirmBookingBySupplier;
-use Module\Booking\Moderation\Application\UseCase\HotelBooking\GetGuests;
 use Pkg\Supplier\Traveline\Dto\ReservationDto;
 use Pkg\Supplier\Traveline\Factory\BookingDtoFactory;
 use Pkg\Supplier\Traveline\Models\TravelineReservation;
@@ -102,15 +100,6 @@ class BookingAdapter
         $reservations = app(GetBookingByIds::class)->execute($reservationIds);
 
         return $this->dtoFactory->collection($reservations);
-    }
-
-    /**
-     * @param int $bookingId
-     * @return GuestDto[]
-     */
-    public function getBookingGuests(int $bookingId): array
-    {
-        return app(GetGuests::class)->execute($bookingId);
     }
 
     private function getBooking(int $id): ?BookingDto

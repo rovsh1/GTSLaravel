@@ -11,6 +11,7 @@ use Module\Booking\Shared\Infrastructure\Mapper\BookingMapper;
 use Module\Booking\Shared\Infrastructure\Models\Booking as BookingModel;
 use Sdk\Booking\Enum\StatusEnum;
 use Sdk\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\BookingIdCollection;
 use Sdk\Booking\ValueObject\BookingPrices;
 use Sdk\Booking\ValueObject\CancelConditions;
 use Sdk\Booking\ValueObject\CreatorId;
@@ -56,6 +57,17 @@ class BookingDbContext implements BookingDbContextInterface
     public function getByGuestId(GuestId $guestId): array
     {
         $models = BookingModel::whereHasGuestId($guestId->value())->get();
+
+        return $models->map(fn(BookingModel $booking) => $this->bookingMapper->fromModel($booking))->all();
+    }
+
+    /**
+     * @param BookingIdCollection $ids
+     * @return Booking[]
+     */
+    public function getBookings(BookingIdCollection $ids): array
+    {
+        $models = BookingModel::whereId($ids->map(fn(BookingId $id) => $id->value()))->get();
 
         return $models->map(fn(BookingModel $booking) => $this->bookingMapper->fromModel($booking))->all();
     }
