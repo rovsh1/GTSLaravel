@@ -14,28 +14,4 @@ enum ActionNameEnum: string
     case GetBookings = 'get-bookings';
     case ConfirmBookings = 'confirm-bookings';
     case Update = 'update';
-
-    /**
-     * @return GetRoomsAndRatePlansActionRequest|GetReservationsActionRequest|ConfirmBookingsActionRequest|UpdateActionRequest
-     */
-    public function getRequest(Request $request)
-    {
-        return match ($this) {
-            self::GetRoomsAndRatePlans => GetRoomsAndRatePlansActionRequest::createFrom($request),
-            self::GetBookings => GetReservationsActionRequest::createFrom($request),
-            self::ConfirmBookings => ConfirmBookingsActionRequest::createFrom($request),
-            self::Update => UpdateActionRequest::createFrom($request),
-        };
-    }
-
-    public function getAction(): string
-    {
-        return match ($this) {
-            self::GetRoomsAndRatePlans => GetRoomsAndRatePlansAction::class,
-            self::GetBookings => GetReservationsAction::class,
-            self::ConfirmBookings => ConfirmBookingsAction::class,
-            self::Update => UpdateAction::class,
-        };
-    }
-
 }
