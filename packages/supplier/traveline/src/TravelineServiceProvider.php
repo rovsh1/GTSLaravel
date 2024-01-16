@@ -21,9 +21,7 @@ class TravelineServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        if (!app()->configurationIsCached()) {
-            $this->mergeConfigFrom(__DIR__ . '/../config/suppliers.php', 'suppliers');
-        }
+        $this->mergeConfigFrom(__DIR__ . '/../config/traveline.php', 'suppliers.traveline');
         //@todo пока перенес в сюда apps/api/app/Providers/BootServiceProvider.php
 //        $this->app->register(RouteServiceProvider::class);
         $this->app->register(EventServiceProvider::class);

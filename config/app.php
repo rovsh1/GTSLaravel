@@ -186,7 +186,6 @@ return [
          * Package Service Providers...
          */
         \Gsdk\FileStorage\FileStorageServiceProvider::class,
-        \Pkg\Supplier\Traveline\TravelineServiceProvider::class,
 
         /*
          * Application Service Providers...

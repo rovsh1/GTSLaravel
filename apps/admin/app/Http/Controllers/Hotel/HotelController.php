@@ -145,6 +145,12 @@ class HotelController extends AbstractPrototypeController
         return Grid::enableQuicksearch()
             ->setSearchForm($this->searchForm())
             ->paginator(self::GRID_LIMIT)
+            ->text('is_traveline_integration_enabled', [
+                'text' => 'TL',
+                'renderer' => function () {
+                    return '<span class="badge">TL</span>';//@todo доделать
+                }
+            ])
             ->text('name', [
                 'text' => 'Наименование',
                 'route' => $this->prototype->routeName('show'),

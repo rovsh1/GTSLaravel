@@ -36,7 +36,6 @@ class ModuleServiceProvider extends ServiceProvider
         'BookingNotification' => 'Booking/Notification',
         'BookingInvoicing' => 'Booking/Invoicing',
         'SupplierModeration' => 'Supplier/Moderation',
-//        'Traveline' => 'Traveline',
     ];
 
     private array $pkgModules = [
@@ -45,6 +44,7 @@ class ModuleServiceProvider extends ServiceProvider
         'CurrencyRate' => 'Pkg\\CurrencyRate\\',
         'MailManager' => 'Pkg\\MailManager\\',
         'IntegrationEventBus' => 'Pkg\\IntegrationEventBus\\',
+        'Traveline' => 'Pkg\\Supplier\\Traveline\\',
     ];
 
     protected array $shared = [
