@@ -233,6 +233,7 @@ class BookingController extends Controller
         return Grid::enableQuicksearch()
             ->setSearchForm($this->searchForm())
             ->checkbox('checked', ['checkboxClass' => 'js-select-booking', 'dataAttributeName' => 'booking-id'])
+            ->travelineBadge('is_traveline_integration_enabled', ['text' => 'TL'])
             ->id('id', [
                 'text' => '№',
                 'order' => true,
@@ -451,6 +452,11 @@ class BookingController extends Controller
                             );
                     }),
                 'guests_count'
+            )
+            ->addSelect(
+                DB::raw(
+                    '(SELECT 1 FROM traveline_hotels WHERE traveline_hotels.hotel_id = booking_hotel_details.hotel_id) AS is_traveline_integration_enabled'
+                )
             )
             ->addSelect(
                 DB::raw(
