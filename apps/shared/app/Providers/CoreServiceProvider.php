@@ -3,13 +3,8 @@
 namespace App\Shared\Providers;
 
 use App\Shared\Support\Context\ConsoleContextManager;
-use Module\Shared\Infrastructure\Adapter\AirportAdapter;
-use Module\Shared\Infrastructure\Adapter\CityAdapter;
-use Module\Shared\Infrastructure\Adapter\CountryAdapter;
-use Module\Shared\Infrastructure\Adapter\FileStorageAdapter;
-use Module\Shared\Infrastructure\Adapter\RailwayStationAdapter;
 use Pkg\IntegrationEventBus\Service\IntegrationEventPublisher;
-use Sdk\Module\Support\ServiceProvider;
+use Illuminate\Support\ServiceProvider;
 use Sdk\Shared\Contracts\Adapter\AirportAdapterInterface;
 use Sdk\Shared\Contracts\Adapter\CityAdapterInterface;
 use Sdk\Shared\Contracts\Adapter\CountryAdapterInterface;
@@ -24,8 +19,13 @@ use Services\CompanyRequisites\CompanyRequisiteManager;
 use Shared\Contracts\Adapter\CurrencyRateAdapterInterface;
 use Shared\Contracts\Adapter\MailAdapterInterface;
 use Shared\Contracts\Adapter\TravelineAdapterInterface;
+use Shared\Support\Adapter\AirportAdapter;
+use Shared\Support\Adapter\CityAdapter;
+use Shared\Support\Adapter\CountryAdapter;
 use Shared\Support\Adapter\CurrencyRateAdapter;
+use Shared\Support\Adapter\FileStorageAdapter;
 use Shared\Support\Adapter\MailAdapter;
+use Shared\Support\Adapter\RailwayStationAdapter;
 use Shared\Support\Adapter\TravelineAdapter;
 use Support\LocaleTranslator\TranslationServiceProvider;
 

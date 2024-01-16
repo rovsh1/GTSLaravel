@@ -10,7 +10,7 @@ use Module\Booking\Shared\Infrastructure\Adapter\HotelAdapter;
 use Module\Booking\Shared\Infrastructure\Adapter\HotelQuotaAdapter;
 use Module\Booking\Shared\Infrastructure\Adapter\HotelRoomAdapter;
 use Module\Booking\Shared\Infrastructure\Repository\AccommodationRepository;
-use Sdk\Module\Support\ServiceProvider;
+use Illuminate\Support\ServiceProvider;
 
 class HotelBookingServiceProvider extends ServiceProvider
 {

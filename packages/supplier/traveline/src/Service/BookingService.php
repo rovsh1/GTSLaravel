@@ -53,9 +53,6 @@ class BookingService
                 $reservations[] = $reservation;
             }
         }
-        //todo после перехода на новую базу тут будет проверка на подключенность отеля к интеграции
-//        $integratedHotelIds = $this->hotelRepository->getIntegratedHotelIds();
-//        $reservations = array_filter($reservations, fn($reservation) => in_array($reservation->hotelId, $integratedHotelIds));
 
         return $reservations;
     }
@@ -68,7 +65,7 @@ class BookingService
     {
         foreach ($reservations as $reservationRequest) {
             try {
-                $this->adapter->confirmReservation($reservationRequest->number, $reservationRequest->status->value);
+                $this->adapter->confirmReservation($reservationRequest->number, $reservationRequest->status);
             } catch (\Throwable $e) {
 //                if (!$e->getPrevious() instanceof DomainEntityExceptionInterface) {
 //                    throw $e;

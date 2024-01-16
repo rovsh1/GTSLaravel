@@ -2,8 +2,6 @@
 
 namespace App\Shared\Providers;
 
-use App\Shared\Support\Module\Monolith\ModuleAdapterFactory;
-use App\Shared\Support\Module\Monolith\SharedKernel;
 use Illuminate\Support\ServiceProvider;
 use Sdk\Shared\Contracts\Adapter\AirportAdapterInterface;
 use Sdk\Shared\Contracts\Adapter\CityAdapterInterface;
@@ -17,6 +15,8 @@ use Sdk\Shared\Contracts\Service\TranslatorInterface;
 use Shared\Contracts\Adapter\CurrencyRateAdapterInterface;
 use Shared\Contracts\Adapter\MailAdapterInterface;
 use Shared\Contracts\Adapter\TravelineAdapterInterface;
+use Shared\Support\Module\Module;
+use Shared\Support\Module\SharedContainer;
 
 /**
  * @see \Pkg\IntegrationEventBus\Service\MessageSender
@@ -34,14 +34,17 @@ class ModuleServiceProvider extends ServiceProvider
         'BookingModeration' => 'Booking/Moderation',
         'BookingPricing' => 'Booking/Pricing',
         'BookingNotification' => 'Booking/Notification',
-        'BookingEventSourcing' => 'Booking/EventSourcing',
         'BookingInvoicing' => 'Booking/Invoicing',
         'SupplierModeration' => 'Supplier/Moderation',
-//        'Traveline' => 'Traveline',
     ];
 
     private array $pkgModules = [
-        'BookingRequesting' => 'Booking\\Requesting',
+        'BookingRequesting' => 'Pkg\\Booking\\Requesting\\',
+        'BookingEventSourcing' => 'Pkg\\Booking\\EventSourcing\\',
+        'CurrencyRate' => 'Pkg\\CurrencyRate\\',
+        'MailManager' => 'Pkg\\MailManager\\',
+        'IntegrationEventBus' => 'Pkg\\IntegrationEventBus\\',
+        'Traveline' => 'Pkg\\Supplier\\Traveline\\',
     ];
 
     protected array $shared = [
@@ -61,51 +64,51 @@ class ModuleServiceProvider extends ServiceProvider
 
     public function register(): void
     {
-        $kernel = new SharedKernel($this->app);
-        $this->app->booting(function () use ($kernel) {
-            $kernel->boot();
-
-            foreach ($this->shared as $abstract) {
-                $kernel->getContainer()->bind($abstract, fn() => $this->app->get($abstract));
-            }
-        });
-
         $modules = app()->modules();
-        $monolithFactory = new ModuleAdapterFactory(
-            sharedContainer: $kernel->getContainer()
-        );
+        $sharedContainer = $this->makeSharedContainer();
 
-        $this->registerSrcModules($modules, $monolithFactory);
-        $this->registerPackageModules($modules, $monolithFactory);
+        $this->registerSrcModules($modules, $sharedContainer);
+        $this->registerPackageModules($modules, $sharedContainer);
     }
 
-    private function registerPackageModules($modules, $monolithFactory): void
+    private function registerPackageModules($modules, SharedContainer $sharedContainer): void
     {
         foreach ($this->pkgModules as $name => $ns) {
-            $adapter = $monolithFactory->build(
-                $name,
-                "",
-                'Pkg\\' . $ns,
-                $configs[$name] ?? []
+            $modules->register(
+                new Module(
+                    name: $name,
+                    namespace: $ns,
+                    sharedContainer: $sharedContainer,
+                    config: []
+                )
             );
-            $modules->register($adapter);
         }
     }
 
-    private function registerSrcModules($modules, $monolithFactory): void
+    private function registerSrcModules($modules, SharedContainer $sharedContainer): void
     {
-        $modulesPath = $this->app->modulesPath();
         $modulesNamespace = 'Module';
         $configs = config('modules');
         foreach ($this->modules as $name => $path) {
-            $adapter = $monolithFactory->build(
-                $name,
-                "$modulesPath/$path",
-                $modulesNamespace . '\\' . str_replace(DIRECTORY_SEPARATOR, '\\', $path),
-                $configs[$name] ?? []
+            $modules->register(
+                new Module(
+                    name: $name,
+                    namespace: $modulesNamespace . '\\' . str_replace(DIRECTORY_SEPARATOR, '\\', $path) . '\\',
+                    sharedContainer: $sharedContainer,
+                    config: $configs[$name] ?? []
+                )
             );
-            $modules->register($adapter);
         }
+    }
+
+    protected function makeSharedContainer(): SharedContainer
+    {
+        $container = new SharedContainer();
+        foreach ($this->shared as $abstract) {
+            $container->bind($abstract, fn() => $this->app->get($abstract));
+        }
+
+        return $container;
     }
 
     public function boot(): void {}

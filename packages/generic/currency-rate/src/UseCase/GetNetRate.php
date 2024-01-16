@@ -6,9 +6,10 @@ use DateTimeInterface;
 use Exception;
 use Pkg\CurrencyRate\Service\RateManager;
 use Pkg\CurrencyRate\ValueObject\CountryEnum;
+use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 use Sdk\Shared\Enum\CurrencyEnum;
 
-class GetNetRate
+class GetNetRate implements UseCaseInterface
 {
     public function __construct(
         private readonly RateManager $rateCalculator

@@ -2,9 +2,9 @@
 
 namespace Services\CompanyRequisites;
 
-use Module\Shared\Infrastructure\Models\CompanyRequisite as Model;
 use Sdk\Module\Services\NamespaceReader;
 use Services\CompanyRequisites\Entity\CompanyRequisiteInterface;
+use Shared\Models\CompanyRequisite as Model;
 
 class CompanyRequisiteLoader
 {

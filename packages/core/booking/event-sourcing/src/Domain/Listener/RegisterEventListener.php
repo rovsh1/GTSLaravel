@@ -1,0 +1,33 @@
+<?php
+
+namespace Pkg\Booking\EventSourcing\Domain\Listener;
+
+use Pkg\Booking\EventSourcing\Domain\Service\EventDescriptor\DescriptorFactory;
+use Pkg\Booking\EventSourcing\Domain\Service\HistoryStorageInterface;
+use Sdk\Booking\ValueObject\BookingId;
+use Sdk\Shared\Contracts\Event\IntegrationEventListenerInterface;
+use Sdk\Shared\Event\IntegrationEventMessage;
+
+class RegisterEventListener implements IntegrationEventListenerInterface
+{
+    public function __construct(
+        private readonly HistoryStorageInterface $historyStorage,
+        private readonly DescriptorFactory $descriptorFactory,
+    ) {}
+
+    public function handle(IntegrationEventMessage $message): void
+    {
+        $event = $message->event;
+        $descriptor = $this->descriptorFactory->build($event);
+        $descriptionDto = $descriptor->build($event);
+        $this->historyStorage->register(
+            new BookingId($event->bookingId),
+            $descriptionDto->group,
+            $descriptionDto->field,
+            $descriptionDto->description,
+            $descriptionDto->before,
+            $descriptionDto->after,
+            $message->context
+        );
+    }
+}

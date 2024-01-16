@@ -2,7 +2,7 @@
 
 namespace Module\Hotel\Pricing\Providers;
 
-use Sdk\Module\Support\ServiceProvider;
+use Illuminate\Support\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {

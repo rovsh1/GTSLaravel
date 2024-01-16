@@ -12,7 +12,7 @@ use Module\Booking\Shared\Infrastructure\DbContext\OrderDbContext;
 use Module\Booking\Shared\Infrastructure\Repository\GuestRepository;
 use Module\Booking\Shared\Infrastructure\Repository\OrderRepository;
 use Module\Booking\Shared\Infrastructure\Service\OrderStatusStorage;
-use Sdk\Module\Support\ServiceProvider;
+use Illuminate\Support\ServiceProvider;
 
 class OrderServiceProvider extends ServiceProvider
 {

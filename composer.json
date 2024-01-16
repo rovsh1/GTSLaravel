@@ -53,6 +53,7 @@
       "Pkg\\CurrencyRate\\": "packages/generic/currency-rate/src",
       "Pkg\\IntegrationEventBus\\": "packages/generic/integration-events/src",
       "Pkg\\Booking\\Requesting\\": "packages/core/booking/requesting/src",
+      "Pkg\\Booking\\EventSourcing\\": "packages/core/booking/event-sourcing/src",
       "Support\\": "src/support/",
       "Services\\": "src/services/",
       "Shared\\": "src/shared/",

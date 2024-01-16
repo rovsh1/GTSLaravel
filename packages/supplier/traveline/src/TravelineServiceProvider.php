@@ -7,6 +7,7 @@ use GuzzleHttp\ClientInterface;
 use Illuminate\Support\ServiceProvider;
 use Pkg\Supplier\Traveline\Adapters\HotelAdapter;
 use Pkg\Supplier\Traveline\Adapters\TravelineAdapter;
+use Pkg\Supplier\Traveline\Factory\BookingDtoFactory;
 use Pkg\Supplier\Traveline\Repository\HotelRepository;
 use Pkg\Supplier\Traveline\Repository\RoomQuotaRepository;
 use Pkg\Supplier\Traveline\Service\QuotaAndPriceUpdater;
@@ -20,9 +21,7 @@ class TravelineServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        if (!app()->configurationIsCached()) {
-            $this->mergeConfigFrom(__DIR__ . '/../config/suppliers.php', 'suppliers');
-        }
+        $this->mergeConfigFrom(__DIR__ . '/../config/traveline.php', 'suppliers.traveline');
         //@todo пока перенес в сюда apps/api/app/Providers/BootServiceProvider.php
 //        $this->app->register(RouteServiceProvider::class);
         $this->app->register(EventServiceProvider::class);
@@ -53,6 +52,12 @@ class TravelineServiceProvider extends ServiceProvider
                 $app->make(RoomQuotaRepository::class),
                 config('suppliers.traveline.supported_currencies'),
                 config('suppliers.traveline.is_prices_for_residents'),
+            );
+        });
+
+        $this->app->singleton(BookingDtoFactory::class, function () {
+            return new BookingDtoFactory(
+                config('suppliers.traveline.timezone'),
             );
         });
     }

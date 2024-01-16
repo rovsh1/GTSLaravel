@@ -14,7 +14,7 @@ use Module\Booking\Shared\Infrastructure\Service\BladeTemplateCompiler;
 use Module\Booking\Shared\Infrastructure\Service\BookingStatusStorage;
 use Module\Booking\Shared\Infrastructure\Service\BookingUnitOfWork;
 use Module\Booking\Shared\Infrastructure\Service\PdfTemplateCompiler;
-use Sdk\Module\Support\ServiceProvider;
+use Illuminate\Support\ServiceProvider;
 
 class BookingServiceProvider extends ServiceProvider
 {

@@ -2,7 +2,7 @@
 
 namespace Sdk\Module\Support\Providers;
 
-use Sdk\Module\Support\ServiceProvider;
+use Illuminate\Support\ServiceProvider;
 use Sdk\Shared\Contracts\Event\IntegrationEventSubscriberInterface;
 use Sdk\Shared\Support\Providers\RegisterListenersTrait;
 

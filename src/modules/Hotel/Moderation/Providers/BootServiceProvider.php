@@ -12,7 +12,7 @@ use Module\Hotel\Moderation\Infrastructure\Repository\MarkupSettingsRepository;
 use Module\Hotel\Moderation\Infrastructure\Repository\PriceRateRepository;
 use Module\Hotel\Moderation\Infrastructure\Repository\RoomMarkupSettingsRepository;
 use Module\Hotel\Moderation\Infrastructure\Repository\RoomRepository;
-use Sdk\Module\Support\ServiceProvider;
+use Illuminate\Support\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {

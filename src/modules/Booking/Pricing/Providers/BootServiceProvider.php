@@ -5,7 +5,7 @@ namespace Module\Booking\Pricing\Providers;
 use Module\Booking\Pricing\Domain\Booking\Adapter\HotelPricingAdapterInterface;
 use Module\Booking\Pricing\Infrastructure\Adapter\HotelPricingAdapter;
 use Module\Booking\Shared\Providers\BootServiceProvider as SharedBookingServiceProvider;
-use Sdk\Module\Support\ServiceProvider;
+use Illuminate\Support\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {

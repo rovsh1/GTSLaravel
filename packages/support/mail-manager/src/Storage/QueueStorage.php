@@ -8,7 +8,7 @@ use Pkg\MailManager\Mail;
 use Pkg\MailManager\Model\QueueMessage as Model;
 use Pkg\MailManager\ValueObject\MailId;
 use Pkg\MailManager\ValueObject\QueueMailStatusEnum;
-use Sdk\Shared\Contracts\Context\ContextInterface;
+use Sdk\Module\Contracts\ContextInterface;
 
 class QueueStorage implements QueueStorageInterface
 {

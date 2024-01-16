@@ -7,9 +7,10 @@ use DateTimeInterface;
 use Exception;
 use Pkg\CurrencyRate\Service\RateManager;
 use Pkg\CurrencyRate\ValueObject\CountryEnum;
+use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 use Throwable;
 
-class UpdateRates
+class UpdateRates implements UseCaseInterface
 {
     public function __construct(
         private readonly RateManager $rateManager,

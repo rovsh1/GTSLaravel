@@ -50,7 +50,12 @@
                                     'delete'=> 'delete',
                                     'auth as'=> 'person'
                                 ];
-                                $renderItem = function($item) use ($icons, $permissions) {
+                                $ignore = [
+                                    'horizon'
+                                ];
+                                $renderItem = function($item) use ($icons, $ignore, $permissions) {
+                                    if (in_array($item->key, $ignore))
+                                        return '';
                                     $rules = $permissions[$item->key];
                                     $html = '<div class="permissions">';
                                     foreach ($rules->available as $r) {

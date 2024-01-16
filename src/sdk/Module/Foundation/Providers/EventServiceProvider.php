@@ -5,7 +5,7 @@ namespace Sdk\Module\Foundation\Providers;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Event\DomainEventDispatcher;
 use Sdk\Module\Event\IntegrationEventSubscriber;
-use Sdk\Module\Support\ServiceProvider;
+use Illuminate\Support\ServiceProvider;
 use Sdk\Shared\Contracts\Event\IntegrationEventSubscriberInterface;
 
 class EventServiceProvider extends ServiceProvider

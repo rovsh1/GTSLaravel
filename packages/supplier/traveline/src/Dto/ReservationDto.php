@@ -27,7 +27,7 @@ class ReservationDto
         #[MapInputName('customer')]
         public readonly ?CustomerDto $customer = null,
 
-        public readonly TravelineReservationStatusEnum $status = TravelineReservationStatusEnum::New,
+        public readonly TravelineReservationStatusEnum $status = TravelineReservationStatusEnum::NEW,
         public readonly ?string $currencyCode = null,
 
         public readonly PaymentMethodEnum $paymentMethod = PaymentMethodEnum::Prepay,

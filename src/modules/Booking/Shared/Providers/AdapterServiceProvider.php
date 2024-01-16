@@ -10,7 +10,7 @@ use Module\Booking\Shared\Infrastructure\Adapter\AdministratorAdapter;
 use Module\Booking\Shared\Infrastructure\Adapter\ClientAdapter;
 use Module\Booking\Shared\Infrastructure\Adapter\PricingAdapter;
 use Module\Booking\Shared\Infrastructure\Adapter\SupplierAdapter;
-use Sdk\Module\Support\ServiceProvider;
+use Illuminate\Support\ServiceProvider;
 
 class AdapterServiceProvider extends ServiceProvider
 {

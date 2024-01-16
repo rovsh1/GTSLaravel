@@ -2,6 +2,7 @@
 
 namespace Pkg\MailManager;
 
+use Illuminate\Queue\QueueManager;
 use Illuminate\Support\ServiceProvider;
 use Pkg\MailManager\Contracts\MailerInterface;
 use Pkg\MailManager\Contracts\MailManagerInterface;
@@ -17,30 +18,30 @@ class MailManagerServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
+        $this->app->singleton(QueueStorageInterface::class, QueueStorage::class);
+
         $this->registerManager();
+        $this->registerMigrations();
     }
 
     public function boot(): void
     {
-        if (app()->runningInConsole()) {
-            $this->registerMigrations();
-        }
-
         $this->app->singleton(MailAdapterInterface::class, MailAdapter::class);
         $this->app->singleton(MailManagerInterface::class, MailManager::class);
-        $this->app->singleton(QueueStorageInterface::class, QueueStorage::class);
 
         $this->app->singleton(MailerInterface::class, Mailer::class);
     }
 
     protected function registerMigrations(): void
     {
-        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+        if ($this->app->runningInConsole()) {
+            $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+        }
     }
 
     protected function registerManager(): void
     {
-        $this->app->resolving('queue', function ($manager) {
+        $this->callAfterResolving(QueueManager::class, function ($manager) {
             $manager->addConnector('mail', function () {
                 return app()->make(MailConnector::class);
             });

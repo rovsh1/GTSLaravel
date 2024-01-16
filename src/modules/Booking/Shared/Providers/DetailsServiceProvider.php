@@ -30,7 +30,7 @@ use Module\Booking\Shared\Infrastructure\Factory\Details\TransferFromRailwayFact
 use Module\Booking\Shared\Infrastructure\Factory\Details\TransferToAirportFactory;
 use Module\Booking\Shared\Infrastructure\Factory\Details\TransferToRailwayFactory;
 use Module\Booking\Shared\Infrastructure\Repository\DetailsRepository;
-use Sdk\Module\Support\ServiceProvider;
+use Illuminate\Support\ServiceProvider;
 
 class DetailsServiceProvider extends ServiceProvider
 {

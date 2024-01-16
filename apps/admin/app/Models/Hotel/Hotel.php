@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Query\Builder as Query;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
 use Sdk\Module\Database\Eloquent\HasTranslations;
 use Sdk\Module\Database\Eloquent\Model;
@@ -90,6 +91,11 @@ class Hotel extends Model
         static::addGlobalScope('default', function (Builder $builder) {
             $builder
                 ->addSelect('hotels.*')
+                ->selectSub(function (Query $query) {
+                    $query->selectRaw(1)
+                        ->from('traveline_hotels')
+                        ->whereColumn('traveline_hotels.hotel_id', 'hotels.id');
+                }, 'is_traveline_integration_enabled')
                 ->join('r_cities', 'r_cities.id', '=', 'hotels.city_id')
                 ->join('r_countries', 'r_countries.id', '=', 'r_cities.country_id')
                 ->join('r_enums', 'r_enums.id', '=', 'hotels.type_id')

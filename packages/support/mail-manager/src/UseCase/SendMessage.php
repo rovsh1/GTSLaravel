@@ -4,9 +4,10 @@ namespace Pkg\MailManager\UseCase;
 
 use Pkg\MailManager\Contracts\QueueStorageInterface;
 use Pkg\MailManager\Factory\MailMessageFactory;
+use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 use Sdk\Shared\Dto\Mail\MailMessageDto;
 
-class SendMessage
+class SendMessage implements UseCaseInterface
 {
     public function __construct(
         private readonly QueueStorageInterface $queueStorage,

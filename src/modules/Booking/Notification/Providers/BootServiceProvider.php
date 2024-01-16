@@ -5,7 +5,7 @@ namespace Module\Booking\Notification\Providers;
 use Illuminate\Support\Facades\View;
 use Module\Booking\Moderation\Providers\DomainEventServiceProvider;
 use Module\Booking\Shared\Providers\BootServiceProvider as SharedBookingServiceProvider;
-use Sdk\Module\Support\ServiceProvider;
+use Illuminate\Support\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {

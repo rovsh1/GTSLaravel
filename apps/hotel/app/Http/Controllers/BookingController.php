@@ -26,7 +26,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use Module\Booking\EventSourcing\Application\UseCase\GetHistory;
+use Pkg\Booking\EventSourcing\Application\UseCase\GetHistory;
 
 class BookingController extends AbstractHotelController
 {

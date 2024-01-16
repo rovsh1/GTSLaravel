@@ -186,10 +186,6 @@ return [
          * Package Service Providers...
          */
         \Gsdk\FileStorage\FileStorageServiceProvider::class,
-        \Pkg\Supplier\Traveline\TravelineServiceProvider::class,
-        \Pkg\MailManager\MailManagerServiceProvider::class,
-        \Pkg\CurrencyRate\CurrencyRateServiceProvider::class,
-        \Pkg\IntegrationEventBus\IntegrationEventBusServiceProvider::class,
 
         /*
          * Application Service Providers...

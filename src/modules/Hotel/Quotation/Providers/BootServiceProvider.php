@@ -6,7 +6,7 @@ use Module\Hotel\Quotation\Domain\Adapter\HotelAdapterInterface;
 use Module\Hotel\Quotation\Domain\Repository\QuotaRepositoryInterface;
 use Module\Hotel\Quotation\Infrastructure\Adapter\HotelAdapter;
 use Module\Hotel\Quotation\Infrastructure\Repository\QuotaRepository;
-use Sdk\Module\Support\ServiceProvider;
+use Illuminate\Support\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {

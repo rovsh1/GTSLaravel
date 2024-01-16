@@ -14,6 +14,7 @@ use Module\Booking\Moderation\Application\Dto\Details\ExternalNumberDto;
 use Module\Booking\Moderation\Application\Dto\Details\HotelInfoDto;
 use Module\Booking\Moderation\Application\Dto\ServiceBooking\HotelBookingDto;
 use Module\Booking\Shared\Domain\Booking\Repository\AccommodationRepositoryInterface;
+use Module\Booking\Shared\Domain\Guest\Repository\GuestRepositoryInterface;
 use Sdk\Booking\Entity\Details\HotelBooking;
 use Sdk\Booking\ValueObject\GuestId;
 use Sdk\Booking\ValueObject\HotelBooking\AccommodationCollection;
@@ -23,7 +24,8 @@ use Sdk\Booking\ValueObject\HotelBooking\RoomPrices;
 class DetailsDtoFactory
 {
     public function __construct(
-        private readonly AccommodationRepositoryInterface $accommodationRepository
+        private readonly AccommodationRepositoryInterface $accommodationRepository,
+        private readonly GuestRepositoryInterface $guestRepository,
     ) {
     }
 

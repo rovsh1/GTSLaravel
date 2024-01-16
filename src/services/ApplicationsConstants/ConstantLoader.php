@@ -2,9 +2,9 @@
 
 namespace Services\ApplicationsConstants;
 
-use Module\Shared\Infrastructure\Models\Constant as Model;
 use Sdk\Module\Services\NamespaceReader;
 use Services\ApplicationsConstants\Constant\ConstantInterface;
+use Shared\Models\Constant as Model;
 
 class ConstantLoader
 {

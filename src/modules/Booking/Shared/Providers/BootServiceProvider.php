@@ -3,7 +3,7 @@
 namespace Module\Booking\Shared\Providers;
 
 use Illuminate\Support\Facades\View;
-use Sdk\Module\Support\ServiceProvider;
+use Illuminate\Support\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {

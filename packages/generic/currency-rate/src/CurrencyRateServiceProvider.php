@@ -14,12 +14,16 @@ use Pkg\CurrencyRate\Repository\DatabaseRepository;
 
 class CurrencyRateServiceProvider extends ServiceProvider
 {
-    public function boot(): void
+    public function register()
     {
-        $this->registerServices();
         $this->registerMigrations();
         $this->registerCommands();
         $this->schedule();
+    }
+
+    public function boot(): void
+    {
+        $this->registerServices();
     }
 
     protected function registerServices(): void
@@ -47,7 +51,7 @@ class CurrencyRateServiceProvider extends ServiceProvider
 
     protected function schedule(): void
     {
-        $this->app->resolving(Schedule::class, function (Schedule $schedule) {
+        $this->callAfterResolving(Schedule::class, function (Schedule $schedule) {
             $schedule->command(UpdateRates::class)->dailyAt('00:10');
         });
     }

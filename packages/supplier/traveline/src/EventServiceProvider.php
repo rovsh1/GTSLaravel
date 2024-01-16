@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Pkg\Supplier\Traveline;
 
+use Illuminate\Support\ServiceProvider;
 use Pkg\Supplier\Traveline\Contracts\IntegrationEventDispatcherInterface;
-use Pkg\Supplier\Traveline\Listener\RegisterReservationChanges;
+use Pkg\Supplier\Traveline\Listener\StoreTravelineReservation;
 use Pkg\Supplier\Traveline\Listener\SendBookingNotificationListener;
 use Pkg\Supplier\Traveline\Support\EventDispatcher\IntegrationEventDispatcher;
 use Sdk\Booking\IntegrationEvent\BookingEventInterface;
-use Sdk\Module\Support\ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
 {
     protected array $listen = [
         BookingEventInterface::class => [
-            RegisterReservationChanges::class,
+            StoreTravelineReservation::class,
             SendBookingNotificationListener::class,
         ]
     ];
