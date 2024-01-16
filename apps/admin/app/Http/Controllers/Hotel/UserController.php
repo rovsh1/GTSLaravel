@@ -7,12 +7,19 @@ use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
+use App\Admin\Support\View\Grid\SearchForm;
+use App\Admin\Support\View\Layout as LayoutContract;
 
 class UserController extends AbstractPrototypeController
 {
     protected function getPrototypeKey(): string
     {
         return 'hotel-user';
+    }
+
+    public function index(): LayoutContract
+    {
+        return parent::index()->view('hotel-user.main.main');
     }
 
     protected function formFactory(): FormContract
@@ -33,6 +40,7 @@ class UserController extends AbstractPrototypeController
     {
         return Grid::paginator(self::GRID_LIMIT)
             ->enableQuicksearch()
+            ->setSearchForm($this->buildSearchForm())
             ->edit($this->prototype)
             ->text('hotel_name', [
                 'text' => 'Город / Отель',
@@ -44,5 +52,13 @@ class UserController extends AbstractPrototypeController
             ->email('email', ['text' => 'Email'])
             ->phone('phone', ['text' => 'Телефон'])
             ->orderBy('presentation', 'asc');
+    }
+
+    private function buildSearchForm()
+    {
+        return (new SearchForm())
+            ->country('country_id', ['label' => 'Страна', 'emptyItem' => ''])
+            ->hidden('city_id', ['label' => 'Город'])
+            ->hidden('hotel_id', ['label' => 'Отель']);
     }
 }
