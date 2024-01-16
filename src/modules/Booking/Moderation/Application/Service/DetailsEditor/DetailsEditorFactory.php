@@ -16,15 +16,14 @@ use Module\Booking\Moderation\Application\Service\DetailsEditor\Editor\TransferF
 use Module\Booking\Moderation\Application\Service\DetailsEditor\Editor\TransferFromRailway;
 use Module\Booking\Moderation\Application\Service\DetailsEditor\Editor\TransferToAirport;
 use Module\Booking\Moderation\Application\Service\DetailsEditor\Editor\TransferToRailway;
-use Sdk\Module\Contracts\Support\ContainerInterface;
+use Sdk\Module\Contracts\ModuleInterface;
 use Sdk\Shared\Enum\ServiceTypeEnum;
 
 class DetailsEditorFactory
 {
     public function __construct(
-        private readonly ContainerInterface $container,
-    ) {
-    }
+        private readonly ModuleInterface $container,
+    ) {}
 
     public function build(ServiceTypeEnum $serviceType): EditorInterface
     {
