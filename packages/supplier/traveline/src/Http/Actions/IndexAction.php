@@ -3,10 +3,15 @@
 namespace Pkg\Supplier\Traveline\Http\Actions;
 
 use Illuminate\Http\Request;
+use Sdk\Module\Contracts\Support\ContainerInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class IndexAction
 {
+    public function __construct(
+        private readonly ContainerInterface $container
+    ) {}
+
     public function handle(Request $request)
     {
         $action = ActionNameEnum::tryFrom($request->get('action'));
@@ -16,6 +21,6 @@ class IndexAction
         $parsedRequest = $action->getRequest($request);
         $request->validate($parsedRequest->rules());
 
-        return $action->getAction()->handle($parsedRequest);
+        return $this->container->make($action->getAction())->handle($parsedRequest);
     }
 }

@@ -2,15 +2,14 @@
 
 namespace Pkg\Supplier\Traveline\Http\Actions;
 
+use Illuminate\Http\Request;
 use Pkg\Supplier\Traveline\Http\Request\ConfirmBookingsActionRequest;
 use Pkg\Supplier\Traveline\Http\Request\GetReservationsActionRequest;
 use Pkg\Supplier\Traveline\Http\Request\GetRoomsAndRatePlansActionRequest;
 use Pkg\Supplier\Traveline\Http\Request\UpdateActionRequest;
-use Illuminate\Http\Request;
 
 enum ActionNameEnum: string
 {
-
     case GetRoomsAndRatePlans = 'get-rooms-and-rate-plans';
     case GetBookings = 'get-bookings';
     case ConfirmBookings = 'confirm-bookings';
@@ -29,16 +28,13 @@ enum ActionNameEnum: string
         };
     }
 
-    /**
-     * @return GetRoomsAndRatePlansAction|GetReservationsAction|ConfirmBookingsAction|UpdateAction
-     */
-    public function getAction()
+    public function getAction(): string
     {
         return match ($this) {
-            self::GetRoomsAndRatePlans => app(GetRoomsAndRatePlansAction::class),
-            self::GetBookings => app(GetReservationsAction::class),
-            self::ConfirmBookings => app(ConfirmBookingsAction::class),
-            self::Update => app(UpdateAction::class),
+            self::GetRoomsAndRatePlans => GetRoomsAndRatePlansAction::class,
+            self::GetBookings => GetReservationsAction::class,
+            self::ConfirmBookings => ConfirmBookingsAction::class,
+            self::Update => UpdateAction::class,
         };
     }
 

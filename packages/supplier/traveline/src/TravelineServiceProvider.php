@@ -14,12 +14,7 @@ use Pkg\Supplier\Traveline\Service\QuotaAndPriceUpdater;
 
 class TravelineServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
-    public function register()
+    public function register(): void
     {
         $this->bootMigrations();
         $this->mergeConfigFrom(__DIR__ . '/../config/traveline.php', 'suppliers.traveline');
@@ -28,12 +23,7 @@ class TravelineServiceProvider extends ServiceProvider
         $this->app->register(EventServiceProvider::class);
     }
 
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
-    public function boot()
+    public function boot(): void
     {
         $this->app->bind(ClientInterface::class, Client::class);
 
@@ -61,7 +51,7 @@ class TravelineServiceProvider extends ServiceProvider
         });
     }
 
-    protected function bootMigrations()
+    protected function bootMigrations(): void
     {
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
     }
