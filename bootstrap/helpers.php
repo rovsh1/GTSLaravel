@@ -1,8 +1,8 @@
 <?php
 
-use App\Shared\Contracts\Module\ModuleAdapterInterface;
+use Sdk\Module\Contracts\ModuleInterface;
 
-function module(string $name): ?ModuleAdapterInterface
+function module(string $name): ?ModuleInterface
 {
     return app('modules')->get($name);
 }
