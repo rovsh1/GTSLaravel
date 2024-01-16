@@ -69,9 +69,23 @@ class Application extends \Illuminate\Foundation\Application
             return parent::build($concrete);
         } elseif (is_subclass_of($concrete, UseCaseInterface::class)) {
             return (new UseCaseWrapper($this->modules()))->wrap($concrete);
+        } elseif ($this->isModuleInstance($concrete)) {
+            //HACK т. к. контроллеры модулей создаются из основного приложения
+            $module = $this->modules()->findByNamespace($concrete);
+            if (!$module) {
+                throw new \LogicException("Module with namespace $concrete not found");
+            }
+            $module->boot();
+
+            return $module->get($concrete);
         } else {
             return parent::build($concrete);
         }
+    }
+
+    private function isModuleInstance(string $concrete): bool
+    {
+        return str_starts_with($concrete, 'Pkg\\') || str_starts_with($concrete, 'Module\\');
     }
 
     private function registerModules(): void

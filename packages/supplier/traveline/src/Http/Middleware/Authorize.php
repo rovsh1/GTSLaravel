@@ -19,9 +19,6 @@ class Authorize
      */
     public function handle(Request $request, Closure $next)
     {
-        //@todo refactor
-        module('Traveline')->boot();
-
         $username = $request->get('username');
         $password = $request->get('password');
         if ($username === null || $password === null) {
