@@ -77,7 +77,7 @@ class BookingDtoFactory
         return new RoomStayDto(
             $accommodation->roomInfo->id,
             $accommodation->details->rateId,
-            GuestDto::collection($accommodation->guests),//@todo получить имена гостей и т.п. из заказа
+            GuestDto::collection($accommodation->guests),
             count($accommodation->guests),
             $this->buildRoomPerDayPrices($period, $hotelInfo, $accommodation),
             new TotalDto($accommodation->price->netValue),
