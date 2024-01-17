@@ -45,6 +45,7 @@ class StoreTravelineReservation
         $hotelId = DB::table('booking_hotel_details')
             ->where('booking_id', $bookingId)
             ->select('hotel_id')
+            ->join('traveline_hotels', 'traveline_hotels.hotel_id', '=', 'booking_hotel_details.hotel_id')
             ->first()
             ?->hotel_id;
         if ($hotelId === null) {
@@ -53,11 +54,9 @@ class StoreTravelineReservation
             return;
         }
 
-        TravelineReservation::create([
-            'hotel_id' => $hotelId,
-            'reservation_id' => $bookingId,
-            'accepted_at' => null,
-            'updated_at' => now()
-        ]);
+        TravelineReservation::updateOrCreate(
+            ['reservation_id' => $bookingId],
+            ['hotel_id' => $hotelId, 'accepted_at' => null, 'updated_at' => now()]
+        );
     }
 }
