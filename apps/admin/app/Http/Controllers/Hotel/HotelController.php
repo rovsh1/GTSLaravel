@@ -33,6 +33,7 @@ use Gsdk\Format\View\ParamsTable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Sdk\Shared\Enum\Hotel\RatingEnum;
 use Sdk\Shared\Enum\Hotel\StatusEnum;
 use Sdk\Shared\Enum\Hotel\VisibilityEnum;
@@ -137,7 +138,8 @@ class HotelController extends AbstractPrototypeController
             ->text('address', ['label' => 'Адрес', 'required' => true])
             ->text('address_en', ['label' => 'Адрес (EN)', 'required' => true])
             ->coordinates('coordinates', ['label' => 'Координаты', 'required' => true, 'value' => $coordinates])
-            ->text('zipcode', ['label' => 'Индекс']);
+            ->text('zipcode', ['label' => 'Индекс'])
+            ->checkbox('is_traveline_integration_enabled', ['label' => 'Интеграция с Traveline']);
     }
 
     protected function gridFactory(): GridContract
@@ -258,6 +260,7 @@ class HotelController extends AbstractPrototypeController
             ->text('address', 'Адрес')
             ->text('zipcode', 'Индекс')
             ->date('created_at', 'Создан', ['format' => 'datetime'])
+            ->custom('is_traveline_integration_enabled', 'Traveline', fn() => '<span class="traveline-badge">TL</span>')
             ->data($model);
     }
 

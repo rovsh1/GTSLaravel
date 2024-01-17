@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Query\Builder as Query;
+use Illuminate\Support\Facades\DB;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
 use Sdk\Module\Database\Eloquent\HasTranslations;
 use Sdk\Module\Database\Eloquent\Model;
@@ -71,7 +72,11 @@ class Hotel extends Model
         'status',
         'city_distance',
         'visibility',
+
+        'is_traveline_integration_enabled',
     ];
+
+    private bool $isNeedChangeTravelineIntegration = false;
 
     protected $casts = [
         'city_id' => 'int',
@@ -79,7 +84,8 @@ class Hotel extends Model
         'currency' => CurrencyEnum::class,
         'rating' => RatingEnum::class,
         'status' => StatusEnum::class,
-        'visibility' => VisibilityEnum::class
+        'visibility' => VisibilityEnum::class,
+        'is_traveline_integration_enabled' => 'int',
     ];
 
     public static function saving($callback)
@@ -104,6 +110,22 @@ class Hotel extends Model
                 ->joinTranslatable('r_enums', 'name as type_name')
                 ->joinTranslations();
         });
+
+        static::saved(function (self $model) {
+            if ($model->isNeedChangeTravelineIntegration) {
+                $isIntegrationExists = DB::table('traveline_hotels')->where('hotel_id', $model->id)->exists();
+                if ($isIntegrationExists) {
+                    DB::table('traveline_hotels')->where('hotel_id', $model->id)->delete();
+                } else {
+                    DB::table('traveline_hotels')->insert(['hotel_id' => $model->id, 'created_at' => now()]);
+                }
+            }
+        });
+    }
+
+    public function setIsTravelineIntegrationEnabledAttribute(int $value): void
+    {
+        $this->isNeedChangeTravelineIntegration = $value !== (int)$this->is_traveline_integration_enabled;
     }
 
     public function rooms(): HasMany
