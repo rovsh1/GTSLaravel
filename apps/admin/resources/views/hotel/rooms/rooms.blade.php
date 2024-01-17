@@ -9,7 +9,7 @@
 @endsection
 
 @section('content')
-    <x-ui.content-title :addBtnUrl="$createUrl" addBtnText="Добавить номер"/>
+    <x-ui.content-title :addBtnUrl="$createUrl" addBtnText="Добавить номер" addBtnType="a"/>
 
     <div class="content-body rooms-cards" id="hotel-rooms">
         @foreach($rooms as $room)
