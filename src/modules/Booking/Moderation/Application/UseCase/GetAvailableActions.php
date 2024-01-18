@@ -36,9 +36,8 @@ class GetAvailableActions implements UseCaseInterface
         $isTravelineIntegrationEnabled = false;
         if ($booking->serviceType() === ServiceTypeEnum::HOTEL_BOOKING) {
             $details = $this->detailsRepository->findOrFail($booking->id());
-            $isTravelineIntegrationEnabled = $this->travelineAdapter->isHotelIntegrationEnabled(
-                $details->hotelInfo()->id()
-            );
+            $hotelId = $details->hotelInfo()->id();
+            $isTravelineIntegrationEnabled = $this->travelineAdapter->isHotelIntegrationEnabled($hotelId);
         }
 
         //@todo refactor - ограничивать доменную логику в зависимости от available actions

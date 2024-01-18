@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Sdk\Module\Database\Eloquent\Model;
+use Sdk\Shared\Enum\Contract\StatusEnum;
 
 class Season extends Model
 {
@@ -68,7 +69,7 @@ class Season extends Model
     {
         $builder
             ->where('hotel_contracts.hotel_id', $hotelId)
-            ->where('hotel_contracts.status', 1);
+            ->where('hotel_contracts.status', StatusEnum::ACTIVE);
     }
 
     public function contract(): BelongsTo
