@@ -128,6 +128,11 @@ class Hotel extends Model
         $this->isNeedChangeTravelineIntegration = $value !== (int)$this->is_traveline_integration_enabled;
     }
 
+    public function scopeWhereIsTravelineIntegrationEnabled(Builder $builder, int $isEnabled): void
+    {
+        $builder->having('is_traveline_integration_enabled', $isEnabled);
+    }
+
     public function rooms(): HasMany
     {
         return $this->hasMany(Room::class);
