@@ -7,9 +7,9 @@ namespace Pkg\Supplier\Traveline\Adapters;
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Module\Booking\Moderation\Application\Dto\ServiceBooking\BookingDto;
-use Module\Booking\Moderation\Application\UseCase\GetBooking;
-use Module\Booking\Moderation\Application\UseCase\GetBookingByIds;
 use Module\Booking\Moderation\Application\UseCase\HotelBooking\ConfirmBookingBySupplier;
+use Pkg\Booking\Common\Application\UseCase\GetBooking;
+use Pkg\Booking\Common\Application\UseCase\GetBookingByIds;
 use Pkg\Supplier\Traveline\Dto\ReservationDto;
 use Pkg\Supplier\Traveline\Factory\BookingDtoFactory;
 use Pkg\Supplier\Traveline\Models\TravelineReservation;
@@ -51,6 +51,7 @@ class BookingAdapter
 
     public function getActiveReservations(): array
     {
+        //@todo фильтровать брони которые еще не должны быть подтвержденными
         $reservationIds = TravelineReservation::whereNull('accepted_at')
             ->get()
             ->pluck('reservation_id')

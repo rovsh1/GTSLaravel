@@ -39,8 +39,10 @@ class ModuleServiceProvider extends ServiceProvider
     ];
 
     private array $pkgModules = [
+        'BookingCommon' => 'Pkg\\Booking\\Common\\',
         'BookingRequesting' => 'Pkg\\Booking\\Requesting\\',
         'BookingEventSourcing' => 'Pkg\\Booking\\EventSourcing\\',
+        'HotelAdministration' => 'Pkg\\Hotel\\Administration\\',
         'CurrencyRate' => 'Pkg\\CurrencyRate\\',
         'MailManager' => 'Pkg\\MailManager\\',
         'IntegrationEventBus' => 'Pkg\\IntegrationEventBus\\',

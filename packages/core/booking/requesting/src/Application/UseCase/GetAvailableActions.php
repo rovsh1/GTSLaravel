@@ -23,6 +23,7 @@ class GetAvailableActions implements UseCaseInterface
 
         $this->requestRules->booking($booking);
 
+        //@todo refactor - ограничивать доменную логику в зависимости от available actions
         return new AvailableActionsDto(
             isRequestable: $this->requestRules->isBookingRequestable(),
             canSendBookingRequest: $this->requestRules->canSendBookingRequest(),

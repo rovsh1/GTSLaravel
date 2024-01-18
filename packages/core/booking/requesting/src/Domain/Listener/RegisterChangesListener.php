@@ -20,7 +20,7 @@ class RegisterChangesListener implements IntegrationEventListenerInterface
     public function handle(IntegrationEventMessage $message): void
     {
         $event = $message->event;
-        asset($event instanceof BookingEventInterface);
+        assert($event instanceof BookingEventInterface);
 
         $booking = $this->bookingRepository->findOrFail(new BookingId($event->bookingId));
         if (!$this->needStoreChanges($booking->status()->value())) {

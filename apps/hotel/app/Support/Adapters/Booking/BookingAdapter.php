@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace App\Hotel\Support\Adapters\Booking;
 
-use Module\Booking\Moderation\Application\UseCase\GetAvailableActions as ModerationActions;
-use Module\Booking\Moderation\Application\UseCase\GetBooking;
-use Module\Booking\Moderation\Application\UseCase\GetStatuses;
 use Module\Booking\Moderation\Application\UseCase\UpdateNote;
 use Module\Booking\Moderation\Application\UseCase\UpdateStatus;
+use Pkg\Booking\Common\Application\UseCase\GetBooking;
+use Pkg\Booking\Common\Application\UseCase\GetStatuses;
 use Pkg\Booking\EventSourcing\Application\UseCase\GetStatusHistory;
-use Pkg\Booking\Requesting\Application\UseCase\GetAvailableActions as RequestingActions;
+use Pkg\Hotel\Administration\Application\UseCase\GetAvailableActions;
 
 class BookingAdapter
 {
@@ -26,10 +25,7 @@ class BookingAdapter
 
     public function getAvailableActions(int $id): mixed
     {
-        $moderationAction = app(ModerationActions::class)->execute($id);
-        $requestingActions = app(RequestingActions::class)->execute($id);
-
-        return array_merge((array)$moderationAction, (array)$requestingActions);
+        return app(GetAvailableActions::class)->execute($id);
     }
 
     public function updateStatus(

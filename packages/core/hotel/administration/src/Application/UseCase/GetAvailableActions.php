@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
+namespace Pkg\Hotel\Administration\Application\UseCase;
 
-use Module\Booking\Moderation\Application\Dto\AvailableActionsDto;
 use Module\Booking\Moderation\Application\Factory\StatusSettingsDtoFactory;
-use Module\Booking\Moderation\Application\Service\EditRules;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
+use Pkg\Hotel\Administration\Application\Dto\AvailableActionsDto;
+use Pkg\Hotel\Administration\Application\Service\EditRules;
 use Sdk\Booking\Dto\StatusDto;
 use Sdk\Booking\Enum\StatusEnum;
 use Sdk\Booking\ValueObject\BookingId;
@@ -28,13 +29,9 @@ class GetAvailableActions implements UseCaseInterface
         $this->editRules->booking($booking);
 
         //@todo refactor - ограничивать доменную логику в зависимости от available actions
-
         return new AvailableActionsDto(
             statuses: $this->buildAvailableStatuses(),
-            isEditable: $this->editRules->isEditable(),
             canEditExternalNumber: $this->editRules->canEditExternalNumber(),
-            canChangeRoomPrice: $this->editRules->canChangeRoomPrice(),
-            canCopy: $this->editRules->canCopy(),
         );
     }
 

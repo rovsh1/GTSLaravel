@@ -9,10 +9,13 @@ use Module\Booking\Moderation\Application\Factory\StatusSettingsDtoFactory;
 use Module\Booking\Moderation\Application\Service\EditRules;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
 use Sdk\Booking\Dto\StatusDto;
 use Sdk\Booking\Enum\StatusEnum;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
+use Sdk\Shared\Enum\ServiceTypeEnum;
+use Shared\Contracts\Adapter\TravelineAdapterInterface;
 
 class GetAvailableActions implements UseCaseInterface
 {
@@ -20,6 +23,8 @@ class GetAvailableActions implements UseCaseInterface
         private readonly EditRules $editRules,
         private readonly BookingRepositoryInterface $repository,
         private readonly StatusSettingsDtoFactory $statusSettingsDtoFactory,
+        private readonly DetailsRepositoryInterface $detailsRepository,
+        private readonly TravelineAdapterInterface $travelineAdapter,
     ) {}
 
     public function execute(int $bookingId): AvailableActionsDto
@@ -28,13 +33,20 @@ class GetAvailableActions implements UseCaseInterface
 
         $this->editRules->booking($booking);
 
-        //@todo refactor - ограничивать доменную логику в зависимости от available actions
+        $isTravelineIntegrationEnabled = false;
+        if ($booking->serviceType() === ServiceTypeEnum::HOTEL_BOOKING) {
+            $details = $this->detailsRepository->findOrFail($booking->id());
+            $isTravelineIntegrationEnabled = $this->travelineAdapter->isHotelIntegrationEnabled(
+                $details->hotelInfo()->id()
+            );
+        }
 
+        //@todo refactor - ограничивать доменную логику в зависимости от available actions
         return new AvailableActionsDto(
             statuses: $this->buildAvailableStatuses(),
             isEditable: $this->editRules->isEditable(),
             canEditExternalNumber: $this->editRules->canEditExternalNumber(),
-            canChangeRoomPrice: $this->editRules->canChangeRoomPrice(),
+            canChangeRoomPrice: !$isTravelineIntegrationEnabled && $this->editRules->canChangeRoomPrice(),
             canCopy: $this->editRules->canCopy(),
         );
     }

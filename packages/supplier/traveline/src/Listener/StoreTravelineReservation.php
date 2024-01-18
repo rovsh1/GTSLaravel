@@ -44,7 +44,7 @@ class StoreTravelineReservation
     {
         $hotelId = DB::table('booking_hotel_details')
             ->where('booking_id', $bookingId)
-            ->select('hotel_id')
+            ->select('traveline_hotels.hotel_id')
             ->join('traveline_hotels', 'traveline_hotels.hotel_id', '=', 'booking_hotel_details.hotel_id')
             ->first()
             ?->hotel_id;
