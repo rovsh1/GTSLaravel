@@ -153,16 +153,16 @@
           <h2 style="font-size: 23px;">С уважением,</h2>
         </div>
         <div class="text-block">
-          <p style="font-size: 15px !important;">Сардор Зоитов</p>
+          <p style="font-size: 15px !important;">{{ $manager->fullName }}</p>
         </div>
         <div class="text-block m0">
           <p>
-            <a href="mailto:example@gmail.com" title="Почта" target="_blank"
+            <a href="mailto:{{ $manager->email }}" title="Почта" target="_blank"
               style="margin-right: 10px; color: transparent !important;">
               <img src="{{ asset('apps/site/public/images/mail.png') }}" alt="Почта" title="Почта" width="32"
                 style="outline: none;text-decoration: none;max-width: 32px !important;" />
             </a>
-            <a href="tel:+8888888" title="Телефон" target="_blank" style="color: transparent !important;">
+            <a href="tel:{{ $manager->phone }}" title="Телефон" target="_blank" style="color: transparent !important;">
               <img src="{{ asset('apps/site/public/images/phone.png') }}" alt="Телефон" title="Телефон" width="32"
                 style="outline: none;text-decoration: none;max-width: 32px !important" />
             </a>
