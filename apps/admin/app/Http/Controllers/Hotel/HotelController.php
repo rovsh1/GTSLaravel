@@ -244,7 +244,7 @@ class HotelController extends AbstractPrototypeController
             ->enum('status', ['label' => __('label.status'), 'emptyItem' => '', 'enum' => StatusEnum::class])
             ->enum('visibility', ['label' => __('label.visibility'), 'emptyItem' => '', 'enum' => VisibilityEnum::class]
             )
-            ->enum('rating', ['label' => __('label.rating'), 'emptyItem' => '', 'enum' => RatingEnum::class])
+            ->rating('rating', ['label' => __('label.rating'), 'emptyItem' => ''])
             ->checkbox('is_traveline_integration_enabled', ['label' => 'Traveline']);
     }
 
