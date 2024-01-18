@@ -25,7 +25,7 @@
                         <span style="line-height: 19.6px;">{{ __('Уважаемый :client, добрый день!', ['client' => $client->name]) }}</span>
                       </p>
                       <p style="line-height: 140%;">
-                      <p style="line-height: 19.6px;">{{ __('Ваши брони подтверждены, отправляем Вам ваучер') }} - <a href="{{ $voucher->fileUrl }}" target="_blank">по ссылке</a></p>
+                      <p style="line-height: 19.6px;">{{ __('Ваш заказ подтвержден, Ваучер доступен') }} <a href="{{ $voucher->fileUrl }}" target="_blank">по ссылке</a></p>
                       </p>
                       <p style="line-height: 140%;"> </p>
                     </div>
@@ -100,7 +100,7 @@
                     <div class="v-text-align v-line-height v-font-size"
                       style="font-size: 13px; line-height: 140%; text-align: left; word-wrap: break-word;">
                       <p style="line-height: 140%;">
-                        <span style="line-height: 18.2px;">{{ __('Дата создания: :createdAt', ['createdAt' => $voucher->createdAt]) }}</span> 
+                        <span style="line-height: 18.2px;">{{ __('Дата и время создания: :createdAt', ['createdAt' => $voucher->createdAt]) }}</span> 
                       </p>
                     </div>
                   </td>
@@ -133,7 +133,7 @@
                     <div class="v-text-align v-line-height v-font-size"
                       style="font-size: 14px; line-height: 140%; text-align: left; word-wrap: break-word;">
                       <p style="line-height: 140%;">
-                        <span style="line-height: 19.6px;"><b>{{ __('Информация о бронях:') }}</b></span>
+                        <span style="line-height: 19.6px;"><b>{{ __('Информация о заказе:') }}</b></span>
                       </p>
                       <p style="line-height: 140%;">&nbsp;</p>
                     </div>
@@ -147,6 +147,13 @@
     </div>
   </div>
 </div>
+
+@foreach($order->guests as $index => $guest)
+    {{++$index}}. {{ $guest->fullName }}
+@endforeach
+
+Дата начала поездки: {{ $order->period->dateFrom }}
+Дата завершения поездки: {{ $order->period->dateTo }}
 
 @foreach($services as $service)
 <div class="u-row-container" style="padding: 0px;background-color: transparent">

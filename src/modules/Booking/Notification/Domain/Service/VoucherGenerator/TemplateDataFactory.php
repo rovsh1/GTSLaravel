@@ -8,8 +8,10 @@ use Module\Booking\Notification\Domain\Service\VoucherGenerator\Dto\ClientDto;
 use Module\Booking\Notification\Domain\Service\VoucherGenerator\Dto\CompanyRequisitesDto;
 use Module\Booking\Notification\Domain\Service\VoucherGenerator\Dto\ManagerDto;
 use Module\Booking\Notification\Domain\Service\VoucherGenerator\Dto\OrderDto;
+use Module\Booking\Notification\Domain\Service\VoucherGenerator\Dto\OrderPeriodDto;
 use Module\Booking\Notification\Domain\Service\VoucherGenerator\Dto\ServiceInfoDto;
 use Module\Booking\Notification\Domain\Service\VoucherGenerator\Dto\VoucherDto;
+use Module\Booking\Notification\Domain\Service\VoucherGenerator\Factory\GuestDataFactory;
 use Module\Booking\Notification\Domain\Service\VoucherGenerator\Factory\ServiceInfoDataFactory;
 use Module\Booking\Shared\Domain\Order\Order;
 use Module\Booking\Shared\Domain\Order\Repository\OrderRepositoryInterface;
@@ -28,6 +30,7 @@ class TemplateDataFactory
         private readonly ClientAdapterInterface $clientAdapter,
         private readonly OrderRepositoryInterface $orderRepository,
         private readonly ServiceInfoDataFactory $serviceInfoDataFactory,
+        private readonly GuestDataFactory $guestDataFactory,
         private readonly FileStorageAdapterInterface $fileStorageAdapter,
     ) {}
 
@@ -80,9 +83,21 @@ class TemplateDataFactory
 
     private function buildOrderDto(Order $order): OrderDto
     {
+        $guests = $this->guestDataFactory->build($order->guestIds());
+
+        $period = null;
+        if ($order->period() !== null) {
+            $period = new OrderPeriodDto(
+                $order->period()->dateFrom()->format('d.m.Y'),
+                $order->period()->dateTo()->format('d.m.Y'),
+            );
+        }
+
         return new OrderDto(
             (string)$order->id()->value(),
-            $order->currency()->name
+            $order->currency()->name,
+            $guests,
+            $period
         );
     }
 
