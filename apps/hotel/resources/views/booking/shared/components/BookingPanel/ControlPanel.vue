@@ -4,6 +4,8 @@ import BookingExternalNumberType from '~resources/views/booking/shared/component
 import BookingRequests from '~resources/views/booking/shared/components/BookingPanel/components/BookingRequests.vue'
 import BookingStatus from '~resources/views/booking/shared/components/BookingPanel/components/BookingStatus.vue'
 import BookingStatusHistory from '~resources/views/booking/shared/components/BookingPanel/components/BookingStatusHistory.vue'
+import BookingStatusReason
+  from '~resources/views/booking/shared/components/BookingPanel/components/BookingStatusReason.vue'
 import BookingTotalAmount from '~resources/views/booking/shared/components/BookingPanel/components/BookingTotalAmount.vue'
 import ControlPanelSection from '~resources/views/booking/shared/components/ControlPanelSection.vue'
 
@@ -20,6 +22,7 @@ import ControlPanelSection from '~resources/views/booking/shared/components/Cont
     title="Тип номера подтверждения бронирования"
   >
     <BookingExternalNumberType />
+    <BookingStatusReason />
   </ControlPanelSection>
 
   <ControlPanelSection title="Запросы на бронирование услуги">
