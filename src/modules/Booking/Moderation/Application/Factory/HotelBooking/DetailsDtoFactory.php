@@ -20,12 +20,14 @@ use Sdk\Booking\Entity\Details\HotelBooking;
 use Sdk\Booking\ValueObject\HotelBooking\AccommodationCollection;
 use Sdk\Booking\ValueObject\HotelBooking\RoomPriceDayPart;
 use Sdk\Booking\ValueObject\HotelBooking\RoomPrices;
+use Shared\Contracts\Adapter\TravelineAdapterInterface;
 
 class DetailsDtoFactory
 {
     public function __construct(
         private readonly AccommodationRepositoryInterface $accommodationRepository,
         private readonly GuestRepositoryInterface $guestRepository,
+        private readonly TravelineAdapterInterface $travelineAdapter,
     ) {}
 
     public function build(HotelBooking $details): HotelBookingDto
@@ -41,7 +43,8 @@ class DetailsDtoFactory
             $details->externalNumber()
                 ? ExternalNumberDto::fromDomain($details->externalNumber())
                 : null,
-            $details->quotaProcessingMethod()
+            $details->quotaProcessingMethod(),
+            $this->travelineAdapter->isHotelIntegrationEnabled($details->hotelInfo()->id()),
         );
     }
 

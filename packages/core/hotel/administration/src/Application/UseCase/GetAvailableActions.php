@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Moderation\Application\UseCase;
 
 use Module\Booking\Moderation\Application\Dto\AvailableActionsDto;
 use Module\Booking\Moderation\Application\Factory\StatusSettingsDtoFactory;
