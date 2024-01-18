@@ -30,7 +30,7 @@ class TimelineController extends Controller
             ->add('История изменений');
 
         return Layout::title($title)
-            ->view('booking.hotel.timeline.timeline', [
+            ->view('booking.services.timeline.timeline', [
                 'history' => app(GetHistory::class)->execute($id)
             ]);
     }
