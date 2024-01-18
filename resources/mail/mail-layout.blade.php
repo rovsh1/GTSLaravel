@@ -9,62 +9,20 @@
   <meta name="x-apple-disable-message-reformatting">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title></title>
-
   <style type="text/css">
     @media only screen and (min-width: 620px) {
-      .u-row {
+      .mail-row {
         width: 600px !important;
       }
-
-      .u-row .u-col {
-        vertical-align: top;
-      }
-
-      .u-row .u-col-36p67 {
-        width: 220.02px !important;
-      }
-
-      .u-row .u-col-48p17 {
-        width: 289.02px !important;
-      }
-
-      .u-row .u-col-51p83 {
-        width: 310.98px !important;
-      }
-
-      .u-row .u-col-63p33 {
-        width: 379.98px !important;
-      }
-
-      .u-row .u-col-100 {
-        width: 600px !important;
-      }
-
     }
 
     @media (max-width: 620px) {
-      .u-row-container {
-        max-width: 100% !important;
-        padding-left: 0px !important;
-        padding-right: 0px !important;
-      }
-
-      .u-row .u-col {
-        min-width: 320px !important;
-        max-width: 100% !important;
-        display: block !important;
-      }
-
-      .u-row {
+      .mail-row {
         width: 100% !important;
       }
 
-      .u-col {
-        width: 100% !important;
-      }
-
-      .u-col>div {
-        margin: 0 auto;
+      .mail-container .mail-row .mail-content {
+        padding: 20px !important;
       }
     }
 
@@ -73,200 +31,133 @@
       padding: 0;
     }
 
-    table,
-    tr,
-    td {
+    .mail-container table,
+    .mail-container tr,
+    .mail-container td {
       vertical-align: top;
       border-collapse: collapse;
     }
 
-    p {
+    .mail-container p,
+    .mail-container td,
+    .mail-container a,
+    .mail-container h2 {
       margin: 0;
-    }
-
-    .ie-container table,
-    .mso-container table {
-      table-layout: fixed;
-    }
-
-    * {
-      line-height: inherit;
-    }
-
-    a[x-apple-data-detectors='true'] {
-      color: inherit !important;
-      text-decoration: none !important;
-    }
-
-    table,
-    td {
       color: #000000;
+      font-family: Arial, Helvetica, sans-serif !important;
+      font-size: 13px;
     }
 
-    .u_body a {
+    .mail-container .m0 {
+      margin-bottom: 0 !important;
+    }
+
+    .mail-container {
+      background-color: #e7e7e7;
+    }
+
+    .mail-container a {
       color: #0000ee;
       text-decoration: underline;
     }
 
-    .u_content_text_14 a {
-      color: #fbeeb8;
+    .mail-container .mail-row {
+      margin: 0 auto;
+      background-color: #fff;
+    }
+
+    .mail-container .mail-row table {
+      border-collapse: collapse;
+      table-layout: fixed;
+      border-spacing: 0;
+      mso-table-lspace: 0pt;
+      mso-table-rspace: 0pt;
+      vertical-align: top;
+      margin: 0 auto;
+      width: 100%
+    }
+
+    .mail-container .mail-row table td {
+      padding: 5px 0;
+      vertical-align: top;
+    }
+
+    .mail-container .mail-row .mail-header {
+      padding: 35px 10px 35px;
+      text-align: center;
+      border-bottom: 1px solid #0e80f6;
+    }
+
+    .mail-container .mail-row .mail-footer {
+      padding: 30px 40px;
+      background-color: #0e80f6;
+    }
+
+    .mail-container .mail-row .mail-content {
+      padding: 20px 65px;
+    }
+
+    .mail-container .mail-row .text-block,
+    .mail-container .mail-row .table-block {
+      margin-bottom: 20px;
+    }
+
+    .mail-container .mail-row .table-block {
+      background-color: #f8f8fc;
+      padding: 20px;
+    }
+
+    .mail-container .mail-row .mail-footer p,
+    .mail-container .mail-row .mail-footer td,
+    .mail-container .mail-row .mail-footer a,
+    .mail-container .mail-row .mail-footer h2 {
+      color: #fff !important;
+    }
+
+    .mail-container .mail-row table.with-divider tr td {
+      border-bottom: 1px solid #e6e6e6;
+    }
+
+    .mail-container .mail-row table.with-divider tr:last-child td {
+      border-bottom: none !important;
     }
   </style>
 </head>
 
-<body class="clean-body u_body"
-  style="margin: 0;padding: 0;-webkit-text-size-adjust: 100%;background-color: #e7e7e7;color: #000000">
-  <table
-    style="border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 320px;Margin: 0 auto;background-color: #e7e7e7;width:100%"
-    cellpadding="0" cellspacing="0">
-    <tbody>
-      <tr style="vertical-align: top">
-        <td style="word-break: break-word;border-collapse: collapse !important;vertical-align: top">
-          <!-- header -->
-          <div class="u-row-container" style="padding: 0px;background-color: transparent">
-            <div class="u-row"
-              style="margin: 0 auto;min-width: 320px;max-width: 600px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;">
-              <div
-                style="border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;">
-                <div class="u-col u-col-100"
-                  style="max-width: 320px;min-width: 600px;display: table-cell;vertical-align: top;">
-                  <div style="background-color: #ffffff;height: 100%;width: 100% !important;">
-                    <div class="v-col-border"
-                      style="box-sizing: border-box; height: 100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;">
-                      <table class="u_content_image_1"
-                        style="font-family:arial,helvetica,sans-serif;border-bottom: 1px solid #0e80f6;"
-                        role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
-                        <tbody>
-                          <tr>
-                            <td class="v-container-padding-padding"
-                              style="overflow-wrap:break-word;word-break:break-word;padding:35px 10px 35px;font-family:arial,helvetica,sans-serif;"
-                              align="left">
-                              <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                                <tr>
-                                  <td class="v-text-align" style="padding-right: 0px;padding-left: 0px;" align="center">
-                                    <img align="center" border="0" src="images/logo.png" alt="image" title="image"
-                                      style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 100%;max-width: 200px;"
-                                      width="200px" class="v-src-width v-src-max-width" />
-                                  </td>
-                                </tr>
-                              </table>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          @yield('content')
-
-          <!-- footer -->
-          <div class="u-row-container" style="padding: 0px;background-color: transparent">
-            <div class="u-row"
-              style="margin: 0 auto;min-width: 320px;max-width: 600px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;">
-              <div
-                style="border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;">
-                <div class="u-col u-col-100"
-                  style="max-width: 320px;min-width: 600px;display: table-cell;vertical-align: top;">
-                  <div
-                    style="background-color: #0e80f6;height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
-                    <div class="v-col-border"
-                      style="box-sizing: border-box; height: 100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
-                      <table class="u_content_heading_4" style="font-family:arial,helvetica,sans-serif;"
-                        role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
-                        <tbody>
-                          <tr>
-                            <td class="v-container-padding-padding"
-                              style="overflow-wrap:break-word;word-break:break-word;padding:40px 10px 10px 40px;font-family:arial,helvetica,sans-serif;"
-                              align="left">
-
-                              <h1 class="v-text-align v-line-height v-font-size"
-                                style="margin: 0px; color: #ffffff; line-height: 140%; text-align: left; word-wrap: break-word; font-size: 22px; font-weight: 400;">
-                                <span>Благодарим за сотрудничество,</span>
-                              </h1>
-
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                      <table class="u_content_text_14" style="font-family:arial,helvetica,sans-serif;"
-                        role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
-                        <tbody>
-                          <tr>
-                            <td class="v-container-padding-padding"
-                              style="overflow-wrap:break-word;word-break:break-word;padding:10px 60px 25px 40px;font-family:arial,helvetica,sans-serif;"
-                              align="left">
-
-                              <div class="v-text-align v-line-height v-font-size"
-                                style="font-size: 14px; color: #fff; line-height: 170%; text-align: left; word-wrap: break-word;">
-                                <p style="line-height: 170%;">
-                                  <span style="line-height: 23.8px;"></span>
-                                  <span style="line-height: 23.8px;"></span>
-                                  <span style="line-height: 23.8px;">
-                                    {{ __('С уважением, :manager', ['manager' => $manager->fullName]) }}
-                                  </span>
-                                </p>
-                              </div>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                      <table class="u_content_social_1" style="font-family:arial,helvetica,sans-serif;"
-                        role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
-                        <tbody>
-                          <tr>
-                            <td class="v-container-padding-padding"
-                              style="overflow-wrap:break-word;word-break:break-word;padding:0px 10px 20px 40px;font-family:arial,helvetica,sans-serif;"
-                              align="left">
-                              <div align="left">
-                                <div style="display: table; max-width:167px;">
-                                  <table align="left" border="0" cellspacing="0" cellpadding="0" width="32" height="32"
-                                    style="width: 32px !important;height: 32px !important;display: inline-block;border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;margin-right: 10px">
-                                    <tbody>
-                                      <tr style="vertical-align: top">
-                                        <td align="left" valign="middle"
-                                          style="word-break: break-word;border-collapse: collapse !important;vertical-align: top">
-                                          <a href="mailto:{{ $manager->email }}" title="Почта" target="_blank">
-                                            <img src="images/mail.png" alt="Почта" title="Почта" width="32"
-                                              style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important">
-                                          </a>
-                                        </td>
-                                      </tr>
-                                    </tbody>
-                                  </table>
-                                  <table align="left" border="0" cellspacing="0" cellpadding="0" width="32" height="32"
-                                    style="width: 32px !important;height: 32px !important;display: inline-block;border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;margin-right: 10px">
-                                    <tbody>
-                                      <tr style="vertical-align: top">
-                                        <td align="left" valign="middle"
-                                          style="word-break: break-word;border-collapse: collapse !important;vertical-align: top">
-                                          <a href="tel:{{ $manager->phone }}" title="Телефон" target="_blank">
-                                            <img src="images/phone.png" alt="Телефон" title="Телефон" width="32"
-                                              style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important">
-                                          </a>
-                                        </td>
-                                      </tr>
-                                    </tbody>
-                                  </table>
-                                </div>
-                              </div>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+<body>
+  
+</body>
+<body>
+  <div class="mail-container">
+    <div class="mail-row">
+      <div class="mail-header">
+        <img align="center" border="0" src="images/logo.png" alt="image" title="image"
+          style="outline: none;text-decoration: none;max-width: 200px;" width="200px" />
+      </div>
+      @yield('content')
+      <div class="mail-footer">
+        <div class="text-block">
+          <h2 style="font-size: 23px;">С уважением,</h2>
+        </div>
+        <div class="text-block">
+          <p style="font-size: 15px !important;">Сардор Зоитов</p>
+        </div>
+        <div class="text-block m0">
+          <p>
+            <a href="mailto:example@gmail.com" title="Почта" target="_blank"
+              style="margin-right: 10px; color: transparent !important;">
+              <img src="images/mail.png" alt="Почта" title="Почта" width="32"
+                style="outline: none;text-decoration: none;max-width: 32px !important;" />
+            </a>
+            <a href="tel:+8888888" title="Телефон" target="_blank" style="color: transparent !important;">
+              <img src="images/phone.png" alt="Телефон" title="Телефон" width="32"
+                style="outline: none;text-decoration: none;max-width: 32px !important" />
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 
 </html>
