@@ -88,6 +88,7 @@
 
     .mail-container .mail-row table td.value-column {
       width: 60%;
+      padding-left: 10px;
     }
 
     .mail-container .mail-row .mail-header {
