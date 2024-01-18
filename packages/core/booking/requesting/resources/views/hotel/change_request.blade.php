@@ -87,7 +87,6 @@
 
                     @include('BookingRequesting::hotel._partials.rooms')
 
-                    {reservationDetails}
                     <tr class="first">
                         <td colspan="3">
                             <p style="text-align: justify"><b>Внимание!</b> Компания гарантирует оплату за количество

@@ -3,12 +3,14 @@
         <tr class="first">
     @else
         <tr>
-    @endif
+            @endif
             <td>
                 <b>{{ ++$roomIndex }}</b>
             </td>
             <td>
-                <b>{{ $room->name }}</b>
+                @changemark("accommodation[$room->accommodationId]")
+                    <b>{{ $room->name }}</b>
+                @endchangemark
             </td>
             <td>
                 @changemark("accommodation[$room->accommodationId].earlyCheckIn")
@@ -19,7 +21,9 @@
         <tr>
             <td></td>
             <td>
-                Тариф: {{ $room->rate }}
+                @changemark("accommodation[$room->accommodationId].rateId")
+                    Тариф: {{ $room->rate }}
+                @endchangemark
             </td>
             <td>
                 @changemark("accommodation[$room->accommodationId].lateCheckOut")
@@ -30,7 +34,9 @@
         <tr>
             <td></td>
             <td>
-                Туристы ({{ count($room->guests) }}):
+                @changemark("accommodation[$room->accommodationId].guests")
+                    Туристы ({{ count($room->guests) }}):
+                @endchangemark
             </td>
             <td></td>
         </tr>
@@ -38,7 +44,9 @@
             <tr>
                 <td></td>
                 <td>
-                    {{++$index}}. {{ $guest->fullName }}, {{ $guest->gender }}, {{ $guest->countryName }}
+                    @changemark("accommodation[$room->accommodationId].guests")
+                        {{++$index}}. {{ $guest->fullName }}, {{ $guest->gender }}, {{ $guest->countryName }}
+                    @endchangemark
                 </td>
                 <td></td>
             </tr>
@@ -46,7 +54,9 @@
         <tr>
             <td></td>
             <td>
-                Примечание (запрос в отель, ваучер): {{$room->note}}
+                @changemark("accommodation[$room->accommodationId].guestNote")
+                    Примечание (запрос в отель, ваучер): {{ $room->note }}
+                @endchangemark
             </td>
             <td></td>
         </tr>
