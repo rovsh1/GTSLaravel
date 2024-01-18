@@ -15,9 +15,9 @@
         <td>{{ __('Номер ваучера:') }}:</td>
         <td><b>{{ $voucher->number }}</b></td>
       </tr>
-      <tr>
+      <tr class="disable-divider">
         <td>{{ __('Дата и время создания:') }}</td>
-        <td><b>$voucher->createdAt</b></td>
+        <td><b>{{ $voucher->createdAt }}</b></td>
       </tr>
     </table>
   </div>
@@ -33,7 +33,7 @@
         <td>
           <table class="with-divider">
             @foreach($order->guests as $index => $guest)
-              <tr>
+              <tr class="{{ $index === count($order->guests) - 1 ? 'disable-divider' : '' }}">
                 <td><b>{{++$index}}. {{ $guest->fullName }}</b></td>
               </tr>
             @endforeach
@@ -48,7 +48,7 @@
         <td>{{ __('Дата начала поездки:') }}</td>
         <td><b>{{ $order->period->dateFrom }}</b></td>
       </tr>
-      <tr>
+      <tr class="disable-divider">
         <td>{{ __('Дата завершения поездки:') }}</td>
         <td><b>{{ $order->period->dateTo }}</b></td>
       </tr>

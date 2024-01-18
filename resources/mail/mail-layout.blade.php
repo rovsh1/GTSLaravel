@@ -121,6 +121,10 @@
     .mail-container .mail-row table.with-divider tr:last-child td {
       border-bottom: none !important;
     }
+
+    .mail-container .mail-row table.with-divider tr.disable-divider td {
+      border-bottom: none !important;
+    }
   </style>
 </head>
 
@@ -131,7 +135,7 @@
   <div class="mail-container">
     <div class="mail-row">
       <div class="mail-header">
-        <img align="center" border="0" src="images/logo.png" alt="image" title="image"
+        <img align="center" border="0" src="{{ asset('apps/site/public/images/logo.png') }}" alt="image" title="image"
           style="outline: none;text-decoration: none;max-width: 200px;" width="200px" />
       </div>
       @yield('content')
@@ -146,11 +150,11 @@
           <p>
             <a href="mailto:example@gmail.com" title="Почта" target="_blank"
               style="margin-right: 10px; color: transparent !important;">
-              <img src="images/mail.png" alt="Почта" title="Почта" width="32"
+              <img src="{{ asset('apps/site/public/images/mail.png') }}" alt="Почта" title="Почта" width="32"
                 style="outline: none;text-decoration: none;max-width: 32px !important;" />
             </a>
             <a href="tel:+8888888" title="Телефон" target="_blank" style="color: transparent !important;">
-              <img src="images/phone.png" alt="Телефон" title="Телефон" width="32"
+              <img src="{{ asset('apps/site/public/images/phone.png') }}" alt="Телефон" title="Телефон" width="32"
                 style="outline: none;text-decoration: none;max-width: 32px !important" />
             </a>
           </p>
