@@ -12,12 +12,12 @@
   <div class="table-block">
     <table class="with-divider">
       <tr>
-        <td>{{ __('Номер ваучера:') }}:</td>
-        <td><b>{{ $voucher->number }}</b></td>
+        <td class="title-column">{{ __('Номер ваучера:') }}</td>
+        <td class="value-column"><b>{{ $voucher->number }}</b></td>
       </tr>
       <tr class="disable-divider">
-        <td>{{ __('Дата и время создания:') }}</td>
-        <td><b>{{ $voucher->createdAt }}</b></td>
+        <td class="title-column">{{ __('Дата и время создания:') }}</td>
+        <td class="value-column"><b>{{ $voucher->createdAt }}</b></td>
       </tr>
     </table>
   </div>
@@ -27,10 +27,10 @@
   <div class="table-block">
     <table>
       <tr>
-        <td>
+        <td class="title-column">
           {{ __('Список гостей:') }}
         </td>
-        <td>
+        <td class="value-column">
           <table class="with-divider">
             @foreach($order->guests as $index => $guest)
               <tr class="{{ $index === count($order->guests) - 1 ? 'disable-divider' : '' }}">
@@ -45,12 +45,12 @@
   <div class="table-block">
     <table class="with-divider">
       <tr>
-        <td>{{ __('Дата начала поездки:') }}</td>
-        <td><b>{{ $order->period->dateFrom }}</b></td>
+        <td class="title-column">{{ __('Дата начала поездки:') }}</td>
+        <td class="value-column"><b>{{ $order->period->dateFrom }}</b></td>
       </tr>
       <tr class="disable-divider">
-        <td>{{ __('Дата завершения поездки:') }}</td>
-        <td><b>{{ $order->period->dateTo }}</b></td>
+        <td class="title-column">{{ __('Дата завершения поездки:') }}</td>
+        <td class="value-column"><b>{{ $order->period->dateTo }}</b></td>
       </tr>
     </table>
   </div>

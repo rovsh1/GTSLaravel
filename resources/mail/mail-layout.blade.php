@@ -82,6 +82,14 @@
       vertical-align: top;
     }
 
+    .mail-container .mail-row table td.title-column {
+      width: 40%;
+    }
+
+    .mail-container .mail-row table td.value-column {
+      width: 60%;
+    }
+
     .mail-container .mail-row .mail-header {
       padding: 35px 10px 35px;
       text-align: center;
