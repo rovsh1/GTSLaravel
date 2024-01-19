@@ -193,7 +193,7 @@ const getClientDataByType = (type: number | null): any => {
 const eventBus = useApplicationEventBus()
 
 const onModalSubmit = async () => {
-  if (!isFormValid()) {
+  if (!isFormValid() || waitCreatingClient.value) {
     return
   }
   const clientData: any = getClientDataByType(basicData.type)
@@ -219,7 +219,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <BaseDialog :opened="isOpened as boolean" @close="toggleModal(false)" @submit="onModalSubmit">
+  <BaseDialog :opened="isOpened as boolean" @keydown.enter="onModalSubmit" @close="toggleModal(false)">
     <OverlayLoading v-if="waitCreatingClient" />
     <template #title>Создать клиента</template>
     <BootstrapTabs>
@@ -256,6 +256,7 @@ onMounted(() => {
 
             <div class="col-md-12 mt-2">
               <SelectComponent
+                v-if="isOpened"
                 :options="clientTypeOptions"
                 required
                 label="Тип"
@@ -270,6 +271,7 @@ onMounted(() => {
 
             <div class="col-md-12 mt-2 city-wrapper">
               <SelectComponent
+                v-if="isOpened"
                 :options="cityOptions"
                 required
                 label="Город"
@@ -285,6 +287,7 @@ onMounted(() => {
 
             <div class="col-md-12 mt-2">
               <SelectComponent
+                v-if="isOpened"
                 :options="statusOptions"
                 label="Статус"
                 :returned-empty-value="null"
@@ -297,6 +300,7 @@ onMounted(() => {
 
             <div class="col-md-12 mt-2">
               <SelectComponent
+                v-if="isOpened"
                 :options="currencyOptions"
                 required
                 label="Валюта"
@@ -311,6 +315,7 @@ onMounted(() => {
 
             <div class="col-md-12 mt-2 price-types-wrapper">
               <SelectComponent
+                v-if="isOpened"
                 :options="residentTypeOptions"
                 required
                 label="Тариф"
@@ -325,6 +330,7 @@ onMounted(() => {
 
             <div class="col-md-12 mt-2">
               <SelectComponent
+                v-if="isOpened"
                 :options="markupGroupOptions"
                 required
                 label="Группа наценки"
@@ -363,6 +369,7 @@ onMounted(() => {
 
             <div class="col-md-12 mt-2">
               <SelectComponent
+                v-if="isOpened"
                 :options="legalIndustryOptions"
                 label="Индустрия"
                 :returned-empty-value="null"
@@ -452,6 +459,7 @@ onMounted(() => {
           <form ref="clientPhysicalForm" class="tab-content">
             <div class="col-md-12 mt-2">
               <SelectComponent
+                v-if="isOpened"
                 :options="genderOptions"
                 label="Пол"
                 :returned-empty-value="null"

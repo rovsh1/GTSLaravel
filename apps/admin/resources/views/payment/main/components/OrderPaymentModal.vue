@@ -50,7 +50,7 @@ const closeModal = () => {
 }
 
 const onSubmit = async () => {
-  if (!paymentID.value) return
+  if (!paymentID.value || isFetching.value || isDisabled.value || isSendingOrders.value) return
   isSendingOrders.value = true
   const response = await ordersLend({
     paymentID: paymentID.value,
@@ -66,7 +66,12 @@ const onSubmit = async () => {
 </script>
 
 <template>
-  <BaseDialog :auto-width="true" :opened="isOpened as boolean" @close="toggleModal(false)">
+  <BaseDialog
+    :auto-width="true"
+    :opened="isOpened as boolean"
+    :keydown-enter-callback="onSubmit"
+    @close="toggleModal(false)"
+  >
     <template #title>Распределение оплат</template>
     <div class="position-relative">
       <OverlayLoading v-if="isFetching || isSendingOrders" />
@@ -85,6 +90,7 @@ const onSubmit = async () => {
         class="btn btn-primary"
         type="button"
         :disabled="isFetching || isDisabled || isSendingOrders"
+        @keydown.enter.stop.prevent="onSubmit"
         @click="onSubmit"
       >
         Сохранить

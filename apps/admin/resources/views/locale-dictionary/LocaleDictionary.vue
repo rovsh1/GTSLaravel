@@ -81,6 +81,7 @@ const setActiveTab = (key: string) => {
 }
 
 const handleSubmitEditableLocale = async () => {
+  if (isUpdateLocaleDictionary.value) return
   const response: BaseResponse = await executeUpdateLocaleDictionary()
   if (response && response.success) {
     toggleModal(false)
@@ -166,7 +167,11 @@ onMounted(async () => {
       </div>
     </div>
   </Card>
-  <BaseDialog :opened="isOpened as boolean" @close="toggleModal(false)" @submit="handleSubmitEditableLocale()">
+  <BaseDialog
+    :opened="isOpened as boolean"
+    @close="toggleModal(false)"
+    @keydown.enter="handleSubmitEditableLocale"
+  >
     <template #title>Редактирование перевода</template>
     <div class="position-relative">
       <OverlayLoading v-if="isUpdateLocaleDictionary" />

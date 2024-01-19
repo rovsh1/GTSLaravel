@@ -139,6 +139,7 @@ const switchRooms = (value: number[]) => {
 }
 
 const handleUpdateQuotasBatch = async () => {
+  if (!filtersQuotasStatusBatchPayload.value || isUpdateHotelRoomQuotasBatch.value) return
   await executeUpdateHotelRoomQuotasBatch()
   fetchHotelQuotasWrapper()
   toggleModalOpenCloseQuotas(false)
@@ -216,6 +217,7 @@ const handleUpdateQuotasBatch = async () => {
       :opened="isOpenedOpenCloseQuotasModal as boolean"
       :auto-width="true"
       :click-outside-ignore="['.litepicker']"
+      @keydown.enter="handleUpdateQuotasBatch"
       @close="toggleModalOpenCloseQuotas(false)"
     >
       <template #title>

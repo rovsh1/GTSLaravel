@@ -52,6 +52,7 @@ const localNetPrice = computed({
 })
 
 const submit = () => {
+  if (isLoading.value) return
   emit('submit', { grossPrice: localGrossPrice.value, netPrice: localNetPrice.value })
 }
 
@@ -61,8 +62,8 @@ const submit = () => {
   <BaseDialog
     :opened="opened as boolean"
     :loading="loading"
-    @close="$emit('close')"
     @keydown.enter="submit"
+    @close="$emit('close')"
   >
     <template #title>Цена за номер</template>
 

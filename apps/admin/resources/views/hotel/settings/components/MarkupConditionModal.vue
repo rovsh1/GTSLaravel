@@ -61,7 +61,7 @@ const closeModal = () => {
 
 const markupConditionModalForm = ref<HTMLFormElement>()
 const onModalSubmit = async () => {
-  if (!markupConditionModalForm.value?.reportValidity()) {
+  if (!markupConditionModalForm.value?.reportValidity() || isLoading.value) {
     return
   }
   if (!from.value || !to.value || !percent.value) {
