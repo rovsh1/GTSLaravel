@@ -17,6 +17,13 @@ function site_path($path = ''): string
     return app('path.site') . ($path ? DIRECTORY_SEPARATOR . $path : '');
 }
 
+function site_url($path = ''): string
+{
+    $baseUrl = config('app.url');
+
+    return \Str::finish($baseUrl, '/') . trim($path, '/');
+}
+
 function api_path($path = ''): string
 {
     return app('path.api') . ($path ? DIRECTORY_SEPARATOR . $path : '');
