@@ -100,6 +100,7 @@ const onModalSubmit = async () => {
     <template #title>{{ title }}</template>
     <form ref="cancelConditionForm" class="row g-3">
       <DateRangePicker
+        v-if="opened"
         id="period"
         label="Период"
         required
