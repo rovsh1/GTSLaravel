@@ -18,6 +18,7 @@ import {
 
 import { showConfirmDialog } from '~lib/confirm-dialog'
 import { formatDate } from '~lib/date'
+import { defaultDisabledDate } from '~lib/date-picker/lib'
 import { requestInitialData } from '~lib/initial-data'
 
 import CancelPeriodModal from './components/CancelPeriodModal.vue'
@@ -38,8 +39,6 @@ const { hotelID, contract } = requestInitialData(
     }).nullable(),
   }),
 )
-
-const defaultDisabledDate = '1900-01-01'
 const markupSettingsStore = useMarkupSettingsStore()
 const cancelPeriods = computed(() => markupSettingsStore.markupSettings?.cancelPeriods)
 const { fetchMarkupSettings, updateCancelPeriodDailyMarkupField, deleteCancelPeriodDailyMarkup } = markupSettingsStore
@@ -175,8 +174,8 @@ const handleDeleteDailyMarkup = async (cancelPeriodIndex: number, dailyMarkupInd
     :title="title"
     :cancel-periods="contract ? cancelPeriods : undefined"
     :editable-id="editableId"
-    :min-date="contract?.date_start || defaultDisabledDate"
-    :max-date="contract?.date_end || defaultDisabledDate"
+    :min-date="contract?.date_start || defaultDisabledDate()"
+    :max-date="contract?.date_end || defaultDisabledDate()"
     @close="close"
     @submit="onModalSubmit"
   />

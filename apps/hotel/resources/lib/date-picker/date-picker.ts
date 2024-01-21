@@ -9,6 +9,7 @@ import './style.scss'
 
 import {
   datePickerRootAttributeName,
+  defaultDisabledDate,
   destroyOldDatePicker,
   prefillDatePickerFromInput,
   registerDatePickerInstance,
@@ -41,26 +42,10 @@ export const useDatePicker = (element: HTMLInputElement, options?: Options) => {
       DateTime.now().startOf('year').toJSDate(),
       DateTime.now().endOf('year').toJSDate(),
     ],
-    // 'Последние 7 дней': [
-    //   DateTime.now().minus({ days: 6 }).toJSDate(),
-    //   DateTime.now().toJSDate(),
-    // ],
-    // 'Последние 14 дней': [
-    //   DateTime.now().minus({ days: 13 }).toJSDate(),
-    //   DateTime.now().toJSDate(),
-    // ],
-    // 'Последние 30 дней': [
-    //   DateTime.now().minus({ days: 29 }).toJSDate(),
-    //   DateTime.now().toJSDate(),
-    // ],
     'Прошлый месяц': [
       DateTime.now().minus({ months: 1 }).startOf('month').toJSDate(),
       DateTime.now().minus({ months: 1 }).endOf('month').toJSDate(),
     ],
-    // 'Прошлая неделя': [
-    //   DateTime.now().minus({ weeks: 1 }).startOf('week').toJSDate(),
-    //   DateTime.now().minus({ weeks: 1 }).endOf('week').toJSDate(),
-    // ],
     'Прошлый год': [
       DateTime.now().minus({ years: 1 }).startOf('year').toJSDate(),
       DateTime.now().minus({ years: 1 }).endOf('year').toJSDate(),
@@ -83,12 +68,14 @@ export const useDatePicker = (element: HTMLInputElement, options?: Options) => {
     picker = new Litepicker({
       element,
       lang: 'ru-RU',
-      singleMode: true,
+      singleMode: false,
       showTooltip: false,
+      disallowLockDaysInRange: true,
       format: stringifyFormat,
       delimiter: dateRangeDelimiter,
       plugins: ['ranges'],
       ranges: {
+        force: false,
         customRanges: {
           ...ranges,
         },
@@ -108,6 +95,51 @@ export const useDatePicker = (element: HTMLInputElement, options?: Options) => {
     element?.dispatchEvent(customChangeEvent)
   })
 
+  picker.on('ranges.selected', (date1: any, date2: any) => {
+    const { lockDays, minDate, maxDate } = picker.options
+    if (!lockDays || !Array.isArray(lockDays) || !lockDays.length) return
+    const startDate = DateTime.fromJSDate(date1.dateInstance)
+    const endDate = DateTime.fromJSDate(date2.dateInstance)
+    const selectedPeriodDays = []
+    if (startDate.equals(endDate)) {
+      selectedPeriodDays.push(startDate)
+    } else {
+      let currentDate = startDate
+      while (currentDate <= endDate) {
+        selectedPeriodDays.push(currentDate)
+        currentDate = currentDate.plus({ days: 1 })
+      }
+    }
+    let isValidSelectedPeriod = true
+    selectedPeriodDays.forEach((dayFromSelectedPeriod) => {
+      const isDateInRange = lockDays.some((range) => {
+        const startDateTime = DateTime.fromJSDate(range[0].dateInstance)
+        const endDateTime = DateTime.fromJSDate(range[1].dateInstance)
+        return dayFromSelectedPeriod >= startDateTime && dayFromSelectedPeriod <= endDateTime
+      })
+      if (minDate) {
+        const minDateFormat = DateTime.fromISO(minDate)
+        if (dayFromSelectedPeriod < minDateFormat) {
+          isValidSelectedPeriod = false
+          return
+        }
+      }
+      if (maxDate) {
+        const maxDateFormat = DateTime.fromISO(maxDate)
+        if (dayFromSelectedPeriod > maxDateFormat) {
+          isValidSelectedPeriod = false
+          return
+        }
+      }
+      if (isDateInRange) {
+        isValidSelectedPeriod = false
+      }
+    })
+    if (!isValidSelectedPeriod || (minDate === defaultDisabledDate && maxDate === defaultDisabledDate)) {
+      picker.clearSelection()
+    }
+  })
+
   $(element).on('customEventClearLitePicker', () => {
     picker.clearSelection()
   })
@@ -119,16 +151,9 @@ export const useDatePicker = (element: HTMLInputElement, options?: Options) => {
   return picker
 }
 
-export const useSingleDatePicker = (element: HTMLInputElement, options?: Options) =>
-  useDatePicker(element, {
-    numberOfMonths: 1,
-    numberOfColumns: 1,
-    ...options,
-  })
-
 export const useDateRangePicker = (element: HTMLInputElement, options?: Options) =>
   useDatePicker(element, {
-    numberOfMonths: 2,
-    numberOfColumns: 2,
+    numberOfMonths: options?.singleMode ? 1 : 2,
+    numberOfColumns: options?.singleMode ? 1 : 2,
     ...options,
   })

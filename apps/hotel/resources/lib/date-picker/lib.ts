@@ -14,6 +14,7 @@ declare global {
   }
 }
 
+export const defaultDisabledDate = () => DateTime.local().toISODate()
 export const stringifyFormat = 'DD.MM.YYYY'
 export const parseFormat = 'dd.MM.yyyy'
 

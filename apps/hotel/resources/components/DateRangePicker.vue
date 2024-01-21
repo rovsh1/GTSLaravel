@@ -3,13 +3,13 @@ import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 
 import { onClickOutside } from '@vueuse/core'
 import { Litepicker } from 'litepicker'
-import { DateTime, Interval } from 'luxon'
+import { DateTime } from 'luxon'
 
 import { DateResponse } from '~api'
 import { DatePeriod } from '~api/hotel/markup-settings'
 
 import { compareJSDate, formatPeriod, parseAPIDate } from '~lib/date'
-import { useDateRangePicker, useSingleDatePicker } from '~lib/date-picker/date-picker'
+import { useDateRangePicker } from '~lib/date-picker/date-picker'
 
 const props = withDefaults(defineProps<{
   id: string
@@ -60,40 +60,71 @@ const displayValue = computed(() => {
     }
     return formatPeriod(period)
   }
-
   return ''
 })
 
 const editableId = computed(() => props.editableId)
-const lockPeriods = computed(() => props.lockPeriods)
-const minDateTime = computed(() => props.minDate && parseAPIDate(props.minDate).startOf('day'))
-const maxDateTime = computed(() => props.maxDate && parseAPIDate(props.maxDate).endOf('day'))
 
-const setBlockPeriodsValue = () => props.lockPeriods?.map((lockPeriod, index) =>
-  (editableId.value !== index ? [parseAPIDate(lockPeriod.from).startOf('day').toFormat('yyyy-LL-dd'),
-    parseAPIDate(lockPeriod.to).startOf('day').toFormat('yyyy-LL-dd')] : undefined))
+const minDateLocale = computed(() => (props.minDate ? parseAPIDate(props.minDate).startOf('day') : undefined))
+const maxDateLocale = computed(() => (props.maxDate ? parseAPIDate(props.maxDate).endOf('day') : undefined))
+
+const setBlockPeriodsValue = () => {
+  const result:[string, string][] = []
+  props.lockPeriods?.forEach((lockPeriod, index) => {
+    if (editableId.value !== index) {
+      result.push([
+        parseAPIDate(lockPeriod.from).startOf('day').toFormat('yyyy-LL-dd'),
+        parseAPIDate(lockPeriod.to).startOf('day').toFormat('yyyy-LL-dd'),
+      ])
+    }
+  })
+
+  return result
+}
 
 const blockedPeriods = ref(setBlockPeriodsValue())
 
-const lockDaysFilter = (inputDate: any) => {
-  if (inputDate === null) {
+const isValidSingleDateOrRange = (date1: any, date2: any): boolean => {
+  if (!blockedPeriods.value || !blockedPeriods.value.length) return true
+  const startDate = DateTime.fromJSDate(date1.dateInstance).startOf('day')
+  const endDate = DateTime.fromJSDate(props.singleMode ? date1.dateInstance : date2.dateInstance).endOf('day')
+  const selectedPeriodDays = []
+  if (startDate.equals(endDate)) {
+    selectedPeriodDays.push(startDate)
+  } else {
+    let currentDate = startDate
+    while (currentDate <= endDate) {
+      selectedPeriodDays.push(currentDate)
+      currentDate = currentDate.plus({ days: 1 })
+    }
+  }
+  let isValidSelectedPeriod = true
+  selectedPeriodDays.forEach((dayFromSelectedPeriod) => {
+    const isDateInRange = blockedPeriods.value?.some((range) => {
+      const startDateTime = DateTime.fromISO(range[0])
+      const endDateTime = DateTime.fromISO(range[1])
+      return dayFromSelectedPeriod >= startDateTime && dayFromSelectedPeriod <= endDateTime
+    })
+    if (minDateLocale.value) {
+      if (dayFromSelectedPeriod < minDateLocale.value) {
+        isValidSelectedPeriod = false
+        return
+      }
+    }
+    if (maxDateLocale.value) {
+      if (dayFromSelectedPeriod > maxDateLocale.value) {
+        isValidSelectedPeriod = false
+        return
+      }
+    }
+    if (isDateInRange) {
+      isValidSelectedPeriod = false
+    }
+  })
+  if (!isValidSelectedPeriod) {
     return false
   }
-  const inputDateTime = DateTime.fromJSDate(inputDate.toJSDate()).startOf('day')
-  if (minDateTime.value && inputDateTime < minDateTime.value) {
-    return true
-  }
-  if (maxDateTime.value && inputDateTime > maxDateTime.value) {
-    return true
-  }
-  return lockPeriods.value?.find((period, index): boolean => {
-    const isSamePeriod = editableId.value === index
-    const { from, to } = period
-    const start = parseAPIDate(from).startOf('day')
-    const end = parseAPIDate(to).endOf('day')
-
-    return !isSamePeriod && Interval.fromDateTimes(start, end).contains(inputDateTime)
-  }) !== undefined
+  return true
 }
 
 onClickOutside(inputRef, (event: MouseEvent) => {
@@ -112,29 +143,24 @@ watch([() => props.lockPeriods, () => props.editableId], () => {
 
 watch([() => props.minDate, () => props.maxDate], () => {
   picker.setOptions({
-    minDate: props.minDate,
+    minDate: minDateLocale.value?.toISODate() || undefined,
   })
   picker.setOptions({
-    maxDate: props.maxDate,
+    maxDate: maxDateLocale.value?.toISODate() || undefined,
   })
 })
 
 onMounted(() => {
   nextTick(() => {
     const periodInput = document.getElementById(props.id) as HTMLInputElement
-    if (props.singleMode) {
-      picker = useSingleDatePicker(periodInput, {
-        lockDaysFilter,
-        singleMode: props.singleMode,
-      })
-    } else {
-      picker = useDateRangePicker(periodInput, {
-        lockDays: blockedPeriods.value || [],
-        singleMode: false,
-        minDate: props.minDate,
-        maxDate: props.maxDate,
-      })
-    }
+
+    picker = useDateRangePicker(periodInput, {
+      lockDays: blockedPeriods.value,
+      singleMode: props.singleMode,
+      minDate: minDateLocale.value?.toISODate() || undefined,
+      maxDate: maxDateLocale.value?.toISODate() || undefined,
+    })
+
     picker.on('before:show', () => {
       if (localValue.value) {
         if (Array.isArray(localValue.value)) {
@@ -146,17 +172,23 @@ onMounted(() => {
         picker.clearSelection()
       }
     })
+
     picker.on('selected', (date1: any, date2: any) => {
       if (props.singleMode) {
         if (!localValue.value || (!Array.isArray(localValue.value) && !compareJSDate(localValue.value, date1.dateInstance))) {
-          emit('input', date1.dateInstance)
+          if (isValidSingleDateOrRange(date1, date2)) {
+            emit('input', date1.dateInstance)
+          }
         }
       } else if (!localValue.value || (Array.isArray(localValue.value) && (
         !compareJSDate(localValue.value[0], date1.dateInstance) || !compareJSDate(localValue.value[1], date2.dateInstance)
       ))) {
-        emit('input', props.singleMode ? date1.dateInstance : [date1.dateInstance, date2.dateInstance])
+        if (isValidSingleDateOrRange(date1, date2)) {
+          emit('input', props.singleMode ? date1.dateInstance : [date1.dateInstance, date2.dateInstance])
+        }
       }
     })
+
     if (props.setInputFocus) {
       periodInput.focus()
       periodInput.click()
