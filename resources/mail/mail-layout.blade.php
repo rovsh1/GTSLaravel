@@ -144,7 +144,7 @@
   <div class="mail-container">
     <div class="mail-row">
       <div class="mail-header">
-        <img align="center" border="0" src="{{ site_url($path = 'images/mail/logo.png') }}" alt="image" title="image"
+        <img align="center" border="0" src="{{ site_url('images/mail/logo.png') }}" alt="image" title="image"
           style="outline: none;text-decoration: none;max-width: 200px;" width="200px" />
       </div>
       @yield('content')
@@ -159,11 +159,11 @@
           <p>
             <a href="mailto:{{ $manager->email }}" title="Почта" target="_blank"
               style="margin-right: 10px; color: transparent !important;">
-              <img src="{{ site_url($path = 'images/mail/mail.png') }}" alt="Почта" title="Почта" width="32"
+              <img src="{{ site_url('images/mail/mail.png') }}" alt="Почта" title="Почта" width="32"
                 style="outline: none;text-decoration: none;max-width: 32px !important;" />
             </a>
             <a href="tel:{{ $manager->phone }}" title="Телефон" target="_blank" style="color: transparent !important;">
-              <img src="{{ site_url($path = 'images/mail/phone.png') }}" alt="Телефон" title="Телефон" width="32"
+              <img src="{{ site_url('images/mail/phone.png') }}" alt="Телефон" title="Телефон" width="32"
                 style="outline: none;text-decoration: none;max-width: 32px !important" />
             </a>
           </p>
