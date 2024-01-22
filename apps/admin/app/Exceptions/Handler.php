@@ -33,7 +33,8 @@ class Handler extends ExceptionHandler
      */
     protected $dontReport = [
         ApplicationException::class,
-        NotFoundExceptionInterface::class
+        NotFoundExceptionInterface::class,
+        FormSubmitFailedException::class,
     ];
 
     /**
