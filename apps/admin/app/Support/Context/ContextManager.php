@@ -13,6 +13,7 @@ class ContextManager extends AbstractContext implements ContextInterface
 
     public function __construct()
     {
+        $this->generateRequestId();
         $this->setSource(SourceEnum::ADMIN);
     }
 }

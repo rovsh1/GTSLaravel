@@ -3,10 +3,10 @@
 namespace Module\Booking\Shared\Domain\Booking\Listener;
 
 use Module\Booking\Shared\Domain\Booking\Service\IntegrationEventMapper\MapperFactory;
-use Sdk\Module\Contracts\ContextInterface;
 use Sdk\Module\Contracts\Event\DomainEventInterface;
 use Sdk\Module\Contracts\Event\DomainEventListenerInterface;
 use Sdk\Module\Contracts\ModuleInterface;
+use Sdk\Shared\Contracts\Context\ContextInterface;
 use Sdk\Shared\Contracts\Event\IntegrationEventPublisherInterface;
 
 class PublishIntegrationEventListener implements DomainEventListenerInterface

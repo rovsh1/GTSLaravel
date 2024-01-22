@@ -2,12 +2,12 @@
 
 namespace Sdk\Module\Event;
 
-use Sdk\Module\Contracts\ContextInterface;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\Event\DomainEventInterface;
 use Sdk\Module\Contracts\Event\HasIntegrationEventInterface;
 use Sdk\Module\Contracts\ModuleInterface;
 use Sdk\Module\Contracts\Support\ContainerInterface;
+use Sdk\Shared\Contracts\Context\ContextInterface;
 use Sdk\Shared\Contracts\Event\IntegrationEventPublisherInterface;
 
 class DomainEventDispatcher implements DomainEventDispatcherInterface
