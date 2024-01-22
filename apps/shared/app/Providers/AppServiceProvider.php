@@ -3,6 +3,7 @@
 namespace App\Shared\Providers;
 
 use App\Shared\Components\Locale\Languages;
+use App\Shared\Logging\LogServiceProvider;
 use Illuminate\Support\ServiceProvider;
 use Sdk\Module\Database\Eloquent\MacrosServiceProvider;
 

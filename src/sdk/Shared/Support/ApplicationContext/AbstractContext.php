@@ -36,9 +36,7 @@ abstract class AbstractContext
 
     public function toArray(): array
     {
-        return array_merge($this->data, [
-            'timezone' => date_default_timezone_get()
-        ]);
+        return $this->data;
     }
 
     protected function generateRequestId(): void

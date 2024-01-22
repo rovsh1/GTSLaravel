@@ -21,6 +21,7 @@ class ModuleContext extends AbstractContext implements ContextInterface
     {
         static $fields = [
             'requestId',
+            'source',
         ];
         foreach ($fields as $key) {
             if (isset($data[$key])) {
