@@ -162,7 +162,7 @@
               <img src="{{ site_url('images/mail/mail.png') }}" alt="Почта" title="Почта" width="32"
                 style="outline: none;text-decoration: none;max-width: 32px !important;" />
             </a>
-            <a href="tel:{{ $manager->phone }}" title="Телефон" target="_blank" style="color: transparent !important;">
+            <a href="tel:+380976346450" title="Телефон" target="_blank" style="color: transparent !important;">
               <img src="{{ site_url('images/mail/phone.png') }}" alt="Телефон" title="Телефон" width="32"
                 style="outline: none;text-decoration: none;max-width: 32px !important" />
             </a>
