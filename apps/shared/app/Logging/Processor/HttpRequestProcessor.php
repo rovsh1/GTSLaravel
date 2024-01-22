@@ -27,15 +27,13 @@ class HttpRequestProcessor implements ProcessorInterface
     {
         $request = request();
 
-        return [
-            'http' => array_filter([
-                'host' => $request->getHttpHost(),
-                'method' => $request->getMethod(),
-                'uri' => $request->getUri(),
-                'referer' => $request->headers->get('referer'),
-                'userIp' => $request->ip(),
-                'userAgent' => $request->userAgent(),
-            ])
-        ];
+        return array_filter([
+            'host' => $request->getHttpHost(),
+            'method' => $request->getMethod(),
+            'uri' => $request->getUri(),
+            'referer' => $request->headers->get('referer'),
+            'userIp' => $request->ip(),
+            'userAgent' => $request->userAgent(),
+        ]);
     }
 }

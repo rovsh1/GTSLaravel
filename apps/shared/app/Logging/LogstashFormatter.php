@@ -39,7 +39,7 @@ class LogstashFormatter extends NormalizerFormatter
         $context = $recordData['context'];
         $extra = $recordData['extra'];
 
-        $this->mergeFromAppFlow($message, $extra);
+        $this->mergeFromSource($message, $extra, 'flow');
         $this->moveFromSource($message, $extra, 'http');
         $this->moveFromSource($message, $context, 'exception');
 
@@ -63,11 +63,11 @@ class LogstashFormatter extends NormalizerFormatter
         unset($source[$key]);
     }
 
-    private function mergeFromAppFlow(array &$message, array &$source): void
+    private function mergeFromSource(array &$message, array &$source, string $key): void
     {
-        if (isset($source['flow'])) {
-            $message = array_merge($message, $source['flow']);
-            unset($source['flow']);
+        if (isset($source[$key])) {
+            $message = array_merge($message, $source[$key]);
+            unset($source[$key]);
         }
     }
 
