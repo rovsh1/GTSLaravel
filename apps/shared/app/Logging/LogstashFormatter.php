@@ -41,6 +41,7 @@ class LogstashFormatter extends NormalizerFormatter
 
         $this->mergeFromAppFlow($message, $extra);
         $this->moveFromSource($message, $extra, 'http');
+        $this->moveFromSource($message, $context, 'exception');
 
         if (\count($extra) > 0) {
             $message[$this->extraKey] = $extra;
