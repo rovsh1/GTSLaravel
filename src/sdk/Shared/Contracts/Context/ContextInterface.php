@@ -2,6 +2,8 @@
 
 namespace Sdk\Shared\Contracts\Context;
 
+use Sdk\Shared\Enum\SourceEnum;
+
 interface ContextInterface
 {
     public function requestId(): string;
@@ -9,6 +11,8 @@ interface ContextInterface
     public function apiKey(): ?string;
 
     public function setApiKey(string $apiKey): void;
+
+    public function source(): ?SourceEnum;
 
 //    public function userId(): ?int;
 
