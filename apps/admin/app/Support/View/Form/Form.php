@@ -3,7 +3,6 @@
 namespace App\Admin\Support\View\Form;
 
 use App\Admin\Exceptions\FormSubmitFailedException;
-use App\Admin\Support\Facades\AppContext;
 use Gsdk\Form\ElementInterface;
 use Gsdk\Form\FormBuilder as Base;
 use Illuminate\Database\Eloquent\Model;
@@ -59,17 +58,6 @@ class Form extends Base
         }
 
         return parent::data($data);
-    }
-
-    public function submit(): bool
-    {
-        if (!parent::submit()) {
-            return false;
-        }
-
-        AppContext::setSubmittedForm($this);
-
-        return true;
     }
 
     /**

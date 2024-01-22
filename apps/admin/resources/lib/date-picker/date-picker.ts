@@ -9,6 +9,7 @@ import './style.scss'
 
 import {
   datePickerRootAttributeName,
+  defaultDisabledDate,
   destroyOldDatePicker,
   prefillDatePickerFromInput,
   registerDatePickerInstance,
@@ -41,26 +42,10 @@ export const useDatePicker = (element: HTMLInputElement, options?: Options) => {
       DateTime.now().startOf('year').toJSDate(),
       DateTime.now().endOf('year').toJSDate(),
     ],
-    // 'Последние 7 дней': [
-    //   DateTime.now().minus({ days: 6 }).toJSDate(),
-    //   DateTime.now().toJSDate(),
-    // ],
-    // 'Последние 14 дней': [
-    //   DateTime.now().minus({ days: 13 }).toJSDate(),
-    //   DateTime.now().toJSDate(),
-    // ],
-    // 'Последние 30 дней': [
-    //   DateTime.now().minus({ days: 29 }).toJSDate(),
-    //   DateTime.now().toJSDate(),
-    // ],
     'Прошлый месяц': [
       DateTime.now().minus({ months: 1 }).startOf('month').toJSDate(),
       DateTime.now().minus({ months: 1 }).endOf('month').toJSDate(),
     ],
-    // 'Прошлая неделя': [
-    //   DateTime.now().minus({ weeks: 1 }).startOf('week').toJSDate(),
-    //   DateTime.now().minus({ weeks: 1 }).endOf('week').toJSDate(),
-    // ],
     'Прошлый год': [
       DateTime.now().minus({ years: 1 }).startOf('year').toJSDate(),
       DateTime.now().minus({ years: 1 }).endOf('year').toJSDate(),
@@ -150,7 +135,7 @@ export const useDatePicker = (element: HTMLInputElement, options?: Options) => {
         isValidSelectedPeriod = false
       }
     })
-    if (!isValidSelectedPeriod) {
+    if (!isValidSelectedPeriod || (minDate === defaultDisabledDate && maxDate === defaultDisabledDate)) {
       picker.clearSelection()
     }
   })
@@ -166,16 +151,9 @@ export const useDatePicker = (element: HTMLInputElement, options?: Options) => {
   return picker
 }
 
-export const useSingleDatePicker = (element: HTMLInputElement, options?: Options) =>
-  useDatePicker(element, {
-    numberOfMonths: 1,
-    numberOfColumns: 1,
-    ...options,
-  })
-
 export const useDateRangePicker = (element: HTMLInputElement, options?: Options) =>
   useDatePicker(element, {
-    numberOfMonths: 2,
-    numberOfColumns: 2,
+    numberOfMonths: options?.singleMode ? 1 : 2,
+    numberOfColumns: options?.singleMode ? 1 : 2,
     ...options,
   })

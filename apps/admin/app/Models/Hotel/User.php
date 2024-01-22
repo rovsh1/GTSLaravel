@@ -51,6 +51,16 @@ class User extends Model
         });
     }
 
+    public function whereCityId(Builder $builder, int $cityId): void
+    {
+        $builder->where('hotels.city_id', $cityId);
+    }
+
+    public function whereCountryId(Builder $builder, int $countryId): void
+    {
+        $builder->where('r_cities.country_id', $countryId);
+    }
+
     public function setAttribute($key, $value)
     {
         if ($key === 'password') {

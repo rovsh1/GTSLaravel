@@ -156,7 +156,7 @@ onMounted(() => {
         </template>
 
         <GuestsTable
-          :guest-ids="room.guestIds"
+          :guest-ids="room.guests.map(guest => guest.id)"
           :order-guests="orderGuests"
           :countries="countries || []"
         />

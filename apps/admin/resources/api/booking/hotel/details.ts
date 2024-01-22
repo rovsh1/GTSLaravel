@@ -1,5 +1,6 @@
 import { DateResponse } from '~api'
 import { DailyMarkup, MarkupCondition, NoCheckInMarkup, Percent, Time } from '~api/hotel/markup-settings'
+import { Guest } from '~api/order/guest'
 
 export interface HotelBookingGuest {
   id: number
@@ -45,7 +46,7 @@ export interface RoomBookingPrice {
 export interface HotelRoomBooking {
   id: number
   roomInfo: RoomInfo
-  guestIds: number[]
+  guests: Guest[]
   details: HotelRoomBookingDetails
   price: RoomBookingPrice
 }

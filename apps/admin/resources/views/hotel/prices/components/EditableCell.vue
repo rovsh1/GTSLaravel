@@ -82,7 +82,7 @@ onMounted(() => {
       :value="value"
       class="form-control"
       @keydown.esc="hideEditable"
-      @keydown.enter="hideEditable"
+      @keydown.enter.stop="hideEditable"
       @click.stop
       @input="transformInputValue"
     />

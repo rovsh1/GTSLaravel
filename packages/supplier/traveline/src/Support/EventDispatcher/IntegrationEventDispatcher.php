@@ -5,11 +5,16 @@ declare(strict_types=1);
 namespace Pkg\Supplier\Traveline\Support\EventDispatcher;
 
 use Pkg\Supplier\Traveline\Contracts\IntegrationEventDispatcherInterface;
+use Sdk\Module\Contracts\Support\ContainerInterface;
 use Sdk\Shared\Contracts\Event\IntegrationEventInterface;
 
 class IntegrationEventDispatcher implements IntegrationEventDispatcherInterface
 {
     protected array $listeners = [];
+
+    public function __construct(
+        private readonly ContainerInterface $container,
+    ) {}
 
     public function listen(string $eventClass, string $listenerClass): void
     {
@@ -31,7 +36,7 @@ class IntegrationEventDispatcher implements IntegrationEventDispatcherInterface
     private function dispatchListeners(IntegrationEventInterface $event, array $listeners): void
     {
         foreach ($listeners as $listenerClass) {
-            $listener = app()->make($listenerClass);
+            $listener = $this->container->make($listenerClass);
 
             $listener->handle($event);
         }

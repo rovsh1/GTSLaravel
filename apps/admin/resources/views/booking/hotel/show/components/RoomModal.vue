@@ -80,7 +80,8 @@ const { data: roomMarkupSettings } = useHotelRoomMarkupSettings(roomRatesPayload
 const isFetching = ref<boolean>(false)
 const modalForm = ref<HTMLFormElement>()
 const onModalSubmit = async () => {
-  if (!validateForm<RoomFormData>(modalForm as Ref<HTMLFormElement>, formDataLocale)) {
+  if (!validateForm<RoomFormData>(modalForm as Ref<HTMLFormElement>, formDataLocale)
+    || !validateRoomForm.value || isFetching.value) {
     return
   }
   isFetching.value = true
@@ -212,10 +213,11 @@ watch(() => props.opened, async (opened) => {
 </script>
 
 <template>
-  <BaseDialog :opened="opened as boolean" :loading="isFetching" @close="closeModal" @keydown.enter="onModalSubmit">
+  <BaseDialog :opened="opened as boolean" :loading="isFetching" @keydown.enter="onModalSubmit" @close="closeModal">
     <form ref="modalForm" class="row g-3">
       <div class="col-md-12">
         <SelectComponent
+          v-if="opened"
           :options="preparedRooms"
           required
           label="Номер"
@@ -230,6 +232,7 @@ watch(() => props.opened, async (opened) => {
       </div>
       <div class="col-md-12">
         <SelectComponent
+          v-if="opened"
           :options="preparedRoomRates"
           required
           label="Тариф"
@@ -244,6 +247,7 @@ watch(() => props.opened, async (opened) => {
       </div>
       <div class="col-md-6">
         <SelectComponent
+          v-if="opened"
           :options="residentTypeOptions"
           required
           label="Тип стоимости"
@@ -256,6 +260,7 @@ watch(() => props.opened, async (opened) => {
       </div>
       <div class="col-md-6">
         <SelectComponent
+          v-if="opened"
           :options="discounts"
           label="Скидка"
           :value="formDataLocale.discount"
@@ -269,6 +274,7 @@ watch(() => props.opened, async (opened) => {
       </div>
       <div class="col-md-6">
         <SelectComponent
+          v-if="opened"
           :options="earlyCheckIn"
           label="Ранний заезд"
           :value="earlyCheckInValue"
@@ -280,6 +286,7 @@ watch(() => props.opened, async (opened) => {
       </div>
       <div class="col-md-6">
         <SelectComponent
+          v-if="opened"
           :options="lateCheckOut"
           label="Поздний выезд"
           :value="lateCheckOutValue"

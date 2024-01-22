@@ -28,6 +28,7 @@ class Authorize
         if ($username . $password !== $exceptedAuthHash) {
             throw new AccessDeniedHttpException();
         }
+
         return $next($request);
     }
 

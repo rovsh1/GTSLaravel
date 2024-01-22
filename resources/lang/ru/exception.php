@@ -14,7 +14,7 @@ return [
     'ORDER_INVOICE_CANCELLATION_FORBIDDEN' => 'Невозможно отменить инвойс для заказа в текущем статусе.',
     'ORDER_INVOICE_CREATING_FORBIDDEN' => 'Невозможно создать инвойс для заказа в текущем статусе.',
     'HOTEL_ROOM_NOT_FOUND' => 'Room [:roomId] not found',
-    'HOTEL_ROOM_PRICE_NOT_FOUND' => 'В отеле не заполнены цены на период.',
+    'HOTEL_ROOM_PRICE_NOT_FOUND' => 'В отеле не заполнены цены на период или нет активного договора.',
     '' => '',
     '' => '',
     '' => '',

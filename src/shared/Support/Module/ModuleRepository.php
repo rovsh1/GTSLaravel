@@ -4,12 +4,18 @@ namespace Shared\Support\Module;
 
 use Exception;
 use Sdk\Module\Contracts\ModuleInterface;
+use SplStack;
 
 class ModuleRepository implements \Iterator
 {
     use ModulesCollectionTrait;
 
-    public function __construct() {}
+    public readonly SplStack $callStack;
+
+    public function __construct()
+    {
+        $this->callStack = new SplStack();
+    }
 
     public function register(Module $module): void
     {
@@ -37,5 +43,16 @@ class ModuleRepository implements \Iterator
         }
 
         $module->boot();
+    }
+
+    public function findByNamespace(string $abstract): ?Module
+    {
+        foreach ($this->modules as $module) {
+            if ($module->hasSubclass($abstract)) {
+                return $module;
+            }
+        }
+
+        return null;
     }
 }

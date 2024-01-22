@@ -15,7 +15,7 @@ class GuestAddedRegistrar extends AbstractRegistrar
 
         $identifier = new ChangesIdentifier(
             $event->bookingId,
-            "accommodation[$event->accommodationId][guests]"
+            "accommodation[$event->accommodationId].guests"
         );
         $currentChanges = $this->changesStorage->find($identifier);
 

@@ -194,8 +194,9 @@ class BookingController extends Controller
                 'currencies' => Currency::get(),
                 'manager' => $this->administratorRepository->get($id),
                 'creator' => Administrator::find($booking->creatorId),
-                'editUrl' => $this->isAllowed('update') ? $this->prototype->route('edit', $id) : null,
+                'editUrl' => null,
                 'deleteUrl' => $this->isAllowed('delete') ? $this->prototype->route('destroy', $id) : null,
+                'timelineUrl' => route('service-booking.timeline', $id),
             ]);
     }
 
@@ -420,12 +421,13 @@ class BookingController extends Controller
         return [
             'manager_id' => $manager->id,
             'order_id' => $booking->orderId,
-            'currency' => $order->currency->value,
+            'currency' => $order->clientPrice->currency->value,
             'supplier_id' => $booking->details->serviceInfo->supplierId,
             'service_id' => $booking->details->serviceInfo->id,
             'service_type' => $booking->serviceType->id,
             'client_id' => $order->clientId,
             'legal_id' => $order->legalId,
+            'date' => $booking->details->date ?? $booking->details->arrivalDate ?? $booking->details->departureDate ?? null,
             'note' => $booking->note,
         ];
     }

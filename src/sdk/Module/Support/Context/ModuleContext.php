@@ -2,15 +2,12 @@
 
 namespace Sdk\Module\Support\Context;
 
-use Sdk\Module\Contracts\ContextInterface;
 use Sdk\Module\Contracts\ModuleInterface;
+use Sdk\Shared\Contracts\Context\ContextInterface;
 use Sdk\Shared\Support\ApplicationContext\AbstractContext;
-use Sdk\Shared\Support\ApplicationContext\Concerns\HttpRequestContextTrait;
 
 class ModuleContext extends AbstractContext implements ContextInterface
 {
-    use HttpRequestContextTrait;
-
     public function __construct(
         private readonly ModuleInterface $module
     ) {}
@@ -24,13 +21,6 @@ class ModuleContext extends AbstractContext implements ContextInterface
     {
         static $fields = [
             'requestId',
-            'apiKey',
-            'source',
-            'http.host',
-            'http.url',
-            'http.method',
-            'http.userIp',
-            'http.userAgent'
         ];
         foreach ($fields as $key) {
             if (isset($data[$key])) {

@@ -6,6 +6,7 @@ namespace Module\Booking\Shared\Domain\Booking\Repository;
 
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Sdk\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\BookingIdCollection;
 use Sdk\Booking\ValueObject\GuestId;
 use Sdk\Booking\ValueObject\OrderId;
 
@@ -33,4 +34,10 @@ interface BookingRepositoryInterface
     public function find(BookingId $id): ?Booking;
 
     public function findOrFail(BookingId $id): Booking;
+
+    /**
+     * @param BookingIdCollection $ids
+     * @return Booking[]
+     */
+    public function getBookings(BookingIdCollection $ids): array;
 }

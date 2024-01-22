@@ -33,6 +33,7 @@ use Gsdk\Format\View\ParamsTable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Sdk\Shared\Enum\Hotel\RatingEnum;
 use Sdk\Shared\Enum\Hotel\StatusEnum;
 use Sdk\Shared\Enum\Hotel\VisibilityEnum;
@@ -137,7 +138,8 @@ class HotelController extends AbstractPrototypeController
             ->text('address', ['label' => 'Адрес', 'required' => true])
             ->text('address_en', ['label' => 'Адрес (EN)', 'required' => true])
             ->coordinates('coordinates', ['label' => 'Координаты', 'required' => true, 'value' => $coordinates])
-            ->text('zipcode', ['label' => 'Индекс']);
+            ->text('zipcode', ['label' => 'Индекс'])
+            ->checkbox('is_traveline_integration_enabled', ['label' => 'Интеграция с Traveline']);
     }
 
     protected function gridFactory(): GridContract
@@ -145,12 +147,7 @@ class HotelController extends AbstractPrototypeController
         return Grid::enableQuicksearch()
             ->setSearchForm($this->searchForm())
             ->paginator(self::GRID_LIMIT)
-            ->text('is_traveline_integration_enabled', [
-                'text' => 'TL',
-                'renderer' => function () {
-                    return '<span class="badge">TL</span>';//@todo доделать
-                }
-            ])
+            ->travelineBadge('is_traveline_integration_enabled', ['text' => 'TL'])
             ->text('name', [
                 'text' => 'Наименование',
                 'route' => $this->prototype->routeName('show'),
@@ -247,7 +244,8 @@ class HotelController extends AbstractPrototypeController
             ->enum('status', ['label' => __('label.status'), 'emptyItem' => '', 'enum' => StatusEnum::class])
             ->enum('visibility', ['label' => __('label.visibility'), 'emptyItem' => '', 'enum' => VisibilityEnum::class]
             )
-            ->enum('rating', ['label' => __('label.rating'), 'emptyItem' => '', 'enum' => RatingEnum::class]);
+            ->rating('rating', ['label' => __('label.rating'), 'emptyItem' => ''])
+            ->checkbox('is_traveline_integration_enabled', ['label' => 'Traveline']);
     }
 
     private function hotelParams($model): ParamsTable
@@ -263,6 +261,7 @@ class HotelController extends AbstractPrototypeController
             ->text('address', 'Адрес')
             ->text('zipcode', 'Индекс')
             ->date('created_at', 'Создан', ['format' => 'datetime'])
+            ->custom('is_traveline_integration_enabled', 'Traveline', fn() => '<span class="traveline-badge">TL</span>')
             ->data($model);
     }
 

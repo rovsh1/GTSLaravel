@@ -8,6 +8,7 @@ use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\DbContext\BookingDbContextInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Sdk\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\BookingIdCollection;
 use Sdk\Booking\ValueObject\GuestId;
 use Sdk\Booking\ValueObject\OrderId;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
@@ -68,5 +69,15 @@ class BookingRepository implements BookingRepositoryInterface
     public function findOrFail(BookingId $id): Booking
     {
         return $this->find($id) ?? throw new EntityNotFoundException("Booking[$id] not found");
+    }
+
+    /**
+     * @param BookingIdCollection $ids
+     * @return Booking[]
+     */
+    public function getBookings(BookingIdCollection $ids): array
+    {
+        //@todo use instances
+        return $this->bookingDbContext->getBookings($ids);
     }
 }

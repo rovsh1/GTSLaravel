@@ -31,7 +31,7 @@ const localValue = computed<ServiceCancelConditions | null>({
 const cancelConditionsForm = ref()
 
 const handleSubmit = () => {
-  if (!cancelConditionsForm.value.reportValidity()) {
+  if (!cancelConditionsForm.value.reportValidity() || isLoading.value) {
     return
   }
   emit('submit')

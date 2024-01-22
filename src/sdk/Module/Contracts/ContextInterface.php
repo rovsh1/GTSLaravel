@@ -3,9 +3,8 @@
 namespace Sdk\Module\Contracts;
 
 use Sdk\Shared\Contracts\Context\ContextInterface as CommonContextInterface;
-use Sdk\Shared\Contracts\Context\HttpContextInterface;
 
-interface ContextInterface extends CommonContextInterface, HttpContextInterface
+interface ContextInterface extends CommonContextInterface
 {
     public function module(): ModuleInterface;
 

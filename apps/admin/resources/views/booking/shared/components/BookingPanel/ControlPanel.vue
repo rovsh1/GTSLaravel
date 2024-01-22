@@ -6,6 +6,7 @@ import BookingRequests from '~resources/views/booking/shared/components/BookingP
 import BookingStatus from '~resources/views/booking/shared/components/BookingPanel/components/BookingStatus.vue'
 import BookingStatusHistory from '~resources/views/booking/shared/components/BookingPanel/components/BookingStatusHistory.vue'
 import BookingTotalAmount from '~resources/views/booking/shared/components/BookingPanel/components/BookingTotalAmount.vue'
+import BookingTravelineFlag from '~resources/views/booking/shared/components/BookingPanel/components/BookingTravelineFlag.vue'
 import ControlPanelSection from '~resources/views/booking/shared/components/ControlPanelSection.vue'
 import { useBookingStore } from '~resources/views/booking/shared/store/booking'
 
@@ -19,6 +20,7 @@ const { recalculatePrice } = bookingStore
 
 <template>
   <div class="d-flex flex-wrap gap-2 align-items-center rounded shadow-lg p-4">
+    <BookingTravelineFlag />
     <BookingStatus />
     <BookingStatusHistory />
     <BookingTotalAmount />

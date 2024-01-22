@@ -46,4 +46,13 @@ class BookingDtoFactory
             source: $booking->context()->source(),
         );
     }
+
+    /**
+     * @param Booking[] $bookings
+     * @return BookingDto[]
+     */
+    public function collection(array $bookings): array
+    {
+        return array_map(fn(Booking $booking) => $this->createFromEntity($booking), $bookings);
+    }
 }

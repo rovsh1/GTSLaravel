@@ -20,5 +20,6 @@ class HotelBookingDto implements ServiceDetailsDtoInterface
         public readonly array $roomBookings,
         public readonly ?ExternalNumberDto $externalNumber,
         public readonly QuotaProcessingMethodEnum $quotaProcessingMethod,
+        public readonly bool $isTravelineIntegrationEnabled = false,
     ) {}
 }

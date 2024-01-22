@@ -2,8 +2,6 @@
 
 namespace App\Hotel\Exceptions;
 
-use App\Hotel\Support\Context\ContextManager;
-use App\Hotel\Support\Facades\AppContext;
 use App\Hotel\Support\Facades\Layout;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
@@ -34,7 +32,8 @@ class Handler extends ExceptionHandler
      */
     protected $dontReport = [
         ApplicationException::class,
-        NotFoundExceptionInterface::class
+        NotFoundExceptionInterface::class,
+        FormSubmitFailedException::class,
     ];
 
     /**
@@ -107,11 +106,7 @@ class Handler extends ExceptionHandler
 
     protected function context(): array
     {
-        if (app()->has(ContextManager::class)) {
-            return AppContext::toArray();
-        } else {
-            return [];
-        }
+        return [];
     }
 
     protected function getExceptionHttpCode(Throwable $e): int

@@ -35,7 +35,7 @@ const grossPrices = ref<Money[]>([])
 
 const modalPricesForm = ref()
 const submit = () => {
-  if (!modalPricesForm.value.reportValidity()) {
+  if (!modalPricesForm.value.reportValidity() || isLoading.value) {
     return
   }
   emit('submit', netPrice.value, grossPrices.value)

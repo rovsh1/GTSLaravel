@@ -18,12 +18,14 @@ const props = withDefaults(defineProps<{
   loading?: MaybeRef<boolean>
   clickOutsideIgnore?: (MaybeElementRef | string)[]
   watchOtsideClick?: boolean
+  keydownEnterCallback?: () => void
 }>(), {
   disabled: false,
   loading: false,
   clickOutsideIgnore: undefined,
   autoWidth: false,
   watchOtsideClick: false,
+  keydownEnterCallback: () => {},
 })
 
 const close = (isOutsideClick?: boolean) => {
@@ -33,6 +35,7 @@ const close = (isOutsideClick?: boolean) => {
 
 const keydown = (event: KeyboardEvent) => {
   if (event.key === 'Escape') close()
+  if (event.key === 'Enter') props.keydownEnterCallback()
 }
 
 const clickOutsideOptions = computed<OnClickOutsideOptions>(() => ({ ignore: props.clickOutsideIgnore }))

@@ -67,7 +67,7 @@ const closeModal = () => {
 
 const cancelConditionForm = ref<HTMLFormElement>()
 const onModalSubmit = async () => {
-  if (!cancelConditionForm.value?.reportValidity()) {
+  if (!cancelConditionForm.value?.reportValidity() || isLoading.value) {
     return
   }
   if (!period.value || !markupPercent.value || !markupType.value) {
@@ -100,6 +100,7 @@ const onModalSubmit = async () => {
     <template #title>{{ title }}</template>
     <form ref="cancelConditionForm" class="row g-3">
       <DateRangePicker
+        v-if="opened"
         id="period"
         label="Период"
         required
@@ -121,6 +122,7 @@ const onModalSubmit = async () => {
 
       <div class="col-md-12">
         <SelectComponent
+          v-if="opened"
           :options="cancelPeriodOptions"
           label="Процент от стоимости"
           :value="markupType"

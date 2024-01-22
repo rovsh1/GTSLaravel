@@ -18,6 +18,7 @@ use Gsdk\Grid\Paginator;
  * @method static date(string $name, array $options = [])
  * @method static url(string $name, array $options = [])
  * @method static bookingStatus(string $name, array $options = [])
+ * @method static travelineBadge(string $name, array $options = [])
  */
 class Grid extends Base
 {

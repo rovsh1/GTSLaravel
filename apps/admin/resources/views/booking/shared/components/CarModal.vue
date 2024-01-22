@@ -69,7 +69,7 @@ const validateCreateCarForm = computed(() => (isDataValid(null, formDataLocale.v
 const submitDisable = computed(() => !validateCreateCarForm.value)
 
 const onModalSubmit = async () => {
-  if (!validateCreateCarForm.value) {
+  if (!validateCreateCarForm.value || submitDisable.value || isSubmiting.value) {
     return
   }
   const payload = {
@@ -121,13 +121,14 @@ watch(() => props.opened, () => {
   <BaseDialog
     :opened="opened as boolean"
     :loading="isFetching"
-    @close="closeModal"
     @keydown.enter="onModalSubmit"
+    @close="closeModal"
   >
     <template #title>{{ titleText }}</template>
     <form class="row g-3">
       <div class="col-md-12">
         <SelectComponent
+          v-if="opened"
           :options="carsOptions"
           label="Модель автомобиля"
           required
@@ -156,6 +157,7 @@ watch(() => props.opened, () => {
       </div>
       <div class="col-md-12">
         <SelectComponent
+          v-if="opened"
           :options="passengersOptions"
           label="Количествово пассажиров"
           :disabled="!formDataLocale.carId"
@@ -169,6 +171,7 @@ watch(() => props.opened, () => {
       </div>
       <div class="col-md-12">
         <SelectComponent
+          v-if="opened"
           :options="baggageOptions"
           label="Количествово багажа"
           :disabled="!formDataLocale.carId"

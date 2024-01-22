@@ -265,11 +265,16 @@ const handlerUpdateSeasonDaysData = (status :boolean) => {
       :refresh-days-prices="isFetching"
       @update-season-days-data="handlerUpdateSeasonDaysData"
     />
-    <BaseDialog :opened="isOpened as boolean" @close="toggleModal(false)">
+    <BaseDialog :keydown-enter-callback="onSubmitChangeData" :opened="isOpened as boolean" @close="toggleModal(false)">
       <template #title>Подтверждение</template>
       Вы уверены что хотите перезаписать цену на весь сезон?
       <template #actions-end>
-        <button class="btn btn-primary" type="button" @click="onSubmitChangeData">
+        <button
+          class="btn btn-primary"
+          type="button"
+          @keydown.enter.stop.prevent="onSubmitChangeData"
+          @click.stop="onSubmitChangeData"
+        >
           ОК
         </button>
         <button class="btn btn-cancel" type="button" @click="toggleModal(false)">Отмена</button>

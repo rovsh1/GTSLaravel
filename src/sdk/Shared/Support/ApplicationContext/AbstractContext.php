@@ -24,7 +24,7 @@ abstract class AbstractContext
         return $this->get('apiKey');
     }
 
-    public function setSource(SourceEnum $channel): void
+    protected function setSource(SourceEnum $channel): void
     {
         $this->set('source', $channel->value);
     }

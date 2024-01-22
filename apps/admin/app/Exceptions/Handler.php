@@ -2,8 +2,6 @@
 
 namespace App\Admin\Exceptions;
 
-use App\Admin\Support\Context\ContextManager;
-use App\Admin\Support\Facades\AppContext;
 use App\Admin\Support\Facades\Layout;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -35,7 +33,8 @@ class Handler extends ExceptionHandler
      */
     protected $dontReport = [
         ApplicationException::class,
-        NotFoundExceptionInterface::class
+        NotFoundExceptionInterface::class,
+        FormSubmitFailedException::class,
     ];
 
     /**
@@ -108,11 +107,7 @@ class Handler extends ExceptionHandler
 
     protected function context(): array
     {
-        if (app()->has(ContextManager::class)) {
-            return AppContext::toArray();
-        } else {
-            return [];
-        }
+        return [];
     }
 
     protected function getExceptionHttpCode(Throwable $e): int

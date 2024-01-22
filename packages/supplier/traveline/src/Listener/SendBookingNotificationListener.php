@@ -22,7 +22,7 @@ class SendBookingNotificationListener
             'SendBookingNotificationListener:' . $event->bookingId,
             1,
             function () use ($event) {
-                \Log::debug('[Traveline] booking event', ['event' => $event]);
+                \Log::debug('[Traveline] SendBookingNotificationListener', ['event' => $event]);
                 $this->travelineAdapter->sendReservationNotification();
             },
             2,

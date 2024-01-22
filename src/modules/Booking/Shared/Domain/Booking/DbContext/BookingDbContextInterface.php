@@ -6,6 +6,7 @@ namespace Module\Booking\Shared\Domain\Booking\DbContext;
 
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Sdk\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\BookingIdCollection;
 use Sdk\Booking\ValueObject\BookingPrices;
 use Sdk\Booking\ValueObject\CancelConditions;
 use Sdk\Booking\ValueObject\CreatorId;
@@ -35,6 +36,12 @@ interface BookingDbContextInterface
      * @return Booking[]
      */
     public function getByGuestId(GuestId $guestId): array;
+
+    /**
+     * @param BookingIdCollection $ids
+     * @return Booking[]
+     */
+    public function getBookings(BookingIdCollection $ids): array;
 
     public function find(BookingId $id): ?Booking;
 

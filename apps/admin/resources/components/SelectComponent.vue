@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, nextTick, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
 import $ from 'jquery'
 import { nanoid } from 'nanoid'
@@ -121,6 +121,10 @@ onMounted(async () => {
   await nextTick(async () => {
     await initSelectElement()
   })
+})
+
+onBeforeUnmount(() => {
+  componentInstance.value?.select2Instance?.select2('destroy')
 })
 
 watch(

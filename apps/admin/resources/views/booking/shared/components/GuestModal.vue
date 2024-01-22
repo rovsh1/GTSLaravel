@@ -102,7 +102,7 @@ const isFormValid = (): boolean => {
 const submitDisable = computed(() => !isFormValid())
 
 const onModalSubmit = async () => {
-  if (!isFormValid()) {
+  if (!isFormValid() || submitDisable.value || isSubmiting.value) {
     return
   }
   if (formDataLocale.value.id !== undefined) {
@@ -184,8 +184,8 @@ watch(() => props.opened, () => {
   <BaseDialog
     :opened="opened as boolean"
     :loading="isFetching"
-    @close="closeModal"
     @keydown.enter="onModalSubmit"
+    @close="closeModal"
   >
     <template #title>{{ titleText }}</template>
     <form class="row g-3">
@@ -194,6 +194,7 @@ watch(() => props.opened, () => {
         class="col-md-12 guest-select-wrapper"
       >
         <SelectComponent
+          v-if="opened"
           :options="guestsOptions"
           :label="inputSelectText"
           :value="formDataLocale.selectedGuestFromOrder"
@@ -206,6 +207,7 @@ watch(() => props.opened, () => {
       </div>
       <div class="col-md-12">
         <SelectComponent
+          v-if="opened"
           :options="countryOptions"
           label="Гражданство"
           :disabled="!!formDataLocale.selectedGuestFromOrder"
@@ -233,6 +235,7 @@ watch(() => props.opened, () => {
       </div>
       <div class="col-md-12">
         <SelectComponent
+          v-if="opened"
           :options="genderOptions"
           label="Пол"
           :disabled="!!formDataLocale.selectedGuestFromOrder"
@@ -246,6 +249,7 @@ watch(() => props.opened, () => {
       </div>
       <div class="col-md-12">
         <SelectComponent
+          v-if="opened"
           :options="ageTypeOptions"
           label="Тип"
           :disabled="!!formDataLocale.selectedGuestFromOrder"

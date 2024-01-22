@@ -47,7 +47,7 @@ export const useBookingStore = defineStore('booking', () => {
   const bookingManagerId = ref(manager.id)
 
   const existRooms = computed<boolean>(() => Boolean(booking.value?.details?.roomBookings))
-  const isEmptyRoomsGuests = computed<boolean>(() => Boolean(booking.value?.details?.roomBookings.find((room: HotelRoomBooking) => room.guestIds.length === 0)))
+  const isEmptyRoomsGuests = computed<boolean>(() => Boolean(booking.value?.details?.roomBookings.find((room: HotelRoomBooking) => room.guests.length === 0)))
   const isEmptyRooms = computed<boolean>(() => booking.value?.details?.roomBookings.length === 0)
 
   const existCars = computed<boolean>(() => Boolean(booking.value?.details?.carBids))

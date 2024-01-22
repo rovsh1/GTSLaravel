@@ -11,7 +11,9 @@ use Module\Booking\Invoicing\Domain\Service\Dto\CompanyRequisitesDto;
 use Module\Booking\Invoicing\Domain\Service\Dto\InvoiceDto;
 use Module\Booking\Invoicing\Domain\Service\Dto\ManagerDto;
 use Module\Booking\Invoicing\Domain\Service\Dto\OrderDto;
+use Module\Booking\Invoicing\Domain\Service\Dto\OrderPeriodDto;
 use Module\Booking\Invoicing\Domain\Service\Dto\ServiceInfoDto;
+use Module\Booking\Invoicing\Domain\Service\Factory\GuestDataFactory;
 use Module\Booking\Invoicing\Domain\Service\Factory\ServiceInfoDataFactory;
 use Module\Booking\Shared\Domain\Order\Order;
 use Module\Booking\Shared\Domain\Order\Repository\OrderRepositoryInterface;
@@ -32,6 +34,7 @@ class TemplateDataFactory
         private readonly ServiceInfoDataFactory $serviceInfoDataFactory,
         private readonly InvoiceRepositoryInterface $invoiceRepository,
         private readonly FileStorageAdapterInterface $fileStorageAdapter,
+        private readonly GuestDataFactory $guestDataFactory,
     ) {}
 
     public function build(OrderId $orderId): array
@@ -102,9 +105,21 @@ class TemplateDataFactory
 
     private function buildOrderDto(Order $order): OrderDto
     {
+        $guests = $this->guestDataFactory->build($order->guestIds());
+
+        $period = null;
+        if ($order->period() !== null) {
+            $period = new OrderPeriodDto(
+                $order->period()->dateFrom()->format('d.m.Y'),
+                $order->period()->dateTo()->format('d.m.Y'),
+            );
+        }
+
         return new OrderDto(
             (string)$order->id()->value(),
-            $order->currency()->name
+            $order->currency()->name,
+            $guests,
+            $period
         );
     }
 

@@ -6,7 +6,7 @@
         'manager' => $manager,
         'order' => $order,
         'currencies' => $currencies,
-        // 'timelineUrl' => $timelineUrl,
+        'timelineUrl' => $timelineUrl,
         'editUrl' => $editUrl,
         'deleteUrl' => $deleteUrl,
         'isHotelBooking' => false,

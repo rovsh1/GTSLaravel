@@ -77,8 +77,8 @@ class BookingDtoFactory
         return new RoomStayDto(
             $accommodation->roomInfo->id,
             $accommodation->details->rateId,
-            GuestDto::collection($accommodation->guestIds),//@todo получить имена гостей и т.п. из заказа
-            count($accommodation->guestIds),
+            GuestDto::collection($accommodation->guests),
+            count($accommodation->guests),
             $this->buildRoomPerDayPrices($period, $hotelInfo, $accommodation),
             new TotalDto($accommodation->price->netValue),
             $accommodation->details->guestNote,
@@ -98,16 +98,8 @@ class BookingDtoFactory
         HotelInfoDto $hotelInfo,
         AccommodationDto $accommodation
     ): array {
-        $startDate = $this->getPeriodStartDateByCheckInCondition(
-            $period,
-            $hotelInfo->checkInTime,
-            $accommodation->details->earlyCheckIn
-        );
-        $endDate = $this->getPeriodEndDateByCheckOutCondition(
-            $period,
-            $hotelInfo->checkOutTime,
-            $accommodation->details->lateCheckOut
-        );
+        $startDate = $this->getPeriodStartDateByCheckInCondition($period, $hotelInfo->checkInTime, $accommodation->details->earlyCheckIn);
+        $endDate = $this->getPeriodEndDateByCheckOutCondition($period, $hotelInfo->checkOutTime, $accommodation->details->lateCheckOut);
         $preparedPeriod = new CarbonPeriod($startDate, $endDate, 'P1D');
 
         $countDays = $preparedPeriod->count();

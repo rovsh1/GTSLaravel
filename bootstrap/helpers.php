@@ -1,8 +1,8 @@
 <?php
 
-use App\Shared\Contracts\Module\ModuleAdapterInterface;
+use Sdk\Module\Contracts\ModuleInterface;
 
-function module(string $name): ?ModuleAdapterInterface
+function module(string $name): ?ModuleInterface
 {
     return app('modules')->get($name);
 }
@@ -15,6 +15,13 @@ function admin_path($path = ''): string
 function site_path($path = ''): string
 {
     return app('path.site') . ($path ? DIRECTORY_SEPARATOR . $path : '');
+}
+
+function site_url($path = ''): string
+{
+    $baseUrl = config('app.url');
+
+    return \Str::finish($baseUrl, '/') . trim($path, '/');
 }
 
 function api_path($path = ''): string

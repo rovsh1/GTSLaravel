@@ -78,7 +78,7 @@ const orderId = computed(() => orderStore.order.id)
 const orderGuests = computed<Guest[]>(() => orderStore.guests || [])
 
 const bookingRoomsGuestsIds = computed<number[]>(() => bookingDetails.value?.roomBookings.flatMap(
-  (roomBooking) => roomBooking.guestIds || [],
+  (roomBooking) => roomBooking.guests.map((guest) => guest.id) || [],
 ) || [])
 
 const filteredOrderGuests = computed<Guest[]>(() => orderGuests.value.filter((guest) =>
@@ -399,7 +399,7 @@ onMounted(() => {
           <div class="d-flex gap-1 align-items-center mb-1">
             <InfoBlockTitle title="Список гостей" />
             <IconButton
-              v-if="isEditableStatus && (room.roomInfo.guestsCount && room.guestIds.length < room.roomInfo.guestsCount)"
+              v-if="isEditableStatus && (room.roomInfo.guestsCount && room.guests.length < room.roomInfo.guestsCount)"
               icon="add"
               @click="() => {
                 editRoomBookingId = room.id
@@ -412,7 +412,7 @@ onMounted(() => {
         <GuestsTable
           v-if="countries"
           :can-edit="isEditableStatus"
-          :guest-ids="room.guestIds"
+          :guest-ids="room.guests.map(guest => guest.id)"
           :order-guests="orderGuests"
           :countries="countries"
           @edit="(guest) => {

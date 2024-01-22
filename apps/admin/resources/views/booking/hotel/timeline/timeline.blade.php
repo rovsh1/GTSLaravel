@@ -19,7 +19,7 @@
             <div class="card card-form disable-border">
                 <div class="card-body">
                     <div class="vertical-timeline vertical-timeline--animate vertical-timeline--one-column">
-                        @foreach($history as $event)
+                        @foreach($history as $key => $event)
                             <div class="vertical-timeline-item vertical-timeline-element item group-{{ strtolower($event->event) }}">
                                 <div>
                                     <div class="vertical-timeline-element-icon">
@@ -45,7 +45,9 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <span class="vertical-timeline-element-date">{{ Format::date($event->createdAt, 'datetime') }}</span>
+                                        @if($key == 0 || $event->createdAt != $history[$key-1]->createdAt)
+                                            <span class="vertical-timeline-element-date">{{ Format::date($event->createdAt, 'datetime') }}</span>
+                                        @endif
                                     </div>
                                 </div>
                             </div>

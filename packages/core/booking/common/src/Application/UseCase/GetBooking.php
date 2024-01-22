@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Moderation\Application\UseCase;
+namespace Pkg\Booking\Common\Application\UseCase;
 
 use Module\Booking\Moderation\Application\Dto\ServiceBooking\BookingDto;
 use Module\Booking\Moderation\Application\Factory\BookingDtoFactory;
