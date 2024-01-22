@@ -5,12 +5,9 @@ namespace Sdk\Module\Support\Context;
 use Sdk\Module\Contracts\ContextInterface;
 use Sdk\Module\Contracts\ModuleInterface;
 use Sdk\Shared\Support\ApplicationContext\AbstractContext;
-use Sdk\Shared\Support\ApplicationContext\Concerns\HttpRequestContextTrait;
 
 class ModuleContext extends AbstractContext implements ContextInterface
 {
-    use HttpRequestContextTrait;
-
     public function __construct(
         private readonly ModuleInterface $module
     ) {}

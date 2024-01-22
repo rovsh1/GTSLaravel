@@ -3,7 +3,6 @@
 namespace App\Hotel\Support\View\Form;
 
 use App\Hotel\Exceptions\FormSubmitFailedException;
-use App\Hotel\Support\Facades\AppContext;
 use Gsdk\Form\ElementInterface;
 use Gsdk\Form\FormBuilder as Base;
 use Illuminate\Database\Eloquent\Model;
@@ -58,17 +57,6 @@ class FormBuilder extends Base
         }
 
         return parent::data($data);
-    }
-
-    public function submit(): bool
-    {
-        if (!parent::submit()) {
-            return false;
-        }
-
-        AppContext::setSubmittedForm($this);
-
-        return true;
     }
 
     /**

@@ -13,14 +13,4 @@ class ConsoleContextManager extends AbstractContext implements ContextInterface
         $this->generateRequestId();
         $this->setSource(SourceEnum::CONSOLE);
     }
-
-    public function toArray(): array
-    {
-        $data = parent::toArray();
-        if (isset($this->submittedForm)) {
-            $data['formData'] = $this->submittedForm->getData();
-        }
-
-        return $data;
-    }
 }
