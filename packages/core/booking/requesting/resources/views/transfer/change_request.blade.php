@@ -1,4 +1,4 @@
-@extends('layout.layout')
+@extends('BookingShared::layout.layout')
 
 @push('css')
     <style>
@@ -12,7 +12,7 @@
 @section('content')
     <table>
         <tbody>
-        @include('_partials.company_requisites_header')
+        @include('BookingShared::_partials.company_requisites_header')
         <tr>
             <td class="title text-align-center" colspan="2">ИЗМЕНЕНИЕ БРОНИ НА ТРАНСПОРТ</td>
         </tr>
@@ -43,7 +43,11 @@
                                 </tr>
                                 <tr>
                                     <td class="top-table-left">Количество туристов:</td>
-                                    <td><b>{{ $guestsCount }}</b></td>
+                                    <td><b>
+                                            @changemark('guests')
+                                                {{ $guestsCount }}
+                                            @endchangemark()
+                                        </b></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -55,8 +59,6 @@
         </tr>
         <tr>
             <td colspan="2" style="padding-top: 20px;">
-
-
                 <table class="services">
                     <thead>
                     <tr>
@@ -73,8 +75,8 @@
                         <td class="text-align-left" colspan="4"><b>{{ $service->title }}</b></td>
                     </tr>
 
-                    @include('booking.transfer._partials.cars')
-                    @include('booking.transfer._partials.details')
+                    @include('BookingRequesting::transfer._partials.cars')
+                    @include('BookingRequesting::transfer._partials.details')
 
                     </tbody>
                 </table>
@@ -89,7 +91,7 @@
                     <tbody>
                     <tr>
                         <td style="width: 500px;">
-                            @include('_partials.manager_requisites')
+                            @include('BookingShared::_partials.manager_requisites')
                         </td>
                     </tr>
                     </tbody>

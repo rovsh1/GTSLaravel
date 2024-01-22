@@ -2,6 +2,8 @@
 
 namespace Pkg\Booking\Requesting\Domain\Service\ChangesRegistrar;
 
+use Pkg\Booking\Requesting\Domain\Service\ChangesRegistrar;
+use Sdk\Booking\IntegrationEvent;
 use Sdk\Booking\IntegrationEvent\BookingEventInterface;
 use Sdk\Booking\IntegrationEvent\HotelBooking\AccommodationAdded;
 use Sdk\Booking\IntegrationEvent\HotelBooking\AccommodationDeleted;
@@ -35,6 +37,13 @@ class RegistrarFactory
             AccommodationReplaced::class => AccommodationReplacedRegistrar::class,
             GuestAdded::class => GuestAddedRegistrar::class,
             GuestRemoved::class => GuestRemovedRegistrar::class,
+            IntegrationEvent\AirportBooking\GuestAdded::class => ChangesRegistrar\AirportBooking\GuestAddedRegistrar::class,
+            IntegrationEvent\AirportBooking\GuestRemoved::class => ChangesRegistrar\AirportBooking\GuestRemovedRegistrar::class,
+            IntegrationEvent\TransferBooking\GuestAdded::class => ChangesRegistrar\TransferBooking\GuestAddedRegistrar::class,
+            IntegrationEvent\TransferBooking\GuestRemoved::class => ChangesRegistrar\TransferBooking\GuestRemovedRegistrar::class,
+            IntegrationEvent\DepartureDateChanged::class => DepartureDateChangedRegistrar::class,
+            IntegrationEvent\ArrivalDateChanged::class => ArrivalDateChangedRegistrar::class,
+            IntegrationEvent\ServiceDateChanged::class => ServiceDateChangedRegistrar::class,
             default => null
         };
     }

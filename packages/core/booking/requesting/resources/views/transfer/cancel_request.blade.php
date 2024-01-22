@@ -1,4 +1,4 @@
-@extends('layout.layout')
+@extends('BookingShared::layout.layout')
 
 @push('css')
     <style>
@@ -12,7 +12,7 @@
 @section('content')
     <table>
         <tbody>
-        @include('_partials.company_requisites_header')
+        @include('BookingShared::_partials.company_requisites_header')
         <tr>
             <td class="title text-align-center" colspan="2">ОТМЕНА БРОНИ НА ТРАНСПОРТ</td>
         </tr>
@@ -88,7 +88,7 @@
                     <tbody>
                     <tr>
                         <td style="width: 500px;">
-                            @include('_partials.manager_requisites')
+                            @include('BookingShared::_partials.manager_requisites')
                         </td>
                     </tr>
                     </tbody>
