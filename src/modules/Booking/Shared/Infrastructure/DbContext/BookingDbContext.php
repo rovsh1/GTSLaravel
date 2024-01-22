@@ -17,7 +17,7 @@ use Sdk\Booking\ValueObject\CancelConditions;
 use Sdk\Booking\ValueObject\CreatorId;
 use Sdk\Booking\ValueObject\GuestId;
 use Sdk\Booking\ValueObject\OrderId;
-use Sdk\Module\Contracts\ContextInterface;
+use Sdk\Shared\Contracts\Context\ContextInterface;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 use Sdk\Shared\Enum\ServiceTypeEnum;
 

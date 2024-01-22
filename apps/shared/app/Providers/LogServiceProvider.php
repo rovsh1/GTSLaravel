@@ -7,7 +7,6 @@ use App\Shared\Logging\Processor\HttpRequestProcessor;
 use Illuminate\Log\LogManager;
 use Illuminate\Support\ServiceProvider;
 use Monolog\Processor\MemoryUsageProcessor;
-use Sdk\Shared\Contracts\Context\ContextInterface;
 
 class LogServiceProvider extends ServiceProvider
 {
@@ -21,7 +20,7 @@ class LogServiceProvider extends ServiceProvider
     private function bootLogstashLogger($logger): void
     {
         $logger->pushProcessor(new HttpRequestProcessor());
-        $logger->pushProcessor(new ContextProcessor($this->app));
+        $logger->pushProcessor(new ContextProcessor($this->app->modules(), $this->app));
         $logger->pushProcessor(new MemoryUsageProcessor());
     }
 }

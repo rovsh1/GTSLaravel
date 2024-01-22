@@ -2,40 +2,43 @@
 
 namespace Shared\Support\Module;
 
+use LogicException;
 use Sdk\Shared\Contracts\Context\ContextInterface;
 
 class UseCaseWrapper
 {
-    public function __construct(private readonly ModuleRepository $modules) {}
+    public function __construct(
+        private readonly ModuleRepository $modules,
+        private readonly ContextInterface $appContext,
+        private readonly string $useCase,
+    ) {}
 
-    public function wrap(string $abstract)
+    public function execute(...$arguments): mixed
     {
-        $module = $this->modules->findByNamespace($abstract);
+//        if (!is_subclass_of($this->useCase, UseCaseInterface::class)) {
+//            throw new \Exception('Only use case allowed');
+//        }
+
+        $module = $this->modules->findByNamespace($this->useCase);
         if (!$module) {
-            throw new \LogicException("Module not found by abstract [$abstract]");
+            throw new LogicException("Module not found by abstract [$this->useCase]");
         }
         $module->boot();
 
-        return new class($module, $abstract) {
-            public function __construct(
-                private readonly Module $module,
-                private readonly string $useCase,
-            ) {}
+        $this->modules->callStack->push($module);
+        $this->withPrevContext($module);
 
-            public function execute(...$arguments): mixed
-            {
-//                if (!is_subclass_of($method, UseCaseInterface::class)) {
-//                    throw new \Exception('Only use case allowed');
-//                }
+        $result = $module->make($this->useCase)->execute(...$arguments);
+        $this->modules->callStack->pop();
 
-                //@todo use case middlewares?
-                /**
-                 * Передаем контекст приложения в контекст модуля
-                 */
-                $this->module->withContext(app(ContextInterface::class)->toArray());
+        return $result;
+    }
 
-                return $this->module->make($this->useCase)->execute(...$arguments);
-            }
-        };
+    private function withPrevContext(Module $module): void
+    {
+        /**
+         * Передаем контекст приложения в контекст модуля
+         */
+        $module->get(ContextInterface::class)->setPrevContext($this->appContext->toArray());
     }
 }

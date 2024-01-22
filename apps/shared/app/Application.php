@@ -3,6 +3,7 @@
 namespace App\Shared;
 
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
+use Sdk\Shared\Contracts\Context\ContextInterface;
 use Shared\Support\Module\Module;
 use Shared\Support\Module\ModuleRepository;
 use Shared\Support\Module\UseCaseWrapper;
@@ -36,8 +37,6 @@ class Application extends \Illuminate\Foundation\Application
         return $this->joinPaths($basePath . DIRECTORY_SEPARATOR . 'resources', $path);
     }
 
-//    public function viewPath($path = ''){}
-
     public function packagePath($path = ''): string
     {
         return $this->joinPaths($this->packagePath, $path);
@@ -68,7 +67,11 @@ class Application extends \Illuminate\Foundation\Application
         if (!is_string($concrete)) {
             return parent::build($concrete);
         } elseif (is_subclass_of($concrete, UseCaseInterface::class)) {
-            return (new UseCaseWrapper($this->modules()))->wrap($concrete);
+            return new UseCaseWrapper(
+                modules: $this->modules(),
+                appContext: $this->get(ContextInterface::class),
+                useCase: $concrete
+            );
         } elseif ($this->isModuleInstance($concrete)) {
             //HACK т. к. контроллеры модулей создаются из основного приложения
             $module = $this->modules()->findByNamespace($concrete);

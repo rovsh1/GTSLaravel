@@ -8,11 +8,13 @@ use Illuminate\Contracts\Container\Container;
 use Monolog\LogRecord;
 use Monolog\Processor\ProcessorInterface;
 use Sdk\Shared\Contracts\Context\ContextInterface;
+use Shared\Support\Module\ModuleRepository;
 
 class ContextProcessor implements ProcessorInterface
 {
     public function __construct(
-        private readonly Container $container
+        private readonly ModuleRepository $modules,
+        private readonly Container $appContainer
     ) {}
 
     /**
@@ -20,8 +22,11 @@ class ContextProcessor implements ProcessorInterface
      */
     public function __invoke(LogRecord $record): LogRecord
     {
-        if ($this->container->has(ContextInterface::class)) {
-            $record->extra['flow'] = $this->container->get(ContextInterface::class)->toArray();
+        $container = $this->modules->callStack->isEmpty()
+            ? $this->appContainer
+            : $this->modules->callStack->top();
+        if ($container->has(ContextInterface::class)) {
+            $record->extra['flow'] = $container->get(ContextInterface::class)->toArray();
         }
 
         return $record;
