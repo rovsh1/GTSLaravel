@@ -41,10 +41,10 @@ final class EditRules
     public function canSetNoCheckIn(): bool
     {
         $checkInTimestamp = $this->details->bookingPeriod()->dateFrom()->getTimestamp();
-        $isCheckInDateExpired = $checkInTimestamp >= time();
+        $isCheckInDateExpired = time() >= $checkInTimestamp;
         $isLessThan72HorusAfterCheckIn = $checkInTimestamp < time() + 60 * 60 * 72;
 
-        return $this->booking->status() === StatusEnum::CONFIRMED
+        return $this->booking->status()->value() === StatusEnum::CONFIRMED
             && $isCheckInDateExpired
             && $isLessThan72HorusAfterCheckIn;
     }
