@@ -48,7 +48,8 @@ class LogstashFormatter extends NormalizerFormatter
             $message[$this->extraKey] = $extra;
         }
         if (\count($context) > 0) {
-            $message[$this->contextKey] = $context;
+            $message[$this->contextKey] = json_encode($context);
+            $this->mergeFromContext($message, $context);
         }
 
         return $this->toJson($message) . "\n";
@@ -90,32 +91,50 @@ class LogstashFormatter extends NormalizerFormatter
         return $message;
     }
 
+    private function mergeFromContext(array &$message, array $context): void
+    {
+        foreach ($context as $k => $v) {
+            if (is_scalar($v)) {
+                $message[$k] = $v;
+            } elseif (is_array($v) && array_is_list($v)) {
+                $message[$k] = implode(', ', $v);
+            }
+        }
+    }
+
     protected function normalizeException(\Throwable $e, int $depth = 0): array
     {
         if ($e instanceof \JsonSerializable) {
             return (array)$e->jsonSerialize();
         }
 
-        $trace = $e->getTraceAsString();
+        $trace = '[object] ' . $this->formatExceptionObject($e)
+            . "\n" . '[stacktrace]'
+            . "\n" . $e->getTraceAsString();
         if (($previous = $e->getPrevious()) instanceof \Throwable) {
             $trace .= $this->formatPreviousException($previous);
         }
 
         return [
             'class' => Utils::getClass($e),
-            'message' => $e->getMessage(),
-            'code' => (int)$e->getCode(),
-            'file' => $e->getFile() . ':' . $e->getLine(),
+//            'message' => $e->getMessage(),
+//            'code' => (int)$e->getCode(),
+//            'file' => $e->getFile() . ':' . $e->getLine(),
             'trace' => $trace
         ];
+    }
+
+    private function formatExceptionObject(\Throwable $e): string
+    {
+        return $e::class . "(code: {$e->getCode()}): "
+            . ($e->getMessage() ?: '<empty>')
+            . " at {$e->getFile()})";
     }
 
     private function formatPreviousException(\Throwable $e): string
     {
         $str = "\n\n" . '[previous exception] '
-            . $e::class . "(code: {$e->getCode()}): "
-            . ($e->getMessage() ?: '<empty>')
-            . " at {$e->getFile()})";
+            . $this->formatExceptionObject($e);
 
         $str .= "\n" . '[stacktrace]';
         $str .= "\n" . $e->getTraceAsString();

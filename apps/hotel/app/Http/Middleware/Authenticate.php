@@ -19,7 +19,7 @@ class Authenticate extends Middleware
             $user->setRememberToken(null);
             $this->unauthenticated($request, ['hotel']);
         } else {
-            AppContext::setAdministrator($user->id, $user->presentation);
+            AppContext::setUserId($user->id);
         }
     }
 
