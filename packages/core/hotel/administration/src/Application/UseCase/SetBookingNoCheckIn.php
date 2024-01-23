@@ -17,6 +17,9 @@ class SetBookingNoCheckIn implements UseCaseInterface
     public function execute(int $bookingId, ?float $supplierPenaltyAmount = null): void
     {
         $booking = $this->bookingUnitOfWork->findOrFail(new BookingId($bookingId));
+        if ($booking->isCancelled()) {
+            return;
+        }
 
         $this->bookingUnitOfWork->persist($booking);
         if (!empty($supplierPenaltyAmount)) {
