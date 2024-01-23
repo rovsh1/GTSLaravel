@@ -154,12 +154,59 @@ INSERT INTO supplier_cities (city_id, supplier_id) VALUES (1, 556);
 
 INSERT INTO hotels (id, supplier_id, city_id, type_id, currency, status, visibility, rating, name, zipcode, address, address_en, address_lat, address_lon, city_distance, markup_settings, time_settings, created_at, updated_at) VALUES (564,556,1,10,'UZS',2,2,3,'api_hotel',null,'Tashkent','Tashkent','41.2994958','69.2400734',0,'{"id":564,"vat":12,"touristTax":15,"earlyCheckIn":[{"timePeriod":{"from":"05:00","to":"14:00"},"priceMarkup":50},{"timePeriod":{"from":"00:00","to":"05:00"},"priceMarkup":100}],"lateCheckOut":[{"timePeriod":{"from":"12:00","to":"18:00"},"priceMarkup":50},{"timePeriod":{"from":"18:00","to":"24:00"},"priceMarkup":100}],"cancelPeriods":[{"period":"2022-10-01T00:00:00+00:00\/P1D\/2023-12-31T00:00:00+00:00","noCheckInMarkup":{"percent":100,"cancelPeriodType":1},"dailyMarkups":[{"percent":100,"cancelPeriodType":1,"daysCount":2}]},{"period":"2023-12-31T21:00:00+00:00\/P1D\/2024-12-30T21:00:00+00:00","noCheckInMarkup":{"percent":100,"cancelPeriodType":1},"dailyMarkups":[{"percent":100,"cancelPeriodType":1,"daysCount":2}]}]}',null,'2024-01-23 07:14:15','2024-01-23 07:15:37');
 
-INSERT INTO hotel_contracts (hotel_id, status, date_start, date_end, created_at, updated_at) VALUES (564,1,'2024-01-01','2024-12-31','2024-01-23 07:15:25','2024-01-23 07:15:25');
+INSERT INTO `hotel_rooms` (id, hotel_id, type_id, rooms_number, guests_count) VALUES
+    (2603,	564, 1,	50,	1),
+    (2604,	564, 2,	30,	2);
+
+INSERT INTO `hotel_rooms_translation` (`translatable_id`, `language`, `name`, `text`) VALUES
+    (2603, 'en', 'Standard room Single use', NULL),
+    (2603, 'ru', 'Стандартный одноместный', NULL),
+    (2603, 'uz', 'Standard room Single use', NULL),
+    (2604, 'en', 'Standard room Double use', NULL),
+    (2604, 'ru', 'Стандартный двухместный', NULL),
+    (2604, 'uz', 'Standard room Double use', NULL);
+
+INSERT INTO hotel_contracts (id, hotel_id, status, date_start, date_end, created_at, updated_at) VALUES (10000, 564,1,'2024-01-01','2024-12-31','2024-01-23 07:15:25','2024-01-23 07:15:25');
+
+INSERT INTO `hotel_seasons` (`id`, `contract_id`, `name`, `date_start`, `date_end`, `created_at`, `updated_at`) VALUES
+                                                                                                                    (1917, 10000, 'LOW', '2024-01-01', '2024-05-31', NULL, NULL),
+                                                                                                                    (1918, 10000, 'HIGH', '2024-06-01', '2024-12-31', NULL, NULL);
 
 INSERT INTO r_hotel_meal_plans (id, type) VALUES (1, 1);
 INSERT INTO r_hotel_meal_plans_translation (translatable_id, language, name) VALUES (1, 'ru', 'Без питания');
 
 INSERT INTO hotel_price_rates (id, hotel_id, meal_plan_id) VALUES (522, 564, 1), (523, 564, 1);
 INSERT INTO hotel_price_rates_translation (translatable_id, language, name, description) VALUES (522, 'ru', 'PROMO', ''), (523, 'ru', 'WEB', '');
+
+INSERT INTO hotel_price_rate_rooms (rate_id, room_id) VALUES
+    (522, 2603),
+    (523, 2603),
+    (522, 2604);
+
+INSERT INTO `hotel_price_groups` (`id`, `rate_id`, `guests_count`, `is_resident`) VALUES
+    (15, 522, 1, 0),
+    (14, 522, 1, 1),
+    (20, 522, 2, 0),
+    (19, 522, 2, 1),
+    (17, 523, 1, 0),
+    (16, 523, 1, 1);
+
+INSERT INTO `hotel_season_prices` (`id`, `season_id`, `group_id`, `room_id`, `price`) VALUES
+    (40, 1917, 14, 2603, 500000.00),
+    (41, 1917, 15, 2603, 1000000.00),
+    (42, 1918, 14, 2603, 700000.00),
+    (43, 1918, 15, 2603, 1500000.00),
+    (44, 1917, 16, 2603, 350000.00),
+    (45, 1917, 17, 2603, 750000.00),
+    (46, 1918, 16, 2603, 900000.00),
+    (47, 1918, 17, 2603, 1200000.00),
+    (49, 1917, 14, 2604, 350000.00),
+    (50, 1917, 19, 2604, 400000.00),
+    (51, 1917, 15, 2604, 500000.00),
+    (52, 1917, 20, 2604, 550000.00),
+    (53, 1918, 14, 2604, 700000.00),
+    (54, 1918, 19, 2604, 800000.00),
+    (55, 1918, 15, 2604, 900000.00),
+    (56, 1918, 20, 2604, 1000000.00);
 
 INSERT INTO traveline_hotels (hotel_id, created_at) VALUES (564, '2024-01-23 07:15:25');
