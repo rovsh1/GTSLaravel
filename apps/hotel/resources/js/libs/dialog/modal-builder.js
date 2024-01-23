@@ -1,6 +1,6 @@
-import {Modal as BootstrapModal} from 'bootstrap'
+import { Modal as BootstrapModal } from 'bootstrap'
 
-import {buttonsRenderer} from './buttons-builder'
+import { buttonsRenderer } from './buttons-builder'
 
 export const defaultOptions = {
   title: '',
@@ -26,6 +26,7 @@ export function createBootstrapModal(modal, $el) {
       modal._preventDestroy = undefined;
       modal.trigger('hide')
     } else if (modal.get('destroyOnClose')) {
+      modal.trigger('hide')
       modal.destroy();
     } else {
       modal.trigger('hide')
