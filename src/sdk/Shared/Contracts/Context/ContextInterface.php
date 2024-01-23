@@ -14,6 +14,10 @@ interface ContextInterface
 
     public function source(): ?SourceEnum;
 
+    public function setUserId(int $id): void;
+
+    public function userId(): ?int;
+
 //    public function userId(): ?int;
 
 //    public function setModule(string $module): void;
