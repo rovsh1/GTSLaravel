@@ -1,4 +1,4 @@
-@extends('layout.layout')
+@extends('BookingShared::layout.layout')
 @props(['guests' => []])
 
 @push('css')
@@ -13,7 +13,7 @@
 @section('content')
     <table>
         <tbody>
-        @include('_partials.company_requisites_header')
+        @include('BookingShared::_partials.company_requisites_header')
         <tr>
             <td style="padding-top: 15px;" colspan="2" class="text-align-right">Директору</td>
         </tr>
@@ -89,12 +89,24 @@
                     </tr>
                     <tr>
                         <td></td>
-                        <td>Дата прилёта: {{ $date }}</td>
-                        <td colspan="3">Время прилёта: {{$time}}</td>
+                        <td>
+                            @changemark('date')
+                                Дата прилёта: {{ $date }}
+                            @endchangemark()
+                        </td>
+                        <td colspan="3">
+                            @changemark('date')
+                                Время прилёта: {{$time}}
+                            @endchangemark()
+                        </td>
                     </tr>
                     <tr>
                         <td></td>
-                        <td>Номер рейса: {{ $flightNumber }}</td>
+                        <td>
+                            @changemark('flightNumber')
+                                Номер рейса: {{ $flightNumber }}
+                            @endchangemark()
+                        </td>
                         <td colspan="2">Аэропорт: {{ $airport->name }}</td>
                     </tr>
                     <tr>
@@ -105,32 +117,23 @@
                     @endphp
                     <tr>
                         <td></td>
-                        <td>Туристы ({{ $guestsCount }})</td>
+                        <td>
+                            @changemark('guests')
+                                Туристы ({{ $guestsCount }}):
+                            @endchangemark()
+                        </td>
                     </tr>
                     @foreach($guests as $index => $guest)
                         <tr class="{{$index === $guestsCount-1 ? 'last' : ''}}">
                             <td></td>
                             <td colspan="4">
-                            <span class="red">
-                                {{++$index}}. {{ $guest->fullName }}, {{ $guest->gender }}, {{ $guest->countryName }}
-                            </span>
+                                @changemark('guests')
+                                    {{++$index}}. {{ $guest->fullName }}, {{ $guest->gender }}, {{ $guest->countryName }}
+                                @endchangemark()
                             </td>
                         </tr>
                     @endforeach
-                    <tr>
-                        <td></td>
-                        <td class="text-align-left" colspan="4" style="padding-top: 0"></td>
-                    </tr>
-                    <tr>
-                        <td colspan="5">
-                            <table>
-                                <tr style="padding-top: 0">
-                                    <td style="width: 500px;vertical-align: top;"><b>Детали изменения услуги:</b></td>
-                                    <td>{$reservationChanges}</td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
+
                     <tr class="first">
                         <td></td>
                         <td class="text-align-left" colspan="4">

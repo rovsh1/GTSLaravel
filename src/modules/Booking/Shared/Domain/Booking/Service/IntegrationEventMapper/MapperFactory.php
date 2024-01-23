@@ -2,12 +2,15 @@
 
 namespace Module\Booking\Shared\Domain\Booking\Service\IntegrationEventMapper;
 
+use Sdk\Booking\Event\ArrivalDateChanged;
+use Sdk\Booking\Event\DepartureDateChanged;
 use Sdk\Booking\Event\HotelBooking\AccommodationDetailsEdited;
 use Sdk\Booking\Event\HotelBooking\GuestBinded as AccommodationGuestBinded;
 use Sdk\Booking\Event\HotelBooking\GuestUnbinded as AccommodationGuestUnbinded;
 use Sdk\Booking\Event\PriceUpdated;
 use Sdk\Booking\Event\ServiceBooking\GuestBinded as AirportGuestBinded;
 use Sdk\Booking\Event\ServiceBooking\GuestUnbinded as AirportGuestUnbinded;
+use Sdk\Booking\Event\ServiceDateChanged;
 use Sdk\Booking\Event\TransferBooking\GuestBinded as TransferGuestBinded;
 use Sdk\Booking\Event\TransferBooking\GuestUnbinded as TransferGuestUnbinded;
 use Sdk\Module\Contracts\Event\DomainEventInterface;
@@ -37,6 +40,9 @@ class MapperFactory
             AirportGuestBinded::class => AirportGuestBindedMapper::class,
             AirportGuestUnbinded::class => AirportGuestUnbindedMapper::class,
             PriceUpdated::class => PriceChangedMapper::class,
+            ArrivalDateChanged::class => ArrivalDateChangedMapper::class,
+            DepartureDateChanged::class => DepartureDateChangedMapper::class,
+            ServiceDateChanged::class => ServiceDateChangedMapper::class,
             default => null
         };
     }

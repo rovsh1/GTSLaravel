@@ -6,6 +6,7 @@ namespace App\Shared\Logging;
 
 use Monolog\Formatter\NormalizerFormatter;
 use Monolog\LogRecord;
+use Monolog\Utils;
 
 class LogstashFormatter extends NormalizerFormatter
 {
@@ -87,5 +88,42 @@ class LogstashFormatter extends NormalizerFormatter
         }
 
         return $message;
+    }
+
+    protected function normalizeException(\Throwable $e, int $depth = 0): array
+    {
+        if ($e instanceof \JsonSerializable) {
+            return (array)$e->jsonSerialize();
+        }
+
+        $trace = $e->getTraceAsString();
+        if (($previous = $e->getPrevious()) instanceof \Throwable) {
+            $trace .= $this->formatPreviousException($previous);
+        }
+
+        return [
+            'class' => Utils::getClass($e),
+            'message' => $e->getMessage(),
+            'code' => (int)$e->getCode(),
+            'file' => $e->getFile() . ':' . $e->getLine(),
+            'trace' => $trace
+        ];
+    }
+
+    private function formatPreviousException(\Throwable $e): string
+    {
+        $str = "\n\n" . '[previous exception] '
+            . $e::class . "(code: {$e->getCode()}): "
+            . ($e->getMessage() ?: '<empty>')
+            . " at {$e->getFile()})";
+
+        $str .= "\n" . '[stacktrace]';
+        $str .= "\n" . $e->getTraceAsString();
+
+        if (($previous = $e->getPrevious()) instanceof \Throwable) {
+            $str .= $this->formatPreviousException($previous);
+        }
+
+        return $str;
     }
 }

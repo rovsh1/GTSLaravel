@@ -1,4 +1,4 @@
-@extends('layout.layout')
+@extends('BookingShared::layout.layout')
 @props(['guests' => []])
 
 @push('css')
@@ -13,7 +13,7 @@
 @section('content')
     <table>
         <tbody>
-        @include('_partials.company_requisites_header')
+        @include('BookingShared::_partials.company_requisites_header')
         <tr>
             <td style="padding-top: 15px;" colspan="2" class="text-align-right">Директору</td>
         </tr>
