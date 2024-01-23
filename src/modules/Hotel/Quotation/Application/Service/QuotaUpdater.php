@@ -51,11 +51,10 @@ class QuotaUpdater
     private function getUpdater(int $roomId): SupplierQuotaUpdaterInterface
     {
         $hotelId = static::$roomHotels[$roomId] ?? null;
-        if ($hotelId !== null) {
-            return static::$roomHotels[$roomId];
+        if ($hotelId === null) {
+            $hotelId = $this->hotelAdapter->getRoomHotelId($roomId);
         }
 
-        $hotelId = $this->hotelAdapter->getRoomHotelId($roomId);
         if ($hotelId === null) {
             throw new EntityNotFoundException('Room not found');
         }
