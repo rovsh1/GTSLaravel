@@ -32,6 +32,7 @@ class GetAvailableActions implements UseCaseInterface
         return new AvailableActionsDto(
             statuses: $this->buildAvailableStatuses(),
             canEditExternalNumber: $this->editRules->canEditExternalNumber(),
+            canSetNoCheckIn: $this->editRules->canSetNoCheckIn(),
         );
     }
 
