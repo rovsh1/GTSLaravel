@@ -143,3 +143,21 @@ VALUES (3651, '2023-10-02', 1915, 11, 318, '600000.00'),
        (3736, '2023-12-15', 1916, 11, 319, '750000.00'),
        (3737, '2023-12-22', 1916, 11, 319, '750000.00'),
        (3738, '2023-12-29', 1916, 11, 319, '750000.00');
+
+
+#Traveline
+INSERT INTO suppliers (id, name, currency) VALUES (556, 'Traveline', 'UZS');
+
+INSERT INTO supplier_cities (city_id, supplier_id) VALUES (1, 556);
+
+INSERT INTO hotels (id, supplier_id, city_id, type_id, currency, status, visibility, rating, name, zipcode, address, address_en, address_lat, address_lon, city_distance, markup_settings, time_settings, created_at, updated_at) VALUES (564,556,1,10,'UZS',2,2,3,'api_hotel',null,'Tashkent','Tashkent','41.2994958','69.2400734',0,'{"id":564,"vat":12,"touristTax":15,"earlyCheckIn":[{"timePeriod":{"from":"05:00","to":"14:00"},"priceMarkup":50},{"timePeriod":{"from":"00:00","to":"05:00"},"priceMarkup":100}],"lateCheckOut":[{"timePeriod":{"from":"12:00","to":"18:00"},"priceMarkup":50},{"timePeriod":{"from":"18:00","to":"24:00"},"priceMarkup":100}],"cancelPeriods":[{"period":"2022-10-01T00:00:00+00:00\/P1D\/2023-12-31T00:00:00+00:00","noCheckInMarkup":{"percent":100,"cancelPeriodType":1},"dailyMarkups":[{"percent":100,"cancelPeriodType":1,"daysCount":2}]},{"period":"2023-12-31T21:00:00+00:00\/P1D\/2024-12-30T21:00:00+00:00","noCheckInMarkup":{"percent":100,"cancelPeriodType":1},"dailyMarkups":[{"percent":100,"cancelPeriodType":1,"daysCount":2}]}]}',null,'2024-01-23 07:14:15','2024-01-23 07:15:37');
+
+INSERT INTO hotel_contracts (hotel_id, status, date_start, date_end, created_at, updated_at) VALUES (564,1,'2024-01-01','2024-12-31','2024-01-23 07:15:25','2024-01-23 07:15:25');
+
+INSERT INTO r_hotel_meal_plans (id, type) VALUES (1, 1);
+INSERT INTO r_hotel_meal_plans_translation (translatable_id, language, name) VALUES (1, 'ru', 'Без питания');
+
+INSERT INTO hotel_price_rates (id, hotel_id, meal_plan_id) VALUES (522, 564, 1), (523, 564, 1);
+INSERT INTO hotel_price_rates_translation (translatable_id, language, name, description) VALUES (522, 'ru', 'PROMO', ''), (523, 'ru', 'WEB', '');
+
+INSERT INTO traveline_hotels (hotel_id, created_at) VALUES (564, '2024-01-23 07:15:25');
