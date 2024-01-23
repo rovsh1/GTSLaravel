@@ -10,6 +10,7 @@ use Pkg\Booking\Common\Application\UseCase\GetBooking;
 use Pkg\Booking\Common\Application\UseCase\GetStatuses;
 use Pkg\Booking\EventSourcing\Application\UseCase\GetStatusHistory;
 use Pkg\Hotel\Administration\Application\UseCase\GetAvailableActions;
+use Pkg\Hotel\Administration\Application\UseCase\SetBookingNoCheckIn;
 
 class BookingAdapter
 {
@@ -36,6 +37,11 @@ class BookingAdapter
         float|null $clientPenalty = null,
     ): mixed {
         return app(UpdateStatus::class)->execute($id, $status, $notConfirmedReason, $supplierPenalty, $clientPenalty);
+    }
+
+    public function setNoCheckIn(int $id, float|null $supplierPenalty = null): mixed
+    {
+        return app(SetBookingNoCheckIn::class)->execute($id, $supplierPenalty);
     }
 
     public function getStatusHistory(int $id): array

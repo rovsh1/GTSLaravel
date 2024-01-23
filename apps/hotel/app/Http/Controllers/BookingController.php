@@ -2,6 +2,7 @@
 
 namespace App\Hotel\Http\Controllers;
 
+use App\Hotel\Http\Requests\Booking\SetNoCheckInRequest;
 use App\Hotel\Http\Requests\Booking\UpdateExternalNumberRequest;
 use App\Hotel\Http\Requests\Booking\UpdateNoteRequest;
 use App\Hotel\Http\Requests\Booking\UpdateStatusRequest;
@@ -112,10 +113,15 @@ class BookingController extends AbstractHotelController
                 id: $id,
                 status: $request->getStatus(),
                 notConfirmedReason: $request->getNotConfirmedReason() ?? '',
-                supplierPenalty: $request->getSupplierPenalty(),
-                clientPenalty: $request->getClientPenalty(),
             )
         );
+    }
+
+    public function setNoCheckIn(SetNoCheckInRequest $request, int $id): JsonResponse
+    {
+        BookingAdapter::setNoCheckIn($id, $request->getSupplierPenalty());
+
+        return response()->json();
     }
 
     public function getStatusHistory(int $id): JsonResponse

@@ -19,6 +19,7 @@ Route::controller(BookingController::class)
         Route::get('/status/list', 'getStatuses')->name('status.list');
         Route::put('/{booking}/status/update', 'updateStatus')->name('status.update');
         Route::get('/{booking}/status/history', 'getStatusHistory')->name('status.history');
+        Route::get('/{booking}/status/no-checkin', 'setNoCheckIn')->name('status.no-checkin');
 
         Route::get('/{booking}/actions/available', 'getAvailableActions')->name('actions.available.get');
 
