@@ -13,6 +13,9 @@ class TravelineAdapter
 
     public function sendReservationNotification(): void
     {
+        if (empty($this->notificationsUrl)) {
+            return;
+        }
         $this->httpClient->request('GET', $this->notificationsUrl);
     }
 }
