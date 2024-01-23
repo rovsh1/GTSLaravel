@@ -35,8 +35,8 @@ const orderStore = useOrderStore()
 
 const bookingDetails = computed<HotelBookingDetails | undefined>(() => bookingStore.booking?.details)
 
-const grossCurrency = computed<Currency | undefined>(
-  () => getCurrencyByCodeChar(bookingStore.booking?.prices.clientPrice.currency.value),
+const netCurrency = computed<Currency | undefined>(
+  () => getCurrencyByCodeChar(bookingStore.booking?.prices.supplierPrice.currency.value),
 )
 
 const orderGuests = computed<Guest[]>(() => orderStore.guests || [])
@@ -64,16 +64,22 @@ const getCheckOutTime = (room: HotelRoomBooking) => {
   return `до ${bookingDetails.value?.hotelInfo.checkOutTime}`
 }
 
-const getMinDayPrices = (dayPrices: RoomBookingDayPrice[]): number | undefined => {
-  const minPrice = dayPrices.length > 0 ? dayPrices.reduce((min, dayPrice) =>
-    ((dayPrice.grossValue < min) ? dayPrice.grossValue : min), dayPrices[0].grossValue) : undefined
-  return minPrice
+const getMinDayPrices = (dayPrices: RoomBookingDayPrice[], type: 'gross' | 'net'): number | undefined => {
+  if (type === 'gross') {
+    return dayPrices.length > 0 ? dayPrices.reduce((min, dayPrice) =>
+      ((dayPrice.grossValue < min) ? dayPrice.grossValue : min), dayPrices[0].grossValue) : undefined
+  }
+  return dayPrices.length > 0 ? dayPrices.reduce((min, dayPrice) =>
+    ((dayPrice.netValue < min) ? dayPrice.netValue : min), dayPrices[0].netValue) : undefined
 }
 
-const getMaxDayPrices = (dayPrices: RoomBookingDayPrice[]): number | undefined => {
-  const maxPrice = dayPrices.length > 0 ? dayPrices.reduce((max, dayPrice) =>
-    ((dayPrice.grossValue > max) ? dayPrice.grossValue : max), dayPrices[0].grossValue) : undefined
-  return maxPrice
+const getMaxDayPrices = (dayPrices: RoomBookingDayPrice[], type: 'gross' | 'net'): number | undefined => {
+  if (type === 'gross') {
+    return dayPrices.length > 0 ? dayPrices.reduce((max, dayPrice) =>
+      ((dayPrice.grossValue > max) ? dayPrice.grossValue : max), dayPrices[0].grossValue) : undefined
+  }
+  return dayPrices.length > 0 ? dayPrices.reduce((max, dayPrice) =>
+    ((dayPrice.netValue > max) ? dayPrice.netValue : max), dayPrices[0].netValue) : undefined
 }
 
 onMounted(() => {
@@ -121,23 +127,23 @@ onMounted(() => {
             </tr>
           </tbody>
         </table>
-        <div v-if="grossCurrency" class="d-flex flex-row justify-content-between w-100 mt-2">
+        <div v-if="netCurrency" class="d-flex flex-row justify-content-between w-100 mt-2">
           <span class="prices-information">
             <strong>
-              Итого: {{ formatPrice(room.price.grossValue, grossCurrency.sign) }}
+              Итого: {{ formatPrice(room.price.netValue, netCurrency.sign) }}
             </strong>
             <br>
             <strong class="prices-information-details">
               <span>Цена за ночь: </span>
-              <span v-if="getMinDayPrices(room.price.dayPrices) === getMaxDayPrices(room.price.dayPrices)">
-                {{ formatPrice(getMinDayPrices(room.price.dayPrices) as number, grossCurrency.sign) }}
+              <span v-if="getMinDayPrices(room.price.dayPrices, 'net') === getMaxDayPrices(room.price.dayPrices, 'net')">
+                {{ formatPrice(getMinDayPrices(room.price.dayPrices, 'net') as number, netCurrency.sign) }}
               </span>
               <span v-else>
-                от {{ formatPrice(getMinDayPrices(room.price.dayPrices) as number, grossCurrency.sign) }}
-                до {{ formatPrice(getMaxDayPrices(room.price.dayPrices) as number, grossCurrency.sign) }}
+                от {{ formatPrice(getMinDayPrices(room.price.dayPrices, 'net') as number, netCurrency.sign) }}
+                до {{ formatPrice(getMaxDayPrices(room.price.dayPrices, 'net') as number, netCurrency.sign) }}
               </span>
               <span
-                v-if="room.price.grossDayValue"
+                v-if="room.price.netDayValue"
                 v-tooltip="'Цена за номер выставлена вручную'"
                 class="prices-information-details-info"
               >

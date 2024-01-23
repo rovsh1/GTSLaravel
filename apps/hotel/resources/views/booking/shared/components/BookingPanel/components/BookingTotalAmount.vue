@@ -12,8 +12,8 @@ const bookingStore = useBookingStore()
 const { getCurrencyByCodeChar } = useCurrencyStore()
 
 const booking = computed(() => bookingStore.booking)
-const grossCurrency = computed<Currency | undefined>(
-  () => getCurrencyByCodeChar(bookingStore.booking?.prices.clientPrice.currency.value),
+const netCurrency = computed<Currency | undefined>(
+  () => getCurrencyByCodeChar(bookingStore.booking?.prices.supplierPrice.currency.value),
 )
 
 const getDisplayPriceValue = (type: 'client' | 'supplier') => {
@@ -30,11 +30,11 @@ const getDisplayPriceValue = (type: 'client' | 'supplier') => {
 </script>
 
 <template>
-  <div v-if="booking && grossCurrency" class="float-end total-sum">
+  <div v-if="booking && netCurrency" class="float-end total-sum">
     Общая сумма:
     <strong>
-      {{ formatPrice(getDisplayPriceValue('client'), grossCurrency.sign) }}
+      {{ formatPrice(getDisplayPriceValue('supplier'), netCurrency.sign) }}
     </strong>
-    <span v-if="booking.prices.clientPrice.isManual" class="text-muted"> (выставлена вручную)</span>
+    <span v-if="booking.prices.supplierPrice.isManual" class="text-muted"> (выставлена вручную)</span>
   </div>
 </template>

@@ -255,16 +255,22 @@ const onRoomModalSubmit = async () => {
   await fetchBooking()
 }
 
-const getMinDayPrices = (dayPrices: RoomBookingDayPrice[]): number | undefined => {
-  const minPrice = dayPrices.length > 0 ? dayPrices.reduce((min, dayPrice) =>
-    ((dayPrice.grossValue < min) ? dayPrice.grossValue : min), dayPrices[0].grossValue) : undefined
-  return minPrice
+const getMinDayPrices = (dayPrices: RoomBookingDayPrice[], type: 'gross' | 'net'): number | undefined => {
+  if (type === 'gross') {
+    return dayPrices.length > 0 ? dayPrices.reduce((min, dayPrice) =>
+      ((dayPrice.grossValue < min) ? dayPrice.grossValue : min), dayPrices[0].grossValue) : undefined
+  }
+  return dayPrices.length > 0 ? dayPrices.reduce((min, dayPrice) =>
+    ((dayPrice.netValue < min) ? dayPrice.netValue : min), dayPrices[0].netValue) : undefined
 }
 
-const getMaxDayPrices = (dayPrices: RoomBookingDayPrice[]): number | undefined => {
-  const maxPrice = dayPrices.length > 0 ? dayPrices.reduce((max, dayPrice) =>
-    ((dayPrice.grossValue > max) ? dayPrice.grossValue : max), dayPrices[0].grossValue) : undefined
-  return maxPrice
+const getMaxDayPrices = (dayPrices: RoomBookingDayPrice[], type: 'gross' | 'net'): number | undefined => {
+  if (type === 'gross') {
+    return dayPrices.length > 0 ? dayPrices.reduce((max, dayPrice) =>
+      ((dayPrice.grossValue > max) ? dayPrice.grossValue : max), dayPrices[0].grossValue) : undefined
+  }
+  return dayPrices.length > 0 ? dayPrices.reduce((max, dayPrice) =>
+    ((dayPrice.netValue > max) ? dayPrice.netValue : max), dayPrices[0].netValue) : undefined
 }
 
 onMounted(() => {
@@ -360,12 +366,12 @@ onMounted(() => {
             <br>
             <strong class="prices-information-details">
               <span>Цена за ночь: </span>
-              <span v-if="getMinDayPrices(room.price.dayPrices) === getMaxDayPrices(room.price.dayPrices)">
-                {{ formatPrice(getMinDayPrices(room.price.dayPrices) as number, grossCurrency.sign) }}
+              <span v-if="getMinDayPrices(room.price.dayPrices, 'gross') === getMaxDayPrices(room.price.dayPrices, 'gross')">
+                {{ formatPrice(getMinDayPrices(room.price.dayPrices, 'gross') as number, grossCurrency.sign) }}
               </span>
               <span v-else>
-                от {{ formatPrice(getMinDayPrices(room.price.dayPrices) as number, grossCurrency.sign) }}
-                до {{ formatPrice(getMaxDayPrices(room.price.dayPrices) as number, grossCurrency.sign) }}
+                от {{ formatPrice(getMinDayPrices(room.price.dayPrices, 'gross') as number, grossCurrency.sign) }}
+                до {{ formatPrice(getMaxDayPrices(room.price.dayPrices, 'gross') as number, grossCurrency.sign) }}
               </span>
               <button
                 v-tooltip="'Подробнее'"
