@@ -31,10 +31,11 @@ class Authenticate extends Middleware
     {
         if (!$request->expectsJson()) {
             $query = ($q = $request->query())
-                ? '?' . http_build_query($q) : '';
+                ? '?' . http_build_query($q)
+                : '';
 
             return route('auth.login', [
-                'url' => "/{$request->path()}$query"
+                'url' => "{$request->path()}$query"
             ]);
         }
 
