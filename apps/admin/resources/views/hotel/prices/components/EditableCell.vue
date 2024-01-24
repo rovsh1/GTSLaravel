@@ -9,9 +9,11 @@ const props = withDefaults(defineProps<{
   value: number | null
   enableContextMenu?: boolean
   valuePlaceHolder?: any
+  canChange?: boolean
 }>(), {
   enableContextMenu: false,
   valuePlaceHolder: '',
+  canChange: true,
 })
 
 const emit = defineEmits<{
@@ -62,6 +64,14 @@ const hideEditable = () => {
   isChanged.value = false
 }
 
+const handleChanged = () => {
+  if (props.canChange) {
+    isChanged.value = !isChanged.value
+  } else if (props.enableContextMenu) {
+    emit('activatedContextMenu')
+  }
+}
+
 onMounted(() => {
   onClickOutside(inputRef, hideEditable)
 })
@@ -69,11 +79,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <div :style="{ height: isChanged ? '100%' : 'auto' }" aria-hidden="true" @click.prevent="isChanged = !isChanged">
+  <div :style="{ height: isChanged ? '100%' : 'auto' }" aria-hidden="true" @click.prevent="handleChanged">
     <a v-if="!isChanged">
       <span v-if="value !== null">{{ value }}</span>
       <span v-else class="value-place-holder">{{ valuePlaceHolder }}</span>
-
       <EditableButton v-if="enableContextMenu" @click.stop="() => { emit('activatedContextMenu') }" />
     </a>
     <input

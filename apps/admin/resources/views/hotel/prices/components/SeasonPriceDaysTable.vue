@@ -13,15 +13,16 @@ import OverlayLoading from '~components/OverlayLoading.vue'
 
 import EditableCell from './EditableCell.vue'
 
-import { getStatusClassByPrice } from '../lib/status'
+import { getStatusClassByFlag, getStatusClassByPrice } from '../lib/status'
 import { PricesAccumulationData, PricesAccumulationDataForDays, SeasonPeriod } from '../lib/types'
 
 const props = withDefaults(defineProps<{
   seasonData: PricesAccumulationData
   seasonPeriod: SeasonPeriod
   refreshDaysPrices?: boolean
+  traveLineIntegrationEnabled?: boolean
 }>(), {
-
+  traveLineIntegrationEnabled: false,
 })
 
 const emit = defineEmits<{
@@ -169,7 +170,8 @@ onMounted(async () => {
             <td
               v-for="item in daysInPeriod"
               :key="item.id"
-              :class="[getStatusClassByPrice(seasonData.price, item.price)]"
+              :class="[traveLineIntegrationEnabled
+                ? getStatusClassByFlag(true) : getStatusClassByPrice(seasonData.price, item.price)]"
               class="priced align-middle text-center"
             >
               <EditableCell
