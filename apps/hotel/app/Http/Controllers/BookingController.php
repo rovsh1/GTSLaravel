@@ -37,7 +37,7 @@ class BookingController extends AbstractHotelController
         $grid = $this->gridFactory();
         $query = $this->prepareGridQuery(Booking::whereWaitingStatus()->whereByRequest(), $grid->getSearchCriteria());
         $query2 = $this->prepareGridQuery(Booking::whereWaitingStatus()->whereByQuota(), $grid->getSearchCriteria());
-        $query3 = $this->prepareGridQuery(Booking::where('bookings.status', '>', StatusEnum::PROCESSING), $grid->getSearchCriteria());
+        $query3 = $this->prepareGridQuery(Booking::whereNotWaitingStatus(), $grid->getSearchCriteria());
 
         $grid->data($query);
         $grid2 = $this->gridFactory()->data($query2);
