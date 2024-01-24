@@ -74,7 +74,8 @@ class ProfileController extends Controller
         } elseif ($form->submit()) {
             $data = $form->getData();
             if ($data['password'] != $data['confirm']) {
-                $form->addError('Подтвержден');
+                $form->error('Пароли не совпадают');
+                $form->throwError();
             }
 
             if ($form->isValid()) {

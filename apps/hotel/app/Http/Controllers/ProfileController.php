@@ -6,7 +6,9 @@ use App\Hotel\Models\Administrator;
 use App\Hotel\Support\Facades\Form;
 use App\Hotel\Support\Facades\Layout;
 use App\Hotel\Support\Http\AbstractController;
+use App\Shared\Http\Responses\AjaxErrorResponse;
 use App\Shared\Http\Responses\AjaxReloadResponse;
+use App\Shared\Http\Responses\AjaxSuccessResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
@@ -77,7 +79,8 @@ class ProfileController extends AbstractController
         } elseif ($form->submit()) {
             $data = $form->getData();
             if ($data['password'] != $data['confirm']) {
-                $form->addError('Подтвержден');
+                $form->error('Пароли не совпадают');
+                $form->throwError();
             }
 
             if ($form->isValid()) {
