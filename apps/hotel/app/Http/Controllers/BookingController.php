@@ -117,6 +117,7 @@ class BookingController extends AbstractHotelController
                 id: $id,
                 status: $request->getStatus(),
                 notConfirmedReason: $request->getNotConfirmedReason() ?? '',
+                supplierPenalty: $request->getSupplierPenalty(),
             )
         );
     }
