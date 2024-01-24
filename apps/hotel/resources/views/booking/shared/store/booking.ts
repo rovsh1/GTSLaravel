@@ -12,6 +12,7 @@ import { showCancelFeeDialog, showNotConfirmedReasonDialog } from '~resources/vi
 import { useBookingStatusesStore } from '~resources/views/booking/shared/store/status'
 import { useBookingStatusHistoryStore } from '~resources/views/booking/shared/store/status-history'
 
+import { UpdateBookingPrice, updateBookingPrice } from '~api/booking/hotel/price'
 import { useBookingAvailableActionsAPI } from '~api/booking/status'
 import { useHotelMarkupSettingsAPI } from '~api/hotel/markup-settings'
 
@@ -45,7 +46,7 @@ export const useBookingStore = defineStore('booking', () => {
       }
     }
     if (updateStatusResponse.value?.isCancelFeeAmountRequired) {
-      const { result: isConfirmed, clientCancelFeeAmount, cancelFeeAmount, toggleClose } = await showCancelFeeDialog(true)
+      const { result: isConfirmed, clientCancelFeeAmount, cancelFeeAmount, toggleClose } = await showCancelFeeDialog()
       if (isConfirmed) {
         updateStatusPayload.cancelFeeAmount = cancelFeeAmount
         updateStatusPayload.clientCancelFeeAmount = clientCancelFeeAmount
@@ -58,6 +59,15 @@ export const useBookingStore = defineStore('booking', () => {
       fetchAvailableActions(),
     ])
     isStatusUpdateFetching.value = false
+  }
+
+  const updatePrice = async (value: UpdateBookingPrice) => {
+    await updateBookingPrice({
+      bookingID,
+      ...value,
+    })
+    fetchBooking()
+    fetchAvailableActions()
   }
 
   onMounted(() => {
@@ -77,5 +87,6 @@ export const useBookingStore = defineStore('booking', () => {
     isStatusUpdateFetching,
     statuses,
     changeStatus,
+    updatePrice,
   }
 })

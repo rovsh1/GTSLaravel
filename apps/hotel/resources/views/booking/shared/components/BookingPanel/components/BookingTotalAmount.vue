@@ -30,7 +30,7 @@ const getDisplayPriceValue = (type: 'client' | 'supplier') => {
 </script>
 
 <template>
-  <div v-if="booking && netCurrency" class="float-end total-sum">
+  <div v-if="booking && netCurrency" class="total-sum">
     Общая сумма:
     <strong>
       {{ formatPrice(getDisplayPriceValue('supplier'), netCurrency.sign) }}
