@@ -67,10 +67,10 @@ class ProfileController extends AbstractController
     public function password(Request $request)
     {
         $form = Form::name('data')
-            ->password('password', ['label' => 'Новый пароль', 'autocomplete' => 'new-password', 'required' => true])
+            ->password('password', ['label' => 'Новый пароль', 'autocomplete' => 'new-password', 'required' => true, 'minlength' => 6])
             ->password(
                 'confirm',
-                ['label' => 'Подтвердите пароль', 'autocomplete' => 'new-password', 'required' => true]
+                ['label' => 'Подтвердите пароль', 'autocomplete' => 'new-password', 'required' => true, 'minlength' => 6]
             );
 
         if ($request->isMethod('get')) {
