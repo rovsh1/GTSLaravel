@@ -62,4 +62,15 @@
             <div class="card-body">{!! $grid2 !!}</div>
         </div>
     </div>
+
+    <div class="content-header">
+        <div class="title">{{ $title3 }}</div>
+        <div class="flex-grow-1"></div>
+    </div>
+
+    <div class="content-body">
+        <div class="card card-grid">
+            <div class="card-body">{!! $grid3 !!}</div>
+        </div>
+    </div>
 @endsection
