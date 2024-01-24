@@ -28,6 +28,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Pkg\Booking\EventSourcing\Application\UseCase\GetHistory;
+use Sdk\Booking\Enum\StatusEnum;
 
 class BookingController extends AbstractHotelController
 {
@@ -36,9 +37,9 @@ class BookingController extends AbstractHotelController
         $grid = $this->gridFactory();
         $query = $this->prepareGridQuery(Booking::whereWaitingStatus()->whereByRequest(), $grid->getSearchCriteria());
         $query2 = $this->prepareGridQuery(Booking::whereWaitingStatus()->whereByQuota(), $grid->getSearchCriteria());
-        $query3 = $this->prepareGridQuery(Booking::query(), $grid->getSearchCriteria());
-        $grid->data($query);
+        $query3 = $this->prepareGridQuery(Booking::where('bookings.status', '>', StatusEnum::PROCESSING), $grid->getSearchCriteria());
 
+        $grid->data($query);
         $grid2 = $this->gridFactory()->data($query2);
         $grid3 = $this->gridFactory()->data($query3);
 

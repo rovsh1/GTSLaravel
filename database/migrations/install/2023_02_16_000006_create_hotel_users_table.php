@@ -22,6 +22,7 @@ return new class extends Migration {
             $table->string('email', 50)->nullable();
             $table->string('phone', 50)->nullable();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('hotel_id')
                 ->references('id')

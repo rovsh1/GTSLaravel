@@ -5,7 +5,9 @@ namespace App\Admin\Http\Controllers;
 use App\Admin\Models\Administrator\Administrator;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Layout;
+use App\Shared\Http\Responses\AjaxRedirectResponse;
 use App\Shared\Http\Responses\AjaxReloadResponse;
+use App\Shared\Http\Responses\AjaxResponseInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
@@ -116,6 +118,17 @@ class ProfileController extends Controller
         ]);
     }
 
+    public function delete(Request $request): AjaxResponseInterface
+    {
+        $user = Auth::user();
+        $this->logout($request);
+        $user->delete();
+
+        return new AjaxRedirectResponse(
+            route('auth.login')
+        );
+    }
+
     private function updateAvatar(Administrator $model, UploadedFile $uploadedFile): void
     {
         $fileStorageAdapter = app(FileStorageAdapterInterface::class);
@@ -127,5 +140,14 @@ class ProfileController extends Controller
         if ($fileDto) {
             $model->update(['avatar' => $fileDto->guid]);
         }
+    }
+
+    private function logout(Request $request): void
+    {
+        Auth::guard('admin')->logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
     }
 }

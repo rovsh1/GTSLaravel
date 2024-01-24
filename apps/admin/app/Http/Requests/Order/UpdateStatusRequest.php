@@ -16,11 +16,22 @@ class UpdateStatusRequest extends FormRequest
     {
         return [
             'status' => ['required', 'numeric'],
+            'refund_fee' => ['nullable', 'numeric'],
         ];
     }
 
     public function getStatus(): int
     {
         return $this->integer('status');
+    }
+
+    public function getRefundFee(): ?float
+    {
+        $value = $this->get('refund_fee');
+        if ($value === null) {
+            return null;
+        }
+
+        return (float)$value;
     }
 }

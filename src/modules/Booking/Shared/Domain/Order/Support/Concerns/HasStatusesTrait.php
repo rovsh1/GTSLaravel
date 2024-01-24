@@ -2,6 +2,7 @@
 
 namespace Module\Booking\Shared\Domain\Order\Support\Concerns;
 
+use Module\Booking\Moderation\Domain\Order\Exception\RefundFeeAmountBelowOrEqualZero;
 use Module\Booking\Shared\Domain\Order\Event\OrderCancelled;
 use Sdk\Shared\Enum\Order\OrderStatusEnum;
 
@@ -68,8 +69,11 @@ trait HasStatusesTrait
         $this->pushEvent(new OrderCancelled($this));
     }
 
-    public function toRefundFee(): void
+    public function toRefundFee(float $refundFeeAmount): void
     {
+        if ($refundFeeAmount <= 0) {
+            throw new RefundFeeAmountBelowOrEqualZero();
+        }
         $this->status = OrderStatusEnum::REFUND_FEE;
     }
 

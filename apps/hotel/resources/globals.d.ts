@@ -3,6 +3,8 @@ import { ZodRawShape } from 'zod/lib/types'
 declare global {
   interface JQuery extends JQueryStatic {
     update(): void
+
+    deleteButton(): void
   }
 
   interface Window {

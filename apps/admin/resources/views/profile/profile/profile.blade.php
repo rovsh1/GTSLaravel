@@ -40,7 +40,6 @@
             <div class="block-title">Пароль</div>
             <div class="block-body">
                 <div class="block-row" data-action="password">
-                    <!--<div class="label">Сменить пароль</div>-->
                     <div class="value">Сменить пароль</div>
                 </div>
             </div>
@@ -49,8 +48,8 @@
         <div class="block">
             <div class="block-title">Удаление профиля</div>
             <div class="block-body">
-                <div class="block-row" data-action="delete">
-                    <div class="value">Удалить профиль</div>
+                <div class="block-row">
+                    <div class="value" id="delete-profile-btn" data-url="{{ route('profile.delete') }}" data-action="delete">Удалить профиль</div>
                 </div>
             </div>
         </div>

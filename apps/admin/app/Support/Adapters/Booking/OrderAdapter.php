@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Admin\Support\Adapters\Booking;
 
-use Carbon\CarbonPeriod;
 use Module\Booking\Moderation\Application\Dto\GuestDto;
 use Module\Booking\Moderation\Application\Dto\OrderAvailableActionsDto;
 use Module\Booking\Moderation\Application\Dto\OrderDto;
 use Module\Booking\Moderation\Application\Dto\UpdateGuestDto;
 use Module\Booking\Moderation\Application\RequestDto\AddGuestRequestDto;
 use Module\Booking\Moderation\Application\RequestDto\CreateOrderRequestDto;
+use Module\Booking\Moderation\Application\ResponseDto\OrderUpdateStatusResponseDto;
 use Module\Booking\Moderation\Application\UseCase\Order\CreateOrder;
 use Module\Booking\Moderation\Application\UseCase\Order\GetActiveOrders;
 use Module\Booking\Moderation\Application\UseCase\Order\GetAvailableActions;
@@ -101,9 +101,9 @@ class OrderAdapter
         return app(GetOrderBookings::class)->execute($orderId);
     }
 
-    public function updateStatus(int $orderId, int $status): void
+    public function updateStatus(int $orderId, int $status, ?float $refundFeeAmount): OrderUpdateStatusResponseDto
     {
-        app(UpdateStatus::class)->execute($orderId, $status);
+        return app(UpdateStatus::class)->execute($orderId, $status, $refundFeeAmount);
     }
 
     public function create(

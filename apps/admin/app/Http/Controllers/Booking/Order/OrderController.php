@@ -24,8 +24,6 @@ use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Grid\SearchForm;
 use App\Admin\Support\View\Layout as LayoutContract;
-use App\Shared\Http\Responses\AjaxResponseInterface;
-use App\Shared\Http\Responses\AjaxSuccessResponse;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -78,7 +76,8 @@ class OrderController extends Controller
             ]);
     }
 
-    public function store(): RedirectResponse {
+    public function store(): RedirectResponse
+    {
         $form = $this->formFactory()
             ->method('post')
             ->failUrl($this->prototype->route('create'));
@@ -171,11 +170,11 @@ class OrderController extends Controller
         );
     }
 
-    public function updateStatus(UpdateStatusRequest $request, int $id): AjaxResponseInterface
+    public function updateStatus(UpdateStatusRequest $request, int $id): JsonResponse
     {
-        OrderAdapter::updateStatus($id, $request->getStatus());
-
-        return new AjaxSuccessResponse();
+        return response()->json(
+            OrderAdapter::updateStatus($id, $request->getStatus(), $request->getRefundFee())
+        );
     }
 
     private function prepareGridQuery(Builder $query, array $searchCriteria): Builder
