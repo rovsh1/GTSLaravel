@@ -4,6 +4,7 @@ import { defineStore, storeToRefs } from 'pinia'
 import { z } from 'zod'
 
 import {
+  setNoCheckInBookingStatus,
   updateBookingStatus,
   UpdateBookingStatusPayload,
   useGetBookingAPI,
@@ -61,6 +62,20 @@ export const useBookingStore = defineStore('booking', () => {
     isStatusUpdateFetching.value = false
   }
 
+  const setNoCheckIn = async (penaltyValue: number | null) => {
+    const response = await setNoCheckInBookingStatus({
+      bookingID,
+      cancelFeeAmount: penaltyValue,
+    })
+    if (response.data.value?.success) {
+      fetchBooking()
+      fetchAvailableActions()
+      fetchStatusHistory()
+      return true
+    }
+    return false
+  }
+
   const updatePrice = async (value: UpdateBookingPrice) => {
     await updateBookingPrice({
       bookingID,
@@ -87,6 +102,7 @@ export const useBookingStore = defineStore('booking', () => {
     isStatusUpdateFetching,
     statuses,
     changeStatus,
+    setNoCheckIn,
     updatePrice,
   }
 })

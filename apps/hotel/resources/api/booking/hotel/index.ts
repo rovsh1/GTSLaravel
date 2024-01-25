@@ -35,6 +35,11 @@ export interface UpdateBookingStatusPayload {
   clientCancelFeeAmount?: number
 }
 
+export interface SetNoCheckInStatusPayload {
+  bookingID: BookingID
+  cancelFeeAmount: number | null
+}
+
 export interface UpdateExternalNumberPayload {
   bookingID: BookingID
   type: number
@@ -82,6 +87,22 @@ export const updateExternalNumber = (props: MaybeRef<UpdateExternalNumberPayload
         (payload: UpdateExternalNumberPayload): any => ({
           type: payload.type,
           number: payload.number,
+        }),
+      ),
+    )), 'application/json')
+    .json<BaseResponse>()
+
+export const setNoCheckInBookingStatus = (props: MaybeRef<SetNoCheckInStatusPayload>) =>
+  useAdminAPI(
+    props,
+    ({ bookingID }) => `/booking/${bookingID}/status/no-checkin`,
+    { immediate: true },
+  )
+    .post(computed<string>(() => JSON.stringify(
+      getNullableRef<SetNoCheckInStatusPayload, any>(
+        props,
+        (payload: SetNoCheckInStatusPayload): any => ({
+          net_penalty: payload.cancelFeeAmount,
         }),
       ),
     )), 'application/json')
