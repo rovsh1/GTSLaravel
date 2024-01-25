@@ -18,6 +18,7 @@ use Gsdk\Format\View\ParamsTable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\JsonResponse;
+use Sdk\Shared\Enum\CurrencyEnum;
 
 class SupplierController extends AbstractPrototypeController
 {
@@ -74,6 +75,7 @@ class SupplierController extends AbstractPrototypeController
         return Grid::enableQuicksearch()
             ->paginator(self::GRID_LIMIT)
             ->text('name', ['text' => 'Наименование', 'route' => $this->prototype->routeName('show'), 'order' => true])
+            ->enum('currency', ['text' => 'Валюта', 'enum' => CurrencyEnum::class])
             ->orderBy('name', 'asc');
     }
 
