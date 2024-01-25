@@ -4,7 +4,9 @@ namespace Module\Hotel\Pricing\Domain\Hotel\Service;
 
 use Module\Hotel\Pricing\Domain\Hotel\Dto\CalculationDto;
 use Module\Hotel\Pricing\Domain\Hotel\Support\CalculationBuilder;
+use Sdk\Shared\Enum\CurrencyEnum;
 use Sdk\Shared\ValueObject\MarkupValue;
+use Sdk\Shared\ValueObject\Money;
 
 class RoomDayPriceCalculatorFormula
 {
@@ -58,6 +60,7 @@ class RoomDayPriceCalculatorFormula
 
     private static function percent(int|float $value, int $percent): float|int
     {
-        return $value * $percent / 100;
+        //@todo добавить валюту
+        return Money::round(CurrencyEnum::USD,$value * $percent / 100);
     }
 }

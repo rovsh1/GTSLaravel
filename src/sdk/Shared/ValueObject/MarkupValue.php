@@ -40,6 +40,7 @@ final class MarkupValue implements CanEquate
             case ValueTypeEnum::ABSOLUTE:
                 return $this->value;
             case ValueTypeEnum::PERCENT:
+                //@todo округлять для валюты
                 return $price * $this->value / 100;
         }
     }
