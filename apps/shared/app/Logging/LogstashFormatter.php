@@ -126,9 +126,9 @@ class LogstashFormatter extends NormalizerFormatter
 
     private function formatExceptionObject(\Throwable $e): string
     {
-        return $e::class . "(code: {$e->getCode()}): "
+        return '(' . $e::class . "(code: {$e->getCode()}): "
             . ($e->getMessage() ?: '<empty>')
-            . " at {$e->getFile()})";
+            . " at {$e->getFile()}:{$e->getLine()})";
     }
 
     private function formatPreviousException(\Throwable $e): string

@@ -3,10 +3,13 @@ import { nextTick, ref, watch, watchEffect } from 'vue'
 
 import { useToggle } from '@vueuse/core'
 import { nanoid } from 'nanoid'
+import { z } from 'zod'
 
 import { updateRoomSeasonPrice } from '~resources/api/hotel/prices/seasons'
 import { formatSeasonPeriod } from '~resources/lib/date'
 import { generateHashFromObject } from '~resources/lib/hash'
+
+import { requestInitialData } from '~lib/initial-data'
 
 import BaseDialog from '~components/BaseDialog.vue'
 import { showToast } from '~components/Bootstrap/BootstrapToast'
@@ -18,6 +21,12 @@ import SeasonPriceDaysTable from './SeasonPriceDaysTable.vue'
 
 import { getStatusClassByFlag } from '../lib/status'
 import { PricesAccumulationData, Room, RoomSeasonPrice, Season, SeasonPeriod } from '../lib/types'
+
+const { isTravelineIntegrationEnabled } = requestInitialData(
+  z.object({
+    isTravelineIntegrationEnabled: z.boolean(),
+  }),
+)
 
 const props = withDefaults(defineProps<{
   hotelId: number
@@ -218,12 +227,13 @@ const handlerUpdateSeasonDaysData = (status :boolean) => {
               <template v-for="item in roomSeasonsPricesData" :key="item.id">
                 <td
                   v-if="item.rateID == rate.id && item.isResident"
-                  :class="[getStatusClassByFlag(item.seasonStatusFlag)]"
+                  :class="[getStatusClassByFlag(isTravelineIntegrationEnabled || item.seasonStatusFlag)]"
                   class="priced align-middle"
                 >
                   <EditableCell
                     :value="item.price"
-                    :enable-context-menu="!!item.price"
+                    :enable-context-menu="!!item.price || isTravelineIntegrationEnabled"
+                    :can-change="!isTravelineIntegrationEnabled"
                     @activated-context-menu="editableSeasonDays(item)"
                     @change="(value: any) => changeSeasonPrice(item, value)"
                   />
@@ -235,12 +245,13 @@ const handlerUpdateSeasonDaysData = (status :boolean) => {
               <template v-for="item in roomSeasonsPricesData" :key="item.id">
                 <td
                   v-if="item.rateID == rate.id && !item.isResident"
-                  :class="[getStatusClassByFlag(item.seasonStatusFlag)]"
+                  :class="[getStatusClassByFlag(isTravelineIntegrationEnabled || item.seasonStatusFlag)]"
                   class="priced align-middle"
                 >
                   <EditableCell
                     :value="item.price"
-                    :enable-context-menu="!!item.price"
+                    :enable-context-menu="!!item.price || isTravelineIntegrationEnabled"
+                    :can-change="!isTravelineIntegrationEnabled"
                     @activated-context-menu="editableSeasonDays(item)"
                     @change="(value: any) => changeSeasonPrice(item, value)"
                   />
@@ -263,6 +274,7 @@ const handlerUpdateSeasonDaysData = (status :boolean) => {
       :season-period="currentSeasonPeriod"
       :season-data="currentSeasonData"
       :refresh-days-prices="isFetching"
+      :trave-line-integration-enabled="isTravelineIntegrationEnabled"
       @update-season-days-data="handlerUpdateSeasonDaysData"
     />
     <BaseDialog :keydown-enter-callback="onSubmitChangeData" :opened="isOpened as boolean" @close="toggleModal(false)">

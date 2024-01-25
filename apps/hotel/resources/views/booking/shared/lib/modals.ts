@@ -87,12 +87,12 @@ export const showNotConfirmedReasonDialog = async (): Promise<ShowNotConfirmedRe
 }
 
 export interface ShowCancelFeeDialogResponse extends ShowDialogResponse {
-  clientCancelFeeAmount: number
+  clientCancelFeeAmount: number | undefined
   cancelFeeAmount: number
 }
 
 export const showCancelFeeDialog = (withClientCancelFee?: boolean): Promise<ShowCancelFeeDialogResponse> => new Promise((resolve): void => {
-  let clientCancelFeeAmount: number = 0
+  let clientCancelFeeAmount: number | undefined = withClientCancelFee ? 0 : undefined
   let cancelFeeAmount: number = 0
   let $clientReasonDescriptionField = null
   const $form = $('<form />', { method: 'post' })
