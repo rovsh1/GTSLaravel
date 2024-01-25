@@ -44,8 +44,10 @@ class Supplier extends Model
         static::addGlobalScope('default', function (Builder $builder) {
             $builder->orderBy('name')
                 ->addSelect('suppliers.*')
+                ->leftJoin('r_enums', 'r_enums.id', '=', 'suppliers.type_id')
                 ->leftJoin('r_currencies', 'r_currencies.code_char', '=', 'suppliers.currency')
-                ->joinTranslatable('r_currencies', 'name as currency_name');
+                ->joinTranslatable('r_currencies', 'name as currency_name')
+                ->joinTranslatable('r_enums', 'name as type_name');
         });
     }
 

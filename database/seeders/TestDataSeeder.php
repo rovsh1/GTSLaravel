@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Module\Booking\Moderation\Application\UseCase\HotelBooking\System\FillCalculatedPriceCalendar;
 use Sdk\Shared\Enum\Contract\StatusEnum;

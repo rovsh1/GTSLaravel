@@ -1,5 +1,5 @@
-INSERT INTO `suppliers` (`id`, `name`, `currency`, `created_at`, `updated_at`)
-VALUES (555, 'Sixt', 'UZS', '2023-10-23 14:05:22', '2023-10-23 14:05:22');
+INSERT INTO `suppliers` (`id`, `name`, `type_id`, `currency`, `created_at`, `updated_at`)
+VALUES (555, 'Sixt', 335, 'UZS', '2023-10-23 14:05:22', '2023-10-23 14:05:22');
 
 INSERT INTO `supplier_cities` (`city_id`, `supplier_id`)
 VALUES (1, 555), (4, 555);

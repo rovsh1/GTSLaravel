@@ -148,7 +148,7 @@ VALUES (3651, '2023-10-02', 1915, 11, 318, '600000.00'),
 
 
 #Traveline
-INSERT INTO suppliers (id, name, currency) VALUES (556, 'Traveline', 'UZS');
+INSERT INTO suppliers (id, name, type_id, currency) VALUES (556, 'Traveline', 334, 'UZS');
 
 INSERT INTO supplier_cities (city_id, supplier_id) VALUES (1, 556);
 
