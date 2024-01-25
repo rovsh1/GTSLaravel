@@ -3,6 +3,7 @@
 import BookingExternalNumberType from '~resources/views/booking/shared/components/BookingPanel/components/BookingExternalNumberType.vue'
 import BookingPenaltyAmount from '~resources/views/booking/shared/components/BookingPanel/components/BookingPenaltyAmount.vue'
 import BookingRequests from '~resources/views/booking/shared/components/BookingPanel/components/BookingRequests.vue'
+import BookingSetNoCheckIn from '~resources/views/booking/shared/components/BookingPanel/components/BookingSetNoCheckIn.vue'
 import BookingStatus from '~resources/views/booking/shared/components/BookingPanel/components/BookingStatus.vue'
 import BookingStatusHistory from '~resources/views/booking/shared/components/BookingPanel/components/BookingStatusHistory.vue'
 import BookingStatusReason
@@ -28,6 +29,7 @@ import ControlPanelSection from '~resources/views/booking/shared/components/Cont
     title="Тип номера подтверждения бронирования"
   >
     <BookingExternalNumberType />
+    <BookingSetNoCheckIn />
     <BookingStatusReason />
   </ControlPanelSection>
 
