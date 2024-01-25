@@ -54,7 +54,6 @@
       align-items: center;
       width: 48px;
       height: 40px;
-      border-left: 3px solid transparent;
       line-height: 48px;
       text-align: center;
       white-space: nowrap;
@@ -65,7 +64,8 @@
     }
 
     .item.current>a {
-      border-left-color: variables.$primary;
+      background-color: variables.$primary;
+      color: #fff;
     }
   }
 
