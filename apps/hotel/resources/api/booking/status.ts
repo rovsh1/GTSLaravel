@@ -11,15 +11,9 @@ export interface StatusSettings {
 
 export interface BookingAvailableActionsResponse {
   statuses: StatusSettings[]
-  isEditable: boolean
-  isRequestable: boolean
-  canSendBookingRequest: boolean
-  canSendCancellationRequest: boolean
-  canSendChangeRequest: boolean
   canEditExternalNumber: boolean
-  canChangeRoomPrice: boolean
-  canCopy: boolean
   canSetNoCheckIn: boolean
+  canEditPenalty: boolean
 }
 
 export interface BookingStatusHistoryData extends Record<string, any> {

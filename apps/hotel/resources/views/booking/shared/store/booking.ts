@@ -77,12 +77,16 @@ export const useBookingStore = defineStore('booking', () => {
   }
 
   const updatePrice = async (value: UpdateBookingPrice) => {
-    await updateBookingPrice({
+    const response = await updateBookingPrice({
       bookingID,
       ...value,
     })
-    fetchBooking()
-    fetchAvailableActions()
+    if (response.data.value?.success) {
+      fetchBooking()
+      fetchAvailableActions()
+      return true
+    }
+    return false
   }
 
   onMounted(() => {
