@@ -5,6 +5,7 @@ namespace App\Hotel\Http\Controllers;
 use App\Hotel\Http\Requests\Booking\SetNoCheckInRequest;
 use App\Hotel\Http\Requests\Booking\UpdateExternalNumberRequest;
 use App\Hotel\Http\Requests\Booking\UpdateNoteRequest;
+use App\Hotel\Http\Requests\Booking\UpdatePenaltyRequest;
 use App\Hotel\Http\Requests\Booking\UpdateStatusRequest;
 use App\Hotel\Http\Resources\Room as RoomResource;
 use App\Hotel\Models\Booking;
@@ -28,7 +29,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Pkg\Booking\EventSourcing\Application\UseCase\GetHistory;
-use Sdk\Booking\Enum\StatusEnum;
 
 class BookingController extends AbstractHotelController
 {
@@ -164,6 +164,13 @@ class BookingController extends AbstractHotelController
     public function updateExternalNumber(UpdateExternalNumberRequest $request, int $id): AjaxResponseInterface
     {
         DetailsAdapter::updateExternalNumber($id, $request->getType(), $request->getNumber());
+
+        return new AjaxSuccessResponse();
+    }
+
+    public function updatePenalty(UpdatePenaltyRequest $request, int $id): AjaxResponseInterface
+    {
+        BookingAdapter::setPenalty($request->getPenalty(), $id);
 
         return new AjaxSuccessResponse();
     }

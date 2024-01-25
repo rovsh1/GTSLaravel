@@ -49,6 +49,12 @@ final class EditRules
             && $isLessThan72HorusAfterCheckIn;
     }
 
+    public function canEditPenalty(): bool
+    {
+        return $this->order->inModeration()
+            && $this->booking->isCancelled();
+    }
+
     /**
      * @return StatusEnum[]
      */

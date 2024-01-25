@@ -2,11 +2,14 @@
 
 namespace Sdk\Booking\Event\HotelBooking;
 
+use Sdk\Booking\Contracts\Event\InvoiceBecomeDeprecatedEventInterface;
 use Sdk\Booking\Contracts\Event\PriceBecomeDeprecatedEventInterface;
 use Sdk\Booking\Entity\HotelAccommodation;
 use Sdk\Booking\ValueObject\HotelBooking\AccommodationDetails;
 
-class AccommodationDetailsEdited extends AbstractAccommodationEvent implements PriceBecomeDeprecatedEventInterface
+class AccommodationDetailsEdited extends AbstractAccommodationEvent implements
+    PriceBecomeDeprecatedEventInterface,
+    InvoiceBecomeDeprecatedEventInterface
 {
     public function __construct(
         HotelAccommodation $accommodation,

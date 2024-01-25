@@ -10,7 +10,7 @@ trait HasStatusesTrait
 {
     public function inModeration(): bool
     {
-        return $this->status === OrderStatusEnum::IN_PROGRESS;
+        return $this->status === OrderStatusEnum::IN_PROGRESS || $this->isWaitingInvoice() || $this->isInvoiced();
     }
 
     public function isWaitingInvoice(): bool

@@ -6,6 +6,7 @@ namespace App\Hotel\Support\Adapters\Booking;
 
 use Module\Booking\Moderation\Application\UseCase\UpdateNote;
 use Module\Booking\Moderation\Application\UseCase\UpdateStatus;
+use Module\Booking\Pricing\Application\UseCase\SetSupplierPenalty;
 use Pkg\Booking\Common\Application\UseCase\GetBooking;
 use Pkg\Booking\Common\Application\UseCase\GetStatuses;
 use Pkg\Booking\EventSourcing\Application\UseCase\GetStatusHistory;
@@ -52,5 +53,10 @@ class BookingAdapter
     public function updateNote(int $bookingId, string|null $note): void
     {
         app(UpdateNote::class)->execute($bookingId, $note);
+    }
+
+    public function setPenalty(int $bookingId, float|null $penalty): void
+    {
+        app(SetSupplierPenalty::class)->execute($bookingId, $penalty);
     }
 }

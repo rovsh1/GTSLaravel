@@ -25,6 +25,8 @@ Route::controller(BookingController::class)
 
         Route::put('/{booking}/external/number', 'updateExternalNumber')->name('external.number.update');
 
+        Route::put('/{booking}/price/penalty', 'updatePenalty')->name('price.penalty.update');
+
         Route::controller(BookingRequestController::class)
             ->prefix('/{booking}/request')
             ->as('request.')

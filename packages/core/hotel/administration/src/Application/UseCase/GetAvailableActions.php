@@ -33,6 +33,7 @@ class GetAvailableActions implements UseCaseInterface
             statuses: $this->buildAvailableStatuses(),
             canEditExternalNumber: $this->editRules->canEditExternalNumber(),
             canSetNoCheckIn: $this->editRules->canSetNoCheckIn(),
+            canEditPenalty: $this->editRules->canEditPenalty(),
         );
     }
 

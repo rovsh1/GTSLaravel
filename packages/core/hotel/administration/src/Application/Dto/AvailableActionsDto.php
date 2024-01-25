@@ -10,5 +10,6 @@ final class AvailableActionsDto
         public readonly array $statuses,
         public readonly bool $canEditExternalNumber,
         public readonly bool $canSetNoCheckIn,
+        public readonly bool $canEditPenalty,
     ) {}
 }

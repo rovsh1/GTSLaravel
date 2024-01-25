@@ -62,7 +62,13 @@ class OrderDbContext implements OrderDbContextInterface
                 if ($clientId !== null) {
                     $builder->whereClientId($clientId);
                 }
-                $builder->whereStatus(OrderStatusEnum::IN_PROGRESS);
+                //@todo эти статусы должны как-то передаваться из домена
+                $moderationStatuses = [
+                    OrderStatusEnum::IN_PROGRESS,
+                    OrderStatusEnum::WAITING_INVOICE,
+                    OrderStatusEnum::INVOICED,
+                ];
+                $builder->whereIn('orders.status', $moderationStatuses);
             })
             ->get();
 

@@ -2,6 +2,8 @@
 
 namespace Sdk\Booking\Event\Status;
 
-final class BookingCancelled extends AbstractStatusEvent
+use Sdk\Booking\Contracts\Event\InvoiceBecomeDeprecatedEventInterface;
+
+final class BookingCancelled extends AbstractStatusEvent implements InvoiceBecomeDeprecatedEventInterface
 {
 }
