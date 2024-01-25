@@ -123,11 +123,11 @@ class BookingController extends AbstractHotelController
         );
     }
 
-    public function setNoCheckIn(SetNoCheckInRequest $request, int $id): JsonResponse
+    public function setNoCheckIn(SetNoCheckInRequest $request, int $id): AjaxResponseInterface
     {
         BookingAdapter::setNoCheckIn($id, $request->getSupplierPenalty());
 
-        return response()->json();
+        return new AjaxSuccessResponse();
     }
 
     public function getStatusHistory(int $id): JsonResponse
