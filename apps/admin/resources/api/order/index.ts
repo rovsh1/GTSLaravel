@@ -17,9 +17,7 @@ export interface GetOrderPayload {
 export interface UpdateOrderStatusPayload {
   orderID: OrderID
   status: number
-  notConfirmedReason?: string
-  cancelFeeAmount?: number
-  clientCancelFeeAmount?: number
+  refundFee?: number
 }
 
 export interface UpdateNotePayload {
@@ -33,8 +31,7 @@ export interface UpdateManagerPayload {
 }
 
 export interface UpdateOrderStatusResponse {
-  isNotConfirmedReasonRequired: boolean
-  isCancelFeeAmountRequired: boolean
+  isRefundFeeAmountRequired: boolean
 }
 
 export interface CopyOrderPayload {
@@ -57,9 +54,7 @@ export const updateOrderStatus = (props: MaybeRef<UpdateOrderStatusPayload>) =>
         props,
         (payload: UpdateOrderStatusPayload): any => ({
           status: payload.status,
-          not_confirmed_reason: payload.notConfirmedReason,
-          net_penalty: payload.cancelFeeAmount,
-          gross_penalty: payload.clientCancelFeeAmount,
+          refund_fee: payload.refundFee,
         }),
       ),
     )), 'application/json')

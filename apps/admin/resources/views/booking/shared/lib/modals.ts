@@ -101,6 +101,7 @@ export const showCancelFeeDialog = (withClientCancelFee?: boolean): Promise<Show
     id: 'form_data_penalty_net',
     class: 'form-control',
     type: 'number',
+    min: 0,
     required: true,
   }).on('input', (e) => {
     cancelFeeAmount = Number($(e.target).val())
@@ -116,6 +117,7 @@ export const showCancelFeeDialog = (withClientCancelFee?: boolean): Promise<Show
       id: 'form_data_penalty_gross',
       class: 'form-control',
       type: 'number',
+      min: 0,
       required: true,
     }).on('input', (e) => {
       clientCancelFeeAmount = Number($(e.target).val())
