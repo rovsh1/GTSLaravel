@@ -42,11 +42,11 @@ final class EditRules
     {
         $checkInTimestamp = $this->details->bookingPeriod()->dateFrom()->getTimestamp();
         $isCheckInDateExpired = time() >= $checkInTimestamp;
-        $isLessThan72HorusAfterCheckIn = $checkInTimestamp < time() + 60 * 60 * 72;
+        $isLessThan72HoursAfterCheckIn = time() < $checkInTimestamp + 60 * 60 * 72;
 
         return $this->booking->status()->value() === StatusEnum::CONFIRMED
             && $isCheckInDateExpired
-            && $isLessThan72HorusAfterCheckIn;
+            && $isLessThan72HoursAfterCheckIn;
     }
 
     public function canEditPenalty(): bool
