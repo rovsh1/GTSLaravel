@@ -29,7 +29,7 @@ const penaltyCurrency = computed<Currency | undefined>(
   () => getCurrencyByCodeChar(bookingStore.booking?.prices.supplierPrice.currency.value),
 )
 
-const canSetNoCheckIn = computed(() => bookingStore.availableActions?.canSetNoCheckIn || true)
+const canSetNoCheckIn = computed(() => bookingStore.availableActions?.canSetNoCheckIn)
 
 const isUpdating = ref(false)
 
