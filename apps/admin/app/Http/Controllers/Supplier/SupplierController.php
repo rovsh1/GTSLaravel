@@ -14,6 +14,7 @@ use App\Admin\Support\Facades\Sidebar;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
+use App\Admin\Support\View\Grid\SearchForm;
 use App\Admin\View\Menus\SupplierMenu;
 use Gsdk\Format\View\ParamsTable;
 use Illuminate\Database\Eloquent\Model;
@@ -81,10 +82,18 @@ class SupplierController extends AbstractPrototypeController
     {
         return Grid::enableQuicksearch()
             ->paginator(self::GRID_LIMIT)
+            ->setSearchForm($this->searchForm())
             ->text('name', ['text' => 'Наименование', 'route' => $this->prototype->routeName('show'), 'order' => true])
             ->text('type_name', ['text' => 'Тип'])
             ->text('currency_name', ['text' => 'Валюта'])
             ->orderBy('name', 'asc');
+    }
+
+    private function searchForm()
+    {
+        return (new SearchForm())
+            ->select('type_id', ['label' => 'Тип', 'emptyItem' => '', 'items' => SupplierType::get()])
+            ->currency('currency', ['label' => 'Валюта', 'emptyItem' => '']);
     }
 
     protected function prepareShowMenu(Model $model)
