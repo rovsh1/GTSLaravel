@@ -189,8 +189,10 @@ aside.sidebar {
 
   .group .group-title {
     position: relative;
-    padding: 0 0.5rem 0 1rem;
+    padding: 0 0.5rem;
+    border-bottom: 1px solid rgb(0 0 0 / 24%);
     color: rgb(0 0 0 / 54%);
-    line-height: 2rem;
+    line-height: 1.9rem;
+    text-align: center;
   }
 }
