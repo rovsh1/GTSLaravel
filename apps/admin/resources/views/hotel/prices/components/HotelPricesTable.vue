@@ -87,6 +87,7 @@ const setPricesAccumulationData = (obj: PricesAccumulationData): PricesAccumulat
     roomID: obj.roomID,
     seasonID: obj.seasonID,
     isResident: obj.isResident,
+    guestCount: obj.guestsCount,
   })
   return { id: hashID, ...obj }
 }

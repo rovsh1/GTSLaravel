@@ -493,7 +493,8 @@ th {
 .monthName {
   @extend %cell-title-line;
 
-  text-align: center;
+  padding: 0 0.5rem;
+  text-align: left;
 }
 
 .roomTypeHeadingRow {
