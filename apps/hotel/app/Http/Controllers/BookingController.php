@@ -170,7 +170,7 @@ class BookingController extends AbstractHotelController
 
     public function updatePenalty(UpdatePenaltyRequest $request, int $id): AjaxResponseInterface
     {
-        BookingAdapter::setPenalty($request->getPenalty(), $id);
+        BookingAdapter::setPenalty($id, $request->getPenalty());
 
         return new AjaxSuccessResponse();
     }
