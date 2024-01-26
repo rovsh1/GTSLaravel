@@ -3,13 +3,14 @@
 namespace App\Admin\Models\Hotel;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Hash;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
 use Sdk\Module\Database\Eloquent\Model;
 
 class User extends Model
 {
-    use HasQuicksearch;
+    use HasQuicksearch, SoftDeletes;
 
     public $timestamps = false;
 
