@@ -9,7 +9,8 @@ return new class extends Migration {
         DB::unprepared(
             'INSERT INTO users (id, client_id, country_id,name, surname, patronymic,presentation, gender, login, password,email,phone,post_id,address,note,status,role,birthday,created_at,updated_at)'
             . ' SELECT id, client_id, country_id,name, surname, patronymic,presentation, gender, login, password,email,phone,post_id,address,note,status,role,birthday,NOW(),NOW()'
-            . ' FROM ' . DB::connection('mysql_old')->getDatabaseName() . '.users'
+            . ' FROM ' . DB::connection('mysql_old')->getDatabaseName() . '.users'.
+            ' WHERE presentation NOT LIKE "%http%" AND presentation NOT LIKE "%oпрoс%" AND presentation NOT LIKE "%зapабатывaть%"'
         );
     }
 
