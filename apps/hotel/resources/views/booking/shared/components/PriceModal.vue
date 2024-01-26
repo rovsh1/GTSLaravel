@@ -11,11 +11,12 @@ const props = defineProps<{
   header: string
   label: string
   value?: number
+  loading?: boolean
 }>()
 
 const emit = defineEmits<{
   (event: 'close'): void
-  (event: 'submit', value: number | undefined | null): void
+  (event: 'submit', value: number | null): void
 }>()
 
 const isChanged = ref(false)
@@ -35,7 +36,7 @@ watch(() => props.opened, (value) => {
 })
 
 const handleSubmit = () => {
-  emit('submit', localValue.value || null)
+  emit('submit', localValue.value && localValue.value > 0 ? localValue.value : null)
 }
 
 </script>
@@ -43,6 +44,7 @@ const handleSubmit = () => {
 <template>
   <BaseDialog
     :opened="opened as boolean"
+    :loading="loading"
     @close="$emit('close')"
     @keydown.enter.prevent="handleSubmit"
   >
@@ -51,13 +53,13 @@ const handleSubmit = () => {
     <form ref="modalForm" class="row g-3">
       <div class="col-md-12">
         <label for="price">{{ label }}</label>
-        <input id="price" v-model.number="localValue" type="number" class="form-control">
+        <input id="price" v-model.number="localValue" min="1" type="number" class="form-control">
       </div>
     </form>
 
     <template #actions-end>
-      <button class="btn btn-primary" type="button" @click="handleSubmit">Сохранить</button>
-      <button class="btn btn-cancel" type="button" @click="$emit('close')">Отмена</button>
+      <button class="btn btn-primary" type="button" :disabled="loading" @click="handleSubmit">Сохранить</button>
+      <button class="btn btn-cancel" type="button" :disabled="loading" @click="$emit('close')">Отмена</button>
     </template>
   </BaseDialog>
 </template>
