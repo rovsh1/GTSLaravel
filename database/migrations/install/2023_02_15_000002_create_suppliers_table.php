@@ -10,6 +10,7 @@ return new class extends Migration {
         Schema::create('suppliers', function (Blueprint $table) {
             $table->integer('id')->unsigned()->autoIncrement();
             $table->string('name');
+            $table->unsignedSmallInteger('type_id');
             $table->char('currency', 3);
             $table->timestamps();
 
@@ -17,6 +18,12 @@ return new class extends Migration {
                 ->references('code_char')
                 ->on('r_currencies')
                 ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+
+            $table->foreign('type_id')
+                ->references('id')
+                ->on('r_enums')
+                ->restrictOnDelete()
                 ->cascadeOnUpdate();
         });
 

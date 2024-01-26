@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 return new class extends Migration {
@@ -17,10 +18,18 @@ return new class extends Migration {
     ];
 
     private const CANCEL_REASON_ENUM_GROUP = 'cancel-reason';
+    private const SUPPLIER_TYPE_ENUM_GROUP = 'supplier-type';
 
     private const DEFAULT_CANCEL_REASONS = [
         'Нет мест',
         'Двойное бронирование',
+    ];
+
+    private const DEFAULT_SUPPLIER_TYPES = [
+        'Отель',
+        'Транспортная компания',
+        'Аэропорт',
+        'Ресторан',
     ];
 
     public function up()
@@ -57,6 +66,7 @@ return new class extends Migration {
             }
         }
         $this->upCancelReasons();
+        $this->upSupplierTypes();
     }
 
     private function upCancelReasons(): void
@@ -67,14 +77,33 @@ return new class extends Migration {
         }
 
         foreach (self::DEFAULT_CANCEL_REASONS as $cancelReason) {
-            $id = Db::table('r_enums')->insertGetId([
-                'group' => self::CANCEL_REASON_ENUM_GROUP
-            ]);
+            $id = Db::table('r_enums')->insertGetId(['group' => self::CANCEL_REASON_ENUM_GROUP]);
 
             Db::table('r_enums_translation')->insert([
                 'translatable_id' => $id,
                 'language' => 'ru',
                 'name' => $cancelReason
+            ]);
+        }
+    }
+
+    private function upSupplierTypes(): void
+    {
+        $alreadyExists = DB::table('r_enums')->where('group', self::SUPPLIER_TYPE_ENUM_GROUP)->exists();
+        if ($alreadyExists) {
+            return;
+        }
+
+        foreach (self::DEFAULT_SUPPLIER_TYPES as $index => $supplierType) {
+            $id = Db::table('r_enums')->insertGetId(['group' => self::SUPPLIER_TYPE_ENUM_GROUP]);
+            if ($supplierType === 'Отель') {
+                Cache::set('hotel_supplier_type_id', $id);
+            }
+
+            Db::table('r_enums_translation')->insert([
+                'translatable_id' => $id,
+                'language' => 'ru',
+                'name' => $supplierType
             ]);
         }
     }

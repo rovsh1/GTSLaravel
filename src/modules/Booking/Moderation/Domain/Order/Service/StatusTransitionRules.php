@@ -19,6 +19,11 @@ class StatusTransitionRules
         $this->addTransition(OrderStatusEnum::WAITING_INVOICE, OrderStatusEnum::IN_PROGRESS);
 
         $this->addTransition(OrderStatusEnum::INVOICED, OrderStatusEnum::CANCELLED);
+
+        $this->addTransition(OrderStatusEnum::PAID, OrderStatusEnum::REFUND_FEE);
+        $this->addTransition(OrderStatusEnum::PAID, OrderStatusEnum::REFUND_NO_FEE);
+        $this->addTransition(OrderStatusEnum::PARTIAL_PAID, OrderStatusEnum::REFUND_FEE);
+        $this->addTransition(OrderStatusEnum::PARTIAL_PAID, OrderStatusEnum::REFUND_NO_FEE);
     }
 
     public function canTransit(OrderStatusEnum $fromStatus, OrderStatusEnum $toStatus): bool

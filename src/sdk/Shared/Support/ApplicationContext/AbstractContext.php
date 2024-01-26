@@ -24,6 +24,16 @@ abstract class AbstractContext
         return $this->get('apiKey');
     }
 
+    public function setUserId(int $id): void
+    {
+        $this->set('userId', $id);
+    }
+
+    public function userId(): ?int
+    {
+        return $this->get('userId');
+    }
+
     protected function setSource(SourceEnum $channel): void
     {
         $this->set('source', $channel->value);
@@ -39,7 +49,7 @@ abstract class AbstractContext
         return $this->data;
     }
 
-    protected function generateRequestId(): void
+    public function generateRequestId(): void
     {
         $this->data['requestId'] = Str::orderedUuid()->toString();
     }

@@ -50,7 +50,7 @@ const handleSubmit = () => {
 
     <form v-if="localValue" ref="cancelConditionsForm" class="row g-3">
       <div class="col-md-12 field-required">
-        <label for="no-come-percent"><b>Неявка (% надбавки)</b></label>
+        <label for="no-come-percent"><b>Неявка (штраф в %)</b></label>
         <input
           id="no-come-percent"
           v-model.number="localValue.noCheckInMarkup.percent"
@@ -72,7 +72,7 @@ const handleSubmit = () => {
       </div>
 
       <div class="col-md-6 field-required">
-        <label for="days-percent">Процент надбавки</label>
+        <label for="days-percent">Штраф в %</label>
         <input
           id="days-percent"
           v-model.number="localValue.dailyMarkups[0].percent"

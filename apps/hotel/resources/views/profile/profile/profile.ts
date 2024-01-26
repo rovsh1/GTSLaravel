@@ -6,6 +6,8 @@ $(() => {
   const container = $('#profile-settings')
   const settingsUrl = '/profile/'
 
+  $('#delete-profile-btn').deleteButton()
+
   container.find('div.block-row').click(function () {
     const action = $(this).data('action')
     if (!action) {

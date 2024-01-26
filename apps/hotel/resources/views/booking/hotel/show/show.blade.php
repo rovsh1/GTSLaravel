@@ -27,7 +27,7 @@
         <div class="card card-form disable-border">
             <div class="card-body">
                 <div class="d-flex flex-row gap-4">
-                    <div class="w-100 d-flex flex-column">
+                    <div class="w-85 d-flex flex-column">
                         <div class="w-100 rounded shadow-lg p-4 flex-grow-1">
                             <table class="table-params">
                                 <tbody>

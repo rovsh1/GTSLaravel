@@ -10,7 +10,7 @@ use Sdk\Shared\Enum\SourceEnum;
 /**
  * @method static string requestId()
  * @method static SourceEnum source()
- * @method static void setAdministrator(int $id, string $name)
+ * @method static void setUserId(int $id)
  * @method static void setEntity(string $class, int $id)
  * @method static void addTag(string $tag)
  * @method static void setException(\Throwable $exception)

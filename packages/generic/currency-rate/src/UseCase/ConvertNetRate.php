@@ -7,6 +7,7 @@ use Pkg\CurrencyRate\Service\RatioCalculator;
 use Pkg\CurrencyRate\ValueObject\CountryEnum;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 use Sdk\Shared\Enum\CurrencyEnum;
+use Sdk\Shared\ValueObject\Money;
 
 class ConvertNetRate implements UseCaseInterface
 {
@@ -32,6 +33,6 @@ class ConvertNetRate implements UseCaseInterface
             $date
         );
 
-        return $price * $ratio;
+        return Money::round($currencyTo, $price * $ratio);
     }
 }

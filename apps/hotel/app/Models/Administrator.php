@@ -2,6 +2,7 @@
 
 namespace App\Hotel\Models;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Hash;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
@@ -17,7 +18,7 @@ use Sdk\Module\Database\Eloquent\HasQuicksearch;
  */
 class Administrator extends Authenticatable
 {
-    use HasQuicksearch;
+    use HasQuicksearch, SoftDeletes;
 
     public $timestamps = false;
 
@@ -43,8 +44,8 @@ class Administrator extends Authenticatable
         'status' => 'int',
     ];
 
-    public static function booted()
-    {
+//    public static function booted()
+//    {
 //        static::addGlobalScope('default', function (Builder $builder) {
 //            $builder
 //                ->addSelect('hotel_administrators.*')
@@ -53,7 +54,7 @@ class Administrator extends Authenticatable
 //                ->join('r_cities', 'r_cities.id', '=', 'hotels.city_id')
 //                ->joinTranslatable('r_cities', 'name as city_name');
 //        });
-    }
+//    }
 
     public static function findByLogin(string $login): ?Administrator
     {

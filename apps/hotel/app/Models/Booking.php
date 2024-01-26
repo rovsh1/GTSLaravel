@@ -37,6 +37,11 @@ class Booking extends \Module\Booking\Shared\Infrastructure\Models\Booking
         $builder->whereIn('bookings.status', $this->getWaitingStatuses());
     }
 
+    public function scopeWhereNotWaitingStatus(Builder $builder): void
+    {
+        $builder->whereNotIn('bookings.status', $this->getWaitingStatuses());
+    }
+
     private function getWaitingStatuses(): array
     {
         return [

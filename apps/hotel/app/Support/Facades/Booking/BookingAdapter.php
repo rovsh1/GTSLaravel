@@ -13,8 +13,10 @@ use Sdk\Shared\Enum\CurrencyEnum;
  * @method static mixed getBooking(int $id)
  * @method static array getAvailableActions(int $id)
  * @method static mixed updateStatus(int $id, int $status, string|null $notConfirmedReason = null, float|null $supplierPenalty = null, float|null $clientPenalty = null)
+ * @method static mixed setNoCheckIn(int $id, float|null $supplierPenalty = null)
  * @method static array getStatusHistory(int $id)
  * @method static void updateNote(int $bookingId, string|null $note)
+ * @method static void setPenalty(int $bookingId, float|null $penalty)
  **/
 class BookingAdapter extends Facade
 {

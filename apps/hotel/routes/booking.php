@@ -19,10 +19,13 @@ Route::controller(BookingController::class)
         Route::get('/status/list', 'getStatuses')->name('status.list');
         Route::put('/{booking}/status/update', 'updateStatus')->name('status.update');
         Route::get('/{booking}/status/history', 'getStatusHistory')->name('status.history');
+        Route::post('/{booking}/status/no-checkin', 'setNoCheckIn')->name('status.no-checkin');
 
         Route::get('/{booking}/actions/available', 'getAvailableActions')->name('actions.available.get');
 
         Route::put('/{booking}/external/number', 'updateExternalNumber')->name('external.number.update');
+
+        Route::put('/{booking}/price/penalty', 'updatePenalty')->name('price.penalty.update');
 
         Route::controller(BookingRequestController::class)
             ->prefix('/{booking}/request')

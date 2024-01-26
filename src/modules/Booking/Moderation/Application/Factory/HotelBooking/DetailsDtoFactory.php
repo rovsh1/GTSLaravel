@@ -74,21 +74,39 @@ class DetailsDtoFactory
         return new RoomPriceDto(
             $price->clientPrice()->manualDayValue(),
             $price->supplierPrice()->manualDayValue(),
-            array_map(fn($r) => $this->buildRoomDayPriceDto($r), $price->clientPrice()->dayParts()->all()),
+            $this->buildRoomDayPricesDto(
+                $price->clientPrice()->dayParts()->all(),
+                $price->supplierPrice()->dayParts()->all()
+            ),
             $price->clientPrice()->value(),
             $price->supplierPrice()->value()
         );
     }
 
-    private function buildRoomDayPriceDto(RoomPriceDayPart $r): RoomDayPriceDto
+    /**
+     * @param RoomPriceDayPart[] $clientDayParts
+     * @param RoomPriceDayPart[] $supplierDayParts
+     * @return RoomDayPriceDto[]
+     */
+    private function buildRoomDayPricesDto(array $clientDayParts, array $supplierDayParts): array
     {
-        return new RoomDayPriceDto(
-            date: (string)$r->date(),
-            baseValue: 1,
-            grossValue: $r->value(),
-            netValue: $r->value(),
-            grossFormula: $r->formula(),
-            netFormula: $r->formula()
-        );
+        if (count($clientDayParts) !== count($supplierDayParts)) {
+            return [];
+        }
+
+        $dayPrices = [];
+        foreach ($clientDayParts as $index => $clientDayPart) {
+            $supplierDayPart = $supplierDayParts[$index];
+            $dayPrices[] = new RoomDayPriceDto(
+                date: (string)$clientDayPart->date(),
+                baseValue: 1,
+                grossValue: $clientDayPart->value(),
+                netValue: $supplierDayPart->value(),
+                grossFormula: $clientDayPart->formula(),
+                netFormula: $supplierDayPart->formula()
+            );
+        }
+
+        return $dayPrices;
     }
 }

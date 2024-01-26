@@ -2,8 +2,10 @@
 
 namespace App\Hotel\Http\Controllers;
 
+use App\Hotel\Http\Requests\Booking\SetNoCheckInRequest;
 use App\Hotel\Http\Requests\Booking\UpdateExternalNumberRequest;
 use App\Hotel\Http\Requests\Booking\UpdateNoteRequest;
+use App\Hotel\Http\Requests\Booking\UpdatePenaltyRequest;
 use App\Hotel\Http\Requests\Booking\UpdateStatusRequest;
 use App\Hotel\Http\Resources\Room as RoomResource;
 use App\Hotel\Models\Booking;
@@ -35,9 +37,11 @@ class BookingController extends AbstractHotelController
         $grid = $this->gridFactory();
         $query = $this->prepareGridQuery(Booking::whereWaitingStatus()->whereByRequest(), $grid->getSearchCriteria());
         $query2 = $this->prepareGridQuery(Booking::whereWaitingStatus()->whereByQuota(), $grid->getSearchCriteria());
-        $grid->data($query);
+        $query3 = $this->prepareGridQuery(Booking::whereNotWaitingStatus(), $grid->getSearchCriteria());
 
+        $grid->data($query);
         $grid2 = $this->gridFactory()->data($query2);
+        $grid3 = $this->gridFactory()->data($query3);
 
         return Layout::title("Брони по запросу ({$query->count()})")
             ->view('booking.hotel.main.main', [
@@ -46,6 +50,8 @@ class BookingController extends AbstractHotelController
                 'grid' => $grid,
                 'grid2' => $grid2,
                 'title2' => "Брони по квоте ({$query2->count()})",
+                'grid3' => $grid3,
+                'title3' => "Брони ({$query3->count()})",
                 'paginator' => $grid->getPaginator(),
                 'createUrl' => null,
             ]);
@@ -113,9 +119,15 @@ class BookingController extends AbstractHotelController
                 status: $request->getStatus(),
                 notConfirmedReason: $request->getNotConfirmedReason() ?? '',
                 supplierPenalty: $request->getSupplierPenalty(),
-                clientPenalty: $request->getClientPenalty(),
             )
         );
+    }
+
+    public function setNoCheckIn(SetNoCheckInRequest $request, int $id): AjaxResponseInterface
+    {
+        BookingAdapter::setNoCheckIn($id, $request->getSupplierPenalty());
+
+        return new AjaxSuccessResponse();
     }
 
     public function getStatusHistory(int $id): JsonResponse
@@ -152,6 +164,13 @@ class BookingController extends AbstractHotelController
     public function updateExternalNumber(UpdateExternalNumberRequest $request, int $id): AjaxResponseInterface
     {
         DetailsAdapter::updateExternalNumber($id, $request->getType(), $request->getNumber());
+
+        return new AjaxSuccessResponse();
+    }
+
+    public function updatePenalty(UpdatePenaltyRequest $request, int $id): AjaxResponseInterface
+    {
+        BookingAdapter::setPenalty($id, $request->getPenalty());
 
         return new AjaxSuccessResponse();
     }

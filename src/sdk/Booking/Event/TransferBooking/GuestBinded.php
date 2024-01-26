@@ -3,11 +3,13 @@
 namespace Sdk\Booking\Event\TransferBooking;
 
 use Sdk\Booking\Contracts\Event\BookingEventInterface;
+use Sdk\Booking\Contracts\Event\InvoiceBecomeDeprecatedEventInterface;
 use Sdk\Booking\Entity\CarBid;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\GuestId;
 
-class GuestBinded implements BookingEventInterface
+class GuestBinded implements BookingEventInterface,
+                             InvoiceBecomeDeprecatedEventInterface
 {
     public function __construct(
         public readonly CarBid $carBid,

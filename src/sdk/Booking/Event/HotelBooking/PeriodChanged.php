@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Sdk\Booking\Event\HotelBooking;
 
 use Sdk\Booking\Contracts\Entity\DetailsInterface;
+use Sdk\Booking\Contracts\Event\InvoiceBecomeDeprecatedEventInterface;
 use Sdk\Booking\Contracts\Event\PriceBecomeDeprecatedEventInterface;
 use Sdk\Booking\Contracts\Event\QuotaChangedEventInterface;
 use Sdk\Booking\Dto\PeriodDto;
@@ -19,7 +20,8 @@ use Sdk\Shared\Contracts\Event\IntegrationEventInterface;
 class PeriodChanged extends AbstractDetailsEvent implements PriceBecomeDeprecatedEventInterface,
                                                             BookingDateChangedEventInterface,
                                                             QuotaChangedEventInterface,
-                                                            HasIntegrationEventInterface
+                                                            HasIntegrationEventInterface,
+                                                            InvoiceBecomeDeprecatedEventInterface
 {
     public function __construct(
         DetailsInterface $details,

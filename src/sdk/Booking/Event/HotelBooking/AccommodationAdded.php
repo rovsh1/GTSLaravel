@@ -2,15 +2,18 @@
 
 namespace Sdk\Booking\Event\HotelBooking;
 
+use Sdk\Booking\Contracts\Event\InvoiceBecomeDeprecatedEventInterface;
 use Sdk\Booking\Contracts\Event\PriceBecomeDeprecatedEventInterface;
 use Sdk\Booking\Contracts\Event\QuotaChangedEventInterface;
 use Sdk\Booking\Entity\HotelAccommodation;
 use Sdk\Booking\IntegrationEvent\HotelBooking\AccommodationAdded as IntegrationEvent;
 use Sdk\Module\Contracts\Event\HasIntegrationEventInterface;
 
-final class AccommodationAdded extends AbstractAccommodationEvent implements QuotaChangedEventInterface,
-                                                                             PriceBecomeDeprecatedEventInterface,
-                                                                             HasIntegrationEventInterface
+final class AccommodationAdded extends AbstractAccommodationEvent implements
+    QuotaChangedEventInterface,
+    PriceBecomeDeprecatedEventInterface,
+    HasIntegrationEventInterface,
+    InvoiceBecomeDeprecatedEventInterface
 {
     public function __construct(
         HotelAccommodation $accommodation,

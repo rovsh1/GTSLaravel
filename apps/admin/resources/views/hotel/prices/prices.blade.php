@@ -3,6 +3,7 @@
 @section('styles')
     {!! Js::variables([
         'hotelID' => $hotel->id,
+        'isTravelineIntegrationEnabled' => (bool)$hotel->is_traveline_integration_enabled,
         'seasons' => $seasons,
         'priceRates' => $priceRates,
         'rooms' => $rooms

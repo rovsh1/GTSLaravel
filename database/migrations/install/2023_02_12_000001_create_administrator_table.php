@@ -23,6 +23,7 @@ return new class extends Migration {
             $table->tinyInteger('status')->unsigned()->default(0);
             $table->tinyInteger('superuser')->unsigned()->default(0);
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('post_id')
                 ->references('id')

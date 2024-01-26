@@ -19,7 +19,7 @@ class Authenticate extends Middleware
             $user->setRememberToken(null);
             $this->unauthenticated($request, ['hotel']);
         } else {
-            AppContext::setAdministrator($user->id, $user->presentation);
+            AppContext::setUserId($user->id);
         }
     }
 
@@ -31,10 +31,11 @@ class Authenticate extends Middleware
     {
         if (!$request->expectsJson()) {
             $query = ($q = $request->query())
-                ? '?' . http_build_query($q) : '';
+                ? '?' . http_build_query($q)
+                : '';
 
             return route('auth.login', [
-                'url' => "/{$request->path()}$query"
+                'url' => "{$request->path()}$query"
             ]);
         }
 

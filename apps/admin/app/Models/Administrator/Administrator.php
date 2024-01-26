@@ -5,6 +5,7 @@ namespace App\Admin\Models\Administrator;
 use App\Admin\Support\Models\Casts\FileCast;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
@@ -28,6 +29,7 @@ class Administrator extends Authenticatable
     use HasFactory;
     use HasQuicksearch;
     use Notifiable;
+    use SoftDeletes;
 
     protected $subscriptions;
 

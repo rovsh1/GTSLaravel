@@ -4,7 +4,7 @@ import { defineStore, storeToRefs } from 'pinia'
 import { z } from 'zod'
 
 import { useGetOrderBookingsAPI } from '~resources/api/order/booking'
-import { showCancelFeeDialog, showNotConfirmedReasonDialog } from '~resources/views/booking/shared/lib/modals'
+import { showCancelFeeDialog } from '~resources/views/booking/shared/lib/modals'
 import { useOrderStatusesStore } from '~resources/views/booking-order/show/store/status'
 
 import {
@@ -51,27 +51,16 @@ export const useOrderStore = defineStore('booking-order', () => {
   }
 
   const changeStatus = async (status: number) => {
-    const updateStatusPayload = { orderID, notConfirmedReason: '' } as UpdateOrderStatusPayload
+    const updateStatusPayload = { orderID } as UpdateOrderStatusPayload
     isStatusUpdateFetching.value = true
     updateStatusPayload.status = status
     const { data: updateStatusResponse } = await updateOrderStatus(updateStatusPayload)
-    if (updateStatusResponse.value?.isNotConfirmedReasonRequired) {
-      const { result: isConfirmed, reason, toggleClose } = await showNotConfirmedReasonDialog()
+    if (updateStatusResponse.value?.isRefundFeeAmountRequired) {
+      const { result: isConfirmed, cancelFeeAmount, toggleClose } = await showCancelFeeDialog()
       if (isConfirmed) {
-        updateStatusPayload.notConfirmedReason = reason
+        updateStatusPayload.refundFee = cancelFeeAmount
         toggleClose()
         await updateOrderStatus(updateStatusPayload)
-        return
-      }
-    }
-    if (updateStatusResponse.value?.isCancelFeeAmountRequired) {
-      const { result: isConfirmed, clientCancelFeeAmount, cancelFeeAmount, toggleClose } = await showCancelFeeDialog(true)
-      if (isConfirmed) {
-        updateStatusPayload.cancelFeeAmount = cancelFeeAmount
-        updateStatusPayload.clientCancelFeeAmount = clientCancelFeeAmount
-        toggleClose()
-        await updateOrderStatus(updateStatusPayload)
-        return
       }
     }
     await refreshOrder()

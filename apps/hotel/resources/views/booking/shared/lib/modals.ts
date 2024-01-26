@@ -66,6 +66,8 @@ export const showNotConfirmedReasonDialog = async (): Promise<ShowNotConfirmedRe
 
     $selectElement.change()
 
+    const getResolveCloseOptions = () => ({ result: false, reason: reasonDescription, toggleLoading: () => {}, toggleClose: () => {} })
+
     window.WindowDialog({
       title: 'Укажите причину',
       html: $form,
@@ -74,20 +76,23 @@ export const showNotConfirmedReasonDialog = async (): Promise<ShowNotConfirmedRe
         resolve({ result: true, reason: reasonDescription, toggleLoading, toggleClose: closeHandler })
         return false
       },
+      hide: () => {
+        resolve(getResolveCloseOptions())
+      },
       close: () => {
-        resolve({ result: false, reason: reasonDescription, toggleLoading: () => {}, toggleClose: () => {} })
+        resolve(getResolveCloseOptions())
       },
     })
   })
 }
 
 export interface ShowCancelFeeDialogResponse extends ShowDialogResponse {
-  clientCancelFeeAmount: number
+  clientCancelFeeAmount: number | undefined
   cancelFeeAmount: number
 }
 
 export const showCancelFeeDialog = (withClientCancelFee?: boolean): Promise<ShowCancelFeeDialogResponse> => new Promise((resolve): void => {
-  let clientCancelFeeAmount: number = 0
+  let clientCancelFeeAmount: number | undefined = withClientCancelFee ? 0 : undefined
   let cancelFeeAmount: number = 0
   let $clientReasonDescriptionField = null
   const $form = $('<form />', { method: 'post' })
@@ -126,6 +131,8 @@ export const showCancelFeeDialog = (withClientCancelFee?: boolean): Promise<Show
     $form.append($reasonDescriptionField)
   }
 
+  const getResolveCloseOptions = () => ({ result: false, clientCancelFeeAmount, cancelFeeAmount, toggleLoading: () => {}, toggleClose: () => {} })
+
   window.WindowDialog({
     title: 'Укажите сумму штрафа',
     html: $form,
@@ -134,8 +141,11 @@ export const showCancelFeeDialog = (withClientCancelFee?: boolean): Promise<Show
       resolve({ result: true, clientCancelFeeAmount, cancelFeeAmount, toggleLoading, toggleClose: closeHandler })
       return false
     },
+    hide: () => {
+      resolve(getResolveCloseOptions())
+    },
     close: () => {
-      resolve({ result: false, clientCancelFeeAmount, cancelFeeAmount, toggleLoading: () => {}, toggleClose: () => {} })
+      resolve(getResolveCloseOptions())
     },
   })
 })

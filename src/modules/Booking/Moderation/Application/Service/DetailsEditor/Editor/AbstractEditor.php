@@ -51,6 +51,5 @@ abstract class AbstractEditor
         foreach ($detailsData as $field => $value) {
             $this->setField($details, $field, $value);
         }
-//        $this->eventDispatcher->dispatch(...$details->pullEvents());
     }
 }

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Facade;
 use Module\Booking\Moderation\Application\Dto\OrderAvailableActionsDto;
 use Module\Booking\Moderation\Application\Dto\OrderDto;
 use Module\Booking\Moderation\Application\ResponseDto\OrderBookingDto;
+use Module\Booking\Moderation\Application\ResponseDto\OrderUpdateStatusResponseDto;
 use Sdk\Booking\Dto\StatusDto;
 use Sdk\Shared\Enum\CurrencyEnum;
 
@@ -21,7 +22,7 @@ use Sdk\Shared\Enum\CurrencyEnum;
  * @method static StatusDto[] getStatuses()
  * @method static OrderAvailableActionsDto getAvailableActions(int $orderId)
  * @method static OrderBookingDto[] getBookings(int $orderId)
- * @method static void updateStatus(int $orderId, int $status)
+ * @method static OrderUpdateStatusResponseDto updateStatus(int $orderId, int $status, float|null $refundFeeAmount)
  * @method static int create(int $clientId, int|null $legalId, CurrencyEnum $currency, int $managerId, int $creatorId)
  **/
 class OrderAdapter extends Facade

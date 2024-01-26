@@ -5,6 +5,7 @@ namespace App\Admin\Http\Controllers\Supplier;
 use App\Admin\Http\Requests\Supplier\SearchRequest;
 use App\Admin\Http\Resources\Supplier as Resource;
 use App\Admin\Models\Reference\City;
+use App\Admin\Models\Reference\SupplierType;
 use App\Admin\Models\Supplier\Supplier;
 use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Facades\Form;
@@ -13,6 +14,7 @@ use App\Admin\Support\Facades\Sidebar;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
+use App\Admin\Support\View\Grid\SearchForm;
 use App\Admin\View\Menus\SupplierMenu;
 use Gsdk\Format\View\ParamsTable;
 use Illuminate\Database\Eloquent\Model;
@@ -48,6 +50,7 @@ class SupplierController extends AbstractPrototypeController
         return (new ParamsTable())
             ->id('id', 'ID')
             ->text('name', 'Наименование')
+            ->text('type_name', 'Тип')
             ->custom(
                 'cities',
                 'Города',
@@ -62,6 +65,12 @@ class SupplierController extends AbstractPrototypeController
         return Form::name('data')
             ->text('name', ['label' => 'Наименование', 'required' => true])
             ->currency('currency', ['label' => 'Валюта', 'required' => true, 'emptyItem' => ''])
+            ->select('type_id', [
+                'label' => 'Тип',
+                'required' => true,
+                'emptyItem' => '',
+                'items' => SupplierType::get()
+            ])
             ->select('cities', [
                 'label' => 'Города',
                 'multiple' => true,
@@ -73,8 +82,18 @@ class SupplierController extends AbstractPrototypeController
     {
         return Grid::enableQuicksearch()
             ->paginator(self::GRID_LIMIT)
+            ->setSearchForm($this->searchForm())
             ->text('name', ['text' => 'Наименование', 'route' => $this->prototype->routeName('show'), 'order' => true])
+            ->text('type_name', ['text' => 'Тип'])
+            ->text('currency_name', ['text' => 'Валюта'])
             ->orderBy('name', 'asc');
+    }
+
+    private function searchForm()
+    {
+        return (new SearchForm())
+            ->select('type_id', ['label' => 'Тип', 'emptyItem' => '', 'items' => SupplierType::get()])
+            ->currency('currency', ['label' => 'Валюта', 'emptyItem' => '']);
     }
 
     protected function prepareShowMenu(Model $model)

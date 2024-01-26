@@ -3,9 +3,11 @@
 namespace App\Hotel\Http\Controllers;
 
 use App\Hotel\Models\Administrator;
+use App\Hotel\Services\Auth\LogoutService;
 use App\Hotel\Support\Facades\Form;
 use App\Hotel\Support\Facades\Layout;
 use App\Hotel\Support\Http\AbstractController;
+use App\Shared\Http\Responses\AjaxRedirectResponse;
 use App\Shared\Http\Responses\AjaxReloadResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
@@ -32,16 +34,18 @@ class ProfileController extends AbstractController
     {
         $form = Form::name('data')
             ->text('presentation', ['label' => 'Имя в системе', 'required' => true])
-            ->text('name', ['label' => 'Имя'])
-            ->text('surname', ['label' => 'Фамилия'])
+            ->text('name', ['label' => 'Имя', 'required' => true])
+            ->text('surname', ['label' => 'Фамилия', 'required' => true])
             ->text('email', [
                 'label' => 'Email',
-                'inputType' => 'email'
+                'inputType' => 'email',
+                'required' => true
             ])
             ->text('phone', [
                 'label' => 'Телефон',
                 'inputType' => 'tel',
-                'inputMode' => 'numeric'
+                'inputMode' => 'numeric',
+                'required' => true,
             ]);
 
         if ($request->isMethod('get')) {
@@ -65,17 +69,26 @@ class ProfileController extends AbstractController
     public function password(Request $request)
     {
         $form = Form::name('data')
-            ->password('password', ['label' => 'Новый пароль', 'autocomplete' => 'new-password', 'required' => true])
+            ->password(
+                'password',
+                ['label' => 'Новый пароль', 'autocomplete' => 'new-password', 'required' => true, 'minlength' => 6]
+            )
             ->password(
                 'confirm',
-                ['label' => 'Подтвердите пароль', 'autocomplete' => 'new-password', 'required' => true]
+                [
+                    'label' => 'Подтвердите пароль',
+                    'autocomplete' => 'new-password',
+                    'required' => true,
+                    'minlength' => 6
+                ]
             );
 
         if ($request->isMethod('get')) {
         } elseif ($form->submit()) {
             $data = $form->getData();
             if ($data['password'] != $data['confirm']) {
-                $form->addError('Подтвержден');
+                $form->error('Пароли не совпадают');
+                $form->throwError();
             }
 
             if ($form->isValid()) {
@@ -92,6 +105,17 @@ class ProfileController extends AbstractController
             'description' => 'Выберите надежный пароль и не используйте его для других аккаунтов',
             'form' => $form
         ]);
+    }
+
+    public function delete(Request $request): AjaxRedirectResponse
+    {
+        $user = $this->getUser();
+        (new LogoutService())->logout($request);
+        $user->delete();
+
+        return new AjaxRedirectResponse(
+            route('auth.login')
+        );
     }
 
     public function photo(Request $request)

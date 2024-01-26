@@ -8,6 +8,7 @@ use Module\Client\Moderation\Domain\Repository\CurrencyRateRepositoryInterface;
 use Module\Client\Shared\Domain\ValueObject\ClientId;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 use Sdk\Shared\Enum\CurrencyEnum;
+use Sdk\Shared\ValueObject\Money;
 use Shared\Contracts\Adapter\CurrencyRateAdapterInterface;
 
 class ConvertClientCurrencyRate implements UseCaseInterface
@@ -36,6 +37,6 @@ class ConvertClientCurrencyRate implements UseCaseInterface
             throw new \DomainException("Can't convert from currency [{$currencyFrom->name}]");
         }
 
-        return $price / $clientCurrencyRate;
+        return Money::round($currencyTo, $price / $clientCurrencyRate);
     }
 }

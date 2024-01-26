@@ -21,7 +21,14 @@ final class Money implements CanEquate
 
     public static function round(CurrencyEnum $currency, float|int $value): float
     {
-        return round($value, self::getDecimalsCount($currency));
+        $decimalsCount = self::getDecimalsCount($currency);
+        if ($decimalsCount > 0) {
+            $multiplier = 10 ** $decimalsCount;
+
+            return ceil($value * $multiplier) / $multiplier;
+        }
+
+        return ceil($value);
     }
 
     public static function roundNullable(CurrencyEnum $currency, float|int|null $value): ?float
