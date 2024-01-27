@@ -61,7 +61,7 @@ class DocumentController extends Controller
         $this->client($client);
 
         return (new DefaultFormCreateAction($this->formFactory($client->id)))
-            ->handle('Новый документ');
+            ->handle('Новый документ', 'client-document.form.form');
     }
 
     /**
@@ -79,7 +79,7 @@ class DocumentController extends Controller
 
         return (new DefaultFormEditAction($this->formFactory($client->id)))
             ->deletable()
-            ->handle($document);
+            ->handle($document, 'client-document.form.form');
     }
 
     public function update(Client $client, Document $document): RedirectResponse
@@ -104,6 +104,7 @@ class DocumentController extends Controller
             ->setOption('enctype', 'multipart/form-data')
             ->hidden('client_id', ['value' => $clientId])
             ->enum('type', ['label' => 'Тип документа', 'enum' => DocumentTypeEnum::class, 'required' => true])
+            ->text('description', ['label' => 'Название'])
             ->enum('status', ['label' => 'Статус', 'emptyItem' => '', 'enum' => StatusEnum::class, 'required' => true])
             ->text('number', ['label' => 'Номер документа', 'required' => true])
             ->dateRange('period', ['label' => 'Период', 'required' => true])
@@ -115,6 +116,7 @@ class DocumentController extends Controller
         return Grid::paginator(16)
             ->edit(fn(Document $document) => route('client.documents.edit', [$clientId, $document]))
             ->enum('type', ['text' => 'Тип документа', 'enum' => DocumentTypeEnum::class])
+            ->text('description', ['text' => 'Название'])
             ->text('number', ['text' => 'Номер документа', 'order' => true])
             ->text('period', ['text' => 'Период', 'renderer' => fn($r, $t) => Format::period($t)])
             ->enum('status', ['text' => 'Статус', 'enum' => StatusEnum::class, 'order' => true])

@@ -55,6 +55,7 @@ class Document extends Model
         'type',
         'status',
         'number',
+        'description',
         'date_start',
         'date_end',
 

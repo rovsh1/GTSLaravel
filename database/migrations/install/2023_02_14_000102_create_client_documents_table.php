@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->increments('id');
             $table->unsignedInteger('client_id');
             $table->string('number');
+            $table->string('description')->nullable();
             $table->unsignedTinyInteger('type');
             $table->unsignedTinyInteger('status');
             $table->date('date_start');
