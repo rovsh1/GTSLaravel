@@ -56,6 +56,11 @@ final class EditRules
         return $this->booking->isCancelled();
     }
 
+    public function canEditFinancialCost(): bool
+    {
+        return $this->order->inModeration();
+    }
+
     /**
      * @return StatusEnum[]
      */

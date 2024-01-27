@@ -12,5 +12,6 @@ final class AvailableActionsDto
         public readonly bool $canEditExternalNumber,
         public readonly bool $canChangeRoomPrice,
         public readonly bool $canCopy,
+        public readonly bool $canEditFinancialCost,
     ) {}
 }

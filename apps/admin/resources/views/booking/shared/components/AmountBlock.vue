@@ -27,7 +27,7 @@ defineEmits<{
 
 const bookingStore = useBookingStore()
 
-const isEditable = computed(() => bookingStore.availableActions?.isEditable || false)
+const isEditable = computed(() => bookingStore.availableActions?.canEditFinancialCost || false)
 
 </script>
 
