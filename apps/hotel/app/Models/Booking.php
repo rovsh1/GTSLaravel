@@ -39,7 +39,9 @@ class Booking extends \Module\Booking\Shared\Infrastructure\Models\Booking
 
     public function scopeWhereNotWaitingStatus(Builder $builder): void
     {
-        $builder->whereNotIn('bookings.status', $this->getWaitingStatuses());
+        $builder->whereNotIn('bookings.status', $this->getWaitingStatuses())
+            ->where('bookings.status', '!=', StatusEnum::CREATED)
+            ->where('bookings.status', '!=', StatusEnum::PROCESSING);
     }
 
     private function getWaitingStatuses(): array
