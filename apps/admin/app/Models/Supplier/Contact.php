@@ -14,13 +14,13 @@ class Contact extends Model
         'type',
         'value',
         'description',
-        'main'
+        'is_main'
     ];
 
     protected $casts = [
         'supplier_id' => 'int',
         'type' => ContactTypeEnum::class,
-        'main' => 'bool',
+        'is_main' => 'bool',
     ];
 
     public function __toString()

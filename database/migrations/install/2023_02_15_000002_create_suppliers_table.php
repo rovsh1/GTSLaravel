@@ -38,7 +38,7 @@ return new class extends Migration {
             $table->tinyInteger('type')->unsigned();
             $table->string('value');
             $table->string('description')->nullable();
-            $table->boolean('main')->default(false);
+            $table->boolean('is_main')->default(false);
             $table->timestamps();
 
             $table->foreign('supplier_id', 'fk_supplier_contacts_supplier_id')

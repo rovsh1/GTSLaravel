@@ -72,8 +72,8 @@
                         <td class="text-align-left" colspan="4"><b>{{ $service->title }}</b></td>
                     </tr>
 
-                    @include('booking.transfer._partials.cars')
-                    @include('booking.transfer._partials.details')
+                    @include('BookingRequesting::transfer._partials.cars')
+                    @include('BookingRequesting::transfer._partials.details')
 
                     </tbody>
                 </table>

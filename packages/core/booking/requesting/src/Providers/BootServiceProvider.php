@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Module\Booking\Shared\Providers\BootServiceProvider as SharedBookingServiceProvider;
 use Pkg\Booking\Requesting\Domain\Adapter\AdministratorAdapterInterface;
+use Pkg\Booking\Requesting\Domain\Adapter\HotelAdapterInterface;
+use Pkg\Booking\Requesting\Domain\Adapter\SupplierAdapterInterface;
 use Pkg\Booking\Requesting\Domain\Factory\RequestFactoryInterface;
 use Pkg\Booking\Requesting\Domain\Repository\RequestRepositoryInterface;
 use Pkg\Booking\Requesting\Domain\Service\ChangesStorageInterface;
@@ -15,6 +17,8 @@ use Pkg\Booking\Requesting\Service\ChangesStorage;
 use Pkg\Booking\Requesting\Service\RequestFactory;
 use Pkg\Booking\Requesting\Service\TemplateRenderer\ChangeMarkRenderer;
 use Pkg\Booking\Requesting\Support\Adapter\AdministratorAdapter;
+use Pkg\Booking\Requesting\Support\Adapter\HotelAdapter;
+use Pkg\Booking\Requesting\Support\Adapter\SupplierAdapter;
 
 class BootServiceProvider extends ServiceProvider
 {
@@ -38,6 +42,8 @@ class BootServiceProvider extends ServiceProvider
         $this->app->singleton(RequestFactoryInterface::class, RequestFactory::class);
         $this->app->singleton(RequestRepositoryInterface::class, RequestRepository::class);
         $this->app->singleton(AdministratorAdapterInterface::class, AdministratorAdapter::class);
+        $this->app->singleton(HotelAdapterInterface::class, HotelAdapter::class);
+        $this->app->singleton(SupplierAdapterInterface::class, SupplierAdapter::class);
         $this->app->singleton(ChangesStorageInterface::class, ChangesStorage::class);
         $this->app->singleton(ChangeMarkRenderer::class);
     }
