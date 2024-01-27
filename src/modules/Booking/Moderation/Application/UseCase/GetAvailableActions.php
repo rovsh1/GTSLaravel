@@ -47,7 +47,8 @@ class GetAvailableActions implements UseCaseInterface
             canEditExternalNumber: $this->editRules->canEditExternalNumber(),
             canChangeRoomPrice: !$isTravelineIntegrationEnabled && $this->editRules->canChangeRoomPrice(),
             canCopy: $this->editRules->canCopy(),
-            canEditFinancialCost: $this->editRules->canEditFinancialCost(),
+            canEditClientPrice: $this->editRules->canEditClientPrice(),
+            canEditSupplierPrice: $this->editRules->canEditSupplierPrice(),
         );
     }
 

@@ -31,10 +31,14 @@ class BookingDtoFactory
         private readonly string $defaultTimezone,
     ) {}
 
-    public function build(BookingDto $booking): ReservationDto
+    public function build(BookingDto $booking): ?ReservationDto
     {
         /** @var HotelBookingDto $details */
         $details = $booking->details;
+
+        if (count($details->roomBookings) === 0) {
+            return null;
+        }
 
         $bookingPeriod = new CarbonPeriod($details->period->dateFrom, $details->period->dateTo);
         $bookingPeriod->setTimezone($this->defaultTimezone);
@@ -66,7 +70,7 @@ class BookingDtoFactory
      */
     public function collection(array $bookings): array
     {
-        return array_map(fn(BookingDto $booking) => $this->build($booking), $bookings);
+        return array_values(array_filter(array_map(fn(BookingDto $booking) => $this->build($booking), $bookings)));
     }
 
     public function convertAccommodationToRoomStay(
@@ -98,8 +102,16 @@ class BookingDtoFactory
         HotelInfoDto $hotelInfo,
         AccommodationDto $accommodation
     ): array {
-        $startDate = $this->getPeriodStartDateByCheckInCondition($period, $hotelInfo->checkInTime, $accommodation->details->earlyCheckIn);
-        $endDate = $this->getPeriodEndDateByCheckOutCondition($period, $hotelInfo->checkOutTime, $accommodation->details->lateCheckOut);
+        $startDate = $this->getPeriodStartDateByCheckInCondition(
+            $period,
+            $hotelInfo->checkInTime,
+            $accommodation->details->earlyCheckIn
+        );
+        $endDate = $this->getPeriodEndDateByCheckOutCondition(
+            $period,
+            $hotelInfo->checkOutTime,
+            $accommodation->details->lateCheckOut
+        );
         $preparedPeriod = new CarbonPeriod($startDate, $endDate, 'P1D');
 
         $countDays = $preparedPeriod->count();
@@ -214,7 +226,9 @@ class BookingDtoFactory
         $travelineStatus = TravelineReservationStatusEnum::NEW;
 
         $travelineReservation = TravelineReservation::whereReservationId($booking->id)->first();
-        if ($travelineReservation !== null && $travelineReservation->created_at->notEqualTo($travelineReservation->updated_at)) {
+        if ($travelineReservation !== null && $travelineReservation->created_at->notEqualTo(
+                $travelineReservation->updated_at
+            )) {
             $travelineStatus = TravelineReservationStatusEnum::MODIFIED;
         }
 
