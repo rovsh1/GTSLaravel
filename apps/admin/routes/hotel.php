@@ -20,6 +20,8 @@ AclRoute::for('hotel')
         'except' => ['show']
     ])
 
+    ->get('/{hotel}/bookings', Controllers\Hotel\BookingController::class . '@index', 'read', 'bookings.index')
+
     ->resource('prices', Controllers\Hotel\PriceController::class, ['except' => ['show']])
     ->get('/{hotel}/seasons/prices',Controllers\Hotel\PriceController::class.'@getSeasonsPrices','read','prices.seasons.get')
     ->put('/{hotel}/seasons/{season}/prices',Controllers\Hotel\PriceController::class.'@updateSeasonPrice','update','prices.seasons.update')
