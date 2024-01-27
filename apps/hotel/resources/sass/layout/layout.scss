@@ -123,3 +123,14 @@ pre {
 .w-85 {
   width: 85%;
 }
+
+.floating-row th span,
+.floating-row td span {
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  display: inline-block;
+  padding: 0 0.5rem;
+  background-clip: padding-box;
+}

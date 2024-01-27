@@ -241,7 +241,7 @@ const resetActiveKey = () => {
       <div class="quotasTable card" @scroll="closeDayMenu">
         <table class="card-body">
           <thead>
-            <tr>
+            <tr class="floating-row">
               <th class="headingCell">
                 Месяц
               </th>
@@ -252,7 +252,7 @@ const resetActiveKey = () => {
                 :class="[months.length > 1 ? 'month-splitter' : '']"
               >
                 <div class="monthName">
-                  <b>{{ monthName }}</b>
+                  <span><b>{{ monthName }}</b></span>
                 </div>
               </td>
             </tr>
@@ -474,6 +474,7 @@ th {
 .headingCell {
   @extend %heading-cell;
 
+  z-index: 1;
   width: 142px;
   max-width: 142px;
 }
@@ -543,5 +544,9 @@ tr td:last-child {
   justify-content: center;
   align-items: center;
   height: 36px;
+}
+
+.floating-row td span {
+  left: 142px;
 }
 </style>
