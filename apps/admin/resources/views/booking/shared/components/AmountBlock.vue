@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-
-import { useBookingStore } from '~resources/views/booking/shared/store/booking'
 
 import { Currency } from '~api/models'
 
@@ -15,19 +12,17 @@ withDefaults(defineProps<{
   penaltyTitle: string
   penaltyValue: number | null | undefined
   needShowPenalty?: boolean
+  isEditable?: boolean
 }>(), {
   penaltyValue: undefined,
   needShowPenalty: false,
+  isEditable: false,
 })
 
 defineEmits<{
   (event: 'clickChangePrice'): void
   (event: 'clickChangePenalty'): void
 }>()
-
-const bookingStore = useBookingStore()
-
-const isEditable = computed(() => bookingStore.availableActions?.isEditable || false)
 
 </script>
 

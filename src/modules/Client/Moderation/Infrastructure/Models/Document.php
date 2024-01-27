@@ -15,6 +15,7 @@ class Document extends Model
         'client_id',
         'type',
         'number',
+        'description',
         'status',
         'date_start',
         'date_end',

@@ -14,8 +14,7 @@ final class Hotel extends AbstractAggregateRoot
         private readonly CurrencyEnum $currency,
         private readonly Percent $vat,
         private readonly Percent $touristTax,
-    ) {
-    }
+    ) {}
 
     public function id(): HotelId
     {
@@ -39,6 +38,10 @@ final class Hotel extends AbstractAggregateRoot
 
     public function touristTax(bool $isResident): Percent
     {
+        if ($isResident) {
+            return new Percent(0);
+        }
+
         return $this->touristTax;
     }
 }

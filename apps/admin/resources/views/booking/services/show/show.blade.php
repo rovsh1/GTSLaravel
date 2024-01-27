@@ -49,13 +49,15 @@
                                 <tr>
                                     <th>Клиент</th>
                                     <td>
-                                        <a href="{{ route('client.show', $client->id) }}"
-                                        target="_blank">{{ $client->name }}</a>
+                                        <a href="{{ route('client.show', $client->id) }}" target="_blank">{{ $client->name }}</a>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>Тип карты оплаты</th>
-                                    <td>-</td>
+                                    <th>Поставщик</th>
+                                    <td>
+                                        <a href="{{ route('supplier.show', $supplier->id) }}"
+                                           target="_blank">{{ $supplier->name }}</a>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th>Услуга</th>

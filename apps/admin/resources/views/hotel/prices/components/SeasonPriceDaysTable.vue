@@ -1,10 +1,12 @@
 <script lang="ts" setup>
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 
+import { DateTime } from 'luxon'
 import { nanoid } from 'nanoid'
 
 import { updateRoomSeasonPricesByDay, useRoomSeasonsDaysPricesListAPI } from '~resources/api/hotel/prices/seasons'
 import { formatDateTimeToAPIDate, formatSeasonPeriod, parseAPIDate } from '~resources/lib/date'
+import { Month } from '~resources/views/hotel/quotas/components/lib/index'
 
 import { daysOfWeek } from '~lib/constants'
 
@@ -33,6 +35,25 @@ const tableElementid = `price-table-${nanoid()}`
 const baseColumnHeight = ref<HTMLElement | null>(null)
 
 const daysInPeriod = ref<PricesAccumulationDataForDays[]>([])
+
+const periodMonths = computed<Month[]>(() => {
+  const monthsMap = new Map<string, number>()
+  daysInPeriod.value.forEach((day) => {
+    if (!day.date) return
+    const date = DateTime.fromISO(day.date)
+    const monthKey = date.toFormat('yyyy-MM')
+    monthsMap.set(monthKey, (monthsMap.get(monthKey) || 0) + 1)
+  })
+  const result = Array.from(monthsMap).map(([monthKey, daysCount]) => {
+    const monthName = DateTime.fromFormat(monthKey, 'yyyy-MM')
+    return {
+      monthKey,
+      monthName: monthName.toFormat('LLLL yyyy'),
+      daysCount,
+    }
+  })
+  return result
+})
 
 const seasonData = computed<PricesAccumulationData>(() => props.seasonData)
 
@@ -140,6 +161,9 @@ onMounted(async () => {
     <div class="table-wrapper">
       <table :id="'id'" class="hotel-prices table table-bordered table-sm table-light">
         <thead>
+          <tr class="month-title">
+            <th class="text-center align-middle" colspan="2">Месяц</th>
+          </tr>
           <tr>
             <th class="text-center align-middle" colspan="2">Дни недели</th>
           </tr>
@@ -155,6 +179,16 @@ onMounted(async () => {
     <div class="table-wrapper">
       <table :id="tableElementid" class="hotel-prices table table-bordered table-sm table-light">
         <thead>
+          <tr class="month-title floating-row">
+            <th
+              v-for="{ monthKey, daysCount, monthName } in periodMonths"
+              :key="monthKey"
+              :colspan="daysCount"
+              class="align-middle month-title-padding"
+            >
+              <span>{{ monthName }}</span>
+            </th>
+          </tr>
           <tr>
             <th
               v-for="item in daysInPeriod"
@@ -212,5 +246,18 @@ onMounted(async () => {
 .priced {
   min-width: 3.438rem;
   padding: 0 0.313rem;
+}
+
+.season-price-days-table table tr.month-title {
+  height: auto;
+
+  th,
+  td {
+    text-align: left;
+  }
+
+  .month-title-padding {
+    padding: 0.25rem 0;
+  }
 }
 </style>

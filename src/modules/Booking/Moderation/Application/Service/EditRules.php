@@ -56,6 +56,16 @@ final class EditRules
         return $this->booking->isCancelled();
     }
 
+    public function canEditSupplierPrice(): bool
+    {
+        return true;
+    }
+
+    public function canEditClientPrice(): bool
+    {
+        return $this->order->inModeration();
+    }
+
     /**
      * @return StatusEnum[]
      */

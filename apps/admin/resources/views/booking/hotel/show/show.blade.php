@@ -57,10 +57,6 @@
                                     <td>{{$model->details->quotaProcessingMethod === \Sdk\Booking\Enum\QuotaProcessingMethodEnum::REQUEST ? 'По запросу' : 'По квоте'}}</td>
                                 </tr>
                                 <tr>
-                                    <th>Тип карты оплаты</th>
-                                    <td>-</td>
-                                </tr>
-                                <tr>
                                     <th>Страна</th>
                                     <td>{{ $hotel->country_name }} / {{ $hotel->city_name }}</td>
                                 </tr>

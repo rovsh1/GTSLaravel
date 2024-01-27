@@ -22,6 +22,8 @@ const [isGrossPenaltyModalOpened, toggleGrossPenaltyModal] = useToggle<boolean>(
 
 const bookingStore = useBookingStore()
 const booking = computed(() => bookingStore.booking)
+const canEditClientPrice = computed(() => bookingStore.availableActions?.canEditClientPrice || false)
+const canEditSupplierPrice = computed(() => bookingStore.availableActions?.canEditSupplierPrice || false)
 
 const profit = computed<ProfitItem | undefined>(() => bookingStore.booking?.prices.profit)
 
@@ -116,6 +118,7 @@ const handleSaveHoPenalty = async (value: number | undefined) => {
       <AmountBlock
         v-if="booking"
         title="Приход"
+        :is-editable="canEditClientPrice"
         :currency="grossCurrency"
         amount-title="Общая сумма (брутто)"
         :amount-value="getDisplayPriceValue('client')"
@@ -129,6 +132,7 @@ const handleSaveHoPenalty = async (value: number | undefined) => {
       <AmountBlock
         v-if="booking"
         title="Расход"
+        :is-editable="canEditSupplierPrice"
         :currency="netCurrency"
         amount-title="Общая сумма (нетто)"
         :amount-value="getDisplayPriceValue('supplier')"

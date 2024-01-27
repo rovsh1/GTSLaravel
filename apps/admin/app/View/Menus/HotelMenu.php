@@ -24,7 +24,7 @@ class HotelMenu extends AbstractSubmenu
     {
         $this
             ->addUrl('prices', route('hotels.prices.index', $this->model->id), 'Цены', ['icon' => 'currency_ruble'])
-            ->addUrl('bookings', route('hotels.rooms.index', $this->model->id), 'Брони', ['icon' => 'sell'])
+            ->addUrl('bookings', route('hotels.bookings.index', $this->model->id), 'Брони', ['icon' => 'sell'])
             ->addUrl('info', route('hotels.show', $this->model->id), 'Описание', ['icon' => 'description'])
             ->addUrl('employees', route('hotels.employee.index', $this->model->id), 'Сотрудники', ['icon' => 'person']);
 

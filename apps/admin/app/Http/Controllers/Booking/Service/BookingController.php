@@ -189,6 +189,7 @@ class BookingController extends Controller
                 'model' => $booking,
                 'client' => $client,
                 'order' => $order,
+                'supplier' => Supplier::find($booking->details->serviceInfo->supplierId),
                 'cancelConditions' => $booking->cancelConditions,
                 'isOtherServiceBooking' => $booking->serviceType->id === ServiceTypeEnum::OTHER_SERVICE->value,
                 'currencies' => Currency::get(),
