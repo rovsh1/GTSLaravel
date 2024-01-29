@@ -40,6 +40,7 @@ export default defineConfig(({ command }) => ({
         'resources/views/administration/access-group-form/access-group-form.ts',
         'resources/views/administration/access-group-form/access-group-form.scss',
         'resources/views/auth/login/login.scss',
+        'resources/views/auth/login/login.ts',
         'resources/views/data/city-form/city-form.ts',
         'resources/views/data/landmark-form/landmark-form.ts',
         'resources/views/default/grid/grid.scss',
