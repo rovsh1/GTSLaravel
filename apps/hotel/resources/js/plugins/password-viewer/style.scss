@@ -1,0 +1,24 @@
+.password-container {
+  position: relative;
+  width: 100%;
+}
+
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 2px;
+  z-index: 2;
+  padding: 2px 5px;
+  background-color: transparent;
+  cursor: pointer;
+  user-select: none;
+  transform: translateY(-50%);
+
+  span {
+    opacity: 0.5;
+  }
+}
+
+.password-toggle.active span {
+  opacity: 1;
+}
