@@ -4,6 +4,8 @@ declare global {
   interface JQuery extends JQueryStatic {
     update(): void
 
+    passwordViewer(): JQuery<HTMLElement>
+
     deleteButton(): void
   }
 

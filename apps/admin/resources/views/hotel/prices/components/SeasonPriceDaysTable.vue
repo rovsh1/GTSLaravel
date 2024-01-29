@@ -179,7 +179,7 @@ onMounted(async () => {
     <div class="table-wrapper">
       <table :id="tableElementid" class="hotel-prices table table-bordered table-sm table-light">
         <thead>
-          <tr class="month-title">
+          <tr class="month-title floating-row">
             <th
               v-for="{ monthKey, daysCount, monthName } in periodMonths"
               :key="monthKey"
@@ -257,7 +257,7 @@ onMounted(async () => {
   }
 
   .month-title-padding {
-    padding: 0.25rem 0.5rem;
+    padding: 0.25rem 0;
   }
 }
 </style>

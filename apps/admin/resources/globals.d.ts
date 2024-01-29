@@ -6,6 +6,8 @@ declare global {
 
     childCombo(options: any): JQuery<HTMLElement>
 
+    passwordViewer(): JQuery<HTMLElement>
+
     coordinatesInput(options: any): JQuery<HTMLElement>
 
     cardContacts(options: any = {}): JQuery<HTMLElement>
