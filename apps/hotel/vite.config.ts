@@ -34,6 +34,7 @@ export default defineConfig(({ command }) => ({
       input: [
         'resources/assets/jquery.ts',
         'resources/views/auth/login/login.scss',
+        'resources/views/auth/login/login.ts',
         'resources/views/default/grid/grid.scss',
         'resources/views/default/form/form.scss',
         'resources/views/main.scss',
