@@ -13,6 +13,11 @@ return new class extends Migration {
     {
         $q = DB::connection('mysql_old')
             ->table('clients')
+            ->whereNot('name', 'like', '%тест%')
+            ->whereNot('name', 'like', '%test%')
+            ->whereNot('name', 'like', '%fio%')
+            ->whereNot('name', 'like', 'asfagaga')
+            ->whereNotIn('id', [7])
             ->select(
                 '*',
                 DB::raw('(SELECT 1 FROM client_legal_entities WHERE client_id=clients.id LIMIT 1) as is_b2b')

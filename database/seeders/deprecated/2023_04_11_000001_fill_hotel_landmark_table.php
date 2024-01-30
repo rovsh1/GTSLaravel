@@ -11,10 +11,12 @@ return new class extends Migration {
      */
     public function up(): void
     {
+        $t = DB::connection('mysql_old')->getDatabaseName() . '.hotel_showplace';
         DB::unprepared(
             'INSERT INTO hotel_landmark (hotel_id, landmark_id,distance)'
             . ' SELECT hotel_id, showplace_id,distance'
-            . ' FROM ' . DB::connection('mysql_old')->getDatabaseName() . '.hotel_showplace'
+            . ' FROM ' . $t
+            . ' WHERE ' . $t . '.hotel_id IN (SELECT id FROM hotels)'
         );
     }
 

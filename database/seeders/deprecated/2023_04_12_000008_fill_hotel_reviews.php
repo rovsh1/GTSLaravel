@@ -12,6 +12,9 @@ return new class extends Migration {
     {
         $q = DB::connection('mysql_old')->table('hotel_reviews')->cursor();
         foreach ($q as $r) {
+            if (!DB::table('hotels')->where('id', $r->hotel_id)->exists()) {
+                continue;
+            }
             DB::table('hotel_reviews')
                 ->insert([
                     'id' => $r->id,

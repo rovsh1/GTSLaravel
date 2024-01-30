@@ -7,11 +7,15 @@ return new class extends Migration {
     public function up()
     {
         $users = DB::connection('mysql_old')->table('users')
+            ->whereNot('users.presentation', 'like', '%test%')
             ->addSelect('users.*')
             ->addSelect('hotel_administrators.hotel_id')
             ->join('hotel_administrators', 'hotel_administrators.user_id', '=', 'users.id')
             ->get();
         foreach ($users as $r) {
+            if (!DB::table('hotels')->where('id', $r->hotel_id)->exists()) {
+                continue;
+            }
             DB::table('hotel_administrators')
                 ->insert([
                     'hotel_id' => $r->hotel_id,
@@ -27,14 +31,14 @@ return new class extends Migration {
                 ]);
         }
 
-        DB::table('hotel_administrators')
-            ->insert([
-                'hotel_id' => 61,
-                'presentation' => 'developer',
-                'login' => 'developer',
-                'password' => \Hash::make('123456'),
-                'status' => 1,
-            ]);
+//        DB::table('hotel_administrators')
+//            ->insert([
+//                'hotel_id' => 61,
+//                'presentation' => 'developer',
+//                'login' => 'developer',
+//                'password' => \Hash::make('123456'),
+//                'status' => 1,
+//            ]);
     }
 
     public function down()

@@ -7,9 +7,14 @@ return new class extends Migration {
 
     public function up()
     {
-        $q = DB::connection('mysql_old')->table('client_contacts');
+        $q = DB::connection('mysql_old')->table('client_contacts')
+            ->whereNot('value', 'like', '%тест%')
+            ->whereNot('value', 'like', '%test%');
 
         foreach ($q->cursor() as $r) {
+            if (!DB::table('clients')->where('id', $r->client_id)->exists()) {
+                continue;
+            }
             try {
                 DB::table('client_contacts')->insert([
                     'id' => $r->id,
@@ -29,15 +34,15 @@ return new class extends Migration {
             return;
         }
         //@hack для тестов Бахтиера (с прода почему-то не переносится)
-        DB::table('client_contacts')->insert([
-            'client_id' => 6,
-            'type' => \Sdk\Shared\Enum\ContactTypeEnum::EMAIL->value,
-            'value' => 'testust2354@mail.ru',
-            'description' => 'testust2354@mail.ru',
-            'is_main' => 1,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+//        DB::table('client_contacts')->insert([
+//            'client_id' => 6,
+//            'type' => \Sdk\Shared\Enum\ContactTypeEnum::EMAIL->value,
+//            'value' => 'testust2354@mail.ru',
+//            'description' => 'testust2354@mail.ru',
+//            'is_main' => 1,
+//            'created_at' => now(),
+//            'updated_at' => now(),
+//        ]);
     }
 
     public function down()

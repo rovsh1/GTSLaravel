@@ -34,6 +34,9 @@ return new class extends Migration {
             );
 
         foreach ($q->cursor() as $r) {
+            if (!DB::table('hotels')->where('id', $r->hotel_id)->exists()) {
+                continue;
+            }
             $roomMarkup = new RoomMarkups(
                 new RoomId($r->id),
                 new Percent($room->price_discount ?? 0),

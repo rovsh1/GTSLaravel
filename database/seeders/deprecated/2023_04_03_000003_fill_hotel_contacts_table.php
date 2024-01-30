@@ -13,6 +13,7 @@ return new class extends Migration {
             'INSERT INTO hotel_contacts (id, hotel_id, employee_id,type, value, description, is_main, created_at, updated_at)'
             . ' SELECT id, hotel_id, employee_id,type, value, description, main, NOW(), NOW()'
             . ' FROM ' . DB::connection('mysql_old')->getDatabaseName() . '.hotel_contacts'
+            . ' WHERE value NOT LIKE "%test%"'
         );
     }
 

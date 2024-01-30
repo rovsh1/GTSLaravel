@@ -19,6 +19,9 @@ return new class extends Migration
             ->get();
 
         foreach ($q as $r) {
+            if (!DB::table('hotels')->where('id', $r->hotel_id)->exists()) {
+                continue;
+            }
             DB::table('hotel_rules')
                 ->insert([
                     'id' => $r->id,

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration {
     /**
@@ -10,6 +11,9 @@ return new class extends Migration {
     {
         $q = DB::connection('mysql_old')->table('hotel_seasons');
         foreach ($q->cursor() as $r) {
+            if (!DB::table('hotels')->where('id', $r->hotel_id)->exists()) {
+                continue;
+            }
             try {
                 DB::table('hotel_seasons')
                     ->insert([

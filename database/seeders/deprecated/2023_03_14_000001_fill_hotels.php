@@ -25,17 +25,18 @@ use Sdk\Shared\ValueObject\TimePeriod;
 return new class extends Migration {
 
     private const CHECKIN_START_PRESET = 10;
-    private const CHECKOUT_END_PRESET = 11;
-    private const TOUR_FEE = 12;
-    private const VAT = 13;
-    private const BREAKFAST_TIME = 14;
+    private const CHECKOUT_END_PRESET  = 11;
+    private const TOUR_FEE             = 12;
+    private const VAT                  = 13;
+    private const BREAKFAST_TIME       = 14;
 
-    private const CONDITION_CHECK_IN = 1;
+    private const CONDITION_CHECK_IN  = 1;
     private const CONDITION_CHECK_OUT = 2;
 
     public function up()
     {
-        $q = DB::connection('mysql_old')->table('hotels');
+        $q = DB::connection('mysql_old')->table('hotels')
+            ->whereNot('hotels.name', 'like', '%test%');
         $hotelSupplierTypeId = Cache::get('hotel_supplier_type_id');
         if ($hotelSupplierTypeId === null) {
             throw new \RuntimeException('Неизвестный ID типа поставщика для отеля');
