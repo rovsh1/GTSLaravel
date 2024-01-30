@@ -37,7 +37,8 @@ return new class extends Migration {
     {
         $q = DB::connection('mysql_old')->table('hotels')
             ->whereNot('hotels.name', 'like', '%test%')
-            ->where('status', 2);
+//            ->where('status', 2)
+        ;
         $hotelSupplierTypeId = Cache::get('hotel_supplier_type_id');
         if ($hotelSupplierTypeId === null) {
             throw new \RuntimeException('Неизвестный ID типа поставщика для отеля');
