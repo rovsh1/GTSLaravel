@@ -14,7 +14,7 @@ class Usability extends Model
 
     public $timestamps = false;
 
-    protected array $quicksearch = ['id', 'name%'];
+    protected array $quicksearch = ['id', 'r_hotel_usabilities_translation.name%'];
 
     protected array $translatable = ['name'];
 
