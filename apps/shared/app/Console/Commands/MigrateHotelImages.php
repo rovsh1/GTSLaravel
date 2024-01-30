@@ -26,6 +26,7 @@ class MigrateHotelImages extends Command
 
         $q = DB::connection('mysql_old')->table('hotel_images')
             ->join('files', 'files.id', '=', 'hotel_images.image_id')
+            ->whereRaw('id IN (SELECT id FROM ' . DB::connection('mysql')->getDatabaseName() . '.hotels)')
             ->where('is_imported', 0);
 
         $progressBar = $this->output->createProgressBar($q->count());
