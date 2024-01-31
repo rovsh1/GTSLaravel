@@ -74,6 +74,17 @@ $(document)
         })
       })
 
+    $('#btn-hotel-administrators')
+      .click(function (e: any) {
+        e.preventDefault()
+        window.WindowDialog({
+          url: $(this)
+            .data('url'),
+          title: 'Добавить администратора',
+          buttons: ['submit', 'cancel'],
+        })
+      })
+
     editableTable({
       $table: $('#hotel-landmark-grid'),
       route: hotelLandmarkBaseRoute,

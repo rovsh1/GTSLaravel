@@ -54,7 +54,16 @@
         </div>
 
         <div class="mt-3">
-            <x-ui.card :collapsable="true" header="Администраторы ({{$model->users->count()}})">
+            <x-ui.card class="card card-grid" :collapsable="true" header="Администраторы ({{$model->users->count()}})">
+                @if($usersUrl)
+                    <x-slot:header-controls>
+                        <button id="btn-hotel-administrators" class="btn btn-add" data-url="{{$usersUrl}}">
+                            <x-icon key="add"/>
+                            Добавить администратора
+                        </button>
+                    </x-slot:header-controls>
+                @endif
+
                 {!! $usersGrid !!}
             </x-ui.card>
         </div>
@@ -62,7 +71,7 @@
         <div class="mt-3">
             <x-ui.card class="card card-grid" :collapsable="true"
                        header="Объекты и достопримечательности ({{$model->landmarks->count()}})">
-                @if($notesUrl)
+                @if($landmarkUrl)
                     <x-slot:header-controls>
                         <button id="btn-hotel-landmarks" class="btn btn-add" data-url="{{$landmarkUrl}}">
                             <x-icon key="add"/>

@@ -203,6 +203,7 @@ class HotelController extends AbstractPrototypeController
             'usersGrid' => $this->getUsersGrid(),
             'landmarkGrid' => $this->getLandmarkGrid(),
             'landmarkUrl' => $isUpdateAllowed ? route('hotels.landmark.create', ['hotel' => $this->model]) : null,
+            'usersUrl' => $isUpdateAllowed ? route('hotels.users.create.dialog', ['hotel' => $this->model]) : null,
 
             'hotelLandmarkBaseRoute' => route('hotels.landmark.store', $this->model)
         ];
