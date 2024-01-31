@@ -98,19 +98,19 @@ class CalculateHotelPrice implements UseCaseInterface
                     touristTax: $hotel->touristTax($room->isResident)->value(),
                     guestCount: $room->guestsCount
                 );
-            }
 
-            if ($clientMarkup) {
-                $calculation->applyClientMarkup($clientMarkup);
-            }
+                if ($clientMarkup) {
+                    $calculation->applyClientMarkup($clientMarkup);
+                }
 
-            if ($room->earlyCheckinPercent && $request->period->getStartDate()->equalTo($date)) {
-                $calculation->applyEarlyCheckinMarkup(MarkupValue::createPercent($room->earlyCheckinPercent));
-            }
+                if ($room->earlyCheckinPercent && $request->period->getStartDate()->equalTo($date)) {
+                    $calculation->applyEarlyCheckinMarkup(MarkupValue::createPercent($room->earlyCheckinPercent));
+                }
 
-            //@hack т.к. ночей всегда на 1 меньше, применяем поздний выезд к предпоследнему дню периода
-            if ($room->lateCheckoutPercent && $request->period->getEndDate()->subDay()->equalTo($date)) {
-                $calculation->applyLateCheckoutMarkup(MarkupValue::createPercent($room->lateCheckoutPercent));
+                //@hack т.к. ночей всегда на 1 меньше, применяем поздний выезд к предпоследнему дню периода
+                if ($room->lateCheckoutPercent && $request->period->getEndDate()->subDay()->equalTo($date)) {
+                    $calculation->applyLateCheckoutMarkup(MarkupValue::createPercent($room->lateCheckoutPercent));
+                }
             }
 
             $dto = $calculation->result();
