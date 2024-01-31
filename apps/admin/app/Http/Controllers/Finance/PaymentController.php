@@ -40,7 +40,7 @@ class PaymentController extends AbstractPrototypeController
             ->paginator(self::GRID_LIMIT)
             ->id('id', ['text' => '№', 'order' => true])
             ->text('client_name', ['text' => 'Клиент', 'order' => true])
-            ->text('invoice_number', ['text' => 'Номер счета-фактуры'])
+            ->text('invoice_number', ['text' => '№ счета-фактуры'])
             ->enum('status', ['text' => 'Статус', 'enum' => PaymentStatusEnum::class])
             ->text('order_ids', [
                 'text' => 'Заказы',
@@ -53,7 +53,7 @@ class PaymentController extends AbstractPrototypeController
             ->price('remaining_sum', ['text' => 'Остаток', 'currencyIndex' => 'payment_currency'])
             ->text(
                 'payment_method_id',
-                ['text' => 'Платежный метод', 'renderer' => fn($r, $v) => $paymentMethods[$v] ?? '']
+                ['text' => 'Способ', 'renderer' => fn($r, $v) => $paymentMethods[$v] ?? '']
             )
             ->text('document_name', ['text' => 'Документ'])
             ->file('file', ['text' => 'Файл'])
