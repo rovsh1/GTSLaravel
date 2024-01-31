@@ -105,7 +105,7 @@ final class BookingPeriod implements SerializableInterface, CanEquate
 
     private function validatePeriod(CarbonImmutable $dateFrom, CarbonImmutable $dateTo): void
     {
-        if ($dateFrom->isSameDay($dateTo)) {
+        if ($dateFrom->greaterThanOrEqualTo($dateTo)) {
             throw new BookingPeriodDatesCannotBeEqual();
         }
     }
