@@ -6,17 +6,17 @@ namespace Pkg\Booking\Requesting\Support\Adapter;
 
 use Illuminate\Support\Facades\DB;
 use Pkg\Booking\Requesting\Domain\Adapter\HotelAdapterInterface;
-use Sdk\Shared\Enum\ContactTypeEnum;
 
 class HotelAdapter implements HotelAdapterInterface
 {
-    public function getEmail(int $hotelId): ?string
+    public function getAdministratorEmails(int $hotelId): ?array
     {
-        $contact = DB::table('hotel_contacts')
+        $contacts = DB::table('hotel_administrators')
+            ->select('email')
             ->where('hotel_id', $hotelId)
-            ->where('type', ContactTypeEnum::EMAIL)
-            ->where('is_main', true)->first();
+            ->where('status', true)
+            ->get();
 
-        return $contact?->value;
+        return $contacts->pluck('email')->toArray();
     }
 }
