@@ -3,6 +3,7 @@
 namespace Pkg\Booking\Requesting\Domain\Listener;
 
 use Module\Booking\Shared\Domain\Booking\Service\BookingUnitOfWorkInterface;
+use Pkg\Booking\Requesting\Domain\Adapter\AdministratorAdapterInterface;
 use Pkg\Booking\Requesting\Domain\Adapter\HotelAdapterInterface;
 use Pkg\Booking\Requesting\Domain\Adapter\SupplierAdapterInterface;
 use Pkg\Booking\Requesting\Domain\Event\BookingRequestEventInterface;
@@ -21,6 +22,7 @@ class SendMailNotificationsListener implements DomainEventListenerInterface
         private readonly RequestRepositoryInterface $requestRepository,
         private readonly HotelAdapterInterface $hotelAdapter,
         private readonly SupplierAdapterInterface $supplierAdapter,
+        private readonly AdministratorAdapterInterface $administratorAdapter,
         private readonly MailAdapterInterface $mailAdapter,
     ) {}
 
@@ -39,6 +41,11 @@ class SendMailNotificationsListener implements DomainEventListenerInterface
             if (!empty($email)) {
                 $emails[] = $email;
             }
+        }
+
+        $administrator = $this->administratorAdapter->getManagerByBookingId($event->bookingId()->value());
+        if(!empty($administrator?->email) && $this->isValidEmail($administrator->email)){
+            $emails[] = $administrator->email;
         }
 
         $emails = array_filter($emails, fn(string $email) => $this->isValidEmail($email));
