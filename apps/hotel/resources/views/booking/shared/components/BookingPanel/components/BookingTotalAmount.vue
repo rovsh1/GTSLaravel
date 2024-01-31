@@ -35,6 +35,5 @@ const getDisplayPriceValue = (type: 'client' | 'supplier') => {
     <strong>
       {{ formatPrice(getDisplayPriceValue('supplier'), netCurrency.sign) }}
     </strong>
-    <span v-if="booking.prices.supplierPrice.isManual" class="text-muted"> (выставлена вручную)</span>
   </div>
 </template>

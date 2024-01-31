@@ -27,7 +27,6 @@ import { formatPrice } from '~lib/price'
 import BootstrapCard from '~components/Bootstrap/BootstrapCard/BootstrapCard.vue'
 import BootstrapCardTitle from '~components/Bootstrap/BootstrapCard/components/BootstrapCardTitle.vue'
 import EmptyData from '~components/EmptyData.vue'
-import InlineIcon from '~components/InlineIcon.vue'
 
 const { getCurrencyByCodeChar } = useCurrencyStore()
 const bookingStore = useBookingStore()
@@ -141,13 +140,6 @@ onMounted(() => {
               <span v-else>
                 от {{ formatPrice(getMinDayPrices(room.price.dayPrices, 'net') as number, netCurrency.sign) }}
                 до {{ formatPrice(getMaxDayPrices(room.price.dayPrices, 'net') as number, netCurrency.sign) }}
-              </span>
-              <span
-                v-if="room.price.netDayValue"
-                v-tooltip="'Цена за номер выставлена вручную'"
-                class="prices-information-details-info"
-              >
-                <InlineIcon icon="touch_app" class="prices-information-details-info-icon" />
               </span>
             </strong>
           </span>
