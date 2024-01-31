@@ -39,6 +39,7 @@ export default defineConfig(({ command }) => ({
         'resources/views/administration/journal/journal.ts',
         'resources/views/administration/access-group-form/access-group-form.ts',
         'resources/views/administration/access-group-form/access-group-form.scss',
+        'resources/views/administration/constant/form/form.ts',
         'resources/views/auth/login/login.scss',
         'resources/views/auth/login/login.ts',
         'resources/views/data/city-form/city-form.ts',
