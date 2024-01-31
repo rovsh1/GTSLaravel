@@ -9,6 +9,7 @@ use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Pkg\Supplier\Traveline\Dto\QuotaDto;
+use Pkg\Supplier\Traveline\Exception\RoomNotFoundException;
 use Pkg\Supplier\Traveline\Models\HotelRoomQuota;
 use Sdk\Shared\Enum\Hotel\QuotaStatusEnum;
 
@@ -16,6 +17,7 @@ class RoomQuotaRepository
 {
     public function updateRoomQuota(int $roomId, CarbonPeriod $period, int $quota): void
     {
+        $this->ensureRoomExists($roomId);
         $data = $this->prepareQuotaDataByPeriod($roomId, $period, quota: $quota);
         HotelRoomQuota::upsert(
             $data,
@@ -26,6 +28,7 @@ class RoomQuotaRepository
 
     public function updateRoomReleaseDays(int $roomId, CarbonPeriod $period, int $releaseDays): void
     {
+        $this->ensureRoomExists($roomId);
         $data = $this->prepareQuotaDataByPeriod($roomId, $period, releaseDays: $releaseDays);
         HotelRoomQuota::upsert(
             $data,
@@ -36,6 +39,7 @@ class RoomQuotaRepository
 
     public function closeRoomQuota(int $roomId, CarbonPeriod $period): void
     {
+        $this->ensureRoomExists($roomId);
         $data = $this->prepareQuotaDataByPeriod($roomId, $period, status: QuotaStatusEnum::CLOSE);
         HotelRoomQuota::upsert(
             $data,
@@ -46,6 +50,7 @@ class RoomQuotaRepository
 
     public function openRoomQuota(int $roomId, CarbonPeriod $period): void
     {
+        $this->ensureRoomExists($roomId);
         $data = $this->prepareQuotaDataByPeriod($roomId, $period, status: QuotaStatusEnum::OPEN);
         HotelRoomQuota::upsert(
             $data,
@@ -194,5 +199,17 @@ class RoomQuotaRepository
         }
 
         return $quotas;
+    }
+
+    /**
+     * @param int $roomId
+     * @return void
+     * @throws RoomNotFoundException
+     */
+    private function ensureRoomExists(int $roomId): void
+    {
+        if (!DB::table('hotel_rooms')->where('id', $roomId)->exists()) {
+            throw new RoomNotFoundException();
+        }
     }
 }
