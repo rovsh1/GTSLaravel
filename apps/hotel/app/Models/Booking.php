@@ -41,7 +41,8 @@ class Booking extends \Module\Booking\Shared\Infrastructure\Models\Booking
     {
         $builder->whereNotIn('bookings.status', $this->getWaitingStatuses())
             ->where('bookings.status', '!=', StatusEnum::CREATED)
-            ->where('bookings.status', '!=', StatusEnum::PROCESSING);
+            ->where('bookings.status', '!=', StatusEnum::PROCESSING)
+            ->where('bookings.status', '!=', StatusEnum::CANCELLED);
     }
 
     private function getWaitingStatuses(): array
