@@ -50,8 +50,6 @@ class StoreTravelineReservation
             ->first()
             ?->hotel_id;
         if ($hotelId === null) {
-            \Log::warning('[Traveline] Booking without hotel id', ['booking_id' => $bookingId]);
-
             return;
         }
 
