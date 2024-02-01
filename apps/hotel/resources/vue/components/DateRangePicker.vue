@@ -8,9 +8,9 @@ import { DateTime } from 'luxon'
 import { DateResponse } from '~api'
 import { DatePeriod } from '~api/hotel/markup-settings'
 
-import { compareJSDate, formatPeriod, parseAPIDate } from '~lib/date'
-
 import { useDateRangePicker } from '~widgets/date-picker/date-picker'
+
+import { compareJSDate, formatPeriod, parseAPIDate } from '~helpers/date'
 
 const props = withDefaults(defineProps<{
   id: string

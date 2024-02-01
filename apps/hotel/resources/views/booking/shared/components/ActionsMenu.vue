@@ -2,7 +2,7 @@
 
 import { z } from 'zod'
 
-import { requestInitialData } from '~lib/initial-data'
+import { requestInitialData } from '~helpers/initial-data'
 
 const { timelineUrl } = requestInitialData(z.object({
   timelineUrl: z.string().optional(),

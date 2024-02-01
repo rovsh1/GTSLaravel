@@ -32,7 +32,7 @@ export default defineConfig(({ command }) => ({
   plugins: [
     laravel({
       input: [
-        'resources/assets/jquery.ts',
+        'resources/js/supports/jquery.ts',
         'resources/views/auth/login/login.scss',
         'resources/views/auth/login/login.ts',
         'resources/views/default/grid/grid.scss',
@@ -90,7 +90,7 @@ export default defineConfig(({ command }) => ({
       '~stores': path.resolve(__dirname, 'resources/vue/stores'),
       '~widgets': path.resolve(__dirname, 'resources/js/widgets'),
       '~cache': path.resolve(__dirname, 'resources/js/cache'),
-      '~lib': path.resolve(__dirname, 'resources/lib'),
+      '~helpers': path.resolve(__dirname, 'resources/js/helpers'),
     },
   },
   css: {

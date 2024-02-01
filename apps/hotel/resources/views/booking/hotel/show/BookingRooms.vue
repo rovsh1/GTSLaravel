@@ -20,14 +20,14 @@ import { HotelRate, useHotelRatesAPI } from '~api/hotel/price-rate'
 import { Currency } from '~api/models'
 import { Guest } from '~api/order/guest'
 
-import { formatPrice } from '~lib/price'
-
 import BootstrapCard from '~components/Bootstrap/BootstrapCard/BootstrapCard.vue'
 import BootstrapCardTitle from '~components/Bootstrap/BootstrapCard/components/BootstrapCardTitle.vue'
 import EmptyData from '~components/EmptyData.vue'
 
 import { useCountryStore } from '~stores/countries'
 import { useCurrencyStore } from '~stores/currency'
+
+import { formatPrice } from '~helpers/price'
 
 const { getCurrencyByCodeChar } = useCurrencyStore()
 const bookingStore = useBookingStore()

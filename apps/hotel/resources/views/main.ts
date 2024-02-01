@@ -2,7 +2,7 @@ import bootCookies from '~resources/js/app/providers/cookies'
 import bootForms from '~resources/js/app/providers/forms'
 import bootGrid from '~resources/js/app/providers/grids'
 
-import '~resources/js/bootstrap'
+import '~resources/js/supports/bootstrap'
 import '~resources/js/vendor/jquery.cookie'
 import '~widgets/date-picker/date-picker'
 import '~resources/js/libs/dialog/helpers'

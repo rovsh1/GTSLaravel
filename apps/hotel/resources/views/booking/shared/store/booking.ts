@@ -17,7 +17,7 @@ import { UpdateBookingPrice, updateBookingPrice } from '~api/booking/hotel/price
 import { useBookingAvailableActionsAPI } from '~api/booking/status'
 import { useHotelMarkupSettingsAPI } from '~api/hotel/markup-settings'
 
-import { requestInitialData } from '~lib/initial-data'
+import { requestInitialData } from '~helpers/initial-data'
 
 const { bookingID } = requestInitialData(z.object({
   bookingID: z.number(),

@@ -5,9 +5,9 @@ import { useBookingStore } from '~resources/views/booking/shared/store/booking'
 
 import { Currency } from '~api/models'
 
-import { formatPrice } from '~lib/price'
-
 import { useCurrencyStore } from '~stores/currency'
+
+import { formatPrice } from '~helpers/price'
 
 const bookingStore = useBookingStore()
 const { getCurrencyByCodeChar } = useCurrencyStore()

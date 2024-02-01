@@ -2,10 +2,10 @@ import axios from '~resources/js/app/api'
 
 import { CancelReasonResponse } from '~api/cancel-reason'
 
-import { ShowDialogResponse, ToggleCloseFunction, ToggleLoadingFunction } from '~lib/confirm-dialog'
-
 import { CacheStorage } from '~cache/cache-storage'
 import { TTLValues } from '~cache/enums'
+
+import { ShowDialogResponse, ToggleCloseFunction, ToggleLoadingFunction } from '~helpers/confirm-dialog'
 
 export interface ShowNotConfirmedReasonDialogResponse extends ShowDialogResponse {
   reason: string

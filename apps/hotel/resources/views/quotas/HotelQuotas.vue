@@ -3,8 +3,6 @@ import { computed, nextTick, ref, watch } from 'vue'
 
 import { useToggle } from '@vueuse/core'
 
-import { formatDateToAPIDate } from '~resources/lib/date'
-
 import { HotelResponse, useHotelGetAPI } from '~api/hotel/get'
 import { useUpdateHotelRoomQuotasBatch } from '~api/hotel/quotas/batch'
 import { useHotelQuotasAPI } from '~api/hotel/quotas/list'
@@ -15,6 +13,8 @@ import BaseLayout from '~components/BaseLayout.vue'
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 import EmptyData from '~components/EmptyData.vue'
 import OverlayLoading from '~components/OverlayLoading.vue'
+
+import { formatDateToAPIDate } from '~helpers/date'
 
 import QuotasFilters from './components/QuotasFilters/QuotasFilters.vue'
 import QuotasStatusSwitcher from './components/QuotasStatusSwitcher.vue'

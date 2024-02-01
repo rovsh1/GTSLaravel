@@ -6,11 +6,11 @@ import CancelPeriodSettingsTable from '~resources/views/settings/components/Canc
 
 import { CancelPeriod } from '~api/hotel/markup-settings'
 
-import { formatDate } from '~lib/date'
-
 import CollapsableBlock from '~components/CollapsableBlock.vue'
 
 import { useMarkupSettingsStore } from '~stores/markup-settings'
+
+import { formatDate } from '~helpers/date'
 
 const markupSettingsStore = useMarkupSettingsStore()
 const cancelPeriods = computed(() => markupSettingsStore.markupSettings?.cancelPeriods)

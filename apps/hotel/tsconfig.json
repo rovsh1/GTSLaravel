@@ -40,12 +40,6 @@
             "~api/*": [
                 "resources/vue/api/*"
             ],
-            "~lib": [
-                "resources/lib/index"
-            ],
-            "~lib/*": [
-                "resources/lib/*"
-            ],
             "~components/*": [
                 "resources/vue/components/*"
             ],
@@ -54,6 +48,9 @@
             ],
             "~widgets/*": [
                 "resources/js/widgets/*"
+            ],
+            "~helpers/*": [
+                "resources/js/helpers/*"
             ],
             "~cache/*": [
                 "resources/js/cache/*"

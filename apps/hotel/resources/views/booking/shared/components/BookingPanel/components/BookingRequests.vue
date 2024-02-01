@@ -7,7 +7,7 @@ import { useBookingRequestStore } from '~resources/views/booking/shared/store/re
 
 import { BookingRequest } from '~api/booking/request'
 
-import { formatDateTime } from '~lib/date'
+import { formatDateTime } from '~helpers/date'
 
 const requestStore = useBookingRequestStore()
 const bookingRequests = computed<BookingRequest[] | null>(() => requestStore.groupedRequests)

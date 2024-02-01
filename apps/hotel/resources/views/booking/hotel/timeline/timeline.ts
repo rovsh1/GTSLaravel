@@ -1,4 +1,4 @@
-import { showDataModal } from '~lib/show-data'
+import { showDataModal } from '~helpers/show-data'
 
 import '~resources/views/main'
 

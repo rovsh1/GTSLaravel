@@ -6,7 +6,7 @@ import qs from 'qs'
 import { ADMIN_API_URL } from '~resources/js/config/env'
 import { getNullableRef, RefGetter } from '~resources/vue/vue'
 
-import { handleAjaxError } from '~lib/ajax-error'
+import { handleAjaxError } from '~helpers/ajax-error'
 
 export type DateResponse = string
 
