@@ -1,4 +1,5 @@
-import { DateResponse } from '~api'
+import { DateResponse } from '~resources/vue/api'
+
 import { DailyMarkup, MarkupCondition, NoCheckInMarkup, Percent, Time } from '~api/hotel/markup-settings'
 import { Guest } from '~api/order/guest'
 

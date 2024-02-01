@@ -3,16 +3,16 @@ import { onMounted, ref } from 'vue'
 import { defineStore, storeToRefs } from 'pinia'
 import { z } from 'zod'
 
+import { showCancelFeeDialog, showNotConfirmedReasonDialog } from '~resources/views/booking/shared/lib/modals'
+import { useBookingStatusesStore } from '~resources/views/booking/shared/store/status'
+import { useBookingStatusHistoryStore } from '~resources/views/booking/shared/store/status-history'
+
 import {
   setNoCheckInBookingStatus,
   updateBookingStatus,
   UpdateBookingStatusPayload,
   useGetBookingAPI,
-} from '~resources/api/booking/hotel'
-import { showCancelFeeDialog, showNotConfirmedReasonDialog } from '~resources/views/booking/shared/lib/modals'
-import { useBookingStatusesStore } from '~resources/views/booking/shared/store/status'
-import { useBookingStatusHistoryStore } from '~resources/views/booking/shared/store/status-history'
-
+} from '~api/booking/hotel'
 import { UpdateBookingPrice, updateBookingPrice } from '~api/booking/hotel/price'
 import { useBookingAvailableActionsAPI } from '~api/booking/status'
 import { useHotelMarkupSettingsAPI } from '~api/hotel/markup-settings'

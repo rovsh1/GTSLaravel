@@ -1,6 +1,6 @@
 import { DateTime, Interval, Settings } from 'luxon'
 
-import { APIDate, DateResponse } from '~api'
+import { APIDate, DateResponse } from '~resources/vue/api'
 
 Settings.defaultLocale = 'ru'
 

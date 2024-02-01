@@ -3,10 +3,10 @@ import { computed, nextTick, ref, watch } from 'vue'
 
 import { useToggle } from '@vueuse/core'
 
-import { useUpdateHotelRoomQuotasBatch } from '~resources/api/hotel/quotas/batch'
 import { formatDateToAPIDate } from '~resources/lib/date'
 
 import { HotelResponse, useHotelGetAPI } from '~api/hotel/get'
+import { useUpdateHotelRoomQuotasBatch } from '~api/hotel/quotas/batch'
 import { useHotelQuotasAPI } from '~api/hotel/quotas/list'
 import { UseHotelRooms, useHotelRoomsListAPI } from '~api/hotel/rooms'
 

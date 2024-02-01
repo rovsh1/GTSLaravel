@@ -1,7 +1,8 @@
-import { CancelReasonResponse } from '~resources/api/cancel-reason'
 import axios from '~resources/js/app/api'
 import { CacheStorage } from '~resources/lib/cache-storage/cache-storage'
 import { TTLValues } from '~resources/lib/enums'
+
+import { CancelReasonResponse } from '~api/cancel-reason'
 
 import { ShowDialogResponse, ToggleCloseFunction, ToggleLoadingFunction } from '~lib/confirm-dialog'
 

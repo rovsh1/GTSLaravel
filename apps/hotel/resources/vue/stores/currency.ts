@@ -2,11 +2,11 @@ import { onMounted, ref } from 'vue'
 
 import { defineStore } from 'pinia'
 
-import { Currency } from '~resources/api/models'
 import { CacheStorage } from '~resources/lib/cache-storage/cache-storage'
 import { TTLValues } from '~resources/lib/enums'
 
 import { useCurrencyGetAPI } from '~api/currency'
+import { Currency } from '~api/models'
 
 export const useCurrencyStore = defineStore('currency', () => {
   const currencies = ref<Currency[] | null>(null)

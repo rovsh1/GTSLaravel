@@ -2,13 +2,14 @@
 
 import { computed, onMounted } from 'vue'
 
-import { useMarkupSettingsStore } from '~resources/store/markup-settings'
 import ConditionsTable from '~resources/views/settings/components/ConditionsTable.vue'
 
 import { MarkupCondition } from '~api/hotel/markup-settings'
 import { useHotelSettingsAPI } from '~api/hotel/settings'
 
 import CollapsableBlock from '~components/CollapsableBlock.vue'
+
+import { useMarkupSettingsStore } from '~stores/markup-settings'
 
 const { data: hotelSettings, execute: fetchTimeSettings } = useHotelSettingsAPI()
 

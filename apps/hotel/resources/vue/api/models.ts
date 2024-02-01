@@ -1,4 +1,4 @@
-import { DateResponse } from '~api/index'
+import { DateResponse } from '~api'
 
 export interface Season {
   id: number

@@ -1,4 +1,4 @@
-import { useAdminAPI } from '~api/index'
+import { useAdminAPI } from '~api'
 
 export interface CountryResponse {
   id: number

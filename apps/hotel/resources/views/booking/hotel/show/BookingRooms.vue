@@ -4,8 +4,6 @@ import { computed, onMounted } from 'vue'
 
 import { storeToRefs } from 'pinia'
 
-import { useCountryStore } from '~resources/store/countries'
-import { useCurrencyStore } from '~resources/store/currency'
 import GuestsTable from '~resources/views/booking/shared/components/GuestsTable.vue'
 import InfoBlock from '~resources/views/booking/shared/components/InfoBlock/InfoBlock.vue'
 import InfoBlockTitle from '~resources/views/booking/shared/components/InfoBlock/InfoBlockTitle.vue'
@@ -27,6 +25,9 @@ import { formatPrice } from '~lib/price'
 import BootstrapCard from '~components/Bootstrap/BootstrapCard/BootstrapCard.vue'
 import BootstrapCardTitle from '~components/Bootstrap/BootstrapCard/components/BootstrapCardTitle.vue'
 import EmptyData from '~components/EmptyData.vue'
+
+import { useCountryStore } from '~stores/countries'
+import { useCurrencyStore } from '~stores/currency'
 
 const { getCurrencyByCodeChar } = useCurrencyStore()
 const bookingStore = useBookingStore()

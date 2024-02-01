@@ -1,4 +1,4 @@
-import { PriceItem } from '~api/booking/models'
+import { PriceItem } from '~resources/vue/api/booking/models'
 
 const priceWithCurrency = (formattedPrice: string, currency?: string): string => {
   let result = formattedPrice

@@ -2,7 +2,7 @@
 
 import { computed } from 'vue'
 
-import { useMarkupSettingsStore } from '~resources/store/markup-settings'
+import CancelPeriodSettingsTable from '~resources/views/settings/components/CancelPeriodSettingsTable.vue'
 
 import { CancelPeriod } from '~api/hotel/markup-settings'
 
@@ -10,7 +10,7 @@ import { formatDate } from '~lib/date'
 
 import CollapsableBlock from '~components/CollapsableBlock.vue'
 
-import CancelPeriodSettingsTable from './components/CancelPeriodSettingsTable.vue'
+import { useMarkupSettingsStore } from '~stores/markup-settings'
 
 const markupSettingsStore = useMarkupSettingsStore()
 const cancelPeriods = computed(() => markupSettingsStore.markupSettings?.cancelPeriods)

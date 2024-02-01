@@ -2,7 +2,6 @@
 import { computed } from 'vue'
 
 import { CancelConditionsValueType } from '~resources/lib/constants'
-import { useCurrencyStore } from '~resources/store/currency'
 import { getCancelPeriodTypeName, getDaysWord } from '~resources/views/booking/shared/lib/constants'
 import { useBookingStore } from '~resources/views/booking/shared/store/booking'
 
@@ -10,6 +9,8 @@ import { Currency } from '~api/models'
 
 import { formatDate } from '~lib/date'
 import { formatPrice } from '~lib/price'
+
+import { useCurrencyStore } from '~stores/currency'
 
 const bookingStore = useBookingStore()
 const { getCurrencyByCodeChar } = useCurrencyStore()

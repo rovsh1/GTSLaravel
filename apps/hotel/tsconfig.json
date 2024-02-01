@@ -32,10 +32,10 @@
                 "resources/*"
             ],
             "~api": [
-                "resources/api/index"
+                "resources/vue/api/index"
             ],
             "~api/*": [
-                "resources/api/*"
+                "resources/vue/api/*"
             ],
             "~lib": [
                 "resources/lib/index"
@@ -44,7 +44,10 @@
                 "resources/lib/*"
             ],
             "~components/*": [
-                "resources/components/*"
+                "resources/vue/components/*"
+            ],
+            "~stores/*": [
+                "resources/vue/stores/*"
             ]
         }
     },
