@@ -361,17 +361,17 @@ onMounted(() => {
         <div v-if="grossCurrency" class="d-flex flex-row justify-content-between w-100 mt-2">
           <span class="prices-information">
             <strong>
-              Итого: {{ formatPrice(room.price.grossValue, grossCurrency.sign) }}
+              Итого: {{ formatPrice(room.price.grossValue, grossCurrency.code_char) }}
             </strong>
             <br>
             <strong class="prices-information-details">
               <span>Цена за ночь: </span>
               <span v-if="getMinDayPrices(room.price.dayPrices, 'gross') === getMaxDayPrices(room.price.dayPrices, 'gross')">
-                {{ formatPrice(getMinDayPrices(room.price.dayPrices, 'gross') as number, grossCurrency.sign) }}
+                {{ formatPrice(getMinDayPrices(room.price.dayPrices, 'gross') as number, grossCurrency.code_char) }}
               </span>
               <span v-else>
-                от {{ formatPrice(getMinDayPrices(room.price.dayPrices, 'gross') as number, grossCurrency.sign) }}
-                до {{ formatPrice(getMaxDayPrices(room.price.dayPrices, 'gross') as number, grossCurrency.sign) }}
+                от {{ formatPrice(getMinDayPrices(room.price.dayPrices, 'gross') as number, grossCurrency.code_char) }}
+                до {{ formatPrice(getMaxDayPrices(room.price.dayPrices, 'gross') as number, grossCurrency.code_char) }}
               </span>
               <button
                 v-tooltip="'Подробнее'"
@@ -465,7 +465,7 @@ onMounted(() => {
             {{ dayPrice.date }}
           </td>
           <td class="text-nowrap">
-            {{ formatPrice(dayPrice.grossValue, grossCurrency.sign) }}
+            {{ formatPrice(dayPrice.grossValue, grossCurrency.code_char) }}
           </td>
           <td class="text-nowrap">{{ dayPrice.grossFormula }}</td>
         </tr>

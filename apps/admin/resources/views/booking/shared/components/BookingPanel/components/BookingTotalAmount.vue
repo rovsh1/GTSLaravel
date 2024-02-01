@@ -33,7 +33,7 @@ const getDisplayPriceValue = (type: 'client' | 'supplier') => {
   <div v-if="booking && grossCurrency" class="float-end total-sum">
     Общая сумма:
     <strong>
-      {{ formatPrice(getDisplayPriceValue('client'), grossCurrency.sign) }}
+      {{ formatPrice(getDisplayPriceValue('client'), grossCurrency.code_char) }}
     </strong>
     <span v-if="booking.prices.clientPrice.isManual" class="text-muted"> (выставлена вручную)</span>
   </div>

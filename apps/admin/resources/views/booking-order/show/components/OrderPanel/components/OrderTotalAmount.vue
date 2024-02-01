@@ -22,7 +22,7 @@ const grossCurrency = computed<Currency | undefined>(
   <div v-if="order && grossCurrency" class="float-end total-sum">
     Общая сумма:
     <strong>
-      {{ formatPrice(order.clientPrice.value, grossCurrency.sign) }}
+      {{ formatPrice(order.clientPrice.value, grossCurrency.code_char) }}
     </strong>
     <span v-if="false" class="text-muted"> (выставлена вручную)</span>
   </div>

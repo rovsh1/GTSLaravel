@@ -49,9 +49,9 @@ const formatBookingPeriod = (booking: OrderBooking): string | null => {
           <td>{{ formatBookingPeriod(booking) }}</td>
           <td>
             {{ formatBookingPrice(booking.prices.clientPrice,
-                                  getCurrencyByCodeChar(booking.prices.clientPrice.currency.value)?.sign) }} /
+                                  getCurrencyByCodeChar(booking.prices.clientPrice.currency.value)?.code_char) }} /
             {{ formatBookingPrice(booking.prices.supplierPrice,
-                                  getCurrencyByCodeChar(booking.prices.supplierPrice.currency.value)?.sign) }}
+                                  getCurrencyByCodeChar(booking.prices.supplierPrice.currency.value)?.code_char) }}
           </td>
           <td>
             <span

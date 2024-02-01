@@ -31,13 +31,13 @@ defineEmits<{
     <h6>{{ title }}</h6>
     <hr>
     <div v-if="currency">
-      {{ amountTitle }}: {{ formatPrice(amountValue, currency.sign) }}
+      {{ amountTitle }}: {{ formatPrice(amountValue, currency.code_char) }}
     </div>
     <a v-if="isEditable" href="#" @click.prevent="$emit('clickChangePrice')">Изменить</a>
 
     <div v-if="needShowPenalty && currency">
       <div>
-        {{ penaltyTitle }}: {{ formatPrice((penaltyValue || 0), currency.sign) }}
+        {{ penaltyTitle }}: {{ formatPrice((penaltyValue || 0), currency.code_char) }}
       </div>
       <a v-if="isEditable" href="#" @click.prevent="$emit('clickChangePenalty')">Изменить</a>
     </div>
