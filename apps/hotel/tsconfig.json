@@ -23,13 +23,16 @@
         "types": [
             "vite/client",
             "jquery",
-            "./resources/globals",
+            "./resources/js/config/globals",
             "./node_modules/@types/bootstrap/index"
         ],
         "baseUrl": "./",
         "paths": {
             "~resources/*": [
                 "resources/*"
+            ],
+            "~resources/js/*": [
+                "resources/js/*"
             ],
             "~api": [
                 "resources/vue/api/index"
@@ -48,7 +51,13 @@
             ],
             "~stores/*": [
                 "resources/vue/stores/*"
-            ]
+            ],
+            "~widgets/*": [
+                "resources/js/widgets/*"
+            ],
+            "~cache/*": [
+                "resources/js/cache/*"
+            ],
         }
     },
     "include": [

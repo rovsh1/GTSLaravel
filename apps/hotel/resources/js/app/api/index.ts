@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { ADMIN_API_URL } from '~lib/env'
+import { ADMIN_API_URL } from '~resources/js/config/env'
 
 // @todo сейчас вообще не используется авторизация (в т.ч. непонятно какой юзер делает запрос)
 // axios.defaults.withCredentials = true

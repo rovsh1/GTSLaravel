@@ -2,10 +2,10 @@ import { computed } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
 
+import { getNullableRef } from '~resources/vue/vue'
+
 import { BaseResponse, useAdminAPI } from '~api'
 import { BaseBooking, BookingID } from '~api/booking/models'
-
-import { getNullableRef } from '~lib/vue'
 
 export type ServiceType = {
   id: number

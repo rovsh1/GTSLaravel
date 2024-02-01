@@ -54,6 +54,9 @@ module.exports = defineConfig({
         ['^~api'],
         ['^~lib'],
         ['^~components'],
+        ['^~stores'],
+        ['^~widgets'],
+        ['^~cache'],
         // `./*.vue` or `../*.vue`
         ['^\\.\\.?\\/.*.vue'],
         // `./*` or `../*`

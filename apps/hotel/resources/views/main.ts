@@ -4,7 +4,7 @@ import bootGrid from '~resources/js/app/providers/grids'
 
 import '~resources/js/bootstrap'
 import '~resources/js/vendor/jquery.cookie'
-import '~lib/date-picker/date-picker'
+import '~widgets/date-picker/date-picker'
 import '~resources/js/libs/dialog/helpers'
 import '~resources/js/plugins/select2'
 import '~resources/js/plugins/buttons/delete-button'

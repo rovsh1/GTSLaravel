@@ -5,7 +5,8 @@ import { downloadDocument } from '~api/booking/document'
 import { BookingRequest } from '~api/booking/request'
 
 import { formatDateTime } from '~lib/date'
-import createPopover, { PopoverItem } from '~lib/popover/popover'
+
+import createPopover, { PopoverItem } from '~widgets/popover/popover'
 
 import '~resources/views/main'
 

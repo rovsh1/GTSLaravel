@@ -3,8 +3,7 @@ import { createPinia } from 'pinia'
 import ActionsMenu from '~resources/views/booking/shared/components/ActionsMenu.vue'
 import ControlPanel from '~resources/views/booking/shared/components/BookingPanel/ControlPanel.vue'
 import CancelConditions from '~resources/views/booking/shared/components/CancelConditions.vue'
-
-import { createVueInstance } from '~lib/vue'
+import { createVueInstance } from '~resources/vue/vue'
 
 import BookingRooms from './BookingRooms.vue'
 

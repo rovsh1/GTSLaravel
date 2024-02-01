@@ -4,9 +4,9 @@ import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import $ from 'jquery'
 import { nanoid } from 'nanoid'
 
-import { useSelectElement } from '~lib/select-element/select-element'
-
 import { SelectOption } from '~components/Bootstrap/lib'
+
+import { useSelectElement } from '~widgets/select-element/select-element'
 
 type LabelStyle = 'default' | 'outline'
 

@@ -88,6 +88,8 @@ export default defineConfig(({ command }) => ({
       '~api': path.resolve(__dirname, 'resources/vue/api'),
       '~components': path.resolve(__dirname, 'resources/vue/components'),
       '~stores': path.resolve(__dirname, 'resources/vue/stores'),
+      '~widgets': path.resolve(__dirname, 'resources/js/widgets'),
+      '~cache': path.resolve(__dirname, 'resources/js/cache'),
       '~lib': path.resolve(__dirname, 'resources/lib'),
     },
   },
