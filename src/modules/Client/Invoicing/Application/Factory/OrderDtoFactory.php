@@ -26,6 +26,7 @@ class OrderDtoFactory
                 CurrencyDto::fromEnum($order->clientPrice()->currency(), $this->translator),
                 $order->clientPenalty()->value(),
             );
+            $remainingAmount = $order->clientPenalty()->value() - $order->payedAmount()->value();
         }
 
         return new OrderDto(
