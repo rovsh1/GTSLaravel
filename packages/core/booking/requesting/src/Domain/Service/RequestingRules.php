@@ -48,13 +48,13 @@ final class RequestingRules
     public function isBookingRequestable(): bool
     {
         return !$this->isOtherService()
-            && ($this->order->inModeration() || $this->order->isRefunded())
+            && ($this->order->inModeration() || $this->canSendCancellationRequest())
             && in_array($this->booking->status()->value(), self::REQUESTABLE_STATUSES);
     }
 
     public function canSendCancellationRequest(): bool
     {
-        return $this->isBookingRequestable() && $this->booking->status()->value() === StatusEnum::CONFIRMED;
+        return $this->booking->isConfirmed();
     }
 
     public function canSendBookingRequest(): bool

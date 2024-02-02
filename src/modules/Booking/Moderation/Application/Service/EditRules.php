@@ -86,7 +86,7 @@ final class EditRules
     public function getAvailableStatusTransitions(): array
     {
         $statusTransitions = $this->statusTransitionsFactory->build($this->booking->serviceType());
-        if (!$this->order->inModeration() && !$this->order->isRefunded()) {
+        if (!$this->order->inModeration() && !$this->booking->isWaitingCancellation()) {
             return [];
         }
 
