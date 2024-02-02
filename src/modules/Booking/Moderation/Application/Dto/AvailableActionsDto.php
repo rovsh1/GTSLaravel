@@ -11,6 +11,7 @@ final class AvailableActionsDto
         public readonly bool $isEditable,
         public readonly bool $canEditExternalNumber,
         public readonly bool $canChangeRoomPrice,
+        public readonly bool $canChangeCarBidPrice,
         public readonly bool $canCopy,
         public readonly bool $canEditClientPrice,
         public readonly bool $canEditSupplierPrice,

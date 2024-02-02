@@ -53,6 +53,18 @@ final class EditRules
             ]) && !$this->booking->prices()->clientPrice()->manualValue();
     }
 
+    public function canChangeCarBidPrice(): bool
+    {
+        return $this->isTransferBooking() && in_array($this->booking->status()->value(), [
+                StatusEnum::CREATED,
+                StatusEnum::PROCESSING,
+                StatusEnum::WAITING_PROCESSING,
+                StatusEnum::NOT_CONFIRMED,
+                StatusEnum::CANCELLED_NO_FEE,
+                StatusEnum::CANCELLED_FEE,
+            ]) && !$this->booking->prices()->clientPrice()->manualValue();
+    }
+
     public function canCopy(): bool
     {
         return $this->booking->isCancelled();
@@ -84,6 +96,11 @@ final class EditRules
     private function isHotelBooking(): bool
     {
         return $this->booking->serviceType() === ServiceTypeEnum::HOTEL_BOOKING;
+    }
+
+    private function isTransferBooking(): bool
+    {
+        return $this->booking->serviceType()->isTransferService();
     }
 
     private function isOtherService(): bool
