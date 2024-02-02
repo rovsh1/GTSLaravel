@@ -56,7 +56,7 @@
       "Pkg\\Booking\\Requesting\\": "packages/core/booking/requesting/src",
       "Pkg\\Booking\\EventSourcing\\": "packages/core/booking/event-sourcing/src",
       "Pkg\\Hotel\\Administration\\": "packages/core/hotel/administration/src",
-      "Support\\": "src/support/",
+      "Support\\LocaleTranslator\\": "packages/support/locale-translator/src",
       "Services\\": "src/services/",
       "Shared\\": "src/shared/",
       "Sdk\\": "src/sdk",

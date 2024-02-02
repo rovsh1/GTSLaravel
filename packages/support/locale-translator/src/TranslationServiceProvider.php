@@ -5,6 +5,7 @@ namespace Support\LocaleTranslator;
 use Illuminate\Translation\TranslationServiceProvider as ServiceProvider;
 use Sdk\Shared\Contracts\Service\TranslatorInterface;
 use Support\LocaleTranslator\Illuminate\LocaleTranslator;
+use Support\LocaleTranslator\Storage\CacheStorage;
 
 class TranslationServiceProvider extends ServiceProvider
 {
@@ -13,6 +14,13 @@ class TranslationServiceProvider extends ServiceProvider
         $this->registerLoader();
 
         $this->app->singleton(TranslatorInterface::class, Translator::class);
+        $this->app->singleton(CacheStorage::class);
+        $this->app->singleton(SyncTranslationsService::class, function ($app) {
+            return new SyncTranslationsService(
+                realpath(__DIR__ . '/../resources/lang'),
+                $app[CacheStorage::class]
+            );
+        });
 
         $this->app->singleton('translator', function ($app) {
             $loader = $app['translation.loader'];

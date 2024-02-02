@@ -11,6 +11,7 @@ use Support\LocaleTranslator\Storage\CacheStorage;
 class SyncTranslationsService
 {
     public function __construct(
+        private readonly string $langPath,
         private readonly CacheStorage $cacheStorage
     ) {}
 
@@ -25,7 +26,7 @@ class SyncTranslationsService
             Schema::enableForeignKeyConstraints();
         }
 
-        $this->readDir(base_path('resources/lang/ru'));
+        $this->readDir($this->langPath . '/ru');
     }
 
     private function readDir(string $path): void
@@ -35,6 +36,7 @@ class SyncTranslationsService
             if ($fileinfo->isDot()) {
                 continue;
             } elseif ($fileinfo->isFile()) {
+                dd($fileinfo);
                 $this->readFile($fileinfo->getPathname());
             }
 //            elseif ($fileinfo->isDir()) {
