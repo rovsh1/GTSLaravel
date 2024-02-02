@@ -1,8 +1,8 @@
-import bootCookies from '~resources/js/app/providers/cookies'
-import bootFilesDownloader from '~resources/js/app/providers/files'
-import bootForms from '~resources/js/app/providers/forms'
-import bootGrid from '~resources/js/app/providers/grids'
-import bootSitemap from '~resources/js/app/providers/sitemap'
+import bootCookies from '~resources/js/providers/cookies'
+import bootFilesDownloader from '~resources/js/providers/files'
+import bootForms from '~resources/js/providers/forms'
+import bootGrid from '~resources/js/providers/grids'
+import bootSitemap from '~resources/js/providers/sitemap'
 
 import '~resources/js/support/bootstrap'
 import '~resources/js/vendor/jquery.cookie'
@@ -11,10 +11,10 @@ import '~widgets/dialog/helpers'
 import '~resources/js/plugins/multiselect'
 import '~resources/js/plugins/child-combo'
 import '~resources/js/support/select2'
-import '~resources/js/app/support/functions'
-import '~resources/js/app/helpers'
-import '~resources/js/app/plugins/buttons/delete-button'
-import '~resources/js/app/plugins/controls/city'
+import '~resources/js/support/functions'
+import '~resources/js/support/helpers'
+import '~resources/js/plugins/delete-button'
+import '~resources/js/plugins/city'
 
 $(() => {
   $.ajaxSetup({

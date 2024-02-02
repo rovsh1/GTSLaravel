@@ -1,4 +1,4 @@
-import timezone from '~resources/js/app/support/timezone'
+import timezone from '~resources/js/support/timezone'
 
 export default function () {
   Object.assign($.cookie.defaults, {

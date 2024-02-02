@@ -1,5 +1,5 @@
 import '~resources/views/main'
-import '~resources/js/app/plugins/controls/coordinates-input'
+import '~resources/js/plugins/controls/coordinates-input'
 
 $(() => {
   $('#form_data_coordinates').coordinatesInput({

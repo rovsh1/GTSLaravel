@@ -1,7 +1,7 @@
-import EventsTrait from "~resources/js/app/support/events-trait";
+import EventsTrait from "~resources/js/support/events-trait";
 import { loadEditor } from "./loader"
 import { getDefaultOptions } from "./default"
-import { getFileFromManifest } from '~resources/js/app/build-manifest'
+import { getFileFromManifest } from '~resources/js/support/build-manifest'
 
 export default class HtmlEditor {
     #ready = false;

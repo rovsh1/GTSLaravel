@@ -1,6 +1,6 @@
 import { TinyMCE } from 'tinymce'
 
-import { getFileFromManifest } from '~resources/js/app/build-manifest'
+import { getFileFromManifest } from '~resources/js/support/build-manifest'
 
 import 'tinymce/skins/ui/oxide/skin.min.css'
 
