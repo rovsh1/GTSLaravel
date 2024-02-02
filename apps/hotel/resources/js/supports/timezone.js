@@ -15,10 +15,7 @@ export default {
   setCookie(cname, cvalue, exdays) {
     const d = new Date()
     d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000))
-    document.cookie = `${cname}=${cvalue
-    }; expires=${d.toUTCString()
-    }; path=/${
-      this.domain ? `; domain=${this.domain}` : ''}`
+    document.cookie = `${cname}=${cvalue}; expires=${d.toUTCString()}; path=/${this.domain ? `; domain=${this.domain}` : ''}`
   },
   getCookie(cname) {
     const name = `${cname}=`
