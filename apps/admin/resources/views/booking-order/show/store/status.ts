@@ -2,9 +2,9 @@ import { onMounted, ref } from 'vue'
 
 import { defineStore } from 'pinia'
 
-import { OrderStatusResponse } from '~resources/api/order/models'
 import { CacheStorage } from '~resources/lib/cache-storage/cache-storage'
 import { TTLValues } from '~resources/lib/enums'
+import { OrderStatusResponse } from '~resources/vue/api/order/models'
 
 import { useOrderStatusesAPI } from '~api/order/status'
 

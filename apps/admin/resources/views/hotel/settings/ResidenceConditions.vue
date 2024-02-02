@@ -23,9 +23,9 @@ import {
   updateConditionHotelMarkupSettings,
 } from '~api/hotel/markup-settings'
 
-import { requestInitialData } from '~lib/initial-data'
-
 import { showToast } from '~components/Bootstrap/BootstrapToast'
+
+import { requestInitialData } from '~lib/initial-data'
 
 const { hotelID } = requestInitialData(
   z.object({

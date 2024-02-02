@@ -3,9 +3,9 @@ import { nextTick, onMounted, Ref, ref } from 'vue'
 import { defineStore, storeToRefs } from 'pinia'
 import { z } from 'zod'
 
-import { useGetOrderBookingsAPI } from '~resources/api/order/booking'
 import { showCancelFeeDialog } from '~resources/views/booking/shared/lib/modals'
 import { useOrderStatusesStore } from '~resources/views/booking-order/show/store/status'
+import { useGetOrderBookingsAPI } from '~resources/vue/api/order/booking'
 
 import {
   copyOrder,

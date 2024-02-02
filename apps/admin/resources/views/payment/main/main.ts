@@ -1,9 +1,9 @@
 import { createPinia } from 'pinia'
 
 import OrderPaymentModal from '~resources/views/payment/main/components/OrderPaymentModal.vue'
+import { createVueInstance } from '~resources/vue/vue'
 
 import { useApplicationEventBus } from '~lib/event-bus'
-import { createVueInstance } from '~lib/vue'
 
 import '~resources/views/main'
 

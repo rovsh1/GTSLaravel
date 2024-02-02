@@ -4,8 +4,7 @@ import { createHotelSwitcher } from '~resources/lib/hotel-switcher/hotel-switche
 import CancellationConditions from '~resources/views/hotel/settings/CancellationConditions.vue'
 import MarkupConditions from '~resources/views/hotel/settings/MarkupConditions.vue'
 import ResidenceConditions from '~resources/views/hotel/settings/ResidenceConditions.vue'
-
-import { createVueInstance } from '~lib/vue'
+import { createVueInstance } from '~resources/vue/vue'
 
 import '~resources/views/main'
 

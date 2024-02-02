@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import { useCurrencyStore } from '~resources/store/currency'
 import { useBookingStore } from '~resources/views/booking/shared/store/booking'
 
 import { Currency } from '~api/models'
+
+import { useCurrencyStore } from '~stores/currency'
 
 import { formatPrice } from '~lib/price'
 

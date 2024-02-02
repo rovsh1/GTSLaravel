@@ -18,11 +18,11 @@ import { MarkupCondition, MarkupSettings, useHotelRoomMarkupSettings } from '~ap
 import { HotelRate, useHotelRatesAPI } from '~api/hotel/price-rate'
 import { HotelRoomResponse } from '~api/hotel/room'
 
-import { requestInitialData } from '~lib/initial-data'
-
 import BaseDialog from '~components/BaseDialog.vue'
 import { SelectOption } from '~components/Bootstrap/lib'
 import SelectComponent from '~components/SelectComponent.vue'
+
+import { requestInitialData } from '~lib/initial-data'
 
 const props = defineProps<{
   opened: MaybeRef<boolean>

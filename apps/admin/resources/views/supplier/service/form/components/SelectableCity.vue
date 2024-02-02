@@ -5,9 +5,9 @@ import { z } from 'zod'
 
 import { mapEntitiesToSelectOptions } from '~resources/views/booking/shared/lib/constants'
 
-import { requestInitialData } from '~lib/initial-data'
-
 import SelectComponent from '~components/SelectComponent.vue'
+
+import { requestInitialData } from '~lib/initial-data'
 
 const { cities } = requestInitialData(z.object({
   cities: z.array(z.object({

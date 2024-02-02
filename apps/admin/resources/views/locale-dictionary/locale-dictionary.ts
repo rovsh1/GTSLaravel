@@ -1,4 +1,4 @@
-import { createVueInstance } from '~lib/vue'
+import { createVueInstance } from '~resources/vue/vue'
 
 import LocaleDictionary from './LocaleDictionary.vue'
 

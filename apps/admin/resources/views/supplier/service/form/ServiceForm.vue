@@ -11,13 +11,13 @@ import { DetailsFormData } from '~resources/views/supplier/service/form/componen
 import { useGetBookingDetailsTypesAPI } from '~api/booking/service'
 import { deleteService } from '~api/supplier/service'
 
-import { showConfirmDialog } from '~lib/confirm-dialog'
-import { requestInitialData } from '~lib/initial-data'
-
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 import { SelectOption } from '~components/Bootstrap/lib'
 import OverlayLoading from '~components/OverlayLoading.vue'
 import SelectComponent from '~components/SelectComponent.vue'
+
+import { showConfirmDialog } from '~lib/confirm-dialog'
+import { requestInitialData } from '~lib/initial-data'
 
 function intTransformator(value: any) {
   return parseInt(value, 10)

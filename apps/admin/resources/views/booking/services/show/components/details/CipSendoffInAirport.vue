@@ -6,7 +6,6 @@ import { MaybeRef } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { z } from 'zod'
 
-import { useCountryStore } from '~resources/store/countries'
 import { BookingCipSendoffInAirportDetails } from '~resources/views/booking/services/show/components/details/lib/types'
 import GuestModal from '~resources/views/booking/shared/components/GuestModal.vue'
 import GuestsTable from '~resources/views/booking/shared/components/GuestsTable.vue'
@@ -20,13 +19,15 @@ import { useEditableModal } from '~resources/views/hotel/settings/composables/ed
 import { addBookingGuest, deleteBookingGuest } from '~api/booking/service/guests'
 import { addOrderGuest, Guest, updateOrderGuest } from '~api/order/guest'
 
-import { showConfirmDialog } from '~lib/confirm-dialog'
-import { requestInitialData } from '~lib/initial-data'
-
 import EditableDateInput from '~components/Editable/EditableDateInput.vue'
 import EditableTextInput from '~components/Editable/EditableTextInput.vue'
 import EditableTimeInput from '~components/Editable/EditableTimeInput.vue'
 import IconButton from '~components/IconButton.vue'
+
+import { useCountryStore } from '~stores/countries'
+
+import { showConfirmDialog } from '~lib/confirm-dialog'
+import { requestInitialData } from '~lib/initial-data'
 
 const { bookingID } = requestInitialData(z.object({
   bookingID: z.number(),

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 
-import { useCurrencyStore } from '~resources/store/currency'
-
 import { OrderBooking } from '~api/order/booking'
+
+import { useCurrencyStore } from '~stores/currency'
 
 import { formatDate, formatPeriod } from '~lib/date'
 import { formatBookingPrice } from '~lib/price'

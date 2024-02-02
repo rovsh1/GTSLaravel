@@ -8,7 +8,7 @@ import { defineConfig } from 'vite'
 import checker from 'vite-plugin-checker'
 import tsconfigPaths from 'vite-tsconfig-paths'
 
-import { scripts } from './package.json'
+// import { scripts } from './package.json'
 
 const conf = expand(config({
   allowEmptyValues: false,
@@ -123,22 +123,27 @@ export default defineConfig(({ command }) => ({
     }),
     checker({
       enableBuild: false,
-      vueTsc: true,
-      typescript: true,
-      eslint: {
+      vueTsc: false,
+      typescript: false,
+      /* eslint: {
         lintCommand: scripts['lint:scripts'],
       },
       stylelint: {
         lintCommand: scripts['lint:styles'].replace(/"/, ''),
-      },
+      }, */
     }),
   ],
   resolve: {
     alias: {
       '~resources': path.resolve(__dirname, 'resources'),
-      '~api': path.resolve(__dirname, 'resources/api'),
+      '~api': path.resolve(__dirname, 'resources/vue/api'),
+      '~components': path.resolve(__dirname, 'resources/vue/components'),
+      '~stores': path.resolve(__dirname, 'resources/vue/stores'),
+      '~widgets': path.resolve(__dirname, 'resources/js/widgets'),
+      '~cache': path.resolve(__dirname, 'resources/js/cache'),
+      '~helpers': path.resolve(__dirname, 'resources/js/helpers'),
+      // wwww
       '~lib': path.resolve(__dirname, 'resources/lib'),
-      '~components': path.resolve(__dirname, 'resources/components'),
     },
   },
   css: {

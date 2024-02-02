@@ -5,6 +5,7 @@ import { z } from 'zod'
 import axios from '~resources/js/app/api'
 import CreateClientButton from '~resources/views/booking/shared/CreateClientButton.vue'
 import { mapClientsToSelect2Options, Select2Option } from '~resources/views/booking/shared/lib/constants'
+import { createVueInstance } from '~resources/vue/vue'
 
 import { Client } from '~api/client'
 
@@ -12,7 +13,6 @@ import { formatDate } from '~lib/date'
 import { useApplicationEventBus } from '~lib/event-bus'
 import { requestInitialData } from '~lib/initial-data'
 import { useSelectElement } from '~lib/select-element/select-element'
-import { createVueInstance } from '~lib/vue'
 
 import '~resources/views/main'
 

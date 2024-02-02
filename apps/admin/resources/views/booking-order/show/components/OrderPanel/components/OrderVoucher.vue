@@ -6,11 +6,11 @@ import { useOrderStore } from '~resources/views/booking-order/show/store/order'
 import { OrderAvailableActionsResponse } from '~api/order/status'
 import { OrderVoucher } from '~api/order/voucher'
 
-import { formatDateTime } from '~lib/date'
-import { downloadFile } from '~lib/download-file'
-
 import { showToast } from '~components/Bootstrap/BootstrapToast'
 import InlineIcon from '~components/InlineIcon.vue'
+
+import { formatDateTime } from '~lib/date'
+import { downloadFile } from '~lib/download-file'
 
 const orderStore = useOrderStore()
 const availableActions = computed<OrderAvailableActionsResponse | null>(() => orderStore.availableActions)

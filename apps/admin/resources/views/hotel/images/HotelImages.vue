@@ -24,8 +24,6 @@ import { useHotelImagesUploadAPI } from '~api/hotel/images/upload'
 import { HotelRoom, useHotelRoomAPI } from '~api/hotel/room'
 import { useHotelRoomsListWithAttachedImageAPI } from '~api/hotel/rooms-image'
 
-import { requestInitialData } from '~lib/initial-data'
-
 import BaseDialog from '~components/BaseDialog.vue'
 import BaseLayout from '~components/BaseLayout.vue'
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
@@ -34,6 +32,8 @@ import ImageZoom from '~components/ImageZoom.vue'
 import InlineIcon from '~components/InlineIcon.vue'
 import LoadingSpinner from '~components/LoadingSpinner.vue'
 import OverlayLoading from '~components/OverlayLoading.vue'
+
+import { requestInitialData } from '~lib/initial-data'
 
 import UploadDialog from './components/UploadDialog.vue'
 

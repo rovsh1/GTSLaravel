@@ -3,8 +3,7 @@ import { createPinia } from 'pinia'
 import EditableManager from '~resources/views/booking-order/show/components/EditableManager.vue'
 // import EditableNote from '~resources/views/booking-order/show/components/EditableNote.vue'
 import ControlPanel from '~resources/views/booking-order/show/components/OrderPanel/ControlPanel.vue'
-
-import { createVueInstance } from '~lib/vue'
+import { createVueInstance } from '~resources/vue/vue'
 
 import OrderDetails from './OrderDetails.vue'
 

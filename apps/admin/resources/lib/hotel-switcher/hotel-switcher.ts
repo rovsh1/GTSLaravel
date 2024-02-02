@@ -1,4 +1,4 @@
-import { HotelResponse, useHotelSearchAPI } from '~resources/api/hotel/get'
+import { HotelResponse, useHotelSearchAPI } from '~resources/vue/api/hotel/get'
 
 import './style.scss'
 

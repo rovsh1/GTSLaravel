@@ -3,7 +3,6 @@ import { computed } from 'vue'
 
 import { useToggle } from '@vueuse/core'
 
-import { useCurrencyStore } from '~resources/store/currency'
 import AmountBlock from '~resources/views/booking/shared/components/AmountBlock.vue'
 import BookingStatusReason
   from '~resources/views/booking/shared/components/BookingPanel/components/BookingStatusReason.vue'
@@ -12,6 +11,8 @@ import { useBookingStore } from '~resources/views/booking/shared/store/booking'
 
 import { ProfitItem } from '~api/booking/models'
 import { Currency } from '~api/models'
+
+import { useCurrencyStore } from '~stores/currency'
 
 import { formatPrice } from '~lib/price'
 

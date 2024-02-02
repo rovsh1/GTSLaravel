@@ -5,7 +5,6 @@ import { computed, MaybeRef, ref, unref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { z } from 'zod'
 
-import { useCountryStore } from '~resources/store/countries'
 import { BookingTransferFromAirportDetails } from '~resources/views/booking/services/show/components/details/lib/types'
 import CarModal from '~resources/views/booking/shared/components/CarModal.vue'
 import GuestModal from '~resources/views/booking/shared/components/GuestModal.vue'
@@ -24,16 +23,18 @@ import { addGuestToCar, deleteGuestFromCar } from '~api/booking/service/guests'
 import { addOrderGuest, Guest, updateOrderGuest } from '~api/order/guest'
 import { Car, useGetSupplierCarsAPI } from '~api/supplier/cars'
 
-import { showConfirmDialog } from '~lib/confirm-dialog'
-import { requestInitialData } from '~lib/initial-data'
-import { pluralForm } from '~lib/plural'
-
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 import BootstrapCard from '~components/Bootstrap/BootstrapCard/BootstrapCard.vue'
 import BootstrapCardTitle from '~components/Bootstrap/BootstrapCard/components/BootstrapCardTitle.vue'
 import { showToast } from '~components/Bootstrap/BootstrapToast'
 import EmptyData from '~components/EmptyData.vue'
 import IconButton from '~components/IconButton.vue'
+
+import { useCountryStore } from '~stores/countries'
+
+import { showConfirmDialog } from '~lib/confirm-dialog'
+import { requestInitialData } from '~lib/initial-data'
+import { pluralForm } from '~lib/plural'
 
 const { bookingID } = requestInitialData(z.object({
   bookingID: z.number(),

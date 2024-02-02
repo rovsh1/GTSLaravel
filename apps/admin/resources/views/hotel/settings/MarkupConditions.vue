@@ -9,9 +9,9 @@ import { useMarkupSettingsStore } from '~resources/views/hotel/settings/composab
 
 import { updateConditionHotelMarkupSettings } from '~api/hotel/markup-settings'
 
-import { requestInitialData } from '~lib/initial-data'
-
 import EditableCell from '~components/Editable/EditableNumberInput.vue'
+
+import { requestInitialData } from '~lib/initial-data'
 
 const { hotelID } = requestInitialData(
   z.object({

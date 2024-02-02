@@ -6,9 +6,9 @@ import { MaybeRef } from '@vueuse/core'
 
 import { BookingStatusHistoryResponse } from '~api/booking/status'
 
-import { formatDateTime } from '~lib/date'
-
 import BaseDialog from '~components/BaseDialog.vue'
+
+import { formatDateTime } from '~lib/date'
 
 const props = defineProps<{
   opened: MaybeRef<boolean>

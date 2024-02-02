@@ -3,7 +3,6 @@ import { computed, MaybeRef, nextTick, ref, unref, watch } from 'vue'
 
 import { storeToRefs } from 'pinia'
 
-import { useCountryStore } from '~resources/store/countries'
 import GuestModal from '~resources/views/booking/shared/components/GuestModal.vue'
 import GuestsTable from '~resources/views/booking/shared/components/GuestsTable.vue'
 import InfoBlock from '~resources/views/booking/shared/components/InfoBlock/InfoBlock.vue'
@@ -14,9 +13,11 @@ import { useEditableModal } from '~resources/views/hotel/settings/composables/ed
 
 import { addOrderGuest, deleteOrderGuest, updateOrderGuest } from '~api/order/guest'
 
-import { showConfirmDialog } from '~lib/confirm-dialog'
-
 import IconButton from '~components/IconButton.vue'
+
+import { useCountryStore } from '~stores/countries'
+
+import { showConfirmDialog } from '~lib/confirm-dialog'
 
 const { countries } = storeToRefs(useCountryStore())
 const orderStore = useOrderStore()

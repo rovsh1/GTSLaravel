@@ -23,7 +23,7 @@
         "types": [
             "vite/client",
             "jquery",
-            "./resources/globals",
+            "./resources/js/config/globals",
             "./node_modules/@types/bootstrap/index"
         ],
         "baseUrl": "./",
@@ -31,21 +31,37 @@
             "~resources/*": [
                 "resources/*"
             ],
+            "~resources/js/*": [
+                "resources/js/*"
+            ],
             "~api": [
-                "resources/api/index"
+                "resources/vue/api/index"
             ],
             "~api/*": [
-                "resources/api/*"
+                "resources/vue/api/*"
             ],
+            "~components/*": [
+                "resources/vue/components/*"
+            ],
+            "~stores/*": [
+                "resources/vue/stores/*"
+            ],
+            "~widgets/*": [
+                "resources/js/widgets/*"
+            ],
+            "~helpers/*": [
+                "resources/js/helpers/*"
+            ],
+            "~cache/*": [
+                "resources/js/cache/*"
+            ],
+            // wwww
             "~lib": [
                 "resources/lib/index"
             ],
             "~lib/*": [
                 "resources/lib/*"
             ],
-            "~components/*": [
-                "resources/components/*"
-            ]
         }
     },
     "include": [

@@ -10,9 +10,9 @@ import { useBookingStore } from '~resources/views/booking/shared/store/booking'
 import { ExternalNumberType, ExternalNumberTypeEnum } from '~api/booking/hotel/details'
 import { BookingAvailableActionsResponse } from '~api/booking/status'
 
-import { requestInitialData } from '~lib/initial-data'
-
 import SelectComponent from '~components/SelectComponent.vue'
+
+import { requestInitialData } from '~lib/initial-data'
 
 const { bookingID } = requestInitialData(
   z.object({

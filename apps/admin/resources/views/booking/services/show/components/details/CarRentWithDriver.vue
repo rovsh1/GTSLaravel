@@ -7,11 +7,11 @@ import { BookingCarRentWithDriverDetails } from '~resources/views/booking/servic
 import InfoBlock from '~resources/views/booking/shared/components/InfoBlock/InfoBlock.vue'
 import { useBookingStore } from '~resources/views/booking/shared/store/booking'
 
-import { parseAPIDateAndSetDefaultTime } from '~lib/date'
-
 import EditableDateRangeInput from '~components/Editable/EditableDateRangeInput.vue'
 import EditableTextInput from '~components/Editable/EditableTextInput.vue'
 import EditableTimeInput from '~components/Editable/EditableTimeInput.vue'
+
+import { parseAPIDateAndSetDefaultTime } from '~lib/date'
 
 const bookingStore = useBookingStore()
 

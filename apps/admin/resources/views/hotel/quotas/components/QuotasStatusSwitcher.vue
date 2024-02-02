@@ -5,11 +5,11 @@ import { nanoid } from 'nanoid'
 
 import { HotelRoom } from '~api/hotel/room'
 
-import { daysOfWeekOptions } from '~lib/constants'
-
 import DateRangePicker from '~components/DateRangePicker.vue'
 import OverlayLoading from '~components/OverlayLoading.vue'
 import SelectComponent from '~components/SelectComponent.vue'
+
+import { daysOfWeekOptions } from '~lib/constants'
 
 import { Action, ActionsOption, QuotasStatusUpdateFormData, QuotasStatusUpdatePayload } from './lib/types'
 

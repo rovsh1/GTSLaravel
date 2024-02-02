@@ -2,9 +2,9 @@ import { onMounted, ref } from 'vue'
 
 import { defineStore } from 'pinia'
 
-import { BookingStatusResponse } from '~resources/api/booking/models'
 import { CacheStorage } from '~resources/lib/cache-storage/cache-storage'
 import { TTLValues } from '~resources/lib/enums'
+import { BookingStatusResponse } from '~resources/vue/api/booking/models'
 
 import { useBookingStatusesAPI } from '~api/booking/status'
 

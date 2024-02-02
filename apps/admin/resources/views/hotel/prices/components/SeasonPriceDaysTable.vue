@@ -4,14 +4,15 @@ import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { DateTime } from 'luxon'
 import { nanoid } from 'nanoid'
 
-import { updateRoomSeasonPricesByDay, useRoomSeasonsDaysPricesListAPI } from '~resources/api/hotel/prices/seasons'
 import { formatDateTimeToAPIDate, formatSeasonPeriod, parseAPIDate } from '~resources/lib/date'
 import { Month } from '~resources/views/hotel/quotas/components/lib/index'
 
-import { daysOfWeek } from '~lib/constants'
+import { updateRoomSeasonPricesByDay, useRoomSeasonsDaysPricesListAPI } from '~api/hotel/prices/seasons'
 
 import { showToast } from '~components/Bootstrap/BootstrapToast'
 import OverlayLoading from '~components/OverlayLoading.vue'
+
+import { daysOfWeek } from '~lib/constants'
 
 import EditableCell from './EditableCell.vue'
 

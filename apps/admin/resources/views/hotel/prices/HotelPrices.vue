@@ -4,13 +4,13 @@ import { onMounted, ref } from 'vue'
 
 import { z } from 'zod'
 
-import { useRoomSeasonsPricesListAPI } from '~resources/api/hotel/prices/seasons'
-
-import { requestInitialData } from '~lib/initial-data'
+import { useRoomSeasonsPricesListAPI } from '~api/hotel/prices/seasons'
 
 import BootstrapCard from '~components/Bootstrap/BootstrapCard/BootstrapCard.vue'
 import BootstrapCardTitle from '~components/Bootstrap/BootstrapCard/components/BootstrapCardTitle.vue'
 import EmptyData from '~components/EmptyData.vue'
+
+import { requestInitialData } from '~lib/initial-data'
 
 import HotelPricesTable from './components/HotelPricesTable.vue'
 

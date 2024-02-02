@@ -9,10 +9,10 @@ import OrderPaymentsTable from '~resources/views/payment/main/components/OrderPa
 import { ordersLend, PaymentOrderPayload, useGetPaymentAPI,
   usePaymentOrdersListAPI, usePaymentWaitingOrdersListAPI } from '~api/payment/payment'
 
-import { useApplicationEventBus } from '~lib/event-bus'
-
 import BaseDialog from '~components/BaseDialog.vue'
 import OverlayLoading from '~components/OverlayLoading.vue'
+
+import { useApplicationEventBus } from '~lib/event-bus'
 
 const eventBus = useApplicationEventBus()
 const [isOpened, toggleModal] = useToggle()

@@ -6,9 +6,6 @@ import { useToggle } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 
 import { isDataValid } from '~resources/composables/form'
-import { useCityStore } from '~resources/store/city'
-import { useCurrencyStore } from '~resources/store/currency'
-import { useMarkupGroupStore } from '~resources/store/markup-group'
 import { tabsItemsSettings } from '~resources/views/booking/hotel/form/lib/composables'
 import { statusOptions } from '~resources/views/booking/hotel/form/lib/constants'
 import { BasicFormData, LegalEntityFormData, PhysicalEntityFormData } from '~resources/views/booking/hotel/form/lib/types'
@@ -21,8 +18,6 @@ import {
 
 import { createClient, useIndustryListAPI } from '~api/client'
 
-import { useApplicationEventBus } from '~lib/event-bus'
-
 import BaseDialog from '~components/BaseDialog.vue'
 import BootstrapTabs from '~components/Bootstrap/BootstrapTabs/BootstrapTabs.vue'
 import BootstrapTabsLink from '~components/Bootstrap/BootstrapTabs/components/BootstrapTabsLink.vue'
@@ -33,6 +28,12 @@ import { SelectOption } from '~components/Bootstrap/lib'
 import IconButton from '~components/IconButton.vue'
 import OverlayLoading from '~components/OverlayLoading.vue'
 import SelectComponent from '~components/SelectComponent.vue'
+
+import { useCityStore } from '~stores/city'
+import { useCurrencyStore } from '~stores/currency'
+import { useMarkupGroupStore } from '~stores/markup-group'
+
+import { useApplicationEventBus } from '~lib/event-bus'
 
 const { cities } = storeToRefs(useCityStore())
 const cityOptions = computed(() => {
