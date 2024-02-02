@@ -7,7 +7,6 @@ import { z } from 'zod'
 import { useBookingStore } from '~resources/views/booking/shared/store/booking'
 
 import { useDeleteWithConfirm } from '~helpers/delete-dialog'
-
 import { requestInitialData } from '~helpers/initial-data'
 
 const { editUrl, deleteUrl, timelineUrl } = requestInitialData(z.object({

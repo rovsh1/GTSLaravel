@@ -2,7 +2,7 @@ import { isEmpty } from 'lodash'
 import { createPinia } from 'pinia'
 import { z } from 'zod'
 
-import axios from '~resources/js/app/api'
+import axios from '~resources/js/api'
 import CreateClientButton from '~resources/views/booking/shared/CreateClientButton.vue'
 import { mapClientsToSelect2Options, Select2Option } from '~resources/views/booking/shared/lib/constants'
 import { createVueInstance } from '~resources/vue/vue'

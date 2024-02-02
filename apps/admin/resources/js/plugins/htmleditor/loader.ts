@@ -16,7 +16,7 @@ export const loadEditor = async (): Promise<TinyMCE> => {
       const head = document.getElementsByTagName('head')[0]
       const script = document.createElement('script')
       script.type = 'text/javascript'
-      getFileFromManifest('resources/assets/tinymce.js').then((file) => {
+      getFileFromManifest('resources/js/support/tinymce/tinymce.js').then((file) => {
         script.src = file
         script.onload = function () {
           resolve(window.tinymce)

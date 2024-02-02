@@ -5,7 +5,6 @@ import { computed, ref } from 'vue'
 import { useToggle } from '@vueuse/core'
 import { z } from 'zod'
 
-import { useQuickSearch } from '~helpers/quick-search'
 import PricesModal from '~resources/views/supplier/service/price/ components/PricesModal.vue'
 import { useCurrenciesStore } from '~resources/views/supplier/service/price/composables/currency'
 
@@ -13,6 +12,7 @@ import { Airport, Money, Season } from '~api/models'
 import { ServicePriceResponse, updateAirportPrice } from '~api/supplier/airport'
 
 import { requestInitialData } from '~helpers/initial-data'
+import { useQuickSearch } from '~helpers/quick-search'
 
 import PricesTable from './PricesTable.vue'
 

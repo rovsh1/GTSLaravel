@@ -83,7 +83,7 @@ export default class HtmlEditor {
             this.#params.plugins[2] += this.#extraPlugins;
 
         const defaultOptions = getDefaultOptions({
-          contentCSSPath: await getFileFromManifest('resources/assets/tinymce-content.scss')
+            contentCSSPath: await getFileFromManifest('resources/js/support/tinymce/tinymce-content.scss')
         })
 
         tinymce.init(Object.assign(defaultOptions, this.#params, {

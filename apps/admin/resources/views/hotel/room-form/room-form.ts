@@ -1,4 +1,4 @@
-import axios from '~resources/js/app/api'
+import axios from '~resources/js/api'
 import HtmlEditor from '~resources/js/plugins/htmleditor/htmleditor'
 import { Select2Option } from '~resources/views/booking/shared/lib/constants'
 import bootBeds from '~resources/views/hotel/_services/room-editor'

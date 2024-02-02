@@ -13,7 +13,6 @@ import OverlayLoading from '~components/OverlayLoading.vue'
 
 import { formatSeasonPeriod } from '~helpers/date'
 import { generateHashFromObject } from '~helpers/hash'
-
 import { requestInitialData } from '~helpers/initial-data'
 
 import EditableCell from './EditableCell.vue'

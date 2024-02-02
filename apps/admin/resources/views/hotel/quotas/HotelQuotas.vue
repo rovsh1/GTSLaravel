@@ -4,8 +4,6 @@ import { computed, nextTick, ref, watch, watchEffect } from 'vue'
 import { useToggle } from '@vueuse/core'
 import { z } from 'zod'
 
-import { formatDateToAPIDate } from '~helpers/date'
-
 import { HotelResponse, useHotelGetAPI } from '~api/hotel/get'
 import { useUpdateHotelRoomQuotasBatch } from '~api/hotel/quotas/batch'
 import { useHotelQuotasAPI } from '~api/hotel/quotas/list'
@@ -19,6 +17,7 @@ import OverlayLoading from '~components/OverlayLoading.vue'
 
 import { createHotelSwitcher } from '~widgets/hotel-switcher/hotel-switcher'
 
+import { formatDateToAPIDate } from '~helpers/date'
 import { requestInitialData } from '~helpers/initial-data'
 
 import QuotasFilters from './components/QuotasFilters/QuotasFilters.vue'

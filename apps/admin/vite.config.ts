@@ -32,9 +32,9 @@ export default defineConfig(({ command }) => ({
   plugins: [
     laravel({
       input: [
-        'resources/assets/jquery.ts',
-        'resources/assets/tinymce.js',
-        'resources/assets/tinymce-content.scss',
+        'resources/js/support/jquery.ts',
+        'resources/js/support/tinymce/tinymce.js',
+        'resources/js/support/tinymce/tinymce-content.scss',
         'resources/views/administration/mail-queue/mail-queue.ts',
         'resources/views/administration/journal/journal.ts',
         'resources/views/administration/access-group-form/access-group-form.ts',

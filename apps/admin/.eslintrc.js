@@ -39,8 +39,7 @@ module.exports = defineConfig({
   ignorePatterns: [
     '**/vendor/*.js',
     '**/vendor/**/*.js',
-    '**/libs/*.js',
-    '**/libs/**/*.js',
+    '**/widgets/dialog/*.js',
     '**/plugins/*.js',
     '**/plugins/**/*.js',
   ],

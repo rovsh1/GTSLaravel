@@ -3,7 +3,6 @@ import { computed, defineAsyncComponent, onMounted, reactive, ref, shallowRef } 
 
 import { z } from 'zod'
 
-import { toPascalCase } from '~resources/js/libs/strings'
 import ErrorComponent from '~resources/views/booking/shared/components/ErrorComponent.vue'
 import { mapEntitiesToSelectOptions } from '~resources/views/booking/shared/lib/constants'
 import { DetailsFormData } from '~resources/views/supplier/service/form/components/details/lib/types'
@@ -17,8 +16,8 @@ import OverlayLoading from '~components/OverlayLoading.vue'
 import SelectComponent from '~components/SelectComponent.vue'
 
 import { showConfirmDialog } from '~helpers/confirm-dialog'
-
 import { requestInitialData } from '~helpers/initial-data'
+import { toPascalCase } from '~helpers/strings'
 
 function intTransformator(value: any) {
   return parseInt(value, 10)

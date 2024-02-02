@@ -1,4 +1,4 @@
-import axios from '~resources/js/app/api'
+import axios from '~resources/js/api'
 import { CancelReasonResponse } from '~resources/vue/api/cancel-reason'
 
 import { CacheStorage } from '~cache/cache-storage'
