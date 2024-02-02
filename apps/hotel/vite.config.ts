@@ -32,7 +32,7 @@ export default defineConfig(({ command }) => ({
   plugins: [
     laravel({
       input: [
-        'resources/js/supports/jquery.ts',
+        'resources/js/support/jquery.ts',
         'resources/views/auth/login/login.scss',
         'resources/views/auth/login/login.ts',
         'resources/views/default/grid/grid.scss',
