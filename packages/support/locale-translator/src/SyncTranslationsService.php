@@ -36,7 +36,6 @@ class SyncTranslationsService
             if ($fileinfo->isDot()) {
                 continue;
             } elseif ($fileinfo->isFile()) {
-                dd($fileinfo);
                 $this->readFile($fileinfo->getPathname());
             }
 //            elseif ($fileinfo->isDir()) {
