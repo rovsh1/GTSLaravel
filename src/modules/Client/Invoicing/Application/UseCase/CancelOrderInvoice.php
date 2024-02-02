@@ -43,6 +43,9 @@ class CancelOrderInvoice implements UseCaseInterface
 
     public function updateOrderStatus(Order $order): void
     {
+        if ($order->isRefunded()) {
+            return;
+        }
         $order->toInProgress();
         $this->orderRepository->store($order);
     }

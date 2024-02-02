@@ -96,7 +96,7 @@ export interface ShowCancelFeeDialogResponse extends ShowDialogResponse {
 export interface CancelFeeDialogOptions {
   withClientCancelFee?: boolean
   clientCancelFeeCurrencyLable?: string
-  cancelFeeCurrencyLable: string
+  cancelFeeCurrencyLabel: string
 }
 
 export const showCancelFeeDialog = (options: CancelFeeDialogOptions): Promise<ShowCancelFeeDialogResponse> => new Promise((resolve): void => {
@@ -115,7 +115,7 @@ export const showCancelFeeDialog = (options: CancelFeeDialogOptions): Promise<Sh
   })
   const $reasonDescriptionField = $('<div />', { class: 'row form-field field-text field-value field-required' })
     .append(`<label for="form_data_penalty_net" class="${options.withClientCancelFee ? 'col-sm-12' : 'col-sm-5'} 
-    col-form-label">Сумма штрафа в ${options.cancelFeeCurrencyLable}</label>`)
+    col-form-label">Сумма штрафа в ${options.cancelFeeCurrencyLabel}</label>`)
     .append(
       $('<div />', { class: `${options.withClientCancelFee ? 'col-sm-12' : 'col-sm-7'} d-flex align-items-center` }).append($descriptionElement),
     )

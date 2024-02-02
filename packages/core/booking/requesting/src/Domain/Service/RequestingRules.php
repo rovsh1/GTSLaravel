@@ -48,7 +48,7 @@ final class RequestingRules
     public function isBookingRequestable(): bool
     {
         return !$this->isOtherService()
-            && $this->order->inModeration()
+            && ($this->order->inModeration() || $this->order->isRefunded())
             && in_array($this->booking->status()->value(), self::REQUESTABLE_STATUSES);
     }
 

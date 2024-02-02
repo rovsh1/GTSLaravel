@@ -48,6 +48,20 @@ final class EditRules
                 StatusEnum::PROCESSING,
                 StatusEnum::WAITING_PROCESSING,
                 StatusEnum::NOT_CONFIRMED,
+                StatusEnum::CANCELLED_NO_FEE,
+                StatusEnum::CANCELLED_FEE,
+            ]) && !$this->booking->prices()->clientPrice()->manualValue();
+    }
+
+    public function canChangeCarBidPrice(): bool
+    {
+        return $this->isTransferBooking() && in_array($this->booking->status()->value(), [
+                StatusEnum::CREATED,
+                StatusEnum::PROCESSING,
+                StatusEnum::WAITING_PROCESSING,
+                StatusEnum::NOT_CONFIRMED,
+                StatusEnum::CANCELLED_NO_FEE,
+                StatusEnum::CANCELLED_FEE,
             ]) && !$this->booking->prices()->clientPrice()->manualValue();
     }
 
@@ -63,7 +77,7 @@ final class EditRules
 
     public function canEditClientPrice(): bool
     {
-        return $this->order->inModeration();
+        return $this->isOtherService() || $this->booking->serviceType()->isAirportService();
     }
 
     /**
@@ -72,7 +86,7 @@ final class EditRules
     public function getAvailableStatusTransitions(): array
     {
         $statusTransitions = $this->statusTransitionsFactory->build($this->booking->serviceType());
-        if (!$this->order->inModeration()) {
+        if (!$this->order->inModeration() && !$this->order->isRefunded()) {
             return [];
         }
 
@@ -82,6 +96,11 @@ final class EditRules
     private function isHotelBooking(): bool
     {
         return $this->booking->serviceType() === ServiceTypeEnum::HOTEL_BOOKING;
+    }
+
+    private function isTransferBooking(): bool
+    {
+        return $this->booking->serviceType()->isTransferService();
     }
 
     private function isOtherService(): bool

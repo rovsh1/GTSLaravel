@@ -6,6 +6,7 @@ use Module\Booking\Moderation\Domain\Booking\Factory\TransferCancelConditionsFac
 use Module\Booking\Shared\Domain\Booking\DbContext\CarBidDbContextInterface;
 use Module\Booking\Shared\Domain\Booking\Service\BookingUnitOfWorkInterface;
 use Sdk\Booking\Contracts\Entity\TransferDetailsInterface;
+use Sdk\Booking\Contracts\Event\CarBidCancelConditionsDeprecatedEventInterface;
 use Sdk\Booking\Contracts\Event\CarBidEventInterface;
 use Sdk\Module\Contracts\Event\DomainEventInterface;
 use Sdk\Module\Contracts\Event\DomainEventListenerInterface;
@@ -20,7 +21,7 @@ class UpdateCarBidCancelConditionsListener implements DomainEventListenerInterfa
 
     public function handle(DomainEventInterface $event): void
     {
-        assert($event instanceof CarBidEventInterface);
+        assert($event instanceof CarBidCancelConditionsDeprecatedEventInterface);
 
         $booking = $this->bookingUnitOfWork->findOrFail($event->bookingId());
         $details = $this->bookingUnitOfWork->getDetails($event->bookingId());

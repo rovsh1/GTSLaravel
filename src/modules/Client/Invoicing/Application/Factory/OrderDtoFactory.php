@@ -20,6 +20,14 @@ class OrderDtoFactory
     {
         $remainingAmount = $order->clientPrice()->value() - $order->payedAmount()->value();
 
+        $penalty = null;
+        if ($order->clientPenalty() !== null) {
+            $penalty = new MoneyDto(
+                CurrencyDto::fromEnum($order->clientPrice()->currency(), $this->translator),
+                $order->clientPenalty()->value(),
+            );
+        }
+
         return new OrderDto(
             id: $order->id()->value(),
             clientId: $order->clientId()->value(),
@@ -27,6 +35,7 @@ class OrderDtoFactory
                 CurrencyDto::fromEnum($order->clientPrice()->currency(), $this->translator),
                 $order->clientPrice()->value(),
             ),
+            clientPenalty: $penalty,
             payedAmount: new MoneyDto(
                 CurrencyDto::fromEnum($order->payedAmount()->currency(), $this->translator),
                 $order->payedAmount()->value(),

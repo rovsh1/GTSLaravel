@@ -57,7 +57,7 @@ export const useOrderStore = defineStore('booking-order', () => {
     const { data: updateStatusResponse } = await updateOrderStatus(updateStatusPayload)
     if (updateStatusResponse.value?.isRefundFeeAmountRequired) {
       const { result: isConfirmed, cancelFeeAmount, toggleClose } = await showCancelFeeDialog({
-        cancelFeeCurrencyLable: order.value?.clientPrice.currency?.value || '--',
+        cancelFeeCurrencyLabel: order.value?.clientPrice.currency?.value || '--',
       })
       if (isConfirmed) {
         updateStatusPayload.refundFee = cancelFeeAmount

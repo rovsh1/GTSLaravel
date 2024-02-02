@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Admin\Support\Adapters\Booking;
 
+use Illuminate\Support\Facades\DB;
 use Module\Booking\Moderation\Application\Dto\ServiceBooking\BookingDto;
 use Module\Booking\Moderation\Application\RequestDto\CreateBookingRequestDto;
 use Module\Booking\Moderation\Application\UseCase\BulkDeleteBookings;
@@ -42,20 +43,20 @@ class BookingAdapter
         ?array $detailsData,
         ?string $note = null
     ) {
-        return app(CreateBooking::class)->execute(
-            new CreateBookingRequestDto(
-                clientId: $clientId,
-                legalId: $legalId,
-                currency: $currency,
-                serviceId: $serviceId,
-                hotelId: null,
-                administratorId: $managerId,
-                creatorId: $creatorId,
-                orderId: $orderId,
-                detailsData: $detailsData,
-                note: $note
-            )
+        $request = new CreateBookingRequestDto(
+            clientId: $clientId,
+            legalId: $legalId,
+            currency: $currency,
+            serviceId: $serviceId,
+            hotelId: null,
+            administratorId: $managerId,
+            creatorId: $creatorId,
+            orderId: $orderId,
+            detailsData: $detailsData,
+            note: $note
         );
+
+        return DB::transaction(fn() => app(CreateBooking::class)->execute($request));
     }
 
     public function createHotelBooking(
@@ -69,20 +70,20 @@ class BookingAdapter
         ?array $detailsData,
         ?string $note = null
     ) {
-        return app(CreateBooking::class)->execute(
-            new CreateBookingRequestDto(
-                clientId: $clientId,
-                legalId: $legalId,
-                currency: $currency,
-                serviceId: null,
-                hotelId: $hotelId,
-                administratorId: $managerId,
-                creatorId: $creatorId,
-                orderId: $orderId,
-                detailsData: $detailsData,
-                note: $note
-            )
+        $request = new CreateBookingRequestDto(
+            clientId: $clientId,
+            legalId: $legalId,
+            currency: $currency,
+            serviceId: null,
+            hotelId: $hotelId,
+            administratorId: $managerId,
+            creatorId: $creatorId,
+            orderId: $orderId,
+            detailsData: $detailsData,
+            note: $note
         );
+
+        return DB::transaction(fn() => app(CreateBooking::class)->execute($request));
     }
 
     public function getAvailableActions(int $id): mixed

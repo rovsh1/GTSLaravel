@@ -44,6 +44,7 @@ class PaymentRepository implements PaymentRepositoryInterface
 
         if ($payment->landings()->count() === 0) {
             LandingModel::wherePaymentId($paymentId)->delete();
+
             return;
         }
 
@@ -57,6 +58,17 @@ class PaymentRepository implements PaymentRepositoryInterface
             'created_at' => now(),
         ]);
         LandingModel::upsert($landingModels, ['payment_id', 'order_id'], ['sum', 'created_at']);
+    }
+
+    /**
+     * @param OrderId $id
+     * @return Payment[]
+     */
+    public function findByOrderId(OrderId $id): array
+    {
+        $payments = Model::withLandings()->whereOrderId($id->value())->get();
+
+        return $payments->map(fn(Model $model) => $this->fromModel($model))->all();
     }
 
     private function fromModel(Model $model): Payment

@@ -32,9 +32,9 @@ class GetAvailableActions implements UseCaseInterface
             isEditable: $order->inModeration(),
             canCreateVoucher: $order->canCreateVoucher(),
             canSendVoucher: $order->canSendVoucher(),
-            canCreateInvoice: $order->isWaitingInvoice(),
-            canSendInvoice: $order->isInvoiced(),
-            canCancelInvoice: $order->isInvoiced(),
+            canCreateInvoice: $order->canCreateInvoice(),
+            canSendInvoice: $order->canSendInvoice(),
+            canCancelInvoice: $order->canCancelInvoice(),
         );
     }
 

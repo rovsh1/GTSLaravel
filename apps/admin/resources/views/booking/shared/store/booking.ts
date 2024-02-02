@@ -72,9 +72,9 @@ export const useBookingStore = defineStore('booking', () => {
     }
     if (updateStatusResponse.value?.isCancelFeeAmountRequired) {
       const { result: isConfirmed, clientCancelFeeAmount, cancelFeeAmount, toggleClose } = await showCancelFeeDialog({
-        withClientCancelFee: true,
-        clientCancelFeeCurrencyLable: booking.value?.prices.clientPrice.currency.value || '--',
-        cancelFeeCurrencyLable: booking.value?.prices.supplierPrice.currency.value || '--',
+        withClientCancelFee: false,
+        clientCancelFeeCurrencyLabel: booking.value?.prices.clientPrice.currency.value || '--',
+        cancelFeeCurrencyLabel: booking.value?.prices.supplierPrice.currency.value || '--',
       })
       if (isConfirmed) {
         updateStatusPayload.cancelFeeAmount = cancelFeeAmount

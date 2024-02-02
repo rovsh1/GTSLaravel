@@ -46,7 +46,7 @@
                 @endif
 
                 @if($model->text)
-                    {{ $model->text }}
+                    {!! $model->text !!}
                 @else
                     <i class="empty">Отсутствует</i>
                 @endif

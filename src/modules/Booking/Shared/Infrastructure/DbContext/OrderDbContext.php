@@ -83,6 +83,7 @@ class OrderDbContext implements OrderDbContextInterface
             'legal_id' => $order->legalId()?->value(),
             'currency' => $order->currency(),
             'voucher' => $order->voucher()?->serialize(),
+            'manual_client_penalty' => $order->clientPenalty()?->value()
         ]);
     }
 

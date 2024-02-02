@@ -54,7 +54,7 @@ class UpdateStatus implements UseCaseInterface
                 $booking->toCancelledNoFee();
                 break;
             case StatusEnum::CANCELLED_FEE:
-                if ($isHotelBooking && empty($supplierPenalty)) {
+                if (empty($supplierPenalty)) {
                     return new UpdateStatusResponseDto(isCancelFeeAmountRequired: true);
                 }
                 $booking->toCancelledFee($supplierPenalty, $clientPenalty);

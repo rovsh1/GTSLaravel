@@ -14,6 +14,7 @@ use Module\Client\Invoicing\Domain\Invoice\Repository\InvoiceRepositoryInterface
 use Module\Client\Invoicing\Domain\Order\Order;
 use Module\Client\Invoicing\Domain\Order\Repository\OrderRepositoryInterface;
 use Module\Client\Shared\Domain\ValueObject\OrderId;
+use Sdk\Shared\Enum\Order\OrderStatusEnum;
 use Sdk\Shared\ValueObject\File;
 
 class InvoiceFactory
@@ -75,6 +76,9 @@ class InvoiceFactory
 
     private function updateOrderStatus(Order $order): void
     {
+        if ($order->status() === OrderStatusEnum::REFUND_FEE) {
+            return;
+        }
         $order->invoiced();
         $this->orderRepository->store($order);
     }

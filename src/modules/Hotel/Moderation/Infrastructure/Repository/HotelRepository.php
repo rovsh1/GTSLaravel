@@ -23,7 +23,7 @@ class HotelRepository implements HotelRepositoryInterface
     public function store(Hotel $hotel): bool
     {
         return (bool)HotelEloquent::whereId($hotel->id()->value())->update([
-            'time_settings' => json_encode($hotel->timeSettings()),
+            'time_settings' => $hotel->timeSettings()->serialize(),
         ]);
     }
 }

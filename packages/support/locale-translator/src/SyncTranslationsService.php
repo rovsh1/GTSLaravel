@@ -6,11 +6,19 @@ use DirectoryIterator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Support\LocaleTranslator\Model\Dictionary;
+use Support\LocaleTranslator\Storage\CacheStorage;
 
 class SyncTranslationsService
 {
+    public function __construct(
+        private readonly string $langPath,
+        private readonly CacheStorage $cacheStorage
+    ) {}
+
     public function execute(bool $truncate = false): void
     {
+        $this->cacheStorage->delete('ru');
+
         if ($truncate) {
             Schema::disableForeignKeyConstraints();
             DB::table('r_locale_dictionary_values')->truncate();
@@ -18,7 +26,7 @@ class SyncTranslationsService
             Schema::enableForeignKeyConstraints();
         }
 
-        $this->readDir(base_path('resources/lang/ru'));
+        $this->readDir($this->langPath . '/ru');
     }
 
     private function readDir(string $path): void
@@ -53,19 +61,15 @@ class SyncTranslationsService
                 continue;
             }
             $key = ucfirst($prefix) . '::' . $k;
-            if (Dictionary::where('key', $key)->exists()) {
-                continue;
+            $d = Dictionary::where('key', $key)->first();
+            if ($d === null) {
+                $d = Dictionary::create(['key' => $key]);
             }
 
-            $d = Dictionary::create([
-                'key' => $key
-            ]);
-
-            DB::table('r_locale_dictionary_values')->insert([
-                'dictionary_id' => $d->id,
-                'language' => 'ru',
-                'value' => $value ?: $key
-            ]);
+            DB::table('r_locale_dictionary_values')->updateOrInsert(
+                ['dictionary_id' => $d->id, 'language' => 'ru'],
+                ['value' => $value ?: $key]
+            );
         }
     }
 }

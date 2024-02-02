@@ -30,6 +30,11 @@ class CacheStorage
         }
     }
 
+    public function delete(string $locale): void
+    {
+        $this->connection->del($this->cacheId($locale));
+    }
+
     private function cacheId(string $locale): string
     {
         return self::CACHE_KEY . ":$locale";

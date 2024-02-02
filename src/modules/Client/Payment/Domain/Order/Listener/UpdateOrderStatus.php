@@ -42,6 +42,10 @@ class UpdateOrderStatus implements DomainEventListenerInterface
 
     private function processOrder(Order $order): void
     {
+        if ($order->isRefunded()) {
+            return;
+        }
+
         if ($order->payedAmount()->isZero()) {
             $order->invoiced();
             $this->orderRepository->store($order);

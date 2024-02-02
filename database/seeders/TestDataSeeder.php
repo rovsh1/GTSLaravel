@@ -20,6 +20,9 @@ class TestDataSeeder extends Seeder
             return;
         }
 
+        DB::table('hotel_contacts')->where('hotel_id', 75)->delete();
+        DB::table('hotel_administrators')->where('hotel_id', 75)->delete();
+
         DB::unprepared(file_get_contents(__DIR__ . '/sql/test_supplier.sql'));
         DB::unprepared(file_get_contents(__DIR__ . '/sql/test_clients.sql'));
         DB::unprepared(file_get_contents(__DIR__ . '/sql/test_hotels.sql'));

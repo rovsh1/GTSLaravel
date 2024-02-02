@@ -11,6 +11,7 @@ class CarBidDto
     public function __construct(
         public readonly int $id,
         public readonly CarDto $carInfo,
+        public readonly CarBidPricesDto $prices,
         public readonly int $carsCount,
         public readonly int $passengersCount,
         public readonly int $baggageCount,
