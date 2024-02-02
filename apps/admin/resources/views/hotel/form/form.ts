@@ -1,7 +1,7 @@
 import { useSelectElement } from '~widgets/select-element/select-element'
 
 import '~resources/views/main'
-import '~resources/js/plugins/controls/coordinates-input'
+import '~resources/js/plugins/coordinates-input'
 
 $(() => {
   const element = document.querySelector<HTMLSelectElement>('#form_data_supplier_id')
