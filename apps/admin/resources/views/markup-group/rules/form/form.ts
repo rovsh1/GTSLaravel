@@ -1,4 +1,4 @@
-import { useSelectElement } from '~lib/select-element/select-element'
+import { useSelectElement } from '~widgets/select-element/select-element'
 
 import '~resources/views/main'
 

@@ -7,7 +7,7 @@ import { MaybeRef } from '@vueuse/core'
 import BootstrapSelectBase from '~components/Bootstrap/BootstrapSelectBase.vue'
 import { SelectOption } from '~components/Bootstrap/lib'
 
-import { useSelectElement } from '~lib/select-element/select-element'
+import { useSelectElement } from '~widgets/select-element/select-element'
 
 const props = withDefaults(defineProps<{
   id: string

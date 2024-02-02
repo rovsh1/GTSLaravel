@@ -1,9 +1,10 @@
 import { z } from 'zod'
 
 import { editableTable } from '~resources/js/app/support/editable-table'
-import { createHotelSwitcher } from '~resources/lib/hotel-switcher/hotel-switcher'
 import initServicesModal from '~resources/views/hotel/_modals/services-modal'
 import initUsabilitiesModal from '~resources/views/hotel/_modals/usabilities-modal'
+
+import { createHotelSwitcher } from '~widgets/hotel-switcher/hotel-switcher'
 
 import { requestInitialData } from '~lib/initial-data'
 

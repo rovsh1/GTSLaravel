@@ -9,10 +9,11 @@ import { createVueInstance } from '~resources/vue/vue'
 
 import { Client } from '~api/client'
 
+import { useSelectElement } from '~widgets/select-element/select-element'
+
 import { formatDate } from '~lib/date'
 import { useApplicationEventBus } from '~lib/event-bus'
 import { requestInitialData } from '~lib/initial-data'
-import { useSelectElement } from '~lib/select-element/select-element'
 
 import '~resources/views/main'
 

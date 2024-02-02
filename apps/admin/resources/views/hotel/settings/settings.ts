@@ -1,10 +1,11 @@
 import { createPinia } from 'pinia'
 
-import { createHotelSwitcher } from '~resources/lib/hotel-switcher/hotel-switcher'
 import CancellationConditions from '~resources/views/hotel/settings/CancellationConditions.vue'
 import MarkupConditions from '~resources/views/hotel/settings/MarkupConditions.vue'
 import ResidenceConditions from '~resources/views/hotel/settings/ResidenceConditions.vue'
 import { createVueInstance } from '~resources/vue/vue'
+
+import { createHotelSwitcher } from '~widgets/hotel-switcher/hotel-switcher'
 
 import '~resources/views/main'
 

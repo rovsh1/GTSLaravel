@@ -6,7 +6,7 @@ import { nanoid } from 'nanoid'
 
 import { SelectOption } from '~components/Bootstrap/lib'
 
-import { useSelectElement } from '~lib/select-element/select-element'
+import { useSelectElement } from '~widgets/select-element/select-element'
 
 type LabelStyle = 'default' | 'outline'
 

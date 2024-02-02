@@ -1,6 +1,6 @@
 import { ComponentOptions, createApp, h, Plugin, Ref, unref } from 'vue'
 
-import { installFloatingVue } from '~lib/tooltip/install-tooltip'
+import { installFloatingVue } from '~widgets/tooltip/install-tooltip'
 
 type CreateVueInstanceParams = {
   rootComponent: ComponentOptions

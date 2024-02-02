@@ -1,7 +1,7 @@
 import { Tab, Tooltip } from 'bootstrap'
 
-import { useDateRangePicker } from '~lib/date-picker/date-picker'
-import { useSelectElement } from '~lib/select-element/select-element'
+import { useDateRangePicker } from '~widgets/date-picker/date-picker'
+import { useSelectElement } from '~widgets/select-element/select-element'
 
 function bootDeleteButtons() {
   $('button.btn-delete')

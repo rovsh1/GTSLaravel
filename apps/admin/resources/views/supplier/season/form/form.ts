@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
-import { useDateRangePicker } from '~lib/date-picker/date-picker'
+import { useDateRangePicker } from '~widgets/date-picker/date-picker'
+
 import { requestInitialData } from '~lib/initial-data'
 
 import '~resources/views/main'

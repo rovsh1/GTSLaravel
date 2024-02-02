@@ -5,7 +5,6 @@ import { useToggle } from '@vueuse/core'
 import { z } from 'zod'
 
 import { formatDateToAPIDate } from '~resources/lib/date'
-import { createHotelSwitcher } from '~resources/lib/hotel-switcher/hotel-switcher'
 
 import { HotelResponse, useHotelGetAPI } from '~api/hotel/get'
 import { useUpdateHotelRoomQuotasBatch } from '~api/hotel/quotas/batch'
@@ -17,6 +16,8 @@ import BaseLayout from '~components/BaseLayout.vue'
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 import EmptyData from '~components/EmptyData.vue'
 import OverlayLoading from '~components/OverlayLoading.vue'
+
+import { createHotelSwitcher } from '~widgets/hotel-switcher/hotel-switcher'
 
 import { requestInitialData } from '~lib/initial-data'
 

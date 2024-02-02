@@ -5,8 +5,9 @@ import { getNullableRef } from '~resources/vue/vue'
 
 import { ContractID, useHotelContractGetAPI } from '~api/hotel/contract'
 
+import { useDateRangePicker } from '~widgets/date-picker/date-picker'
+
 import { formatUtcToIsoDate } from '~lib/date'
-import { useDateRangePicker } from '~lib/date-picker/date-picker'
 import { requestInitialData } from '~lib/initial-data'
 
 import '~resources/views/main'
