@@ -1,4 +1,4 @@
-import axios from '~resources/js/app/api'
+import axios from '~resources/js/api'
 
 import { CancelReasonResponse } from '~api/cancel-reason'
 

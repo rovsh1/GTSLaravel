@@ -1,4 +1,4 @@
-import { WindowDialog } from '~resources/js/libs/dialog/helpers'
+import { WindowDialog } from '~widgets/dialog/helpers'
 
 import '~resources/views/main'
 

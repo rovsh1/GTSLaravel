@@ -1,4 +1,4 @@
-import axios from '~resources/js/app/api'
+import axios from '~resources/js/api'
 import { getHumanRequestType } from '~resources/views/booking/shared/lib/constants'
 
 import { downloadDocument } from '~api/booking/document'
