@@ -37,7 +37,8 @@ class OrderMapper
             )
             : null;
 
-        $penalty = $model->penalty > 0 ? new Money($model->currency, $model->penalty) : null;
+        $penaltyValue = $model->manual_client_penalty ?? $model->client_penalty;
+        $penalty = $penaltyValue > 0 ? new Money($model->currency, $penaltyValue) : null;
 
         return new Order(
             new OrderId($model->id),
