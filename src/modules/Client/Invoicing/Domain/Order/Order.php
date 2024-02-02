@@ -68,6 +68,11 @@ final class Order extends AbstractAggregateRoot
         return in_array($this->status, [OrderStatusEnum::REFUND_FEE, OrderStatusEnum::REFUND_NO_FEE]);
     }
 
+    public function hasPayment(): bool
+    {
+        return in_array($this->status, [OrderStatusEnum::PAID, OrderStatusEnum::PARTIAL_PAID]);
+    }
+
     public function ensureInvoiceCreationAvailable(): void
     {
         if (!in_array($this->status, [OrderStatusEnum::WAITING_INVOICE, OrderStatusEnum::REFUND_FEE])) {
@@ -77,7 +82,7 @@ final class Order extends AbstractAggregateRoot
 
     public function ensureInvoiceCanBeCancelled(): void
     {
-        if ($this->status !== OrderStatusEnum::INVOICED && !$this->isRefunded()) {
+        if (!$this->hasPayment() && !$this->isRefunded()) {
             throw new InvalidOrderStatusToCancelInvoice();
         }
     }

@@ -239,16 +239,20 @@ class BookingController extends Controller
                 'order' => true,
                 'renderer' => function ($row, $val) {
                     $bookingUrl = route($this->prototype->routeName('show'), $row['id']);
-                    $idLink = "<a href='{$bookingUrl}'>{$row['id']}</a>";
-                    $orderId = $row['order_id'];
-                    $orderUrl = route('booking-order.show', $orderId);
-                    $orderLink = "<a href='{$orderUrl}'>{$orderId}</a>";
 
-                    return "$idLink / {$orderLink}";
+                    return "<a href='{$bookingUrl}'>{$row['id']}</a>";
                 }
             ])
-            ->bookingStatus('status', ['text' => 'Статус', 'statuses' => BookingAdapter::getStatuses(), 'order' => true]
-            )
+            ->id('order_id', [
+                'text' => '№ заказа',
+                'order' => true,
+                'renderer' => function ($row, $val) {
+                    $orderUrl = route('booking-order.show', $val);
+
+                    return "<a href='{$orderUrl}'>{$val}</a>";
+                }
+            ])
+            ->bookingStatus('status', ['text' => 'Статус', 'statuses' => BookingAdapter::getStatuses(), 'order' => true])
             ->text('client_name', ['text' => 'Клиент'])
             ->text('manager_name', ['text' => 'Менеджер'])
             ->text(

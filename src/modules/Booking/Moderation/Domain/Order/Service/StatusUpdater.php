@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Moderation\Domain\Order\Service;
 
 use Module\Booking\Moderation\Domain\Order\Exception\OrderHasBookingInProgress;
+use Module\Booking\Moderation\Domain\Order\Exception\OrderHasNotCancelledBooking;
 use Module\Booking\Moderation\Domain\Order\Exception\OrderWithoutBookings;
 use Module\Booking\Moderation\Domain\Order\Exception\RefundFeeAmountBelowOrEqualZero;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
@@ -44,14 +45,29 @@ class StatusUpdater
                 $order->cancel();
                 break;
             case OrderStatusEnum::REFUND_FEE:
+                $this->ensureAllBookingsCancelled($order);
                 if ($refundFeeAmount === null) {
                     throw new RefundFeeAmountBelowOrEqualZero();
                 }
                 $order->toRefundFee($refundFeeAmount);
                 break;
             case OrderStatusEnum::REFUND_NO_FEE:
+                $this->ensureAllBookingsCancelled($order);
                 $order->toRefundNoFee();
                 break;
+        }
+    }
+
+    private function ensureAllBookingsCancelled(Order $order): void
+    {
+        $bookings = $this->repository->getByOrderId($order->id());
+        if (count($bookings) === 0) {
+            throw new OrderWithoutBookings();
+        }
+        foreach ($bookings as $booking) {
+            if (!$booking->isCancelled()) {
+                throw new OrderHasNotCancelledBooking();
+            }
         }
     }
 

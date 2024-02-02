@@ -17,6 +17,7 @@ return [
     'HOTEL_ROOM_PRICE_NOT_FOUND' => 'В отеле не заполнены цены на период или нет активного договора.',
     'BOOKING_SUPPLIER_PENALTY_CANNOT_BE_ZERO' => 'Сумма штрафа обязательна для текущего статуса.',
     'BOOKING_PERIOD_DATES_CANNOT_BE_EQUAL' => 'Минимальный период бронирования - 1 сутки.',
+    'ORDER_HAS_NOT_CANCELLED_BOOKING' => 'Все брони должны быть отменены.',
     '' => '',
     '' => '',
     '' => '',

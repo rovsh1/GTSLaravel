@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Module\Booking\Moderation\Application\UseCase\Order;
 
 use Module\Booking\Moderation\Application\Exception\OrderHasBookingInProgressException;
+use Module\Booking\Moderation\Application\Exception\OrderHasNotCancelledBookingException;
 use Module\Booking\Moderation\Application\Exception\OrderWithoutBookingsException;
 use Module\Booking\Moderation\Application\ResponseDto\OrderUpdateStatusResponseDto;
 use Module\Booking\Moderation\Domain\Order\Exception\OrderHasBookingInProgress;
+use Module\Booking\Moderation\Domain\Order\Exception\OrderHasNotCancelledBooking;
 use Module\Booking\Moderation\Domain\Order\Exception\OrderWithoutBookings;
 use Module\Booking\Moderation\Domain\Order\Exception\RefundFeeAmountBelowOrEqualZero;
 use Module\Booking\Moderation\Domain\Order\Service\StatusUpdater;
@@ -36,6 +38,8 @@ class UpdateStatus implements UseCaseInterface
             $this->statusUpdater->update($order, $statusEnum, $refundFeeAmount);
         } catch (OrderHasBookingInProgress $e) {
             throw new OrderHasBookingInProgressException($e);
+        } catch (OrderHasNotCancelledBooking $e) {
+            throw new OrderHasNotCancelledBookingException($e);
         } catch (OrderWithoutBookings $e) {
             throw new OrderWithoutBookingsException($e);
         } catch (RefundFeeAmountBelowOrEqualZero) {

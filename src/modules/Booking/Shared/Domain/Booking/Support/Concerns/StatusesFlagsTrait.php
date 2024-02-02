@@ -24,6 +24,11 @@ trait StatusesFlagsTrait
         ]);
     }
 
+    public function isWaitingCancellation(): bool
+    {
+        return $this->status->value() === StatusEnum::WAITING_CANCELLATION;
+    }
+
     public function inModeration(): bool
     {
         return !$this->isCancelled()
