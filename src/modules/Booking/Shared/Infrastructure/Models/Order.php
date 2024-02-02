@@ -33,6 +33,7 @@ class Order extends Model
         'currency' => CurrencyEnum::class,
         'status' => OrderStatusEnum::class,
         'source' => SourceEnum::class,
+        'manual_client_penalty' => 'float',
         'client_price' => 'float',
         'payed_amount' => 'float',
         'voucher' => 'array',
@@ -95,10 +96,7 @@ class Order extends Model
 
     private static function getClientPriceQuery(): string
     {
-        $cancelledFeeStatus = StatusEnum::CANCELLED_FEE->value;
-        $cancelledNoFeeStatus = StatusEnum::CANCELLED_NO_FEE->value;
-
-        return "(SELECT SUM(client_price) FROM (SELECT order_id, IF(status IN ({$cancelledFeeStatus}, {$cancelledNoFeeStatus}), COALESCE(client_penalty, 0), COALESCE(client_manual_price, client_price)) as client_price FROM bookings) as t WHERE t.order_id=orders.id)";
+        return "(SELECT SUM(client_price) FROM (SELECT order_id, COALESCE(client_manual_price, client_price) as client_price FROM bookings) as t WHERE t.order_id=orders.id)";
     }
 
     private static function getClientPenaltyQuery(): string

@@ -36,7 +36,7 @@ final class Order extends AbstractAggregateRoot implements EntityInterface
         private readonly CarbonImmutable $createdAt,
         private readonly GuestIdCollection $guestIds,
         private readonly Money $clientPrice,
-        private readonly ?Money $clientPenalty,
+        private ?Money $clientPenalty,
         private readonly Context $context,
         private readonly Timestamps $timestamps,
     ) {

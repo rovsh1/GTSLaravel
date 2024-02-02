@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Facade;
  *
  * @method static void bindGuest(int $bookingId, int $carBidId, int $guestId)
  * @method static void unbindGuest(int $bookingId, int $carBidId, int $guestId)
+ * @method static void setManualPrice(int $bookingId, int $carBidId, float|null $clientPerCarPrice, float|null $supplierPerCarPrice = null)
  */
 class CarBidAdapter extends Facade
 {

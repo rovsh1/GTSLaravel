@@ -15,6 +15,11 @@ trait HasStatusesTrait
         return $this->status === OrderStatusEnum::IN_PROGRESS || $this->isWaitingInvoice() || $this->isInvoiced();
     }
 
+    public function isRefunded(): bool
+    {
+        return in_array($this->status, [OrderStatusEnum::REFUND_NO_FEE, OrderStatusEnum::REFUND_FEE]);
+    }
+
     public function isWaitingInvoice(): bool
     {
         return $this->status === OrderStatusEnum::WAITING_INVOICE;

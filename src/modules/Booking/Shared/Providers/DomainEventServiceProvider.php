@@ -13,6 +13,7 @@ use Module\Booking\Shared\Domain\Order\Event\OrderRefunded;
 use Module\Booking\Shared\Domain\Order\Listener\CancelOrderInvoiceListener;
 use Module\Booking\Shared\Domain\Order\Listener\OrderCancelledListener;
 use Sdk\Booking\Contracts\Event\BookingEventInterface;
+use Sdk\Booking\Contracts\Event\CarBidCancelConditionsDeprecatedEventInterface;
 use Sdk\Booking\Contracts\Event\CarBidEventInterface;
 use Sdk\Booking\Contracts\Event\InvoiceBecomeDeprecatedEventInterface;
 use Sdk\Booking\Contracts\Event\PriceBecomeDeprecatedEventInterface;
@@ -33,7 +34,7 @@ class DomainEventServiceProvider extends ServiceProvider
         PriceBecomeDeprecatedEventInterface::class => RecalculateBookingPricesListener::class,
         QuotaChangedEventInterface::class => UpdateHotelQuotaListener::class,
 
-        CarBidEventInterface::class => UpdateCarBidCancelConditionsListener::class,
+        CarBidCancelConditionsDeprecatedEventInterface::class => UpdateCarBidCancelConditionsListener::class,
         BookingDateChangedEventInterface::class => UpdateBookingCancelConditionsListener::class,
 
         BookingEventInterface::class => PublishIntegrationEventListener::class

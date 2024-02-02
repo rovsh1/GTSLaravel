@@ -5,6 +5,7 @@ namespace Sdk\Booking\Entity;
 use Sdk\Booking\Contracts\Entity\BookingPartInterface;
 use Sdk\Booking\Entity\Details\Concerns\HasGuestIdCollectionTrait;
 use Sdk\Booking\Event\TransferBooking\CarBidDetailsEdited;
+use Sdk\Booking\Event\TransferBooking\CarBidPricesChanged;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\CarBid\CarBidDetails;
 use Sdk\Booking\ValueObject\CarBid\CarBidPrices;
@@ -57,14 +58,28 @@ final class CarBid extends AbstractAggregateRoot implements BookingPartInterface
         return $this->prices;
     }
 
+    public function setPrices(CarBidPrices $prices): void
+    {
+        if ($this->prices->isEqual($prices)) {
+            return;
+        }
+        $pricesBefore = $this->prices;
+        $this->prices = $prices;
+        $this->pushEvent(new CarBidPricesChanged($this, $pricesBefore));
+    }
+
     public function supplierPriceValue(): float
     {
-        return $this->prices->supplierPrice()->valuePerCar() * $this->details->carsCount();
+        $perCarPrice = $this->prices->supplierPrice()->manualValuePerCar() ?? $this->prices->supplierPrice()->valuePerCar();
+
+        return $perCarPrice * $this->details->carsCount();
     }
 
     public function clientPriceValue(): float
     {
-        return $this->prices->clientPrice()->valuePerCar() * $this->details->carsCount();
+        $perCarPrice = $this->prices->clientPrice()->manualValuePerCar() ?? $this->prices->clientPrice()->valuePerCar();
+
+        return $perCarPrice * $this->details->carsCount();
     }
 
     public function serialize(): array
