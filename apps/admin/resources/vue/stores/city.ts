@@ -2,10 +2,10 @@ import { onMounted, ref } from 'vue'
 
 import { defineStore } from 'pinia'
 
-import { CacheStorage } from '~resources/lib/cache-storage/cache-storage'
-import { TTLValues } from '~resources/lib/enums'
-
 import { CityResponse, useCitySearchAPI } from '~api/city'
+
+import { CacheStorage } from '~cache/cache-storage'
+import { TTLValues } from '~cache/enums'
 
 export const useCityStore = defineStore('city', () => {
   const cities = ref<CityResponse[] | null>(null)

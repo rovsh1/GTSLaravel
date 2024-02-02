@@ -12,7 +12,7 @@ import { ordersLend, PaymentOrderPayload, useGetPaymentAPI,
 import BaseDialog from '~components/BaseDialog.vue'
 import OverlayLoading from '~components/OverlayLoading.vue'
 
-import { useApplicationEventBus } from '~lib/event-bus'
+import { useApplicationEventBus } from '~helpers/event-bus'
 
 const eventBus = useApplicationEventBus()
 const [isOpened, toggleModal] = useToggle()

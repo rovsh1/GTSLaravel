@@ -4,7 +4,7 @@ import { computed, nextTick, ref, watch, watchEffect } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
 
-import { isDataValid } from '~resources/composables/form'
+import { isDataValid } from '~helpers/form'
 import { genderOptions } from '~resources/views/booking/shared/lib/constants'
 import { GuestFormData } from '~resources/views/booking/shared/lib/data-types'
 

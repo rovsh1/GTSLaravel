@@ -12,7 +12,7 @@ import { BookingAvailableActionsResponse } from '~api/booking/status'
 
 import SelectComponent from '~components/SelectComponent.vue'
 
-import { requestInitialData } from '~lib/initial-data'
+import { requestInitialData } from '~helpers/initial-data'
 
 const { bookingID } = requestInitialData(
   z.object({

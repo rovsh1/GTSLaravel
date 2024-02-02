@@ -7,7 +7,7 @@ import { Tooltip } from 'floating-vue'
 
 import InlineIcon from '~components/InlineIcon.vue'
 
-import { usePlatformDetect } from '~lib/platform'
+import { usePlatformDetect } from '~helpers/platform'
 
 type TextInputType = 'text' | 'time'
 

@@ -19,8 +19,8 @@ import { useGetOrderGuestsAPI } from '~api/order/guest'
 import { useOrderAvailableActionsAPI } from '~api/order/status'
 import { createOrderVoucher, OrderVoucher, sendOrderVoucher } from '~api/order/voucher'
 
-import { showConfirmDialog } from '~lib/confirm-dialog'
-import { requestInitialData } from '~lib/initial-data'
+import { showConfirmDialog } from '~helpers/confirm-dialog'
+import { requestInitialData } from '~helpers/initial-data'
 
 const { orderID, manager } = requestInitialData(z.object({
   orderID: z.number(),

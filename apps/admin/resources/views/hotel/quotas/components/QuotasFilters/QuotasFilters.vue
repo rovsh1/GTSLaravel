@@ -6,7 +6,7 @@ import { isEqual } from 'lodash'
 import { DateTime } from 'luxon'
 import { nanoid } from 'nanoid'
 
-import { compareJSDate } from '~resources/lib/date'
+import { compareJSDate } from '~helpers/date'
 
 import { HotelRoom } from '~api/hotel/room'
 

@@ -10,7 +10,7 @@ import { DatePeriod } from '~api/hotel/markup-settings'
 
 import { useDateRangePicker } from '~widgets/date-picker/date-picker'
 
-import { compareJSDate, formatPeriod, parseAPIDate } from '~lib/date'
+import { compareJSDate, formatPeriod, parseAPIDate } from '~helpers/date'
 
 const props = withDefaults(defineProps<{
   id: string

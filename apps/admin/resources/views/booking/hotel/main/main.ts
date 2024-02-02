@@ -7,8 +7,8 @@ import { BookingAvailableActionsResponse } from '~api/booking/status'
 
 import createPopover, { PopoverItem } from '~widgets/popover/popover'
 
-import { showConfirmDialog } from '~lib/confirm-dialog'
-import { formatDateTime } from '~lib/date'
+import { showConfirmDialog } from '~helpers/confirm-dialog'
+import { formatDateTime } from '~helpers/date'
 
 import '~resources/views/main'
 

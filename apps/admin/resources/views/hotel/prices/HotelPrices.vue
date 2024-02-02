@@ -10,7 +10,7 @@ import BootstrapCard from '~components/Bootstrap/BootstrapCard/BootstrapCard.vue
 import BootstrapCardTitle from '~components/Bootstrap/BootstrapCard/components/BootstrapCardTitle.vue'
 import EmptyData from '~components/EmptyData.vue'
 
-import { requestInitialData } from '~lib/initial-data'
+import { requestInitialData } from '~helpers/initial-data'
 
 import HotelPricesTable from './components/HotelPricesTable.vue'
 

@@ -17,7 +17,7 @@ import IconButton from '~components/IconButton.vue'
 
 import { useCountryStore } from '~stores/countries'
 
-import { showConfirmDialog } from '~lib/confirm-dialog'
+import { showConfirmDialog } from '~helpers/confirm-dialog'
 
 const { countries } = storeToRefs(useCountryStore())
 const orderStore = useOrderStore()

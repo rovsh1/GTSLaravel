@@ -9,8 +9,8 @@ import { OrderVoucher } from '~api/order/voucher'
 import { showToast } from '~components/Bootstrap/BootstrapToast'
 import InlineIcon from '~components/InlineIcon.vue'
 
-import { formatDateTime } from '~lib/date'
-import { downloadFile } from '~lib/download-file'
+import { formatDateTime } from '~helpers/date'
+import { downloadFile } from '~helpers/download-file'
 
 const orderStore = useOrderStore()
 const availableActions = computed<OrderAvailableActionsResponse | null>(() => orderStore.availableActions)

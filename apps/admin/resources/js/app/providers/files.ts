@@ -1,4 +1,4 @@
-import { downloadFile } from '~lib/download-file'
+import { downloadFile } from '~helpers/download-file'
 
 export default function bootFilesDownloader() {
   $('a.download-file').removeAttr('target')

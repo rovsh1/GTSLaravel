@@ -4,7 +4,7 @@ import { BaseResponse, DateResponse, useAdminAPI } from '~api'
 import { FileResponse } from '~api/hotel/images'
 import { OrderID } from '~api/order/models'
 
-import { downloadFile } from '~lib/download-file'
+import { downloadFile } from '~helpers/download-file'
 
 export interface OrderInvoicePayload {
   orderID: OrderID

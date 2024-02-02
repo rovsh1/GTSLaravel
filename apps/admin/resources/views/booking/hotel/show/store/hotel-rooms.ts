@@ -3,7 +3,7 @@ import { z } from 'zod'
 
 import { useGetAvailableRoomsAPI } from '~api/booking/hotel/rooms'
 
-import { requestInitialData } from '~lib/initial-data'
+import { requestInitialData } from '~helpers/initial-data'
 
 const { bookingID, hotelRooms } = requestInitialData(z.object({
   bookingID: z.number(),

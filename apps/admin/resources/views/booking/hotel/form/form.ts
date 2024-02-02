@@ -11,9 +11,9 @@ import { Client } from '~api/client'
 
 import { useSelectElement } from '~widgets/select-element/select-element'
 
-import { formatDate } from '~lib/date'
-import { useApplicationEventBus } from '~lib/event-bus'
-import { requestInitialData } from '~lib/initial-data'
+import { formatDate } from '~helpers/date'
+import { useApplicationEventBus } from '~helpers/event-bus'
+import { requestInitialData } from '~helpers/initial-data'
 
 import '~resources/views/main'
 

@@ -8,7 +8,7 @@ import { Order } from '~api/order'
 
 import { useCurrencyStore } from '~stores/currency'
 
-import { formatPrice } from '~lib/price'
+import { formatPrice } from '~helpers/price'
 
 const orderStore = useOrderStore()
 const { getCurrencyByCodeChar } = useCurrencyStore()

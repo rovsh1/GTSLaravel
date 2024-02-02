@@ -3,13 +3,13 @@ import { computed, reactive, watch } from 'vue'
 
 import { nanoid } from 'nanoid'
 
+import { daysOfWeekOptions } from '~resources/js/config/constants'
+
 import { HotelRoom } from '~api/hotel/room'
 
 import DateRangePicker from '~components/DateRangePicker.vue'
 import OverlayLoading from '~components/OverlayLoading.vue'
 import SelectComponent from '~components/SelectComponent.vue'
-
-import { daysOfWeekOptions } from '~lib/constants'
 
 import { Action, ActionsOption, QuotasStatusUpdateFormData, QuotasStatusUpdatePayload } from './lib/types'
 

@@ -5,7 +5,7 @@ import { computed, nextTick, onMounted, reactive, ref } from 'vue'
 import { useToggle } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 
-import { isDataValid } from '~resources/composables/form'
+import { isDataValid } from '~helpers/form'
 import { tabsItemsSettings } from '~resources/views/booking/hotel/form/lib/composables'
 import { statusOptions } from '~resources/views/booking/hotel/form/lib/constants'
 import { BasicFormData, LegalEntityFormData, PhysicalEntityFormData } from '~resources/views/booking/hotel/form/lib/types'
@@ -33,7 +33,7 @@ import { useCityStore } from '~stores/city'
 import { useCurrencyStore } from '~stores/currency'
 import { useMarkupGroupStore } from '~stores/markup-group'
 
-import { useApplicationEventBus } from '~lib/event-bus'
+import { useApplicationEventBus } from '~helpers/event-bus'
 
 const { cities } = storeToRefs(useCityStore())
 const cityOptions = computed(() => {

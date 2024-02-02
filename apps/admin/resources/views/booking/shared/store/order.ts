@@ -6,7 +6,7 @@ import { z } from 'zod'
 import { Currency } from '~api/models'
 import { useGetOrderGuestsAPI } from '~api/order/guest'
 
-import { requestInitialData } from '~lib/initial-data'
+import { requestInitialData } from '~helpers/initial-data'
 
 const { order, currencies } = requestInitialData(
   z.object({

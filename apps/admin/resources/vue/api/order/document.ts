@@ -3,7 +3,7 @@ import { MaybeRef } from '@vueuse/core'
 import { useAdminAPI } from '~api'
 import { FileResponse } from '~api/hotel/images'
 
-import { downloadFile } from '~lib/download-file'
+import { downloadFile } from '~helpers/download-file'
 
 export interface DownloadDocumentRequest {
   orderID: number

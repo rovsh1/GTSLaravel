@@ -5,14 +5,14 @@ import { computed, ref } from 'vue'
 import { useToggle } from '@vueuse/core'
 import { z } from 'zod'
 
-import { useQuickSearch } from '~resources/composables/quick-search'
+import { useQuickSearch } from '~helpers/quick-search'
 import PricesModal from '~resources/views/supplier/service/price/ components/PricesModal.vue'
 import { useCurrenciesStore } from '~resources/views/supplier/service/price/composables/currency'
 
 import { Car, Money, Season } from '~api/models'
 import { ServicePriceResponse, updateCarPrice } from '~api/supplier/transfer'
 
-import { requestInitialData } from '~lib/initial-data'
+import { requestInitialData } from '~helpers/initial-data'
 
 import PricesTable from './PricesTable.vue'
 

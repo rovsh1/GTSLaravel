@@ -18,9 +18,9 @@ import {
 
 import { defaultDisabledDate } from '~widgets/date-picker/lib'
 
-import { showConfirmDialog } from '~lib/confirm-dialog'
-import { formatDate } from '~lib/date'
-import { requestInitialData } from '~lib/initial-data'
+import { showConfirmDialog } from '~helpers/confirm-dialog'
+import { formatDate } from '~helpers/date'
+import { requestInitialData } from '~helpers/initial-data'
 
 import CancelPeriodModal from './components/CancelPeriodModal.vue'
 import CancelPeriodSettingsTable from './components/CancelPeriodSettingsTable.vue'

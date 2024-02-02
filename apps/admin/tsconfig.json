@@ -55,13 +55,6 @@
             "~cache/*": [
                 "resources/js/cache/*"
             ],
-            // wwww
-            "~lib": [
-                "resources/lib/index"
-            ],
-            "~lib/*": [
-                "resources/lib/*"
-            ],
         }
     },
     "include": [

@@ -4,7 +4,7 @@ import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { DateTime } from 'luxon'
 import { nanoid } from 'nanoid'
 
-import { formatDateTimeToAPIDate, formatSeasonPeriod, parseAPIDate } from '~resources/lib/date'
+import { daysOfWeek } from '~resources/js/config/constants'
 import { Month } from '~resources/views/hotel/quotas/components/lib/index'
 
 import { updateRoomSeasonPricesByDay, useRoomSeasonsDaysPricesListAPI } from '~api/hotel/prices/seasons'
@@ -12,7 +12,7 @@ import { updateRoomSeasonPricesByDay, useRoomSeasonsDaysPricesListAPI } from '~a
 import { showToast } from '~components/Bootstrap/BootstrapToast'
 import OverlayLoading from '~components/OverlayLoading.vue'
 
-import { daysOfWeek } from '~lib/constants'
+import { formatDateTimeToAPIDate, formatSeasonPeriod, parseAPIDate } from '~helpers/date'
 
 import EditableCell from './EditableCell.vue'
 

@@ -32,9 +32,9 @@ import IconButton from '~components/IconButton.vue'
 
 import { useCountryStore } from '~stores/countries'
 
-import { showConfirmDialog } from '~lib/confirm-dialog'
-import { requestInitialData } from '~lib/initial-data'
-import { pluralForm } from '~lib/plural'
+import { showConfirmDialog } from '~helpers/confirm-dialog'
+import { requestInitialData } from '~helpers/initial-data'
+import { pluralForm } from '~helpers/plural'
 
 const { bookingID } = requestInitialData(z.object({
   bookingID: z.number(),

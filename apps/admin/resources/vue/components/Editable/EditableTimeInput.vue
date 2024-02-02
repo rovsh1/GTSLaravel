@@ -8,8 +8,8 @@ import { DateTime } from 'luxon'
 
 import InlineIcon from '~components/InlineIcon.vue'
 
-import { parseAPIDateAndSetDefaultTime } from '~lib/date'
-import { usePlatformDetect } from '~lib/platform'
+import { parseAPIDateAndSetDefaultTime } from '~helpers/date'
+import { usePlatformDetect } from '~helpers/platform'
 
 const props = withDefaults(defineProps<{
   value: string | undefined

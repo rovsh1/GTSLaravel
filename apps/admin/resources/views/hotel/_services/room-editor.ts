@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import { requestInitialData } from '~lib/initial-data'
+import { requestInitialData } from '~helpers/initial-data'
 
 const { bedTypes } = requestInitialData(
   z.object({

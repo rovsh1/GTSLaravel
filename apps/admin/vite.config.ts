@@ -142,8 +142,6 @@ export default defineConfig(({ command }) => ({
       '~widgets': path.resolve(__dirname, 'resources/js/widgets'),
       '~cache': path.resolve(__dirname, 'resources/js/cache'),
       '~helpers': path.resolve(__dirname, 'resources/js/helpers'),
-      // wwww
-      '~lib': path.resolve(__dirname, 'resources/lib'),
     },
   },
   css: {

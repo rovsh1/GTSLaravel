@@ -7,7 +7,7 @@ import { Currency } from '~api/models'
 
 import { useCurrencyStore } from '~stores/currency'
 
-import { formatPrice } from '~lib/price'
+import { formatPrice } from '~helpers/price'
 
 const bookingStore = useBookingStore()
 const { getCurrencyByCodeChar } = useCurrencyStore()

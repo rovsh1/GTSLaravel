@@ -10,8 +10,8 @@ import { nanoid } from 'nanoid'
 import DateRangePicker from '~components/DateRangePicker.vue'
 import InlineIcon from '~components/InlineIcon.vue'
 
-import { formatDateToAPIDate, parseAPIDateAndSetDefaultTime } from '~lib/date'
-import { usePlatformDetect } from '~lib/platform'
+import { formatDateToAPIDate, parseAPIDateAndSetDefaultTime } from '~helpers/date'
+import { usePlatformDetect } from '~helpers/platform'
 
 type DatePeriod = {
   dateFrom: string

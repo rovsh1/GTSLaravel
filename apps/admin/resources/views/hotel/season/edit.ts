@@ -7,8 +7,8 @@ import { ContractID, useHotelContractGetAPI } from '~api/hotel/contract'
 
 import { useDateRangePicker } from '~widgets/date-picker/date-picker'
 
-import { formatUtcToIsoDate } from '~lib/date'
-import { requestInitialData } from '~lib/initial-data'
+import { formatUtcToIsoDate } from '~helpers/date'
+import { requestInitialData } from '~helpers/initial-data'
 
 import '~resources/views/main'
 

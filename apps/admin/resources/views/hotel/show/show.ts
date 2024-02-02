@@ -6,7 +6,7 @@ import initUsabilitiesModal from '~resources/views/hotel/_modals/usabilities-mod
 
 import { createHotelSwitcher } from '~widgets/hotel-switcher/hotel-switcher'
 
-import { requestInitialData } from '~lib/initial-data'
+import { requestInitialData } from '~helpers/initial-data'
 
 import '~resources/views/main'
 import '~resources/js/app/components/card-contacts'
