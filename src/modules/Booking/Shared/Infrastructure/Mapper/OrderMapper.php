@@ -37,6 +37,7 @@ class OrderMapper
             )
             : null;
 
+        $penalty = $model->client_penalty > 0 ? new Money($model->currency, $model->client_penalty) : null;
 
         return new Order(
             new OrderId($model->id),
@@ -52,6 +53,7 @@ class OrderMapper
                 $model->currency,
                 $model->client_price ?? 0,
             ),
+            $penalty,
             new Context(
                 source: $model->source,
                 creatorId: new CreatorId($model->creator_id),

@@ -21,6 +21,7 @@ class OrderDto
         public readonly array $guestIds,
         public readonly int $creatorId,
         public readonly MoneyDto $clientPrice,
+        public readonly ?MoneyDto $clientPenalty,
         public readonly SourceEnum $source,
         public readonly ?VoucherDto $voucher,
         public readonly ?OrderPeriodDto $period,

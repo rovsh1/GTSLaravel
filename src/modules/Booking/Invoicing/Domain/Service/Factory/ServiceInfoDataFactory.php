@@ -14,6 +14,7 @@ use Module\Booking\Shared\Domain\Booking\Repository\AccommodationRepositoryInter
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
 use Sdk\Booking\Entity\Details\HotelBooking as HotelDetailsEntity;
+use Sdk\Booking\Enum\StatusEnum;
 use Sdk\Booking\ValueObject\OrderId;
 use Sdk\Shared\Enum\ServiceTypeEnum;
 
@@ -36,7 +37,10 @@ class ServiceInfoDataFactory
     public function build(OrderId $orderId): array
     {
         $bookings = $this->bookingRepository->getByOrderId($orderId);
-        $confirmedBookings = array_filter($bookings, fn(Booking $booking) => $booking->isConfirmed());
+        $confirmedBookings = array_filter(
+            $bookings,
+            fn(Booking $booking) => $booking->isConfirmed() || $booking->status()->value() === StatusEnum::CANCELLED_FEE
+        );
 
         $services = [];
         foreach ($confirmedBookings as $booking) {

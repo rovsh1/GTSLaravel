@@ -42,5 +42,6 @@ export type BaseOrder = {
   creatorId: number
   createdAt: DateResponse
   clientPrice: OrderPrice
+  clientPenalty: OrderPrice | null
   note?: string | null
 }

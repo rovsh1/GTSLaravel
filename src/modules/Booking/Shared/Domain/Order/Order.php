@@ -36,6 +36,7 @@ final class Order extends AbstractAggregateRoot implements EntityInterface
         private readonly CarbonImmutable $createdAt,
         private readonly GuestIdCollection $guestIds,
         private readonly Money $clientPrice,
+        private readonly ?Money $clientPenalty,
         private readonly Context $context,
         private readonly Timestamps $timestamps,
     ) {
@@ -100,6 +101,11 @@ final class Order extends AbstractAggregateRoot implements EntityInterface
     public function clientPrice(): Money
     {
         return $this->clientPrice;
+    }
+
+    public function clientPenalty(): ?Money
+    {
+        return $this->clientPenalty;
     }
 
     public function voucher(): ?Voucher

@@ -23,12 +23,14 @@ class Order extends Model
 
     protected $fillable = [
         'status',
+        'client_penalty',
     ];
 
     protected $casts = [
         'currency' => CurrencyEnum::class,
         'status' => OrderStatusEnum::class,
         'source' => SourceEnum::class,
+        'client_penalty' => 'float',
         'client_price' => 'float',
         'payed_amount' => 'float',
     ];
@@ -36,8 +38,15 @@ class Order extends Model
     public function scopeWithAmounts(Builder $builder): void
     {
         $builder->addSelect('orders.*');
+        $builder->selectRaw(self::getClientPenaltyQuery() . ' as client_penalty');
         $builder->selectRaw(self::getClientPriceQuery() . ' as client_price');
         $builder->selectRaw(self::getPayedAmountQuery() . ' as payed_amount');
+    }
+
+    private static function getClientPenaltyQuery(): string
+    {
+//        return "COALESCE(order.client_penalty, (SELECT SUM(client_penalty) FROM bookings WHERE bookings.order_id = orders.id))";
+        return "(SELECT SUM(client_penalty) FROM bookings WHERE bookings.order_id = orders.id)";
     }
 
     private static function getClientPriceQuery(): string

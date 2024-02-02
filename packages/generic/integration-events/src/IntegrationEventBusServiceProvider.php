@@ -12,6 +12,7 @@ class IntegrationEventBusServiceProvider extends ServiceProvider
     private array $availableModules = [
         'BookingEventSourcing',
         'BookingRequesting',
+        'ClientPayment',
     ];
 
     public function register(): void

@@ -26,6 +26,13 @@ class OrderDtoFactory
         if ($entity->voucher() !== null) {
             $voucherDto = $this->voucherDtoFactory->createFromEntity($entity->voucher());
         }
+        $penalty = null;
+        if ($entity->clientPenalty() !== null) {
+            $penalty = new MoneyDto(
+                CurrencyDto::fromEnum($entity->clientPrice()->currency(), $this->translator),
+                $entity->clientPenalty()->value()
+            );
+        }
 
         return new OrderDto(
             $entity->id()->value(),
@@ -39,6 +46,7 @@ class OrderDtoFactory
                 CurrencyDto::fromEnum($entity->clientPrice()->currency(), $this->translator),
                 $entity->clientPrice()->value()
             ),
+            $penalty,
             $entity->context()->source(),
             $voucherDto,
             $entity->period() !== null ? OrderPeriodDto::fromDomain($entity->period()) : null,

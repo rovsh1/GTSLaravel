@@ -38,6 +38,8 @@ class OrderRepository implements OrderRepositoryInterface
 
     private function fromModel(Model $model): Order
     {
+        $penalty = $model->client_penalty > 0 ? new Money($model->currency, $model->client_penalty) : null;
+
         return new Order(
             id: new OrderId($model->id),
             clientId: new ClientId($model->client_id),
@@ -46,6 +48,7 @@ class OrderRepository implements OrderRepositoryInterface
                 $model->currency,
                 $model->client_price,
             ),
+            clientPenalty: $penalty,
             payedAmount: new Money(
                 $model->currency,
                 $model->payed_amount,

@@ -9,6 +9,7 @@ use Module\Booking\Shared\Domain\Booking\Listener\UpdateBookingCancelConditionsL
 use Module\Booking\Shared\Domain\Booking\Listener\UpdateCarBidCancelConditionsListener;
 use Module\Booking\Shared\Domain\Booking\Listener\UpdateHotelQuotaListener;
 use Module\Booking\Shared\Domain\Order\Event\OrderCancelled;
+use Module\Booking\Shared\Domain\Order\Event\OrderRefunded;
 use Module\Booking\Shared\Domain\Order\Listener\CancelOrderInvoiceListener;
 use Module\Booking\Shared\Domain\Order\Listener\OrderCancelledListener;
 use Sdk\Booking\Contracts\Event\BookingEventInterface;
@@ -26,6 +27,7 @@ class DomainEventServiceProvider extends ServiceProvider
         BookingCreated::class => CalculateOtherServiceBookingPricesListener::class,
 
         OrderCancelled::class => OrderCancelledListener::class,
+        OrderRefunded::class => OrderCancelledListener::class,
         InvoiceBecomeDeprecatedEventInterface::class => CancelOrderInvoiceListener::class,
 
         PriceBecomeDeprecatedEventInterface::class => RecalculateBookingPricesListener::class,
