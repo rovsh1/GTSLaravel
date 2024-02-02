@@ -11,6 +11,7 @@ class TranslationServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
+        $this->bootMigrations();
         $this->registerLoader();
 
         $this->app->singleton(TranslatorInterface::class, Translator::class);
@@ -39,4 +40,11 @@ class TranslationServiceProvider extends ServiceProvider
     }
 
     public function boot() {}
+
+    protected function bootMigrations(): void
+    {
+        if ($this->app->runningInConsole()) {
+            $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+        }
+    }
 }

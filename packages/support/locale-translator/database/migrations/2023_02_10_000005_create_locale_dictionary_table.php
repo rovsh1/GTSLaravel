@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
-    public function up()
+    public function up(): void
     {
         Schema::create('r_locale_dictionary', function (Blueprint $table) {
             $table->increments('id');
@@ -31,7 +31,7 @@ return new class extends Migration {
         });
     }
 
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('r_locale_dictionary_values');
         Schema::dropIfExists('r_locale_dictionary');
