@@ -4,7 +4,7 @@ namespace App\Admin\Exceptions;
 
 use Illuminate\Contracts\Support\Responsable;
 
-class FormSubmitFailedException extends \Exception implements Responsable
+class FormSubmitFailedException extends \RuntimeException implements Responsable
 {
     private string $redirectUrl;
 

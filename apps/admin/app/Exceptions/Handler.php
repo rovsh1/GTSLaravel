@@ -50,7 +50,7 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $e)
     {
-        if ($request->wantsJson() || $request->header('X-Requested-With') === 'XMLHttpRequest') {
+        if ($request->wantsJson() || $request->getContentTypeFormat() === 'json') {
             return $this->_renderJsonException($e);
         }
 
