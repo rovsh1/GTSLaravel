@@ -45,8 +45,8 @@ class TimeSettings implements SerializableInterface
         $breakfastPeriod = $payload['breakfastPeriod'] ?? null;
 
         return new static(
-            new Time($payload['checkInAfter']),
-            new Time($payload['checkOutBefore']),
+            new Time($payload['checkInAfter'] ?? '14:00'),
+            new Time($payload['checkOutBefore'] ?? '12:00'),
             $breakfastPeriod !== null ? BreakfastPeriod::deserialize($payload['breakfastPeriod']) : null
         );
     }
