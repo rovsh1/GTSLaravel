@@ -48,7 +48,7 @@ class TemplateDataFactory
             'company' => $this->getCompanyRequisites(),
             'manager' => $this->buildOrderManagerDto($order->id()),
             'client' => $this->buildClientDto($order->clientId()),
-            'invoice' => $this->buildInvoiceDto($order->id(), now(), $services),
+            'invoice' => $this->buildInvoiceDto($order, now(), $services),
         ];
     }
 
@@ -58,30 +58,34 @@ class TemplateDataFactory
      * @param ServiceInfoDto[] $services
      * @return InvoiceDto
      */
-    private function buildInvoiceDto(OrderId $id, \DateTimeInterface $createdAt, array $services): InvoiceDto
+    private function buildInvoiceDto(Order $order, \DateTimeInterface $createdAt, array $services): InvoiceDto
     {
         /** @var float $totalAmount */
         $totalAmount = collect($services)->reduce(
             fn(float $value, ServiceInfoDto $serviceInfoDto) => $value + $serviceInfoDto->price->total,
             0
         );
+
         /** @var float $totalPenalty */
-        $totalPenalty = collect($services)->reduce(
-            fn(float $value, ServiceInfoDto $serviceInfoDto) => $value + $serviceInfoDto->price->penalty,
-            0
-        );
-        if ($totalPenalty === 0) {
-            $totalPenalty = null;
+        $totalPenalty = $order->clientPenalty()?->value();
+        if (empty($totalPenalty)) {
+            $totalPenalty = collect($services)->reduce(
+                fn(float $value, ServiceInfoDto $serviceInfoDto) => $value + $serviceInfoDto->price->penalty,
+                0
+            );
+            if ($totalPenalty === 0) {
+                $totalPenalty = null;
+            }
         }
 
         $file = null;
-        $fileGuid = $this->invoiceRepository->getInvoiceFileGuid($id);
+        $fileGuid = $this->invoiceRepository->getInvoiceFileGuid($order->id());
         if ($fileGuid !== null) {
             $file = $this->fileStorageAdapter->find($fileGuid);
         }
 
         return new InvoiceDto(
-            (string)$id->value(),
+            (string)$order->id()->value(),
             $createdAt->format('d.m.Y H:i'),
             Format::price($totalAmount),
             Format::price($totalPenalty),
