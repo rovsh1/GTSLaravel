@@ -91,7 +91,13 @@ export interface ShowCancelFeeDialogResponse extends ShowDialogResponse {
   cancelFeeAmount: number
 }
 
-export const showCancelFeeDialog = (withClientCancelFee?: boolean): Promise<ShowCancelFeeDialogResponse> => new Promise((resolve): void => {
+export interface CancelFeeDialogOptions {
+  withClientCancelFee?: boolean
+  clientCancelFeeCurrencyLable?: string
+  cancelFeeCurrencyLable: string
+}
+
+export const showCancelFeeDialog = (options: CancelFeeDialogOptions): Promise<ShowCancelFeeDialogResponse> => new Promise((resolve): void => {
   let clientCancelFeeAmount: number = 0
   let cancelFeeAmount: number = 0
   let $clientReasonDescriptionField = null
@@ -107,12 +113,13 @@ export const showCancelFeeDialog = (withClientCancelFee?: boolean): Promise<Show
     cancelFeeAmount = Number($(e.target).val())
   })
   const $reasonDescriptionField = $('<div />', { class: 'row form-field field-text field-value field-required' })
-    .append(`<label for="form_data_penalty_net" class="${withClientCancelFee ? 'col-sm-12' : 'col-sm-5'} col-form-label">Сумма штрафа</label>`)
+    .append(`<label for="form_data_penalty_net" class="${options.withClientCancelFee ? 'col-sm-12' : 'col-sm-5'} 
+    col-form-label">Сумма штрафа в ${options.cancelFeeCurrencyLable}</label>`)
     .append(
-      $('<div />', { class: `${withClientCancelFee ? 'col-sm-12' : 'col-sm-7'} d-flex align-items-center` }).append($descriptionElement),
+      $('<div />', { class: `${options.withClientCancelFee ? 'col-sm-12' : 'col-sm-7'} d-flex align-items-center` }).append($descriptionElement),
     )
 
-  if (withClientCancelFee) {
+  if (options.withClientCancelFee) {
     const $clientDescriptionElement = $('<input />', {
       id: 'form_data_penalty_gross',
       class: 'form-control',
@@ -123,9 +130,10 @@ export const showCancelFeeDialog = (withClientCancelFee?: boolean): Promise<Show
       clientCancelFeeAmount = Number($(e.target).val())
     })
     $clientReasonDescriptionField = $('<div />', { class: 'row form-field field-text field-value field-required' })
-      .append(`<label for="form_data_penalty_gross" class="${withClientCancelFee ? 'col-sm-12' : 'col-sm-5'} col-form-label">Сумма штрафа для клиента</label>`)
+      .append(`<label for="form_data_penalty_gross" class="${options.withClientCancelFee ? 'col-sm-12' : 'col-sm-5'}
+       col-form-label">Сумма штрафа для клиента в ${options.clientCancelFeeCurrencyLable}</label>`)
       .append(
-        $('<div />', { class: `${withClientCancelFee ? 'col-sm-12' : 'col-sm-7'} d-flex align-items-center` }).append($clientDescriptionElement),
+        $('<div />', { class: `${options.withClientCancelFee ? 'col-sm-12' : 'col-sm-7'} d-flex align-items-center` }).append($clientDescriptionElement),
       )
     $form.append($clientReasonDescriptionField)
     $form.append($reasonDescriptionField)

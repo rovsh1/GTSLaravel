@@ -43,7 +43,7 @@ const handleSaveHoPenalty = async (value: number | null) => {
   <div v-if="penaltyValue && penaltyCurrency" class="total-sum">
     Сумма штрафа:
     <strong>
-      {{ formatPrice(penaltyValue, penaltyCurrency.sign) }}
+      {{ formatPrice(penaltyValue, penaltyCurrency.code_char) }}
     </strong>
     <a v-if="canEditPenalty" style="margin-left: 5px;" href="#" @click.prevent="togglePenaltyModal(true)">Изменить</a>
   </div>

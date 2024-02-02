@@ -129,17 +129,17 @@ onMounted(() => {
         <div v-if="netCurrency" class="d-flex flex-row justify-content-between w-100 mt-2">
           <span class="prices-information">
             <strong>
-              Итого: {{ formatPrice(room.price.netValue, netCurrency.sign) }}
+              Итого: {{ formatPrice(room.price.netValue, netCurrency.code_char) }}
             </strong>
             <br>
             <strong class="prices-information-details">
               <span>Цена за ночь: </span>
               <span v-if="getMinDayPrices(room.price.dayPrices, 'net') === getMaxDayPrices(room.price.dayPrices, 'net')">
-                {{ formatPrice(getMinDayPrices(room.price.dayPrices, 'net') as number, netCurrency.sign) }}
+                {{ formatPrice(getMinDayPrices(room.price.dayPrices, 'net') as number, netCurrency.code_char) }}
               </span>
               <span v-else>
-                от {{ formatPrice(getMinDayPrices(room.price.dayPrices, 'net') as number, netCurrency.sign) }}
-                до {{ formatPrice(getMaxDayPrices(room.price.dayPrices, 'net') as number, netCurrency.sign) }}
+                от {{ formatPrice(getMinDayPrices(room.price.dayPrices, 'net') as number, netCurrency.code_char) }}
+                до {{ formatPrice(getMaxDayPrices(room.price.dayPrices, 'net') as number, netCurrency.code_char) }}
               </span>
             </strong>
           </span>
