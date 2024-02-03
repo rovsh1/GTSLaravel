@@ -1,4 +1,4 @@
-import { UseHotelImages } from '~resources/api/hotel/images/list'
+import { UseHotelImages } from '~resources/vue/api/hotel/images/list'
 
 import { HotelImageID } from '~api/hotel/images'
 

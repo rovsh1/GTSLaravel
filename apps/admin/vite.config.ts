@@ -32,9 +32,9 @@ export default defineConfig(({ command }) => ({
   plugins: [
     laravel({
       input: [
-        'resources/assets/jquery.ts',
-        'resources/assets/tinymce.js',
-        'resources/assets/tinymce-content.scss',
+        'resources/js/support/jquery.ts',
+        'resources/js/support/tinymce/tinymce.js',
+        'resources/js/support/tinymce/tinymce-content.scss',
         'resources/views/administration/mail-queue/mail-queue.ts',
         'resources/views/administration/journal/journal.ts',
         'resources/views/administration/access-group-form/access-group-form.ts',
@@ -136,9 +136,12 @@ export default defineConfig(({ command }) => ({
   resolve: {
     alias: {
       '~resources': path.resolve(__dirname, 'resources'),
-      '~api': path.resolve(__dirname, 'resources/api'),
-      '~lib': path.resolve(__dirname, 'resources/lib'),
-      '~components': path.resolve(__dirname, 'resources/components'),
+      '~api': path.resolve(__dirname, 'resources/vue/api'),
+      '~components': path.resolve(__dirname, 'resources/vue/components'),
+      '~stores': path.resolve(__dirname, 'resources/vue/stores'),
+      '~widgets': path.resolve(__dirname, 'resources/js/widgets'),
+      '~cache': path.resolve(__dirname, 'resources/js/cache'),
+      '~helpers': path.resolve(__dirname, 'resources/js/helpers'),
     },
   },
   css: {

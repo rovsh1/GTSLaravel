@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import { useCurrencyStore } from '~resources/store/currency'
 import { useOrderStore } from '~resources/views/booking-order/show/store/order'
 
 import { Currency } from '~api/models'
 import { Order } from '~api/order'
 
-import { formatPrice } from '~lib/price'
+import { useCurrencyStore } from '~stores/currency'
+
+import { formatPrice } from '~helpers/price'
 
 const orderStore = useOrderStore()
 const { getCurrencyByCodeChar } = useCurrencyStore()

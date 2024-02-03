@@ -6,8 +6,6 @@ import { useToggle } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { z } from 'zod'
 
-import { useCountryStore } from '~resources/store/countries'
-import { useCurrencyStore } from '~resources/store/currency'
 import RoomModal from '~resources/views/booking/hotel/show/components/RoomModal.vue'
 import RoomPriceModal from '~resources/views/booking/hotel/show/components/RoomPriceModal.vue'
 import GuestModal from '~resources/views/booking/shared/components/GuestModal.vue'
@@ -35,10 +33,6 @@ import { HotelRate, useHotelRatesAPI } from '~api/hotel/price-rate'
 import { Currency } from '~api/models'
 import { addOrderGuest, Guest, updateOrderGuest } from '~api/order/guest'
 
-import { showConfirmDialog } from '~lib/confirm-dialog'
-import { requestInitialData } from '~lib/initial-data'
-import { formatPrice } from '~lib/price'
-
 import BaseDialog from '~components/BaseDialog.vue'
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 import BootstrapCard from '~components/Bootstrap/BootstrapCard/BootstrapCard.vue'
@@ -46,6 +40,13 @@ import BootstrapCardTitle from '~components/Bootstrap/BootstrapCard/components/B
 import EmptyData from '~components/EmptyData.vue'
 import IconButton from '~components/IconButton.vue'
 import InlineIcon from '~components/InlineIcon.vue'
+
+import { useCountryStore } from '~stores/countries'
+import { useCurrencyStore } from '~stores/currency'
+
+import { showConfirmDialog } from '~helpers/confirm-dialog'
+import { requestInitialData } from '~helpers/initial-data'
+import { formatPrice } from '~helpers/price'
 
 const [isOpenedPriceDetailsModal, toggleModalPriceDetails] = useToggle()
 const [isShowRoomModal, toggleRoomModal] = useToggle()

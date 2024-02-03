@@ -5,15 +5,15 @@ import { useToggle } from '@vueuse/core'
 import { nanoid } from 'nanoid'
 import { z } from 'zod'
 
-import { updateRoomSeasonPrice } from '~resources/api/hotel/prices/seasons'
-import { formatSeasonPeriod } from '~resources/lib/date'
-import { generateHashFromObject } from '~resources/lib/hash'
-
-import { requestInitialData } from '~lib/initial-data'
+import { updateRoomSeasonPrice } from '~api/hotel/prices/seasons'
 
 import BaseDialog from '~components/BaseDialog.vue'
 import { showToast } from '~components/Bootstrap/BootstrapToast'
 import OverlayLoading from '~components/OverlayLoading.vue'
+
+import { formatSeasonPeriod } from '~helpers/date'
+import { generateHashFromObject } from '~helpers/hash'
+import { requestInitialData } from '~helpers/initial-data'
 
 import EditableCell from './EditableCell.vue'
 import SeasonEditPrice from './SeasonEditPrice.vue'

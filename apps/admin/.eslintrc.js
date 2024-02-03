@@ -39,8 +39,7 @@ module.exports = defineConfig({
   ignorePatterns: [
     '**/vendor/*.js',
     '**/vendor/**/*.js',
-    '**/libs/*.js',
-    '**/libs/**/*.js',
+    '**/widgets/dialog/*.js',
     '**/plugins/*.js',
     '**/plugins/**/*.js',
   ],
@@ -55,8 +54,11 @@ module.exports = defineConfig({
         ['^~resources'],
         // Aliases
         ['^~api'],
-        ['^~lib'],
         ['^~components'],
+        ['^~stores'],
+        ['^~widgets'],
+        ['^~cache'],
+        ['^~helpers'],
         // `./*.vue` or `../*.vue`
         ['^\\.\\.?\\/.*.vue'],
         // `./*` or `../*`

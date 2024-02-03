@@ -1,4 +1,4 @@
-import { createHotelSwitcher } from '~resources/lib/hotel-switcher/hotel-switcher'
+import { createHotelSwitcher } from '~widgets/hotel-switcher/hotel-switcher'
 
 import '~resources/views/main'
 

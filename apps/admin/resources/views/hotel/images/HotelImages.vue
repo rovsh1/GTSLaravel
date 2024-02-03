@@ -5,7 +5,6 @@ import { VueDraggable } from 'vue-draggable-plus'
 import { useUrlSearchParams } from '@vueuse/core'
 import { z } from 'zod'
 
-import { createHotelSwitcher } from '~resources/lib/hotel-switcher/hotel-switcher'
 import AttachmentDialog from '~resources/views/hotel/images/components/AttachmentDialog.vue'
 import { AttachmentDialogImageProp, isImageAttachedToRoom, UploadStatus } from '~resources/views/hotel/images/components/lib'
 
@@ -24,8 +23,6 @@ import { useHotelImagesUploadAPI } from '~api/hotel/images/upload'
 import { HotelRoom, useHotelRoomAPI } from '~api/hotel/room'
 import { useHotelRoomsListWithAttachedImageAPI } from '~api/hotel/rooms-image'
 
-import { requestInitialData } from '~lib/initial-data'
-
 import BaseDialog from '~components/BaseDialog.vue'
 import BaseLayout from '~components/BaseLayout.vue'
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
@@ -34,6 +31,10 @@ import ImageZoom from '~components/ImageZoom.vue'
 import InlineIcon from '~components/InlineIcon.vue'
 import LoadingSpinner from '~components/LoadingSpinner.vue'
 import OverlayLoading from '~components/OverlayLoading.vue'
+
+import { createHotelSwitcher } from '~widgets/hotel-switcher/hotel-switcher'
+
+import { requestInitialData } from '~helpers/initial-data'
 
 import UploadDialog from './components/UploadDialog.vue'
 

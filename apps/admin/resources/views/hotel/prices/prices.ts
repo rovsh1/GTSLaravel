@@ -1,6 +1,6 @@
-import { createHotelSwitcher } from '~resources/lib/hotel-switcher/hotel-switcher'
+import { createVueInstance } from '~resources/vue/vue'
 
-import { createVueInstance } from '~lib/vue'
+import { createHotelSwitcher } from '~widgets/hotel-switcher/hotel-switcher'
 
 import HotelPrices from './HotelPrices.vue'
 

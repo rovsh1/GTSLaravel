@@ -1,4 +1,4 @@
-import Tab from '~resources/js/app/components/permissions-control/tab'
+import Tab from '~widgets/permissions-control/tab'
 
 import '~resources/views/main'
 

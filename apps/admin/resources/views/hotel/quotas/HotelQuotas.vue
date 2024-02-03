@@ -4,21 +4,21 @@ import { computed, nextTick, ref, watch, watchEffect } from 'vue'
 import { useToggle } from '@vueuse/core'
 import { z } from 'zod'
 
-import { useUpdateHotelRoomQuotasBatch } from '~resources/api/hotel/quotas/batch'
-import { formatDateToAPIDate } from '~resources/lib/date'
-import { createHotelSwitcher } from '~resources/lib/hotel-switcher/hotel-switcher'
-
 import { HotelResponse, useHotelGetAPI } from '~api/hotel/get'
+import { useUpdateHotelRoomQuotasBatch } from '~api/hotel/quotas/batch'
 import { useHotelQuotasAPI } from '~api/hotel/quotas/list'
 import { UseHotelRooms, useHotelRoomsListAPI } from '~api/hotel/rooms'
-
-import { requestInitialData } from '~lib/initial-data'
 
 import BaseDialog from '~components/BaseDialog.vue'
 import BaseLayout from '~components/BaseLayout.vue'
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 import EmptyData from '~components/EmptyData.vue'
 import OverlayLoading from '~components/OverlayLoading.vue'
+
+import { createHotelSwitcher } from '~widgets/hotel-switcher/hotel-switcher'
+
+import { formatDateToAPIDate } from '~helpers/date'
+import { requestInitialData } from '~helpers/initial-data'
 
 import QuotasFilters from './components/QuotasFilters/QuotasFilters.vue'
 import QuotasStatusSwitcher from './components/QuotasStatusSwitcher.vue'

@@ -16,10 +16,11 @@ import {
   updateConditionHotelMarkupSettings,
 } from '~api/hotel/markup-settings'
 
-import { showConfirmDialog } from '~lib/confirm-dialog'
-import { formatDate } from '~lib/date'
-import { defaultDisabledDate } from '~lib/date-picker/lib'
-import { requestInitialData } from '~lib/initial-data'
+import { defaultDisabledDate } from '~widgets/date-picker/lib'
+
+import { showConfirmDialog } from '~helpers/confirm-dialog'
+import { formatDate } from '~helpers/date'
+import { requestInitialData } from '~helpers/initial-data'
 
 import CancelPeriodModal from './components/CancelPeriodModal.vue'
 import CancelPeriodSettingsTable from './components/CancelPeriodSettingsTable.vue'

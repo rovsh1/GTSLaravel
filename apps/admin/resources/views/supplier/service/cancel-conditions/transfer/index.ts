@@ -1,6 +1,6 @@
 import { createPinia } from 'pinia'
 
-import { createVueInstance } from '~lib/vue'
+import { createVueInstance } from '~resources/vue/vue'
 
 import ServiceList from './components/ServiceList.vue'
 

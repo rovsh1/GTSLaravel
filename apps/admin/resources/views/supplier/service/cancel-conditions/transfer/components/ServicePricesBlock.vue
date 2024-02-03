@@ -5,7 +5,7 @@ import CollapsableBlock from '~resources/views/hotel/settings/components/Collaps
 import { Car, Season } from '~api/models'
 import { ExistCancelConditions } from '~api/supplier/cancel-conditions/transfer'
 
-import { formatPeriod } from '~lib/date'
+import { formatPeriod } from '~helpers/date'
 
 const props = defineProps<{
   header: string

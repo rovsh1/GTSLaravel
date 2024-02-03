@@ -6,8 +6,8 @@ import { z } from 'zod'
 import { downloadDocument as downloadDocumentRequest } from '~api/booking/document'
 import { BookingRequest, sendBookingRequest, useBookingRequestListAPI } from '~api/booking/request'
 
-import { showConfirmDialog } from '~lib/confirm-dialog'
-import { requestInitialData } from '~lib/initial-data'
+import { showConfirmDialog } from '~helpers/confirm-dialog'
+import { requestInitialData } from '~helpers/initial-data'
 
 const { bookingID } = requestInitialData(z.object({
   bookingID: z.number(),

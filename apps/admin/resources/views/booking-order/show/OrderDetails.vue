@@ -9,9 +9,9 @@ import InfoBlockTitle from '~resources/views/booking/shared/components/InfoBlock
 import BookingsTable from '~resources/views/booking-order/show/components/BookingsTable.vue'
 import { useOrderStore } from '~resources/views/booking-order/show/store/order'
 
-import { requestInitialData } from '~lib/initial-data'
-
 import ActionsMenu, { Action } from '~components/ActionsMenu.vue'
+
+import { requestInitialData } from '~helpers/initial-data'
 
 const { serviceBookingCreate, hotelBookingCreate, clientID } = requestInitialData(z.object({
   serviceBookingCreate: z.string(),

@@ -1,4 +1,4 @@
-import { Client } from '~resources/api/client'
+import { Client } from '~resources/vue/api/client'
 
 import { ExternalNumberTypeEnum } from '~api/booking/hotel/details'
 import { MarkupCondition } from '~api/hotel/markup-settings'

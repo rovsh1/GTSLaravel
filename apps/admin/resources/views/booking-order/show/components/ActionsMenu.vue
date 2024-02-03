@@ -6,8 +6,8 @@ import { z } from 'zod'
 
 import { useOrderStore } from '~resources/views/booking-order/show/store/order'
 
-import { useDeleteWithConfirm } from '~lib/delete-dialog'
-import { requestInitialData } from '~lib/initial-data'
+import { useDeleteWithConfirm } from '~helpers/delete-dialog'
+import { requestInitialData } from '~helpers/initial-data'
 
 const { editUrl, deleteUrl } = requestInitialData(z.object({
   editUrl: z.string().optional(),

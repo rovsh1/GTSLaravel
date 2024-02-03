@@ -7,7 +7,7 @@ import '~resources/js/vendor/jquery.cookie'
 import '~widgets/date-picker/date-picker'
 import '~widgets/dialog/helpers'
 import '~resources/js/support/select2'
-import '~resources/js/plugins/buttons/delete-button'
+import '~resources/js/plugins/delete-button'
 import '~resources/js/support/functions'
 
 $(() => {

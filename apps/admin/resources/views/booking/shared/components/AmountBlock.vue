@@ -2,7 +2,7 @@
 
 import { Currency } from '~api/models'
 
-import { formatPrice } from '~lib/price'
+import { formatPrice } from '~helpers/price'
 
 withDefaults(defineProps<{
   title: string

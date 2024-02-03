@@ -5,11 +5,10 @@ import { computed } from 'vue'
 import { useToggle } from '@vueuse/core'
 import { z } from 'zod'
 
-import { useQuickSearch } from '~resources/composables/quick-search'
-
 import { Car, Season } from '~api/models'
 
-import { requestInitialData } from '~lib/initial-data'
+import { requestInitialData } from '~helpers/initial-data'
+import { useQuickSearch } from '~helpers/quick-search'
 
 import CancelConditionsModal from './CancelConditionsModal.vue'
 import ServicePricesBlock from './ServicePricesBlock.vue'

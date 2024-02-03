@@ -1,9 +1,10 @@
-import { CancelReasonResponse } from '~resources/api/cancel-reason'
-import axios from '~resources/js/app/api'
-import { CacheStorage } from '~resources/lib/cache-storage/cache-storage'
-import { TTLValues } from '~resources/lib/enums'
+import axios from '~resources/js/api'
+import { CancelReasonResponse } from '~resources/vue/api/cancel-reason'
 
-import { ShowDialogResponse, ToggleCloseFunction, ToggleLoadingFunction } from '~lib/confirm-dialog'
+import { CacheStorage } from '~cache/cache-storage'
+import { TTLValues } from '~cache/enums'
+
+import { ShowDialogResponse, ToggleCloseFunction, ToggleLoadingFunction } from '~helpers/confirm-dialog'
 
 export interface ShowNotConfirmedReasonDialogResponse extends ShowDialogResponse {
   reason: string

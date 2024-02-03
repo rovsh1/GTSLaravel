@@ -8,7 +8,7 @@ import { Season } from '~api/models'
 import { ServicePriceResponse } from '~api/supplier/airport'
 import { useServiceProviderOtherPricesAPI } from '~api/supplier/other'
 
-import { formatPeriod } from '~lib/date'
+import { formatPeriod } from '~helpers/date'
 
 const props = defineProps<{
   header: string

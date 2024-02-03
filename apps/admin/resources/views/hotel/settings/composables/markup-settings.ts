@@ -9,7 +9,7 @@ import {
   useHotelMarkupSettingsAPI,
 } from '~api/hotel/markup-settings'
 
-import { requestInitialData } from '~lib/initial-data'
+import { requestInitialData } from '~helpers/initial-data'
 
 const { hotelID } = requestInitialData(
   z.object({
