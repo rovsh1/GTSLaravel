@@ -75,7 +75,7 @@ class CalculateHotelPrice implements UseCaseInterface
         $dayResults = [];
         //@hack т.к. ночей всегда на 1 меньше, не включаем в стоимость последний день периода
         foreach ($request->period->excludeEndDate() as $date) {
-            $calculation = new RoomDayPriceCalculatorFormula();
+            $calculation = new RoomDayPriceCalculatorFormula($request->outCurrency);
 
             if ($room->manualDayPrice) {
                 $calculation->setBaseManually($room->manualDayPrice);
