@@ -72,7 +72,7 @@ class RequestFactory implements RequestFactoryInterface
 
     private function getFilename(Booking $booking, RequestTypeEnum $requestType): string
     {
-        return $booking->id() . '-' . strtolower($requestType->name) . '-' . date('Ymd') . '.pdf';
+        return $booking->id() . '-' . strtolower($requestType->name) . '-' . date('d-m-y') . '.pdf';
     }
 
     private function getTemplateName(ServiceTypeEnum $serviceType, RequestTypeEnum $requestType): string
