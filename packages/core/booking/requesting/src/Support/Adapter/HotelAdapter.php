@@ -9,7 +9,7 @@ use Pkg\Booking\Requesting\Domain\Adapter\HotelAdapterInterface;
 
 class HotelAdapter implements HotelAdapterInterface
 {
-    public function getAdministratorEmails(int $hotelId): ?array
+    public function getAdministratorEmails(int $hotelId): array
     {
         $contacts = DB::table('hotel_administrators')
             ->select('email')

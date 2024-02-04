@@ -44,11 +44,11 @@ class SendMailNotificationsListener implements DomainEventListenerInterface
         }
 
         $administrator = $this->administratorAdapter->getManagerByBookingId($event->bookingId()->value());
-        if(!empty($administrator?->email) && $this->isValidEmail($administrator->email)){
+        if(!empty($administrator?->email)){
             $emails[] = $administrator->email;
         }
 
-        $emails = array_filter($emails, fn(string $email) => $this->isValidEmail($email));
+        $emails = array_filter($emails, fn(string|null $email) => $this->isValidEmail($email));
         if (count($emails) === 0) {
             return;
         }

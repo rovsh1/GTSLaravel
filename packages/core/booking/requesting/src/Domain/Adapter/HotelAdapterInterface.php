@@ -6,5 +6,5 @@ namespace Pkg\Booking\Requesting\Domain\Adapter;
 
 interface HotelAdapterInterface
 {
-    public function getAdministratorEmails(int $hotelId): ?array;
+    public function getAdministratorEmails(int $hotelId): array;
 }
