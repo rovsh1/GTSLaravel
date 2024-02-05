@@ -14,6 +14,7 @@
             <div class="dropdown text-end">
                 <a href="#" class="btn-avatar" aria-label="Open user menu" data-bs-toggle="dropdown" aria-expanded="false">
                     <x-user-avatar :file="Auth::user()?->avatar" alt="User avatar"/>
+                    <span class="ml-1">{{ Auth::user()?->presentation }}</span>
                 </a>
                 <ul class="dropdown-menu text-small">
                     <li><a class="dropdown-item" href="{{ route('profile') }}">Профиль</a></li>

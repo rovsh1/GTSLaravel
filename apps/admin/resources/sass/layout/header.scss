@@ -27,7 +27,7 @@ header {
       background-color: #E3E3E3;
     }
 
-    button > svg {
+    button>svg {
       width: 24px;
       height: 24px;
       color: rgb(0 0 0 / 66%);
@@ -42,13 +42,18 @@ header {
   }
 
   .btn-avatar {
-    display: block;
+    display: flex;
+    align-items: center;
 
     img {
       object-fit: cover;
       width: 32px;
       height: 32px;
       border-radius: 50%;
+    }
+
+    span {
+      margin-left: 10px;
     }
   }
 }
@@ -71,4 +76,3 @@ header {
     flex-grow: 1;
   }
 }
-
