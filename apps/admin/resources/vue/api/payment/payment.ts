@@ -35,6 +35,7 @@ export type PaymentOrder = {
   id: number
   clientId: number
   clientPrice: PaymentPrice
+  clientPenalty: PaymentPrice
   payedAmount: PaymentPrice
   remainingAmount: PaymentPrice
 }

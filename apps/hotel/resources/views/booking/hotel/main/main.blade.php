@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('styles')
-    @vite('resources/views/default/grid/grid.scss')
+    @vite('resources/views/booking/hotel/main/main.scss')
 @endsection
 
 @section('scripts')

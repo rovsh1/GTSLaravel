@@ -1,0 +1,7 @@
+@use "~resources/views/default/grid/grid.scss";
+@use "~resources/sass/layout/elements/grid-cell-sticky" as *;
+
+table tbody tr td:nth-child(3),
+table thead tr th:nth-child(3) {
+  @include grid-cell-sticky;
+}

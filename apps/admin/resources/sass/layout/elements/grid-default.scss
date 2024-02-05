@@ -1,12 +1,14 @@
 @use "~resources/sass/variables" as variables;
+@use "~resources/sass/layout/elements/grid-cell-sticky" as *;
 
 .card-grid {
   white-space: nowrap;
 
   .card-body {
+    overflow-x: auto;
     padding: 0.5rem 0 1rem;
 
-    & > table {
+    &>table {
       margin: 0;
       line-height: 20px;
 
@@ -19,14 +21,19 @@
       th:last-child {
         padding-right: 1rem;
       }
+
+      tbody tr td:nth-child(1),
+      thead tr th:nth-child(1) {
+        @include grid-cell-sticky;
+      }
     }
 
-    & > table + .paginator {
+    &>table+.paginator {
       padding: 1rem 1rem 0;
     }
   }
 
-  .card-header + .card-body {
+  .card-header+.card-body {
     padding-top: 0;
   }
 }
@@ -38,7 +45,7 @@
   text-align: center;
 }
 
-.column-icon > i {
+.column-icon>i {
   vertical-align: top;
   font-size: 20px;
 }
@@ -52,12 +59,12 @@
     height: 20px;
   }
 
-  .actions-menu-wrapper > .icon {
+  .actions-menu-wrapper>.icon {
     font-size: 20px;
     cursor: pointer;
   }
 
-  .actions-menu-wrapper:hover > .icon {
+  .actions-menu-wrapper:hover>.icon {
     color: variables.$primary;
   }
 
@@ -104,6 +111,6 @@
   }
 }
 
-tr:hover > td.column-actions > .actions-menu {
+tr:hover>td.column-actions>.actions-menu {
   display: block;
 }
