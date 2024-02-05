@@ -48,7 +48,7 @@ class SendMailNotificationsListener implements DomainEventListenerInterface
             $emails[] = $administrator->email;
         }
 
-        $emails = array_filter($emails, fn(string $email) => $this->isValidEmail($email));
+        $emails = array_filter($emails, fn(string|null $email) => $this->isValidEmail($email));
         if (count($emails) === 0) {
             return;
         }
