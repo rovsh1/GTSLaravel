@@ -70,7 +70,7 @@ const minDateLocale = computed(() => (props.minDate ? parseAPIDate(props.minDate
 const maxDateLocale = computed(() => (props.maxDate ? parseAPIDate(props.maxDate).endOf('day') : undefined))
 
 const setBlockPeriodsValue = () => {
-  const result:[string, string][] = []
+  const result: [string, string][] = []
   props.lockPeriods?.forEach((lockPeriod, index) => {
     if (editableId.value !== index) {
       result.push([
@@ -86,7 +86,6 @@ const setBlockPeriodsValue = () => {
 const blockedPeriods = ref(setBlockPeriodsValue())
 
 const isValidSingleDateOrRange = (date1: any, date2: any): boolean => {
-  if (!blockedPeriods.value || !blockedPeriods.value.length) return true
   const startDate = DateTime.fromJSDate(date1.dateInstance).startOf('day')
   const endDate = DateTime.fromJSDate(props.singleMode ? date1.dateInstance : date2.dateInstance).endOf('day')
   const selectedPeriodDays = []
@@ -179,6 +178,8 @@ onMounted(() => {
         if (!localValue.value || (!Array.isArray(localValue.value) && !compareJSDate(localValue.value, date1.dateInstance))) {
           if (isValidSingleDateOrRange(date1, date2)) {
             emit('input', date1.dateInstance)
+          } else {
+            picker.clearSelection()
           }
         }
       } else if (!localValue.value || (Array.isArray(localValue.value) && (
@@ -186,6 +187,8 @@ onMounted(() => {
       ))) {
         if (isValidSingleDateOrRange(date1, date2)) {
           emit('input', props.singleMode ? date1.dateInstance : [date1.dateInstance, date2.dateInstance])
+        } else {
+          picker.clearSelection()
         }
       }
     })

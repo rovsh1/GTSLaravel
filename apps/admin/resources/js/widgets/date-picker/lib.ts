@@ -31,15 +31,18 @@ export const registerDatePickerInstance = (element: HTMLInputElement, picker: Li
   window.datePickerInstances.push({ picker, element })
 }
 
-export const destroyOldDatePicker = (element: HTMLInputElement) => {
+export const destroyOldDatePicker = (element: HTMLInputElement): HTMLInputElement | undefined => {
   if (window.datePickerInstances === undefined) {
-    return
+    return undefined
   }
   const instance = window.datePickerInstances.find((item) => item.element === element)
   if (instance === undefined) {
-    return
+    return undefined
   }
   instance.picker.destroy()
+  const clonedElement = element.cloneNode(true)
+  element.parentNode?.replaceChild(clonedElement, element)
+  return clonedElement as HTMLInputElement
 }
 
 export const prefillDatePickerFromInput = (input: HTMLInputElement, picker: Litepicker) => {

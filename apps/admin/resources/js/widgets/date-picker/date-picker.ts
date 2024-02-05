@@ -18,8 +18,12 @@ import {
 
 type Options = Partial<ILPConfiguration>
 
-export const useDatePicker = (element: HTMLInputElement, options?: Options) => {
-  destroyOldDatePicker(element)
+export const useDatePicker = (elementOption: HTMLInputElement, options?: Options) => {
+  let element = elementOption
+  const reloadElement = destroyOldDatePicker(element)
+  if (reloadElement) {
+    element = reloadElement
+  }
 
   const ranges = {
     'Сегодня': [
@@ -90,14 +94,10 @@ export const useDatePicker = (element: HTMLInputElement, options?: Options) => {
     container.setAttribute(datePickerRootAttributeName, '')
   })
 
-  picker.on('selected', () => {
+  picker.on('selected', (date1: any, date2: any) => {
     const customChangeEvent = new CustomEvent('customEventChangeLitePicker')
     element?.dispatchEvent(customChangeEvent)
-  })
-
-  picker.on('ranges.selected', (date1: any, date2: any) => {
     const { lockDays, minDate, maxDate } = picker.options
-    if (!lockDays || !Array.isArray(lockDays) || !lockDays.length) return
     const startDate = DateTime.fromJSDate(date1.dateInstance)
     const endDate = DateTime.fromJSDate(date2.dateInstance)
     const selectedPeriodDays = []
@@ -112,7 +112,7 @@ export const useDatePicker = (element: HTMLInputElement, options?: Options) => {
     }
     let isValidSelectedPeriod = true
     selectedPeriodDays.forEach((dayFromSelectedPeriod) => {
-      const isDateInRange = lockDays.some((range) => {
+      const isDateInRange = lockDays.some((range: any) => {
         const startDateTime = DateTime.fromJSDate(range[0].dateInstance)
         const endDateTime = DateTime.fromJSDate(range[1].dateInstance)
         return dayFromSelectedPeriod >= startDateTime && dayFromSelectedPeriod <= endDateTime
