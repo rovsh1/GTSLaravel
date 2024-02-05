@@ -88,7 +88,7 @@ class FormBuilder extends Base
         $this->throwError();
     }
 
-    private function throwError(): void
+    public function throwError(): void
     {
         $exception = new FormSubmitFailedException();
         $exception->setErrors($this->errors());

@@ -41,7 +41,7 @@
         <div class="block">
             <div class="block-title">Пароль</div>
             <div class="block-body">
-                <div class="block-row" data-action="password">
+                <div class="block-row" data-href="{{ route('profile.password') }}">
                     <div class="value">Сменить пароль</div>
                 </div>
             </div>

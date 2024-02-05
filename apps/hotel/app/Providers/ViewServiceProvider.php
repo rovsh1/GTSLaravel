@@ -94,5 +94,6 @@ class ViewServiceProvider extends ServiceProvider
         Blade::component('user-avatar', Components\UserAvatar::class);
         Blade::component('file-image', Components\FileImage::class);
         Blade::component('ui.card', Components\Card::class);
+        Blade::component('ui.content-title', Components\ContentTitle::class);
     }
 }
