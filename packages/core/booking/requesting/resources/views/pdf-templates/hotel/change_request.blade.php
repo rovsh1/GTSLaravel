@@ -14,7 +14,7 @@
         <tbody>
         @include('BookingShared::_partials.company_requisites_header')
         <tr>
-            <td class="title text-align-center" colspan="2">НОВОЕ БРОНИРОВАНИЕ</td>
+            <td class="title text-align-center" colspan="2">ИЗМЕНЕНИЕ БРОНИРОВАНИЯ</td>
         </tr>
         <tr>
             <td colspan="2">
@@ -23,12 +23,18 @@
                     <tr>
                         <td>
                             <table>
-                                <tbody>
                                 <tr>
                                     <td class="top-table-left" style="font-size: 24px; font-weight: bold; color: red">
                                         Номер (ID):
                                     </td>
                                     <td style="font-size: 24px; font-weight: bold; color: red">{{ $booking->number }}</td>
+                                    <td class="text-align-right" colspan="2">
+                                        <b>Дата и время изменения: {{ $booking->updatedAt }}</b>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>&ensp;</td>
+                                    <td>&ensp;</td>
                                     <td class="text-align-right" colspan="2">
                                         <b>Дата и время создания: {{ $booking->createdAt }}</b>
                                     </td>
@@ -46,20 +52,21 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="top-table-left">Дата заезда:</td>
+                                    <td class="top-table-left">Период пребывания:</td>
                                     <td>
-                                        <b>{{ $bookingPeriod->startDate }}</b>
+                                        @changemark('period')
+                                        <b>{{ $bookingPeriod->startDate }}</b> - <b>{{ $bookingPeriod->endDate }}</b>
+                                        @endchangemark
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="top-table-left">Дата выезда:</td>
-                                    <td><b>{{ $bookingPeriod->endDate }}</b></td>
-                                </tr>
-                                <tr>
                                     <td class="top-table-left">Количество ночей:</td>
-                                    <td><b>{{ $bookingPeriod->nightsCount }}</b></td>
+                                    <td>
+                                        @changemark('period')
+                                        <b>{{ $bookingPeriod->nightsCount }}</b>
+                                        @endchangemark
+                                    </td>
                                 </tr>
-                                </tbody>
                             </table>
                         </td>
                     </tr>
@@ -72,20 +79,18 @@
                 <table>
                     <thead>
                     <tr>
-                        <th class="text-align-center" style="width: 5%;">№</th>
+                        <th class="text-align-center">№</th>
                         <th class="text-align-left">Информация о размещении</th>
-                        <th style="width: 33%;"></th>
                     </tr>
                     </thead>
                     <tbody>
 
-                    @include('BookingRequesting::hotel._partials.rooms')
+                    @include('BookingRequesting::pdf-templates.hotel._partials.rooms')
 
                     <tr class="first">
                         <td colspan="3">
                             <p style="text-align: justify"><b>Внимание!</b> Компания гарантирует оплату за количество
-                                ночей
-                                и услуги указанные в заявке,
+                                ночей и услуги указанные в заявке,
                                 в случае раннего заезда / позднего выезда и прочих дополнительных услуг не указанных в
                                 заявке компания не несет ответственности и отель обязуется сам взимать оплату с гостя по
                                 своим расценкам.</p>
@@ -109,7 +114,7 @@
                     </tbody>
                 </table>
             </td>
-            <td class="text-align-right" style="width: 250px"><img src="var:stamp" alt="" width="250"></td>
+            <td class="text-align-right" style="width: 250px"><img src="var:stamp" alt="" width="250"/></td>
         </tr>
         </tbody>
     </table>

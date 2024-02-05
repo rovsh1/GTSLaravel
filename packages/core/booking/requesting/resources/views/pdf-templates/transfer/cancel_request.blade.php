@@ -14,7 +14,7 @@
         <tbody>
         @include('BookingShared::_partials.company_requisites_header')
         <tr>
-            <td class="title text-align-center" colspan="2">ИЗМЕНЕНИЕ БРОНИ НА ТРАНСПОРТ</td>
+            <td class="title text-align-center" colspan="2">ОТМЕНА БРОНИ НА ТРАНСПОРТ</td>
         </tr>
         <tr>
             <td colspan="2">
@@ -24,14 +24,13 @@
                         <td>
                             <table>
                                 <tbody>
-
                                 <tr>
                                     <td class="top-table-left" style="font-size: 24px; font-weight: bold; color: red">
                                         Номер (ID):
                                     </td>
                                     <td style="font-size: 24px; font-weight: bold; color: red">{{ $booking->number }}</td>
                                     <td class="text-align-right" colspan="2">
-                                        <b>Дата и время изменения: {{ $booking->updatedAt }}</b>
+                                        <b>Дата и время отмены: {{ $booking->updatedAt }}</b>
                                     </td>
                                 </tr>
                                 <tr>
@@ -43,11 +42,7 @@
                                 </tr>
                                 <tr>
                                     <td class="top-table-left">Количество туристов:</td>
-                                    <td><b>
-                                            @changemark('guests')
-                                                {{ $guestsCount }}
-                                            @endchangemark()
-                                        </b></td>
+                                    <td><b>{{ $guestsCount }}</b></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -59,6 +54,8 @@
         </tr>
         <tr>
             <td colspan="2" style="padding-top: 20px;">
+
+
                 <table class="services">
                     <thead>
                     <tr>
@@ -75,15 +72,16 @@
                         <td class="text-align-left" colspan="4"><b>{{ $service->title }}</b></td>
                     </tr>
 
-                    @include('BookingRequesting::transfer._partials.cars')
-                    @include('BookingRequesting::transfer._partials.details')
+                    @include('BookingRequesting::pdf-templates.transfer._partials.cars')
+                    @include('BookingRequesting::pdf-templates.transfer._partials.details')
 
                     </tbody>
                 </table>
             </td>
         </tr>
         <tr class="first">
-            <td colspan="2" class="text-align-right"><b>Стоимость брони: {{ Format::number($booking->supplierPrice->amount) }}</b></td>
+            <td colspan="2" class="text-align-right"><b>Стоимость
+                    брони: {{ Format::number($booking->supplierPrice->amount) }}</b></td>
         </tr>
         <tr>
             <td>

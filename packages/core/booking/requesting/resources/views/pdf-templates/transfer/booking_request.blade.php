@@ -67,8 +67,8 @@
                         <td class="text-align-left" colspan="4"><b>{{ $service->title }}</b></td>
                     </tr>
 
-                    @include('BookingRequesting::transfer._partials.cars')
-                    @include('BookingRequesting::transfer._partials.details')
+                    @include('BookingRequesting::pdf-templates.transfer._partials.cars')
+                    @include('BookingRequesting::pdf-templates.transfer._partials.details')
 
                     <tr class="padding-bottom">
                         <td></td>

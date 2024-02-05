@@ -80,7 +80,7 @@
                     </thead>
                     <tbody>
 
-                    @include('BookingRequesting::hotel._partials.rooms')
+                    @include('BookingRequesting::pdf-templates.hotel._partials.rooms')
 
                     <tr class="first">
                         <td colspan="3">
