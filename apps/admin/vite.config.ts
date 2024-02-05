@@ -70,6 +70,7 @@ export default defineConfig(({ command }) => ({
         'resources/views/hotel/settings/settings.scss',
         'resources/views/hotel/season/edit.ts',
         'resources/views/mail/template/form.ts',
+        'resources/views/profile/password/form.ts',
         'resources/views/profile/profile/profile.ts',
         'resources/views/profile/profile/profile.scss',
         'resources/views/supplier/show.js',

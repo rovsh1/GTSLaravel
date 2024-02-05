@@ -54,6 +54,7 @@ export default defineConfig(({ command }) => ({
         'resources/views/booking/hotel/timeline/timeline.ts',
         'resources/views/profile/profile/profile.ts',
         'resources/views/profile/profile/profile.scss',
+        'resources/views/profile/password/form.ts',
       ],
       refresh: [
         'resources/**/*.php',
