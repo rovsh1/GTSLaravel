@@ -218,7 +218,7 @@ onUnmounted(() => {
       :disabled="disabled"
       :value="displayValue"
       @keydown.esc="emit('pressEsc')"
-      @keydown.enter="emit('pressEnter')"
+      @keydown.enter.stop="emit('pressEnter')"
     >
     <div v-if="isError" class="invalid-feedback">{{ errorText }}</div>
   </div>
