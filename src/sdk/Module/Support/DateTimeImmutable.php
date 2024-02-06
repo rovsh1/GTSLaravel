@@ -8,7 +8,9 @@ class DateTimeImmutable extends \DateTimeImmutable
 {
     public static function createFromTimestamp(int $timestamp): static
     {
-        return new static('@' . $timestamp);
+        $timezone = new \DateTimeZone(date_default_timezone_get());
+
+        return (new static('@' . $timestamp))->setTimezone($timezone);
     }
 
     public static function createFromInterface(DateTimeInterface $object): static

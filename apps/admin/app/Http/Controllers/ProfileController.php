@@ -66,10 +66,19 @@ class ProfileController extends Controller
     public function password(Request $request)
     {
         $form = Form::name('data')
-            ->password('password', ['label' => 'Новый пароль', 'autocomplete' => 'new-password', 'required' => true])
+            ->failUrl(route('profile.password'))
+            ->password(
+                'password',
+                ['label' => 'Новый пароль', 'autocomplete' => 'new-password', 'required' => true, 'minlength' => 6]
+            )
             ->password(
                 'confirm',
-                ['label' => 'Подтвердите пароль', 'autocomplete' => 'new-password', 'required' => true]
+                [
+                    'label' => 'Подтвердите пароль',
+                    'autocomplete' => 'new-password',
+                    'required' => true,
+                    'minlength' => 6
+                ]
             );
 
         if ($request->isMethod('get')) {
@@ -85,15 +94,16 @@ class ProfileController extends Controller
                 $user->password = $data['password'];
                 $user->save();
 
-                return new AjaxReloadResponse();
+                return redirect(route('profile'));
             }
         }
 
-        return view('profile.form', [
-            'title' => 'Изменить пароль',
-            'description' => 'Выберите надежный пароль и не используйте его для других аккаунтов',
-            'form' => $form
-        ]);
+        return Layout::title('Изменить пароль')
+            ->view('profile.password.form', [
+                'description' => 'Выберите надежный пароль и не используйте его для других аккаунтов',
+                'form' => $form,
+                'cancelUrl' => route('profile')
+            ]);
     }
 
     public function photo(Request $request)

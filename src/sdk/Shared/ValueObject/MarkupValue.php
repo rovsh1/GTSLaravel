@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Sdk\Shared\ValueObject;
 
 use Sdk\Shared\Contracts\Support\CanEquate;
+use Sdk\Shared\Enum\CurrencyEnum;
 use Sdk\Shared\Enum\Pricing\ValueTypeEnum;
 
 final class MarkupValue implements CanEquate
@@ -34,14 +35,14 @@ final class MarkupValue implements CanEquate
         return $this->type;
     }
 
-    public function calculate(int|float $price): float|int
+    public function calculate(int|float $price, CurrencyEnum $currency): float|int
     {
-        switch ($this->type) {
-            case ValueTypeEnum::ABSOLUTE:
-                return $this->value;
-            case ValueTypeEnum::PERCENT:
-                return $price * $this->value / 100;
-        }
+        $value = match ($this->type) {
+            ValueTypeEnum::ABSOLUTE => $this->value,
+            ValueTypeEnum::PERCENT => $price * $this->value / 100
+        };
+
+        return Money::round($currency, $value);
     }
 
     public function isEqual(mixed $b): bool

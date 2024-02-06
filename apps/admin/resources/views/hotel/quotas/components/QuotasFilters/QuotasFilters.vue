@@ -6,13 +6,13 @@ import { isEqual } from 'lodash'
 import { DateTime } from 'luxon'
 import { nanoid } from 'nanoid'
 
-import { compareJSDate } from '~resources/lib/date'
-
 import { HotelRoom } from '~api/hotel/room'
 
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 import DateRangePicker from '~components/DateRangePicker.vue'
 import SelectComponent from '~components/SelectComponent.vue'
+
+import { compareJSDate } from '~helpers/date'
 
 import {
   AvailabilityValue,

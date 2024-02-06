@@ -1,4 +1,4 @@
-import { WindowDialog } from '~resources/js/libs/dialog/helpers'
+import { WindowDialog } from '~widgets/dialog/helpers'
 
 import '~resources/views/main'
 
@@ -10,7 +10,11 @@ $(() => {
 
   container.find('div.block-row').click(function () {
     const action = $(this).data('action')
+    const url = $(this).data('href')
     if (!action) {
+      if (url) {
+        window.location.href = url
+      }
       return
     }
 

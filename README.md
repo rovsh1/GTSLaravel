@@ -3,21 +3,21 @@
 ## Ссылки портала
 
 - Prod
-    - [Web Site](http://www.gotostans.com/)
-    - [BO Panel](http://admin.gotostans.com)
-    - [HO Panel](http://hotel.gotostans.com)
+    - [Web Site](https://www.gotostans.com)
+    - [BO Panel](https://bspemq.gotostans.com)
+    - [HO Panel](https://hotel.gotostans.com)
 - Alpha
-    - [Web Site](http://alpha-www.gotostans.com)
-    - [BO Panel](http://alpha-admin.gotostans.com)
-    - [HO Panel](http://alpha-hotel.gotostans.com)
+    - [Web Site](https://alpha-www.gotostans.com)
+    - [BO Panel](https://alpha-admin.gotostans.com)
+    - [HO Panel](https://alpha-hotel.gotostans.com)
 - Dev
-    - [Web Site](http://dev-www.gotostans.com)
-    - [BO Panel](http://dev-admin.gotostans.com)
-    - [HO Panel](http://dev-hotel.gotostans.com)
+    - [Web Site](https://dev-www.gotostans.com)
+    - [BO Panel](https://dev-admin.gotostans.com)
+    - [HO Panel](https://dev-hotel.gotostans.com)
 
 #### Deprecated
 
-- [Dev Admin panel](http://bspems.qcthmb.gotostans.com/)
+- [Admin panel](https://qcthmb.gotostans.com)
 
 ## Документация
 

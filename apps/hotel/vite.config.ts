@@ -32,7 +32,7 @@ export default defineConfig(({ command }) => ({
   plugins: [
     laravel({
       input: [
-        'resources/assets/jquery.ts',
+        'resources/js/support/jquery.ts',
         'resources/views/auth/login/login.scss',
         'resources/views/auth/login/login.ts',
         'resources/views/default/grid/grid.scss',
@@ -47,12 +47,14 @@ export default defineConfig(({ command }) => ({
         'resources/views/settings/settings.ts',
         'resources/views/settings/settings.scss',
         'resources/views/booking/hotel/main/main.ts',
+        'resources/views/booking/hotel/main/main.scss',
         'resources/views/booking/hotel/show/show.scss',
         'resources/views/booking/hotel/show/show.ts',
         'resources/views/booking/hotel/timeline/timeline.scss',
         'resources/views/booking/hotel/timeline/timeline.ts',
         'resources/views/profile/profile/profile.ts',
         'resources/views/profile/profile/profile.scss',
+        'resources/views/profile/password/form.ts',
       ],
       refresh: [
         'resources/**/*.php',
@@ -85,9 +87,12 @@ export default defineConfig(({ command }) => ({
   resolve: {
     alias: {
       '~resources': path.resolve(__dirname, 'resources'),
-      '~api': path.resolve(__dirname, 'resources/api'),
-      '~lib': path.resolve(__dirname, 'resources/lib'),
-      '~components': path.resolve(__dirname, 'resources/components'),
+      '~api': path.resolve(__dirname, 'resources/vue/api'),
+      '~components': path.resolve(__dirname, 'resources/vue/components'),
+      '~stores': path.resolve(__dirname, 'resources/vue/stores'),
+      '~widgets': path.resolve(__dirname, 'resources/js/widgets'),
+      '~cache': path.resolve(__dirname, 'resources/js/cache'),
+      '~helpers': path.resolve(__dirname, 'resources/js/helpers'),
     },
   },
   css: {

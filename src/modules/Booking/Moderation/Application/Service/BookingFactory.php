@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\Service;
 
+use Module\Booking\Moderation\Application\Exception\BookingPeriodDatesCannotBeEqualException;
 use Module\Booking\Moderation\Application\Exception\NotFoundHotelCancelPeriodException;
 use Module\Booking\Moderation\Application\Exception\NotFoundServiceCancelConditionsException;
 use Module\Booking\Moderation\Application\RequestDto\CreateBookingRequestDto;
@@ -19,6 +20,7 @@ use Module\Booking\Shared\Domain\Booking\Exception\HotelBooking\NotFoundHotelCan
 use Module\Booking\Shared\Domain\Shared\Adapter\AdministratorAdapterInterface;
 use Module\Supplier\Moderation\Application\Response\ServiceDto;
 use Sdk\Booking\Event\BookingCreated;
+use Sdk\Booking\Exception\BookingPeriodDatesCannotBeEqual;
 use Sdk\Booking\ValueObject\BookingPrices;
 use Sdk\Booking\ValueObject\CancelConditions;
 use Sdk\Booking\ValueObject\CreatorId;
@@ -59,7 +61,11 @@ class BookingFactory
 
         $serviceOrHotelId = new ServiceId($request->hotelId ?? $request->serviceId);
         $editor = $this->detailsEditorFactory->build($booking->serviceType());
-        $editor->create($booking->id(), $serviceOrHotelId, $request->detailsData);
+        try {
+            $editor->create($booking->id(), $serviceOrHotelId, $request->detailsData);
+        } catch (BookingPeriodDatesCannotBeEqual) {
+            throw new BookingPeriodDatesCannotBeEqualException();
+        }
 
         $this->administratorAdapter->setBookingAdministrator($booking->id(), $request->administratorId);
 

@@ -16,7 +16,7 @@
         .invoice-content b,
         .invoice-content div,
         .invoice-footer p,
-         {
+        {
             font-size: 13px;
             font-family: Arial, Helvetica, sans-serif !important;
         }
@@ -87,7 +87,7 @@
         }
 
         .invoice-footer .mark {
-            width: 225px;   
+            width: 225px;
         }
 
         .invoice-header {
@@ -231,7 +231,10 @@
                     <p><b>{{ __('ИТОГО К ОПЛАТЕ') }}</b></p>
                 </div>
                 <div class="column w-50 text-right">
-                    <p><b>{{ Format::number($invoice->totalAmount) }} {{ $order->currency }}</b></p>
+                    @php
+                        $amount = $invoice->totalPenalty ?? $invoice->totalAmount;
+                    @endphp
+                    <p><b>{{ Format::number($amount) }} {{ $order->currency }}</b></p>
                 </div>
             </div>
             <div class="note">
@@ -388,7 +391,8 @@
                 </div>
                 <div class="clear-both">
                     <div class="column w-28">
-                        <p>{{ __('Кор.сч. в :currency', ['currency' => \Sdk\Shared\Enum\CurrencyEnum::USD->name]) }}:</p>
+                        <p>{{ __('Кор.сч. в :currency', ['currency' => \Sdk\Shared\Enum\CurrencyEnum::USD->name]) }}
+                            :</p>
                     </div>
                     <div class="column w-72">
                         <p>30111840800000002535</p>
@@ -396,7 +400,8 @@
                 </div>
                 <div class="clear-both">
                     <div class="column w-28">
-                        <p>{{ __('Кор.сч. в :currency', ['currency' => \Sdk\Shared\Enum\CurrencyEnum::EUR->name]) }}:</p>
+                        <p>{{ __('Кор.сч. в :currency', ['currency' => \Sdk\Shared\Enum\CurrencyEnum::EUR->name]) }}
+                            :</p>
                     </div>
                     <div class="column w-72">
                         <p>30111978400000002535</p>
@@ -404,7 +409,8 @@
                 </div>
                 <div class="clear-both">
                     <div class="column w-28">
-                        <p>{{ __('Кор.сч. в :currency', ['currency' => \Sdk\Shared\Enum\CurrencyEnum::RUB->name]) }}:</p>
+                        <p>{{ __('Кор.сч. в :currency', ['currency' => \Sdk\Shared\Enum\CurrencyEnum::RUB->name]) }}
+                            :</p>
                     </div>
                     <div class="column w-72">
                         <p>30111810500000002535</p>

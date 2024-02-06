@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Admin\Http\Controllers\Booking\Service;
 
 use App\Admin\Http\Requests\Booking\Airport\GuestRequest;
+use App\Admin\Http\Requests\Booking\Service\CarBid\UpdatePriceRequest;
 use App\Admin\Support\Facades\Booking\Service\CarBidAdapter;
 use App\Shared\Http\Responses\AjaxResponseInterface;
 use App\Shared\Http\Responses\AjaxSuccessResponse;
@@ -43,6 +44,16 @@ class CarBidController
     public function removeCarBid(int $bookingId, int $carBidId): AjaxResponseInterface
     {
         CarBidAdapter::removeCarBid($bookingId, $carBidId);
+
+        return new AjaxSuccessResponse();
+    }
+
+    public function setCarBidManualPrice(
+        UpdatePriceRequest $request,
+        int $bookingId,
+        int $carBidId
+    ): AjaxResponseInterface {
+        CarBidAdapter::setManualPrice($bookingId, $carBidId, $request->getClientPrice(), $request->getSupplierPrice());
 
         return new AjaxSuccessResponse();
     }

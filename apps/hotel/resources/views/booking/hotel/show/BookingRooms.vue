@@ -4,8 +4,6 @@ import { computed, onMounted } from 'vue'
 
 import { storeToRefs } from 'pinia'
 
-import { useCountryStore } from '~resources/store/countries'
-import { useCurrencyStore } from '~resources/store/currency'
 import GuestsTable from '~resources/views/booking/shared/components/GuestsTable.vue'
 import InfoBlock from '~resources/views/booking/shared/components/InfoBlock/InfoBlock.vue'
 import InfoBlockTitle from '~resources/views/booking/shared/components/InfoBlock/InfoBlockTitle.vue'
@@ -22,12 +20,14 @@ import { HotelRate, useHotelRatesAPI } from '~api/hotel/price-rate'
 import { Currency } from '~api/models'
 import { Guest } from '~api/order/guest'
 
-import { formatPrice } from '~lib/price'
-
 import BootstrapCard from '~components/Bootstrap/BootstrapCard/BootstrapCard.vue'
 import BootstrapCardTitle from '~components/Bootstrap/BootstrapCard/components/BootstrapCardTitle.vue'
 import EmptyData from '~components/EmptyData.vue'
-import InlineIcon from '~components/InlineIcon.vue'
+
+import { useCountryStore } from '~stores/countries'
+import { useCurrencyStore } from '~stores/currency'
+
+import { formatPrice } from '~helpers/price'
 
 const { getCurrencyByCodeChar } = useCurrencyStore()
 const bookingStore = useBookingStore()
@@ -130,24 +130,17 @@ onMounted(() => {
         <div v-if="netCurrency" class="d-flex flex-row justify-content-between w-100 mt-2">
           <span class="prices-information">
             <strong>
-              Итого: {{ formatPrice(room.price.netValue, netCurrency.sign) }}
+              Итого: {{ formatPrice(room.price.netValue, netCurrency.code_char) }}
             </strong>
             <br>
             <strong class="prices-information-details">
               <span>Цена за ночь: </span>
               <span v-if="getMinDayPrices(room.price.dayPrices, 'net') === getMaxDayPrices(room.price.dayPrices, 'net')">
-                {{ formatPrice(getMinDayPrices(room.price.dayPrices, 'net') as number, netCurrency.sign) }}
+                {{ formatPrice(getMinDayPrices(room.price.dayPrices, 'net') as number, netCurrency.code_char) }}
               </span>
               <span v-else>
-                от {{ formatPrice(getMinDayPrices(room.price.dayPrices, 'net') as number, netCurrency.sign) }}
-                до {{ formatPrice(getMaxDayPrices(room.price.dayPrices, 'net') as number, netCurrency.sign) }}
-              </span>
-              <span
-                v-if="room.price.netDayValue"
-                v-tooltip="'Цена за номер выставлена вручную'"
-                class="prices-information-details-info"
-              >
-                <InlineIcon icon="touch_app" class="prices-information-details-info-icon" />
+                от {{ formatPrice(getMinDayPrices(room.price.dayPrices, 'net') as number, netCurrency.code_char) }}
+                до {{ formatPrice(getMaxDayPrices(room.price.dayPrices, 'net') as number, netCurrency.code_char) }}
               </span>
             </strong>
           </span>

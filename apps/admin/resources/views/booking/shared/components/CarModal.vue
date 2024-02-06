@@ -4,7 +4,6 @@ import { computed, nextTick, ref, watch, watchEffect } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
 
-import { isDataValid } from '~resources/composables/form'
 import { CarFormData } from '~resources/views/booking/shared/lib/data-types'
 
 import { Car } from '~api/supplier/cars'
@@ -12,6 +11,8 @@ import { Car } from '~api/supplier/cars'
 import BaseDialog from '~components/BaseDialog.vue'
 import { SelectOption } from '~components/Bootstrap/lib'
 import SelectComponent from '~components/SelectComponent.vue'
+
+import { isDataValid } from '~helpers/form'
 
 const props = withDefaults(defineProps<{
   opened: MaybeRef<boolean>

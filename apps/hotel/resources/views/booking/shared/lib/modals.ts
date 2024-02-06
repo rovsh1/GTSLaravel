@@ -1,9 +1,11 @@
-import { CancelReasonResponse } from '~resources/api/cancel-reason'
-import axios from '~resources/js/app/api'
-import { CacheStorage } from '~resources/lib/cache-storage/cache-storage'
-import { TTLValues } from '~resources/lib/enums'
+import axios from '~resources/js/api'
 
-import { ShowDialogResponse, ToggleCloseFunction, ToggleLoadingFunction } from '~lib/confirm-dialog'
+import { CancelReasonResponse } from '~api/cancel-reason'
+
+import { CacheStorage } from '~cache/cache-storage'
+import { TTLValues } from '~cache/enums'
+
+import { ShowDialogResponse, ToggleCloseFunction, ToggleLoadingFunction } from '~helpers/confirm-dialog'
 
 export interface ShowNotConfirmedReasonDialogResponse extends ShowDialogResponse {
   reason: string
@@ -91,8 +93,14 @@ export interface ShowCancelFeeDialogResponse extends ShowDialogResponse {
   cancelFeeAmount: number
 }
 
-export const showCancelFeeDialog = (withClientCancelFee?: boolean): Promise<ShowCancelFeeDialogResponse> => new Promise((resolve): void => {
-  let clientCancelFeeAmount: number | undefined = withClientCancelFee ? 0 : undefined
+export interface CancelFeeDialogOptions {
+  withClientCancelFee?: boolean
+  clientCancelFeeCurrencyLable?: string
+  cancelFeeCurrencyLabel: string
+}
+
+export const showCancelFeeDialog = (options: CancelFeeDialogOptions): Promise<ShowCancelFeeDialogResponse> => new Promise((resolve): void => {
+  let clientCancelFeeAmount: number | undefined = options.withClientCancelFee ? 0 : undefined
   let cancelFeeAmount: number = 0
   let $clientReasonDescriptionField = null
   const $form = $('<form />', { method: 'post' })
@@ -106,12 +114,13 @@ export const showCancelFeeDialog = (withClientCancelFee?: boolean): Promise<Show
     cancelFeeAmount = Number($(e.target).val())
   })
   const $reasonDescriptionField = $('<div />', { class: 'row form-field field-text field-value field-required' })
-    .append(`<label for="form_data_penalty_net" class="${withClientCancelFee ? 'col-sm-12' : 'col-sm-5'} col-form-label">Сумма штрафа</label>`)
+    .append(`<label for="form_data_penalty_net" class="${options.withClientCancelFee ? 'col-sm-12' : 'col-sm-5'} 
+    col-form-label">Сумма штрафа в ${options.cancelFeeCurrencyLabel}</label>`)
     .append(
-      $('<div />', { class: `${withClientCancelFee ? 'col-sm-12' : 'col-sm-7'} d-flex align-items-center` }).append($descriptionElement),
+      $('<div />', { class: `${options.withClientCancelFee ? 'col-sm-12' : 'col-sm-7'} d-flex align-items-center` }).append($descriptionElement),
     )
 
-  if (withClientCancelFee) {
+  if (options.withClientCancelFee) {
     const $clientDescriptionElement = $('<input />', {
       id: 'form_data_penalty_gross',
       class: 'form-control',
@@ -121,9 +130,10 @@ export const showCancelFeeDialog = (withClientCancelFee?: boolean): Promise<Show
       clientCancelFeeAmount = Number($(e.target).val())
     })
     $clientReasonDescriptionField = $('<div />', { class: 'row form-field field-text field-value field-required' })
-      .append(`<label for="form_data_penalty_gross" class="${withClientCancelFee ? 'col-sm-12' : 'col-sm-5'} col-form-label">Сумма штрафа для клиента</label>`)
+      .append(`<label for="form_data_penalty_gross" class="${options.withClientCancelFee ? 'col-sm-12' : 'col-sm-5'} 
+      col-form-label">Сумма штрафа для клиента в ${options.clientCancelFeeCurrencyLable}</label>`)
       .append(
-        $('<div />', { class: `${withClientCancelFee ? 'col-sm-12' : 'col-sm-7'} d-flex align-items-center` }).append($clientDescriptionElement),
+        $('<div />', { class: `${options.withClientCancelFee ? 'col-sm-12' : 'col-sm-7'} d-flex align-items-center` }).append($clientDescriptionElement),
       )
     $form.append($clientReasonDescriptionField)
     $form.append($reasonDescriptionField)

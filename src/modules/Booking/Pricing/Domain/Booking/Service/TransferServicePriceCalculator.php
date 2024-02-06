@@ -23,12 +23,16 @@ class TransferServicePriceCalculator implements PriceCalculatorInterface
         $details = $this->detailsRepository->findOrFail($booking->id());
         $bookingPrices = $booking->prices();
 
-        $reducer = function (array $data, CarBid $carBid) use ($details) {
+        $daysCount = 1;
+        if ($details instanceof CarRentWithDriver) {
+            $daysCount = $details->bookingPeriod()?->daysCount() ?? 1;
+        }
+        $reducer = function (array $data, CarBid $carBid) use ($daysCount) {
             $data['clientPriceAmount'] += $carBid->clientPriceValue();
             $data['supplierPriceAmount'] += $carBid->supplierPriceValue();
-            if ($details instanceof CarRentWithDriver) {
-                $data['clientPriceAmount'] *= $details->bookingPeriod()?->daysCount() ?? 1;
-                $data['supplierPriceAmount'] *= $details->bookingPeriod()?->daysCount() ?? 1;
+            if ($daysCount > 1) {
+                $data['clientPriceAmount'] *= $daysCount;
+                $data['supplierPriceAmount'] *= $daysCount;
             }
 
             return $data;

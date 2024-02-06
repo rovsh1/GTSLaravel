@@ -8,10 +8,10 @@ import { useOrderStore } from '~resources/views/booking-order/show/store/order'
 import { OrderInvoice } from '~api/order/invoice'
 import { OrderAvailableActionsResponse } from '~api/order/status'
 
-import { formatDateTime } from '~lib/date'
-
 import { showToast } from '~components/Bootstrap/BootstrapToast'
 import InlineIcon from '~components/InlineIcon.vue'
+
+import { formatDateTime } from '~helpers/date'
 
 const orderStore = useOrderStore()
 const availableActions = computed<OrderAvailableActionsResponse | null>(() => orderStore.availableActions)

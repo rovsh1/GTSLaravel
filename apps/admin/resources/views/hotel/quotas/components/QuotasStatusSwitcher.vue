@@ -3,9 +3,9 @@ import { computed, reactive, watch } from 'vue'
 
 import { nanoid } from 'nanoid'
 
-import { HotelRoom } from '~api/hotel/room'
+import { daysOfWeekOptions } from '~resources/js/config/constants'
 
-import { daysOfWeekOptions } from '~lib/constants'
+import { HotelRoom } from '~api/hotel/room'
 
 import DateRangePicker from '~components/DateRangePicker.vue'
 import OverlayLoading from '~components/OverlayLoading.vue'

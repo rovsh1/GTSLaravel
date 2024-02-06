@@ -31,7 +31,7 @@ final class DefaultTransitions extends AbstractTransitions implements StatusTran
 
         //$this->addTransition(BookingStatusEnum::INVOICED, BookingStatusEnum::WAITING_CANCELLATION);
 
-        $this->addTransition(StatusEnum::WAITING_CANCELLATION, StatusEnum::CANCELLED);
+//        $this->addTransition(StatusEnum::WAITING_CANCELLATION, StatusEnum::CANCELLED);
         $this->addTransition(StatusEnum::WAITING_CANCELLATION, StatusEnum::CANCELLED_FEE);
         $this->addTransition(StatusEnum::WAITING_CANCELLATION, StatusEnum::CANCELLED_NO_FEE);
 

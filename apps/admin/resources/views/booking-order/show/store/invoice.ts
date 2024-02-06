@@ -11,8 +11,8 @@ import {
   useOrderInvoiceGetAPI,
 } from '~api/order/invoice'
 
-import { showConfirmDialog } from '~lib/confirm-dialog'
-import { requestInitialData } from '~lib/initial-data'
+import { showConfirmDialog } from '~helpers/confirm-dialog'
+import { requestInitialData } from '~helpers/initial-data'
 
 const { orderID } = requestInitialData(z.object({
   orderID: z.number(),

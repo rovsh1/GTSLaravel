@@ -29,6 +29,9 @@ abstract class ApplicationException extends \RuntimeException
     public const LEND_ORDER_INVALID_SUM_DECIMALS             = 1018;
     public const ORDER_WITHOUT_BOOKINGS                      = 1019;
     public const BOOKING_CAR_BID_TOO_MANY_GUESTS             = 1020;
+    public const BOOKING_SUPPLIER_PENALTY_CANNOT_BE_ZERO     = 1021;
+    public const BOOKING_PERIOD_DATES_CANNOT_BE_EQUAL        = 1022;
+    public const ORDER_HAS_NOT_CANCELLED_BOOKING             = 1023;
 
     private static array $errorsArray;
 

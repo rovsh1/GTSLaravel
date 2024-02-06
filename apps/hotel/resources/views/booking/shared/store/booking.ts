@@ -3,21 +3,21 @@ import { onMounted, ref } from 'vue'
 import { defineStore, storeToRefs } from 'pinia'
 import { z } from 'zod'
 
+import { showCancelFeeDialog, showNotConfirmedReasonDialog } from '~resources/views/booking/shared/lib/modals'
+import { useBookingStatusesStore } from '~resources/views/booking/shared/store/status'
+import { useBookingStatusHistoryStore } from '~resources/views/booking/shared/store/status-history'
+
 import {
   setNoCheckInBookingStatus,
   updateBookingStatus,
   UpdateBookingStatusPayload,
   useGetBookingAPI,
-} from '~resources/api/booking/hotel'
-import { showCancelFeeDialog, showNotConfirmedReasonDialog } from '~resources/views/booking/shared/lib/modals'
-import { useBookingStatusesStore } from '~resources/views/booking/shared/store/status'
-import { useBookingStatusHistoryStore } from '~resources/views/booking/shared/store/status-history'
-
+} from '~api/booking/hotel'
 import { UpdateBookingPrice, updateBookingPrice } from '~api/booking/hotel/price'
 import { useBookingAvailableActionsAPI } from '~api/booking/status'
 import { useHotelMarkupSettingsAPI } from '~api/hotel/markup-settings'
 
-import { requestInitialData } from '~lib/initial-data'
+import { requestInitialData } from '~helpers/initial-data'
 
 const { bookingID } = requestInitialData(z.object({
   bookingID: z.number(),
@@ -47,7 +47,10 @@ export const useBookingStore = defineStore('booking', () => {
       }
     }
     if (updateStatusResponse.value?.isCancelFeeAmountRequired) {
-      const { result: isConfirmed, clientCancelFeeAmount, cancelFeeAmount, toggleClose } = await showCancelFeeDialog()
+      const { result: isConfirmed, clientCancelFeeAmount, cancelFeeAmount, toggleClose } = await showCancelFeeDialog({
+        cancelFeeCurrencyLabel: booking.value?.prices.supplierPrice.currency.value || '--',
+        withClientCancelFee: false,
+      })
       if (isConfirmed) {
         updateStatusPayload.cancelFeeAmount = cancelFeeAmount
         updateStatusPayload.clientCancelFeeAmount = clientCancelFeeAmount

@@ -6,8 +6,6 @@ import { useToggle } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { z } from 'zod'
 
-import { useCountryStore } from '~resources/store/countries'
-import { useCurrencyStore } from '~resources/store/currency'
 import RoomModal from '~resources/views/booking/hotel/show/components/RoomModal.vue'
 import RoomPriceModal from '~resources/views/booking/hotel/show/components/RoomPriceModal.vue'
 import GuestModal from '~resources/views/booking/shared/components/GuestModal.vue'
@@ -35,10 +33,6 @@ import { HotelRate, useHotelRatesAPI } from '~api/hotel/price-rate'
 import { Currency } from '~api/models'
 import { addOrderGuest, Guest, updateOrderGuest } from '~api/order/guest'
 
-import { showConfirmDialog } from '~lib/confirm-dialog'
-import { requestInitialData } from '~lib/initial-data'
-import { formatPrice } from '~lib/price'
-
 import BaseDialog from '~components/BaseDialog.vue'
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 import BootstrapCard from '~components/Bootstrap/BootstrapCard/BootstrapCard.vue'
@@ -46,6 +40,13 @@ import BootstrapCardTitle from '~components/Bootstrap/BootstrapCard/components/B
 import EmptyData from '~components/EmptyData.vue'
 import IconButton from '~components/IconButton.vue'
 import InlineIcon from '~components/InlineIcon.vue'
+
+import { useCountryStore } from '~stores/countries'
+import { useCurrencyStore } from '~stores/currency'
+
+import { showConfirmDialog } from '~helpers/confirm-dialog'
+import { requestInitialData } from '~helpers/initial-data'
+import { formatPrice } from '~helpers/price'
 
 const [isOpenedPriceDetailsModal, toggleModalPriceDetails] = useToggle()
 const [isShowRoomModal, toggleRoomModal] = useToggle()
@@ -361,17 +362,17 @@ onMounted(() => {
         <div v-if="grossCurrency" class="d-flex flex-row justify-content-between w-100 mt-2">
           <span class="prices-information">
             <strong>
-              Итого: {{ formatPrice(room.price.grossValue, grossCurrency.sign) }}
+              Итого: {{ formatPrice(room.price.grossValue, grossCurrency.code_char) }}
             </strong>
             <br>
             <strong class="prices-information-details">
               <span>Цена за ночь: </span>
               <span v-if="getMinDayPrices(room.price.dayPrices, 'gross') === getMaxDayPrices(room.price.dayPrices, 'gross')">
-                {{ formatPrice(getMinDayPrices(room.price.dayPrices, 'gross') as number, grossCurrency.sign) }}
+                {{ formatPrice(getMinDayPrices(room.price.dayPrices, 'gross') as number, grossCurrency.code_char) }}
               </span>
               <span v-else>
-                от {{ formatPrice(getMinDayPrices(room.price.dayPrices, 'gross') as number, grossCurrency.sign) }}
-                до {{ formatPrice(getMaxDayPrices(room.price.dayPrices, 'gross') as number, grossCurrency.sign) }}
+                от {{ formatPrice(getMinDayPrices(room.price.dayPrices, 'gross') as number, grossCurrency.code_char) }}
+                до {{ formatPrice(getMaxDayPrices(room.price.dayPrices, 'gross') as number, grossCurrency.code_char) }}
               </span>
               <button
                 v-tooltip="'Подробнее'"
@@ -465,7 +466,7 @@ onMounted(() => {
             {{ dayPrice.date }}
           </td>
           <td class="text-nowrap">
-            {{ formatPrice(dayPrice.grossValue, grossCurrency.sign) }}
+            {{ formatPrice(dayPrice.grossValue, grossCurrency.code_char) }}
           </td>
           <td class="text-nowrap">{{ dayPrice.grossFormula }}</td>
         </tr>

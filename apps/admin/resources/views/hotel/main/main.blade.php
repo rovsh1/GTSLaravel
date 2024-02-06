@@ -1,7 +1,7 @@
 @extends('default.grid.grid')
 
 @section('styles')
-    @vite('resources/views/default/grid/grid.scss')
+    @vite('resources/views/hotel/main/main.scss')
 @endsection
 
 @section('scripts')

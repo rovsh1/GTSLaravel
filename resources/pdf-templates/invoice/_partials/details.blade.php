@@ -17,9 +17,13 @@
     </div>
     <div class="column w-10 text-center">{{ $service->price->quantity }}</div>
     <div class="column w-17 text-right">
-        {{ Format::number($service->price->amount) }} {{ $order->currency }}
+        @if(empty($invoice->totalPenalty))
+            {{ Format::number($service->price->amount) }} {{ $order->currency }}
+        @endif
     </div>
     <div class="column w-17 text-right">
-        {{ Format::number($service->price->total) }} {{ $order->currency }}
+        @if(empty($invoice->totalPenalty))
+            {{ Format::number($service->price->total) }} {{ $order->currency }}
+        @endif
     </div>
 </div>

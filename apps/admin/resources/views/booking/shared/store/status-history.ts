@@ -3,7 +3,7 @@ import { z } from 'zod'
 
 import { useBookingStatusHistoryAPI } from '~api/booking/status'
 
-import { requestInitialData } from '~lib/initial-data'
+import { requestInitialData } from '~helpers/initial-data'
 
 const { bookingID } = requestInitialData(z.object({
   bookingID: z.number(),

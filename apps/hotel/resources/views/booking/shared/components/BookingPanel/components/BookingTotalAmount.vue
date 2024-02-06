@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import { useCurrencyStore } from '~resources/store/currency'
 import { useBookingStore } from '~resources/views/booking/shared/store/booking'
 
 import { Currency } from '~api/models'
 
-import { formatPrice } from '~lib/price'
+import { useCurrencyStore } from '~stores/currency'
+
+import { formatPrice } from '~helpers/price'
 
 const bookingStore = useBookingStore()
 const { getCurrencyByCodeChar } = useCurrencyStore()
@@ -33,8 +34,7 @@ const getDisplayPriceValue = (type: 'client' | 'supplier') => {
   <div v-if="booking && netCurrency" class="total-sum">
     Общая сумма:
     <strong>
-      {{ formatPrice(getDisplayPriceValue('supplier'), netCurrency.sign) }}
+      {{ formatPrice(getDisplayPriceValue('supplier'), netCurrency.code_char) }}
     </strong>
-    <span v-if="booking.prices.supplierPrice.isManual" class="text-muted"> (выставлена вручную)</span>
   </div>
 </template>

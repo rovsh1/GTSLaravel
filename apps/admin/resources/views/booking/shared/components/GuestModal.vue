@@ -4,7 +4,6 @@ import { computed, nextTick, ref, watch, watchEffect } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
 
-import { isDataValid } from '~resources/composables/form'
 import { genderOptions } from '~resources/views/booking/shared/lib/constants'
 import { GuestFormData } from '~resources/views/booking/shared/lib/data-types'
 
@@ -14,6 +13,8 @@ import { Guest } from '~api/order/guest'
 import BaseDialog from '~components/BaseDialog.vue'
 import { SelectOption } from '~components/Bootstrap/lib'
 import SelectComponent from '~components/SelectComponent.vue'
+
+import { isDataValid } from '~helpers/form'
 
 const props = withDefaults(defineProps<{
   opened: MaybeRef<boolean>

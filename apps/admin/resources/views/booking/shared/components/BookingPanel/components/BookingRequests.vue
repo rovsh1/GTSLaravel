@@ -11,7 +11,7 @@ import { useBookingStatusHistoryStore } from '~resources/views/booking/shared/st
 import { BookingRequest } from '~api/booking/request'
 import { BookingAvailableActionsResponse } from '~api/booking/status'
 
-import { formatDateTime } from '~lib/date'
+import { formatDateTime } from '~helpers/date'
 
 const statusHistoryStore = useBookingStatusHistoryStore()
 const { fetchStatusHistory } = statusHistoryStore

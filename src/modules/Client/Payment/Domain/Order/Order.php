@@ -16,6 +16,7 @@ final class Order extends AbstractAggregateRoot
         private readonly OrderId $id,
         private readonly ClientId $clientId,
         private readonly Money $clientPrice,
+        private readonly ?Money $clientPenalty,
         private readonly Money $payedAmount,
         private OrderStatusEnum $status,
     ) {}
@@ -40,6 +41,11 @@ final class Order extends AbstractAggregateRoot
         return $this->clientPrice;
     }
 
+    public function clientPenalty(): ?Money
+    {
+        return $this->clientPenalty;
+    }
+
     public function payedAmount(): Money
     {
         return $this->payedAmount;
@@ -58,5 +64,10 @@ final class Order extends AbstractAggregateRoot
     public function partialPaid(): void
     {
         $this->status = OrderStatusEnum::PARTIAL_PAID;
+    }
+
+    public function isRefunded(): bool
+    {
+        return in_array($this->status, [OrderStatusEnum::REFUND_NO_FEE, OrderStatusEnum::REFUND_FEE]);
     }
 }

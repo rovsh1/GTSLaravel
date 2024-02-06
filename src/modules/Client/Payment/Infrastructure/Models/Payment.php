@@ -15,6 +15,7 @@ use Sdk\Shared\Enum\CurrencyEnum;
 
 /**
  * @method static Builder|Payment withLandings()
+ * @method static Builder|Payment whereOrderId(int $orderId)
  *
  * @property int $id
  * @property int $client_id
@@ -62,6 +63,13 @@ class Payment extends Model
     public function scopeWithLandings(Builder $builder): void
     {
         $builder->with(['landings']);
+    }
+
+    public function scopeWhereOrderId(Builder $builder, int $orderId): void
+    {
+        $builder->whereHas('landings', function (Builder $query) use ($orderId) {
+            $query->where('order_id', $orderId);
+        });
     }
 
     public function landings(): HasMany

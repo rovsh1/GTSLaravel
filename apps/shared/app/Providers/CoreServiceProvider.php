@@ -3,8 +3,8 @@
 namespace App\Shared\Providers;
 
 use App\Shared\Support\Context\ConsoleContextManager;
-use Pkg\IntegrationEventBus\Service\IntegrationEventPublisher;
 use Illuminate\Support\ServiceProvider;
+use Pkg\IntegrationEventBus\Service\IntegrationEventPublisher;
 use Sdk\Shared\Contracts\Adapter\AirportAdapterInterface;
 use Sdk\Shared\Contracts\Adapter\CityAdapterInterface;
 use Sdk\Shared\Contracts\Adapter\CountryAdapterInterface;

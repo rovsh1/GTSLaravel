@@ -89,13 +89,15 @@ class Form extends Base
         $this->throwError();
     }
 
-    private function throwError(): void
+    public function throwError(): void
     {
         $exception = new FormSubmitFailedException();
         $exception->setErrors($this->errors());
-        $exception->setRedirectUrl(
-            $this->getOption('failUrl')
-        );
+
+        $failUrl = $this->getOption('failUrl');
+        if ($failUrl !== null) {
+            $exception->setRedirectUrl($failUrl);
+        }
 
         throw $exception;
     }

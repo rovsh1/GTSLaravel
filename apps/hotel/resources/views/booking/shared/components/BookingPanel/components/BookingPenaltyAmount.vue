@@ -3,13 +3,14 @@ import { computed, ref } from 'vue'
 
 import { useToggle } from '@vueuse/core'
 
-import { useCurrencyStore } from '~resources/store/currency'
 import PriceModal from '~resources/views/booking/shared/components/PriceModal.vue'
 import { useBookingStore } from '~resources/views/booking/shared/store/booking'
 
 import { Currency } from '~api/models'
 
-import { formatPrice } from '~lib/price'
+import { useCurrencyStore } from '~stores/currency'
+
+import { formatPrice } from '~helpers/price'
 
 const [isPenaltyModalOpened, togglePenaltyModal] = useToggle<boolean>(false)
 
@@ -43,7 +44,7 @@ const handleSaveHoPenalty = async (value: number | null) => {
   <div v-if="penaltyValue && penaltyCurrency" class="total-sum">
     Сумма штрафа:
     <strong>
-      {{ formatPrice(penaltyValue, penaltyCurrency.sign) }}
+      {{ formatPrice(penaltyValue, penaltyCurrency.code_char) }}
     </strong>
     <a v-if="canEditPenalty" style="margin-left: 5px;" href="#" @click.prevent="togglePenaltyModal(true)">Изменить</a>
   </div>

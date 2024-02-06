@@ -4,7 +4,9 @@ namespace Module\Hotel\Pricing\Domain\Hotel\Service;
 
 use Module\Hotel\Pricing\Domain\Hotel\Dto\CalculationDto;
 use Module\Hotel\Pricing\Domain\Hotel\Support\CalculationBuilder;
+use Sdk\Shared\Enum\CurrencyEnum;
 use Sdk\Shared\ValueObject\MarkupValue;
+use Sdk\Shared\ValueObject\Money;
 
 class RoomDayPriceCalculatorFormula
 {
@@ -12,7 +14,9 @@ class RoomDayPriceCalculatorFormula
 
     private float $priceForMarkup;
 
-    public function __construct()
+    public function __construct(
+        private readonly CurrencyEnum $outCurrency
+    )
     {
         $this->calculationBuilder = new CalculationBuilder();
     }
@@ -21,8 +25,8 @@ class RoomDayPriceCalculatorFormula
     {
         $this->calculationBuilder
             ->base($baseRoomValue, 'Базовое')
-            ->plus(self::percent($baseRoomValue, $vat), "$vat% НДС")
-            ->plus(self::percent($basicCalculatedValue, $touristTax), "$touristTax% Турсбор")
+            ->plus(self::percent($baseRoomValue, $vat, $this->outCurrency), "$vat% НДС")
+            ->plus(self::percent($basicCalculatedValue, $touristTax, $this->outCurrency), "$touristTax% Турсбор")
             ->multiply($guestCount, 'Гостей');
 
         $this->priceForMarkup = $this->calculationBuilder->resultValue();
@@ -36,19 +40,19 @@ class RoomDayPriceCalculatorFormula
 
     public function applyClientMarkup(MarkupValue $markup): void
     {
-        $markupValue = $markup->calculate($this->priceForMarkup);
+        $markupValue = $markup->calculate($this->priceForMarkup, $this->outCurrency);
         $this->calculationBuilder->plus($markupValue, "$markup Наценка");
         $this->priceForMarkup += $markupValue;
     }
 
     public function applyEarlyCheckinMarkup(MarkupValue $markup): void
     {
-        $this->calculationBuilder->plus($markup->calculate($this->priceForMarkup), "$markup Ранний заезд");
+        $this->calculationBuilder->plus($markup->calculate($this->priceForMarkup, $this->outCurrency), "$markup Ранний заезд");
     }
 
     public function applyLateCheckoutMarkup(MarkupValue $markup): void
     {
-        $this->calculationBuilder->plus($markup->calculate($this->priceForMarkup), "$markup Поздний выезд");
+        $this->calculationBuilder->plus($markup->calculate($this->priceForMarkup, $this->outCurrency), "$markup Поздний выезд");
     }
 
     public function result(): CalculationDto
@@ -56,8 +60,8 @@ class RoomDayPriceCalculatorFormula
         return $this->calculationBuilder->build();
     }
 
-    private static function percent(int|float $value, int $percent): float|int
+    private static function percent(int|float $value, int $percent, CurrencyEnum $currency): float|int
     {
-        return $value * $percent / 100;
+        return Money::round($currency, $value * $percent / 100);
     }
 }

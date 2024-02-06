@@ -18,6 +18,7 @@ final class Order extends AbstractAggregateRoot
         private readonly OrderId $id,
         private readonly ClientId $clientId,
         private readonly Money $clientPrice,
+        private readonly ?Money $clientPenalty,
         private readonly Money $payedAmount,
         private OrderStatusEnum $status,
     ) {}
@@ -35,6 +36,11 @@ final class Order extends AbstractAggregateRoot
     public function clientPrice(): Money
     {
         return $this->clientPrice;
+    }
+
+    public function clientPenalty(): ?Money
+    {
+        return $this->clientPenalty;
     }
 
     public function payedAmount(): Money
@@ -57,16 +63,31 @@ final class Order extends AbstractAggregateRoot
         $this->status = OrderStatusEnum::IN_PROGRESS;
     }
 
+    public function isRefunded(): bool
+    {
+        return in_array($this->status, [OrderStatusEnum::REFUND_FEE, OrderStatusEnum::REFUND_NO_FEE]);
+    }
+
+    public function hasPayment(): bool
+    {
+        return in_array($this->status, [OrderStatusEnum::PAID, OrderStatusEnum::PARTIAL_PAID]);
+    }
+
+    public function isCancelled(): bool
+    {
+        return $this->status === OrderStatusEnum::CANCELLED;
+    }
+
     public function ensureInvoiceCreationAvailable(): void
     {
-        if ($this->status !== OrderStatusEnum::WAITING_INVOICE) {
+        if (!in_array($this->status, [OrderStatusEnum::WAITING_INVOICE, OrderStatusEnum::REFUND_FEE])) {
             throw new InvalidOrderStatusToCreateInvoice();
         }
     }
 
     public function ensureInvoiceCanBeCancelled(): void
     {
-        if ($this->status !== OrderStatusEnum::INVOICED) {
+        if (!$this->hasPayment() && !$this->isRefunded() && !$this->isCancelled()) {
             throw new InvalidOrderStatusToCancelInvoice();
         }
     }

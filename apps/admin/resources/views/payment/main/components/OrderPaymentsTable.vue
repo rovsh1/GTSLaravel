@@ -5,9 +5,9 @@ import { createSelectionState } from '~resources/views/payment/main/lib/selected
 
 import { PaymentInfo, PaymentOrder, PaymentOrderPayload } from '~api/payment/payment'
 
-import { formatPrice } from '~lib/price'
-
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
+
+import { formatPrice } from '~helpers/price'
 
 type PaymentOrderDistributed = PaymentOrder & {
   distributedAmount: number

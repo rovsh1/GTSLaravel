@@ -3,15 +3,16 @@ import { computed, reactive, watch } from 'vue'
 
 import { nanoid } from 'nanoid'
 
-import { updateRoomSeasonPricesBatch } from '~resources/api/hotel/prices/seasons'
-import { formatDateToAPIDate } from '~resources/lib/date'
+import { daysOfWeekOptions } from '~resources/js/config/constants'
 
-import { daysOfWeekOptions } from '~lib/constants'
+import { updateRoomSeasonPricesBatch } from '~api/hotel/prices/seasons'
 
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 import { showToast } from '~components/Bootstrap/BootstrapToast'
 import DateRangePicker from '~components/DateRangePicker.vue'
 import SelectComponent from '~components/SelectComponent.vue'
+
+import { formatDateToAPIDate } from '~helpers/date'
 
 import { stringToNumber } from '../lib/convert'
 import { PricesAccumulationData, SeasonPeriod, SeasonUpdateFormData } from '../lib/types'

@@ -4,13 +4,20 @@ namespace Module\Booking\Shared\Domain\Order\Support\Concerns;
 
 use Module\Booking\Moderation\Domain\Order\Exception\RefundFeeAmountBelowOrEqualZero;
 use Module\Booking\Shared\Domain\Order\Event\OrderCancelled;
+use Module\Booking\Shared\Domain\Order\Event\OrderRefunded;
 use Sdk\Shared\Enum\Order\OrderStatusEnum;
+use Sdk\Shared\ValueObject\Money;
 
 trait HasStatusesTrait
 {
     public function inModeration(): bool
     {
         return $this->status === OrderStatusEnum::IN_PROGRESS || $this->isWaitingInvoice() || $this->isInvoiced();
+    }
+
+    public function isRefunded(): bool
+    {
+        return in_array($this->status, [OrderStatusEnum::REFUND_NO_FEE, OrderStatusEnum::REFUND_FEE]);
     }
 
     public function isWaitingInvoice(): bool
@@ -36,6 +43,21 @@ trait HasStatusesTrait
     public function canSendVoucher(): bool
     {
         return $this->canCreateVoucher();
+    }
+
+    public function canCreateInvoice(): bool
+    {
+        return $this->isWaitingInvoice() || $this->status === OrderStatusEnum::REFUND_FEE;
+    }
+
+    public function canSendInvoice(): bool
+    {
+        return $this->isInvoiced() || $this->status === OrderStatusEnum::REFUND_FEE;
+    }
+
+    public function canCancelInvoice(): bool
+    {
+        return $this->isInvoiced();
     }
 
     public function toInProgress(): void
@@ -75,10 +97,13 @@ trait HasStatusesTrait
             throw new RefundFeeAmountBelowOrEqualZero();
         }
         $this->status = OrderStatusEnum::REFUND_FEE;
+        $this->clientPenalty = new Money($this->clientPrice->currency(), $refundFeeAmount);
+        $this->pushEvent(new OrderRefunded($this));
     }
 
     public function toRefundNoFee(): void
     {
         $this->status = OrderStatusEnum::REFUND_NO_FEE;
+        $this->pushEvent(new OrderRefunded($this));
     }
 }

@@ -1,17 +1,19 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import { useCurrencyStore } from '~resources/store/currency'
 import { useOrderStore } from '~resources/views/booking-order/show/store/order'
 
 import { Currency } from '~api/models'
+import { Order } from '~api/order'
 
-import { formatPrice } from '~lib/price'
+import { useCurrencyStore } from '~stores/currency'
+
+import { formatPrice } from '~helpers/price'
 
 const orderStore = useOrderStore()
 const { getCurrencyByCodeChar } = useCurrencyStore()
 
-const order = computed(() => orderStore.order)
+const order = computed<Order | null>(() => orderStore.order)
 const grossCurrency = computed<Currency | undefined>(
   () => getCurrencyByCodeChar(orderStore.order?.clientPrice.currency?.value),
 )
@@ -22,8 +24,15 @@ const grossCurrency = computed<Currency | undefined>(
   <div v-if="order && grossCurrency" class="float-end total-sum">
     Общая сумма:
     <strong>
-      {{ formatPrice(order.clientPrice.value, grossCurrency.sign) }}
+      {{ formatPrice(order.clientPrice.value, grossCurrency.code_char) }}
     </strong>
     <span v-if="false" class="text-muted"> (выставлена вручную)</span>
+
+    <div v-if="order.clientPenalty">
+      Сумма штрафа:
+      <strong>
+        {{ formatPrice(order.clientPenalty.value, grossCurrency.code_char) }}
+      </strong>
+    </div>
   </div>
 </template>

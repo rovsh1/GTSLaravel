@@ -4,10 +4,9 @@ import { computed, onMounted, reactive, ref } from 'vue'
 
 import { useDebounceFn, useToggle } from '@vueuse/core'
 
-import { BaseResponse } from '~resources/api'
-import { useUpdateLocaleDictionary } from '~resources/api/locale-dictionary/update'
-
+import { BaseResponse } from '~api'
 import { LocaleDictionary, useLocaleDictionaryAPI } from '~api/locale-dictionary/search'
+import { useUpdateLocaleDictionary } from '~api/locale-dictionary/update'
 
 import BaseDialog from '~components/BaseDialog.vue'
 import Card from '~components/Bootstrap/BootstrapCard/BootstrapCard.vue'

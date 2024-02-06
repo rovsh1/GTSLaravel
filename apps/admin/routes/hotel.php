@@ -43,6 +43,9 @@ AclRoute::for('hotel')
 
     ->resource('landmark', Controllers\Hotel\LandmarkController::class, ['only' => ['create', 'store', 'destroy']])
 
+    ->get('/{hotel}/users', Controllers\Hotel\UserController::class . '@createDialog', 'create', 'users.create.dialog')
+    ->post('/{hotel}/users', Controllers\Hotel\UserController::class . '@storeDialog', 'create', 'users.store.dialog')
+
     ->get('/{hotel}/images', Controllers\Hotel\ImageController::class . '@index', 'update', 'images.index')
     ->get('/{hotel}/images/get', Controllers\Hotel\ImageController::class . '@get', 'update', 'images.get')
     ->post('/{hotel}/images/upload', Controllers\Hotel\ImageController::class . '@upload', 'update', 'images.upload')

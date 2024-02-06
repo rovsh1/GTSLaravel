@@ -2,8 +2,8 @@
 
 namespace Pkg\Booking\Requesting\Domain\Listener;
 
-use Illuminate\Support\Facades\Validator;
 use Module\Booking\Shared\Domain\Booking\Service\BookingUnitOfWorkInterface;
+use Pkg\Booking\Requesting\Domain\Adapter\AdministratorAdapterInterface;
 use Pkg\Booking\Requesting\Domain\Adapter\HotelAdapterInterface;
 use Pkg\Booking\Requesting\Domain\Adapter\SupplierAdapterInterface;
 use Pkg\Booking\Requesting\Domain\Event\BookingRequestEventInterface;
@@ -22,6 +22,7 @@ class SendMailNotificationsListener implements DomainEventListenerInterface
         private readonly RequestRepositoryInterface $requestRepository,
         private readonly HotelAdapterInterface $hotelAdapter,
         private readonly SupplierAdapterInterface $supplierAdapter,
+        private readonly AdministratorAdapterInterface $administratorAdapter,
         private readonly MailAdapterInterface $mailAdapter,
     ) {}
 
@@ -32,13 +33,23 @@ class SendMailNotificationsListener implements DomainEventListenerInterface
 //        $booking = $this->bookingUnitOfWork->findOrFail($event->bookingId());
         $details = $this->bookingUnitOfWork->getDetails($event->bookingId());
 
+        $emails = [];
         if ($details instanceof HotelBooking) {
-            $email = $this->hotelAdapter->getEmail($details->hotelInfo()->id());
+            $emails = $this->hotelAdapter->getAdministratorEmails($details->hotelInfo()->id());
         } else {
             $email = $this->supplierAdapter->getEmail($details->serviceInfo()->supplierId());
+            if (!empty($email)) {
+                $emails[] = $email;
+            }
         }
 
-        if (!$this->isValidEmail($email)) {
+        $administrator = $this->administratorAdapter->getManagerByBookingId($event->bookingId()->value());
+        if(!empty($administrator?->email) && $this->isValidEmail($administrator->email)){
+            $emails[] = $administrator->email;
+        }
+
+        $emails = array_filter($emails, fn(string|null $email) => $this->isValidEmail($email));
+        if (count($emails) === 0) {
             return;
         }
 
@@ -47,13 +58,17 @@ class SendMailNotificationsListener implements DomainEventListenerInterface
             return;
         }
 
-        //@todo получить пример письма запроса от Анвара
-        $this->mailAdapter->sendTo(
-            $email,
-            $this->getSubject($request->type()),
-            'Запрос',
-            [new AttachmentDto($request->file()->guid())]
-        );
+        $subject = $this->getSubject($request->type());
+        $attachments = [new AttachmentDto($request->file()->guid())];
+        foreach ($emails as $email) {
+            //@todo получить пример письма запроса от Анвара
+            $this->mailAdapter->sendTo(
+                $email,
+                $subject,
+                'Запрос',
+                $attachments,
+            );
+        }
     }
 
     private function getSubject(RequestTypeEnum $type): string
@@ -70,11 +85,9 @@ class SendMailNotificationsListener implements DomainEventListenerInterface
         if (empty($email)) {
             return false;
         }
-        $validator = Validator::make(
-            ['email' => $email],
-            ['email' => 'required', 'email']
-        );
 
-        return $validator->passes();
+        $pattern = '/^(?=.{1,64}@)[A-Za-z0-9_-]+(\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{2,})$/';
+
+        return preg_match($pattern, $email);
     }
 }

@@ -22,7 +22,7 @@ import { UpdateBookingPrice, updateBookingPrice, useRecalculateBookingPriceAPI }
 import { useBookingAvailableActionsAPI } from '~api/booking/status'
 import { useHotelMarkupSettingsAPI } from '~api/hotel/markup-settings'
 
-import { requestInitialData } from '~lib/initial-data'
+import { requestInitialData } from '~helpers/initial-data'
 
 const { bookingID, manager, hotelID, isOtherServiceBooking, isHotelBooking } = requestInitialData(z.object({
   hotelID: z.number().optional(),
@@ -71,7 +71,11 @@ export const useBookingStore = defineStore('booking', () => {
       }
     }
     if (updateStatusResponse.value?.isCancelFeeAmountRequired) {
-      const { result: isConfirmed, clientCancelFeeAmount, cancelFeeAmount, toggleClose } = await showCancelFeeDialog(true)
+      const { result: isConfirmed, clientCancelFeeAmount, cancelFeeAmount, toggleClose } = await showCancelFeeDialog({
+        withClientCancelFee: false,
+        clientCancelFeeCurrencyLabel: booking.value?.prices.clientPrice.currency.value || '--',
+        cancelFeeCurrencyLabel: booking.value?.prices.supplierPrice.currency.value || '--',
+      })
       if (isConfirmed) {
         updateStatusPayload.cancelFeeAmount = cancelFeeAmount
         updateStatusPayload.clientCancelFeeAmount = clientCancelFeeAmount

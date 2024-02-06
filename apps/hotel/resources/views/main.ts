@@ -1,14 +1,14 @@
-import bootCookies from '~resources/js/app/providers/cookies'
-import bootForms from '~resources/js/app/providers/forms'
-import bootGrid from '~resources/js/app/providers/grids'
+import bootCookies from '~resources/js/providers/cookies'
+import bootForms from '~resources/js/providers/forms'
+import bootGrid from '~resources/js/providers/grids'
 
-import '~resources/js/bootstrap'
+import '~resources/js/support/bootstrap'
 import '~resources/js/vendor/jquery.cookie'
-import '~lib/date-picker/date-picker'
-import '~resources/js/libs/dialog/helpers'
-import '~resources/js/plugins/select2'
-import '~resources/js/plugins/buttons/delete-button'
-import '~resources/js/app/support/functions'
+import '~widgets/date-picker/date-picker'
+import '~widgets/dialog/helpers'
+import '~resources/js/support/select2'
+import '~resources/js/plugins/delete-button'
+import '~resources/js/support/functions'
 
 $(() => {
   $.ajaxSetup({

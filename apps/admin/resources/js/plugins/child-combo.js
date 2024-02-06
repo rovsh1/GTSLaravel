@@ -1,5 +1,5 @@
-import axios from '~resources/js/app/api'
-import { useSelectElement } from '~lib/select-element/select-element'
+import axios from '~resources/js/api'
+import { useSelectElement } from '~widgets/select-element/select-element'
 
 $.fn.childCombo = async function (options) {
   const preparedOptions = {

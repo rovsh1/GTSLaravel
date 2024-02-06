@@ -8,7 +8,6 @@ use Carbon\CarbonPeriodImmutable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Query\Builder as Query;
 use Illuminate\Support\Facades\DB;
 use Sdk\Booking\Enum\StatusEnum;
 use Sdk\Module\Database\Eloquent\Model;
@@ -34,6 +33,7 @@ class Order extends Model
         'currency' => CurrencyEnum::class,
         'status' => OrderStatusEnum::class,
         'source' => SourceEnum::class,
+        'manual_client_penalty' => 'float',
         'client_price' => 'float',
         'payed_amount' => 'float',
         'voucher' => 'array',
@@ -47,14 +47,8 @@ class Order extends Model
     {
         static::addGlobalScope('default', function (Builder $builder) {
             $builder->addSelect('orders.*');
-
-            $builder->selectSub(function (Query $query) {
-                $cancelledFeeStatus = StatusEnum::CANCELLED_FEE->value;
-                $cancelledNoFeeStatus = StatusEnum::CANCELLED_NO_FEE->value;
-                $query->selectRaw(
-                    "(SELECT SUM(client_price) FROM (SELECT order_id, IF(status IN ({$cancelledFeeStatus}, {$cancelledNoFeeStatus}), COALESCE(client_penalty, 0), COALESCE(client_manual_price, client_price)) as client_price FROM bookings) as t WHERE t.order_id=orders.id)"
-                );
-            }, 'client_price');
+            $builder->selectRaw(self::getClientPenaltyQuery() . ' as client_penalty');
+            $builder->selectRaw(self::getClientPriceQuery() . ' as client_price');
         });
     }
 
@@ -98,5 +92,16 @@ class Order extends Model
             'order_id',
             'id'
         );
+    }
+
+    private static function getClientPriceQuery(): string
+    {
+        return "(SELECT SUM(client_price) FROM (SELECT order_id, COALESCE(client_manual_price, client_price) as client_price FROM bookings) as t WHERE t.order_id=orders.id)";
+    }
+
+    private static function getClientPenaltyQuery(): string
+    {
+//        return "COALESCE(order.client_penalty, (SELECT SUM(client_penalty) FROM bookings WHERE bookings.order_id = orders.id))";
+        return "(SELECT SUM(client_penalty) FROM bookings WHERE bookings.order_id = orders.id)";
     }
 }

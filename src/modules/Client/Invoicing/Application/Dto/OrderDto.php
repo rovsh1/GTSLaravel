@@ -12,6 +12,7 @@ class OrderDto
         public readonly int $id,
         public readonly int $clientId,
         public readonly MoneyDto $clientPrice,
+        public readonly ?MoneyDto $clientPenalty,
         public readonly MoneyDto $payedAmount,
         public readonly MoneyDto $remainingAmount,
     ) {}

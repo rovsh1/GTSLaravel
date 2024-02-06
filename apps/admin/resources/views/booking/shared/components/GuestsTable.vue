@@ -8,7 +8,7 @@ import EditTableRowButton from '~resources/views/hotel/settings/components/EditT
 import { CountryResponse } from '~api/country'
 import { Guest } from '~api/order/guest'
 
-import { showConfirmDialog } from '~lib/confirm-dialog'
+import { showConfirmDialog } from '~helpers/confirm-dialog'
 
 const props = withDefaults(defineProps<{
   guestIds?: number[]

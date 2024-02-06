@@ -5,7 +5,7 @@ import { FiltersPayload } from '~resources/views/hotel/quotas/components/QuotasF
 import { HotelRoomID } from '~api/hotel'
 import { HotelQuotaID, QuotaStatus, UseHotelQuota } from '~api/hotel/quotas/list'
 
-import { isBusinessDay } from '~lib/date'
+import { isBusinessDay } from '~helpers/date'
 
 export type RoomQuotaStatus = 'opened' | 'closed' | 'warning'
 

@@ -3,7 +3,7 @@
     <head>
         {!! Meta::toHtml() !!}
 
-        @vite('resources/assets/jquery.ts')
+        @vite('resources/js/support/jquery.ts')
         @yield('styles')
     </head>
     <body>

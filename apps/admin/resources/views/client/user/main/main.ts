@@ -1,9 +1,9 @@
 import { z } from 'zod'
 
-import axios from '~resources/js/app/api'
+import axios from '~resources/js/api'
 
-import { showConfirmDialog } from '~lib/confirm-dialog'
-import { requestInitialData } from '~lib/initial-data'
+import { showConfirmDialog } from '~helpers/confirm-dialog'
+import { requestInitialData } from '~helpers/initial-data'
 
 import '~resources/views/main'
 

@@ -3,7 +3,6 @@ import { computed } from 'vue'
 
 import { useToggle } from '@vueuse/core'
 
-import { useCurrencyStore } from '~resources/store/currency'
 import AmountBlock from '~resources/views/booking/shared/components/AmountBlock.vue'
 import BookingStatusReason
   from '~resources/views/booking/shared/components/BookingPanel/components/BookingStatusReason.vue'
@@ -13,7 +12,9 @@ import { useBookingStore } from '~resources/views/booking/shared/store/booking'
 import { ProfitItem } from '~api/booking/models'
 import { Currency } from '~api/models'
 
-import { formatPrice } from '~lib/price'
+import { useCurrencyStore } from '~stores/currency'
+
+import { formatPrice } from '~helpers/price'
 
 const [isNetPriceModalOpened, toggleNetPriceModal] = useToggle<boolean>(false)
 const [isGrossPriceModalOpened, toggleGrossPriceModal] = useToggle<boolean>(false)
@@ -90,7 +91,7 @@ const handleSaveHoPenalty = async (value: number | undefined) => {
 
     <PriceModal
       header="Общая сумма (брутто)"
-      :label="`Общая сумма (брутто) ${grossCurrency?.code_char}`"
+      :label="`Общая сумма (брутто) в ${grossCurrency?.code_char}`"
       :value="booking?.prices.clientPrice.manualValue || undefined"
       :opened="isGrossPriceModalOpened"
       @close="toggleGrossPriceModal(false)"
@@ -145,10 +146,10 @@ const handleSaveHoPenalty = async (value: number | undefined) => {
     </div>
 
     <div v-if="booking && grossCurrency && netCurrency" class="mt-2">
-      Прибыль = {{ formatPrice(profit?.clientValue, grossCurrency.sign) }} - {{
-        formatPrice(profit?.supplierValue, grossCurrency.sign) }} =
+      Прибыль = {{ formatPrice(profit?.clientValue, grossCurrency.code_char) }} - {{
+        formatPrice(profit?.supplierValue, grossCurrency.code_char) }} =
       {{
-        formatPrice(profit?.profitValue, grossCurrency.sign)
+        formatPrice(profit?.profitValue, grossCurrency.code_char)
       }}
     </div>
 

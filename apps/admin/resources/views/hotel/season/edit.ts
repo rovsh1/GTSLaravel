@@ -1,12 +1,14 @@
 import { Litepicker } from 'litepicker'
 import { z } from 'zod'
 
+import { getNullableRef } from '~resources/vue/vue'
+
 import { ContractID, useHotelContractGetAPI } from '~api/hotel/contract'
 
-import { formatUtcToIsoDate } from '~lib/date'
-import { useDateRangePicker } from '~lib/date-picker/date-picker'
-import { requestInitialData } from '~lib/initial-data'
-import { getNullableRef } from '~lib/vue'
+import { useDateRangePicker } from '~widgets/date-picker/date-picker'
+
+import { formatUtcToIsoDate } from '~helpers/date'
+import { requestInitialData } from '~helpers/initial-data'
 
 import '~resources/views/main'
 
@@ -34,7 +36,7 @@ const handleChangeContract = async (periodInput: HTMLInputElement, contractID: C
       return [dateStart, dateEnd]
     }
     return undefined
-  }) || []
+  }).filter(Boolean) || []
   return useDateRangePicker(periodInput, {
     lockDays: blockedSeasons,
     minDate: minDate ? formatUtcToIsoDate(minDate) : undefined,
@@ -45,7 +47,7 @@ const handleChangeContract = async (periodInput: HTMLInputElement, contractID: C
 $(async () => {
   const contractSelect = document
     .querySelector<HTMLInputElement>('#form_data_contract_id')
-  const periodInput = document
+  let periodInput = document
     .querySelector<HTMLInputElement>('.daterange')
   if (contractSelect === null || periodInput === null) {
     return
@@ -57,10 +59,12 @@ $(async () => {
   if (contractSelect.value !== '') {
     const contractID = z.coerce.number().parse(contractSelect.value)
     picker = await handleChangeContract(periodInput, contractID)
+    periodInput = document.querySelector<HTMLInputElement>('.daterange') as HTMLInputElement
     periodInput.disabled = false
   }
 
   $(contractSelect).on('change', async (event: any) => {
+    periodInput = document.querySelector<HTMLInputElement>('.daterange') as HTMLInputElement
     if (!seasonID) {
       periodInput.value = ''
     }
@@ -78,6 +82,7 @@ $(async () => {
     }
     periodInput.disabled = true
     picker = await handleChangeContract(periodInput, contractID)
+    periodInput = document.querySelector<HTMLInputElement>('.daterange') as HTMLInputElement
     periodInput.disabled = false
   })
 })

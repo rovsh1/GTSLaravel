@@ -60,7 +60,7 @@
     <table>
       <tr>
         <td class="title-column">Итого к оплате:</td>
-        <td class="value-column"><b>{{ $invoice->totalAmount }} {{ $order->currency }}</b></td>
+        <td class="value-column"><b>{{ $invoice->totalPenalty ?? $invoice->totalAmount }} {{ $order->currency }}</b></td>
       </tr>
     </table>
   </div>

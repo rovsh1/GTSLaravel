@@ -9,6 +9,7 @@ use Module\Booking\Moderation\Application\Dto\CarBidDataDto;
 use Module\Booking\Moderation\Application\UseCase\ServiceBooking\CarBid\Add;
 use Module\Booking\Moderation\Application\UseCase\ServiceBooking\CarBid\Guest;
 use Module\Booking\Moderation\Application\UseCase\ServiceBooking\CarBid\Remove;
+use Module\Booking\Moderation\Application\UseCase\ServiceBooking\CarBid\SetManualPrice;
 use Module\Booking\Moderation\Application\UseCase\ServiceBooking\CarBid\Update;
 
 class CarBidAdapter
@@ -43,6 +44,15 @@ class CarBidAdapter
     public function removeCarBid(int $bookingId, int $carBidId): void
     {
         app(Remove::class)->execute($bookingId, $carBidId);
+    }
+
+    public function setManualPrice(
+        int $bookingId,
+        int $carBidId,
+        ?float $clientPerCarPrice,
+        ?float $supplierPerCarPrice = null
+    ): void {
+        app(SetManualPrice::class)->execute($bookingId, $carBidId, $clientPerCarPrice, $supplierPerCarPrice);
     }
 
     private function buildCarBidDto(array $data): CarBidDataDto

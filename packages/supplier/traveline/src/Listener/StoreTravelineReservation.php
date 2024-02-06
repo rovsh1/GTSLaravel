@@ -50,14 +50,12 @@ class StoreTravelineReservation
             ->first()
             ?->hotel_id;
         if ($hotelId === null) {
-            \Log::warning('[Traveline] Booking without hotel id', ['booking_id' => $bookingId]);
-
             return;
         }
 
         TravelineReservation::updateOrCreate(
             ['reservation_id' => $bookingId],
-            ['hotel_id' => $hotelId, 'accepted_at' => null, 'updated_at' => now()]
+            ['hotel_id' => $hotelId, 'accepted_at' => null, 'created_at' => now(), 'updated_at' => now()]
         );
     }
 }

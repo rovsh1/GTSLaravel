@@ -6,21 +6,27 @@ use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Carbon\CarbonPeriod;
 use Carbon\CarbonPeriodImmutable;
+use Sdk\Booking\Exception\BookingPeriodDatesCannotBeEqual;
 use Sdk\Shared\Contracts\Support\CanEquate;
 use Sdk\Shared\Contracts\Support\SerializableInterface;
 
 final class BookingPeriod implements SerializableInterface, CanEquate
 {
+    private readonly CarbonImmutable $dateFrom;
+
+    private readonly CarbonImmutable $dateTo;
+
     private int $nightsCount;
 
-    public function __construct(
-        private readonly CarbonImmutable $dateFrom,
-        private readonly CarbonImmutable $dateTo,
-    ) {
+    public function __construct(CarbonImmutable $dateFrom, CarbonImmutable $dateTo)
+    {
+        $this->validatePeriod($dateFrom, $dateTo);
         $calculatedNightsCount = CarbonPeriod::create($dateFrom, $dateTo, 'P1D')
             ->excludeEndDate()
             ->count();
 
+        $this->dateFrom = $dateFrom;
+        $this->dateTo = $dateTo;
         $this->nightsCount = $calculatedNightsCount;
     }
 
@@ -95,5 +101,12 @@ final class BookingPeriod implements SerializableInterface, CanEquate
         return $this->dateFrom->eq($b->dateFrom)
             && $this->dateTo->eq($b->dateTo)
             && $this->nightsCount === $b->nightsCount;
+    }
+
+    private function validatePeriod(CarbonImmutable $dateFrom, CarbonImmutable $dateTo): void
+    {
+        if ($dateFrom->isSameDay($dateTo) || $dateFrom->greaterThan($dateTo)) {
+            throw new BookingPeriodDatesCannotBeEqual();
+        }
     }
 }

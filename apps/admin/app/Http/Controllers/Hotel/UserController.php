@@ -2,6 +2,7 @@
 
 namespace App\Admin\Http\Controllers\Hotel;
 
+use App\Admin\Models\Hotel\Hotel;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
@@ -9,6 +10,9 @@ use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Grid\SearchForm;
 use App\Admin\Support\View\Layout as LayoutContract;
+use App\Shared\Http\Responses\AjaxReloadResponse;
+use App\Shared\Http\Responses\AjaxResponseInterface;
+use Illuminate\Contracts\View\View;
 
 class UserController extends AbstractPrototypeController
 {
@@ -20,6 +24,43 @@ class UserController extends AbstractPrototypeController
     public function index(): LayoutContract
     {
         return parent::index()->view('hotel-user.main.main');
+    }
+
+    public function createDialog(Hotel $hotel): View
+    {
+        $form = $this->dialogForm($hotel->id)
+            ->method('post')
+            ->action(route('hotels.users.store.dialog', $hotel));
+
+        return view('default.dialog-form', [
+            'form' => $form
+        ]);
+    }
+
+    public function storeDialog(Hotel $hotel): AjaxResponseInterface
+    {
+        $form = $this->dialogForm($hotel->id)
+            ->method('post');
+
+        $form->submitOrFail(route('hotels.users.create.dialog', $hotel));
+        $preparedData = $this->saving($form->getData());
+        $this->model = $this->repository->create($preparedData);
+
+        return new AjaxReloadResponse();
+    }
+
+    private function dialogForm(int $hotelId): FormContract
+    {
+        return Form::name('data')
+            ->hidden('hotel_id', ['value' => $hotelId])
+            ->text('presentation', ['label' => 'Имя в системе', 'required' => true])
+            ->text('surname', ['label' => 'Фамилия', 'required' => true])
+            ->text('name', ['label' => 'Имя', 'required' => true])
+            ->text('patronymic', ['label' => 'Отчество', 'required' => true])
+            ->text('login', ['label' => 'Логин', 'required' => true])
+            ->password('password', ['label' => 'Пароль', 'required' => empty($this->model)])
+            ->email('email', ['label' => 'Email', 'required' => true])
+            ->phone('phone', ['label' => 'Телефон']);
     }
 
     protected function formFactory(): FormContract

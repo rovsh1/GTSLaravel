@@ -96,6 +96,6 @@ class RequestFactory implements RequestFactoryInterface
         };
         $name .= '_request';
 
-        return "BookingRequesting::$name";
+        return "BookingRequesting::pdf-templates.$name";
     }
 }
