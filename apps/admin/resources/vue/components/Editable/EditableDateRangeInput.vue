@@ -140,7 +140,6 @@ const onClickOutsideHandler = () => {
           }"
           @click-outside="onClickOutsideHandler"
           @press-esc="onPressEsc"
-          @press-enter="onPressEnter"
         />
       </div>
       <template #popper>

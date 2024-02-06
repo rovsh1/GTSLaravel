@@ -133,7 +133,6 @@ const onClickOutsideHandler = () => {
           }"
           @click-outside="onClickOutsideHandler"
           @press-esc="onPressEsc"
-          @press-enter="onPressEnter"
         />
       </div>
       <template #popper>
@@ -168,5 +167,6 @@ const onClickOutsideHandler = () => {
   top: 100% !important;
   left: 0 !important;
 }
+
 /* stylelint-enable declaration-no-important */
 </style>
