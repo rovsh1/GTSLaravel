@@ -13,6 +13,8 @@ import BaseDialog from '~components/BaseDialog.vue'
 import DateRangePicker from '~components/DateRangePicker.vue'
 import SelectComponent from '~components/SelectComponent.vue'
 
+import { parseAPIDateToJSDate } from '~helpers/date'
+
 const props = withDefaults(defineProps<{
   value?: CancelPeriod
   opened: MaybeRef<boolean>
@@ -49,7 +51,7 @@ watch(localValue, (cancelPeriod) => {
   if (!cancelPeriod) {
     return
   }
-  period.value = [new Date(cancelPeriod.from), new Date(cancelPeriod.to)]
+  period.value = [parseAPIDateToJSDate(cancelPeriod.from), parseAPIDateToJSDate(cancelPeriod.to)]
   markupPercent.value = cancelPeriod.noCheckInMarkup.percent
   markupType.value = cancelPeriod.noCheckInMarkup.cancelPeriodType
 })
