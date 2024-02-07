@@ -78,6 +78,11 @@ final class Order extends AbstractAggregateRoot
         return $this->status === OrderStatusEnum::CANCELLED;
     }
 
+    public function isInvoiced(): bool
+    {
+        return $this->status === OrderStatusEnum::INVOICED;
+    }
+
     public function ensureInvoiceCreationAvailable(): void
     {
         if (!in_array($this->status, [OrderStatusEnum::WAITING_INVOICE, OrderStatusEnum::REFUND_FEE])) {
@@ -87,7 +92,7 @@ final class Order extends AbstractAggregateRoot
 
     public function ensureInvoiceCanBeCancelled(): void
     {
-        if (!$this->hasPayment() && !$this->isRefunded() && !$this->isCancelled()) {
+        if (!$this->hasPayment() && !$this->isRefunded() && !$this->isCancelled() && !$this->isInvoiced()) {
             throw new InvalidOrderStatusToCancelInvoice();
         }
     }
