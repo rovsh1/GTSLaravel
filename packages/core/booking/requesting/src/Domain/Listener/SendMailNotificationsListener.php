@@ -17,6 +17,8 @@ use Shared\Contracts\Adapter\MailAdapterInterface;
 
 class SendMailNotificationsListener implements DomainEventListenerInterface
 {
+    private const SYSTEM_EMAIL = 'info@gotostans.com';
+
     public function __construct(
         private readonly BookingUnitOfWorkInterface $bookingUnitOfWork,
         private readonly RequestRepositoryInterface $requestRepository,
@@ -48,6 +50,7 @@ class SendMailNotificationsListener implements DomainEventListenerInterface
             $emails[] = $administrator->email;
         }
 
+        $emails[] = self::SYSTEM_EMAIL;
         $emails = array_filter($emails, fn(string|null $email) => $this->isValidEmail($email));
         if (count($emails) === 0) {
             return;
