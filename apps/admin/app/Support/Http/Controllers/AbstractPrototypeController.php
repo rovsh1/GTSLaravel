@@ -3,6 +3,7 @@
 namespace App\Admin\Support\Http\Controllers;
 
 use App\Admin\Components\Factory\Prototype;
+use App\Admin\Exceptions\InvalidPointCoordinates;
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Facades\Breadcrumb;
@@ -105,7 +106,12 @@ abstract class AbstractPrototypeController extends Controller
 
         $form->submitOrFail();
 
-        $preparedData = $this->saving($form->getData());
+        try {
+            $preparedData = $this->saving($form->getData());
+        } catch (InvalidPointCoordinates) {
+            $form->error('Указаны некорректные координаты.');
+            $form->throwError();
+        }
         $this->model = $this->repository->create($preparedData);
 
         $redirectUrl = $this->prototype->route('index');
@@ -160,7 +166,13 @@ abstract class AbstractPrototypeController extends Controller
 
         $form->submitOrFail();
 
-        $preparedData = $this->saving($form->getData());
+        try {
+            $preparedData = $this->saving($form->getData());
+        } catch (InvalidPointCoordinates) {
+            $form->error('Указаны некорректные координаты.');
+            $form->throwError();
+        }
+
         $this->repository->update($this->model->id, $preparedData);
 
         $redirectUrl = $this->prototype->route('index');
@@ -203,11 +215,17 @@ abstract class AbstractPrototypeController extends Controller
         throw new \LogicException('Please implement the getShowViewData method on your controller.');
     }
 
-    protected function prepareGridQuery(Builder $query) {}
+    protected function prepareGridQuery(Builder $query)
+    {
+    }
 
-    protected function prepareShowMenu(Model $model) {}
+    protected function prepareShowMenu(Model $model)
+    {
+    }
 
-    protected function prepareEditMenu(Model $model) {}
+    protected function prepareEditMenu(Model $model)
+    {
+    }
 
     protected function saving(array $data): array
     {
