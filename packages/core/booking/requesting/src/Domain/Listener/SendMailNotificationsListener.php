@@ -58,6 +58,7 @@ class SendMailNotificationsListener implements DomainEventListenerInterface
             return;
         }
 
+        \Log::debug('[SendMailNotificationsListener] Send request emails', ['emails' => $emails]);
         $subject = $this->getSubject($request->type());
         $attachments = [new AttachmentDto($request->file()->guid())];
         foreach ($emails as $email) {
