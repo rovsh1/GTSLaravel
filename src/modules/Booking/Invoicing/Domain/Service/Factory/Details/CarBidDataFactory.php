@@ -60,13 +60,17 @@ class CarBidDataFactory
 
     private function buildPrice(CarBid $carBid, CurrencyEnum $currency, ?int $daysCount): PriceDto
     {
+        $valuePerCar = $carBid->prices()->clientPrice()->manualValuePerCar() ?? $carBid->prices()->clientPrice()->valuePerCar();
+        if ($daysCount > 1) {
+            $valuePerCar *= $daysCount;
+        }
         $total = $daysCount === null
             ? $carBid->clientPriceValue()
             : $carBid->clientPriceValue() * $daysCount;
 
         return new PriceDto(
             $carBid->details()->carsCount(),
-            $carBid->clientPriceValue(),
+            $valuePerCar,
             $total,
             $currency->name,
             null,//@todo штраф за авто?
