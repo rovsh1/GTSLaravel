@@ -3,7 +3,6 @@
 namespace App\Admin\Support\Http\Controllers;
 
 use App\Admin\Components\Factory\Prototype;
-use App\Admin\Exceptions\InvalidPointCoordinates;
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Facades\Breadcrumb;
@@ -29,6 +28,8 @@ abstract class AbstractPrototypeController extends Controller
     protected RepositoryInterface $repository;
 
     protected Model $model;
+
+    protected Form $form;
 
     public function __construct()
     {
@@ -85,7 +86,7 @@ abstract class AbstractPrototypeController extends Controller
         Breadcrumb::prototype($this->prototype)
             ->add($this->prototype->title('create') ?? 'Новая запись');
 
-        $form = $this->formFactory()
+        $form = $this->form()
             ->method('post')
             ->action($this->prototype->route('store'));
 
@@ -100,18 +101,13 @@ abstract class AbstractPrototypeController extends Controller
 
     public function store(): RedirectResponse
     {
-        $form = $this->formFactory()
+        $form = $this->form()
             ->method('post')
             ->failUrl($this->prototype->route('create'));
 
         $form->submitOrFail();
 
-        try {
-            $preparedData = $this->saving($form->getData());
-        } catch (InvalidPointCoordinates) {
-            $form->error('Указаны некорректные координаты.');
-            $form->throwError();
-        }
+        $preparedData = $this->saving($form->getData());
         $this->model = $this->repository->create($preparedData);
 
         $redirectUrl = $this->prototype->route('index');
@@ -136,7 +132,7 @@ abstract class AbstractPrototypeController extends Controller
         }
         $breadcrumbs->add($this->prototype->title('edit') ?? 'Редактирование');
 
-        $form = $this->formFactory()
+        $form = $this->form()
             ->method('put')
             ->action($this->prototype->route('update', $model->id));
 
@@ -160,19 +156,13 @@ abstract class AbstractPrototypeController extends Controller
     {
         $this->model = $this->repository->findOrFail($id);
 
-        $form = $this->formFactory()
+        $form = $this->form()
             ->method('put')
             ->failUrl($this->prototype->route('edit', $this->model));
 
         $form->submitOrFail();
 
-        try {
-            $preparedData = $this->saving($form->getData());
-        } catch (InvalidPointCoordinates) {
-            $form->error('Указаны некорректные координаты.');
-            $form->throwError();
-        }
-
+        $preparedData = $this->saving($form->getData());
         $this->repository->update($this->model->id, $preparedData);
 
         $redirectUrl = $this->prototype->route('index');
@@ -193,6 +183,15 @@ abstract class AbstractPrototypeController extends Controller
     protected function gridFactory(): Grid
     {
         throw new \LogicException('Please implement the gridFactory method on your controller.');
+    }
+
+    protected function form(): Form
+    {
+        if (isset($this->form)) {
+            return $this->form;
+        }
+
+        return $this->form = $this->formFactory();
     }
 
     protected function formFactory(): Form

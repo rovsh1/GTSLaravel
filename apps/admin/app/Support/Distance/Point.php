@@ -19,7 +19,10 @@ final class Point
             throw new InvalidPointCoordinates();
         }
         [$latitude, $longitude] = $coordinatesParts;
-        if (!is_numeric($latitude) || !is_numeric($longitude)) {
+        if ($latitude < -90 || $latitude > 90) {
+            throw new InvalidPointCoordinates();
+        }
+        if ($latitude < -180 || $latitude > 180) {
             throw new InvalidPointCoordinates();
         }
 
