@@ -15,6 +15,7 @@ class HotelAdapter implements HotelAdapterInterface
             ->select('email')
             ->where('hotel_id', $hotelId)
             ->where('status', true)
+            ->whereNull('deleted_at')
             ->get();
 
         return $contacts->pluck('email')->toArray();
