@@ -11,6 +11,7 @@ class CarBidPriceItemDto
     public function __construct(
         public readonly CurrencyDto $currency,
         public readonly float $valuePerCar,
-        public readonly ?float $manualValuePerCar
+        public readonly ?float $manualValuePerCar,
+        public readonly float $totalAmount
     ) {}
 }

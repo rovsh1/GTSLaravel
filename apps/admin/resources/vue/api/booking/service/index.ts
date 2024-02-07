@@ -31,6 +31,7 @@ export type CarPriceItem = {
   valuePerCar: number
   manualValuePerCar: number | null
   currency: CurrencyDto
+  totalAmount: number
 }
 
 export type CarPrices = {

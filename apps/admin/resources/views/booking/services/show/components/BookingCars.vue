@@ -277,11 +277,6 @@ const handleUpdateCarPrice = async (boPrice: number | undefined | null) => {
   await bookingStore.fetchBooking()
 }
 
-const calculateTotalPrice = (car: CarBid) => {
-  const carPrice = car.prices.clientPrice.manualValuePerCar || car.prices.clientPrice.valuePerCar
-  const totalPrice = carPrice * car.carsCount
-  return formatPrice(totalPrice, grossCurrency.value?.code_char)
-}
 </script>
 
 <template>
@@ -362,7 +357,7 @@ const calculateTotalPrice = (car: CarBid) => {
         <div v-if="grossCurrency" class="d-flex flex-row justify-content-between w-100 mt-2">
           <span class="prices-information">
             <strong>
-              Итого: {{ calculateTotalPrice(car) }}
+              Итого: {{ formatPrice(car.prices.clientPrice.totalAmount, grossCurrency.code_char) }}
             </strong>
             <br>
             <strong class="prices-information-details">
@@ -377,13 +372,6 @@ const calculateTotalPrice = (car: CarBid) => {
                 class="prices-information-details-info"
               >
                 <InlineIcon icon="touch_app" class="prices-information-details-info-icon" />
-              </span>
-            </strong>
-            <br>
-            <strong class="prices-information-details">
-              <span>
-                <InlineIcon icon="info" class="prices-information-details-info-icon" />
-                Цена указана за 1 день аренды
               </span>
             </strong>
           </span>
