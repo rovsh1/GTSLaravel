@@ -2,9 +2,11 @@
 
 import { computed, MaybeRef, ref, unref, watch } from 'vue'
 
+import { useToggle } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { z } from 'zod'
 
+import CarPriceModal from '~resources/views/booking/services/show/components/CarPriceModal.vue'
 import { BookingTransferFromAirportDetails } from '~resources/views/booking/services/show/components/details/lib/types'
 import CarModal from '~resources/views/booking/shared/components/CarModal.vue'
 import GuestModal from '~resources/views/booking/shared/components/GuestModal.vue'
@@ -17,9 +19,11 @@ import { useOrderStore } from '~resources/views/booking/shared/store/order'
 import EditTableRowButton from '~resources/views/hotel/settings/components/EditTableRowButton.vue'
 import { useEditableModal } from '~resources/views/hotel/settings/composables/editable-modal'
 
-import { CarBid } from '~api/booking/service'
+import { CarBid, CarPriceItem } from '~api/booking/service'
 import { addBookingCar, deleteBookingCar, updateBookingCar } from '~api/booking/service/cars'
 import { addGuestToCar, deleteGuestFromCar } from '~api/booking/service/guests'
+import { updateCarBookingPrice } from '~api/booking/service/price'
+import { Currency } from '~api/models'
 import { addOrderGuest, Guest, updateOrderGuest } from '~api/order/guest'
 import { Car, useGetSupplierCarsAPI } from '~api/supplier/cars'
 
@@ -29,18 +33,24 @@ import BootstrapCardTitle from '~components/Bootstrap/BootstrapCard/components/B
 import { showToast } from '~components/Bootstrap/BootstrapToast'
 import EmptyData from '~components/EmptyData.vue'
 import IconButton from '~components/IconButton.vue'
+import InlineIcon from '~components/InlineIcon.vue'
 
 import { useCountryStore } from '~stores/countries'
+import { useCurrencyStore } from '~stores/currency'
 
 import { showConfirmDialog } from '~helpers/confirm-dialog'
 import { requestInitialData } from '~helpers/initial-data'
 import { pluralForm } from '~helpers/plural'
+import { formatPrice } from '~helpers/price'
 
 const { bookingID } = requestInitialData(z.object({
   bookingID: z.number(),
 }))
 
 const orderStore = useOrderStore()
+const { getCurrencyByCodeChar } = useCurrencyStore()
+
+const isUpdateCarPrice = ref(false)
 
 const orderId = computed(() => orderStore.order.id)
 const orderGuests = computed<Guest[]>(() => orderStore.guests || [])
@@ -51,7 +61,17 @@ const isEditableStatus = computed<boolean>(() => bookingStore.availableActions?.
 
 const bookingDetails = computed<BookingTransferFromAirportDetails | null>(() => bookingStore.booking?.details || null)
 
+const canChangeCarBidPrice = computed<boolean>(
+  () => bookingStore.availableActions?.canChangeCarBidPrice || false,
+)
+
+const grossCurrency = computed<Currency | undefined>(
+  () => getCurrencyByCodeChar(bookingStore.booking?.prices.clientPrice.currency.value),
+)
+
 const availableCars = ref<Car[]>([])
+
+const [isShowCarPriceModal, toggleCarPriceModal] = useToggle()
 
 const { countries } = storeToRefs(useCountryStore())
 
@@ -237,9 +257,44 @@ const handleEditCarModal = async (id: number, object: CarBid) => {
   editingCar.value = object
   openEditCarModal(id, object)
 }
+
+const editableCarPrice = ref<CarPriceItem>()
+const handleEditCarPrice = (carId: number, carGrossPrice: CarPriceItem): void => {
+  editCarBookingId.value = carId
+  editableCarPrice.value = carGrossPrice
+  toggleCarPriceModal(true)
+}
+
+const handleUpdateCarPrice = async (boPrice: number | undefined | null) => {
+  toggleCarPriceModal(false)
+  isUpdateCarPrice.value = true
+  await updateCarBookingPrice({
+    bookingID,
+    carBookingId: editCarBookingId.value as number,
+    grossPrice: boPrice,
+  })
+  isUpdateCarPrice.value = false
+  await bookingStore.fetchBooking()
+}
+
+const calculateTotalPrice = (car: CarBid) => {
+  const carPrice = car.prices.clientPrice.manualValuePerCar || car.prices.clientPrice.valuePerCar
+  const totalPrice = carPrice * car.carsCount
+  return formatPrice(totalPrice, grossCurrency.value?.code_char)
+}
 </script>
 
 <template>
+  <CarPriceModal
+    :booking-id="bookingID"
+    :car-price="editableCarPrice"
+    :opened="isShowCarPriceModal"
+    :gross-currency="grossCurrency"
+    :loading="isUpdateCarPrice"
+    @close="toggleCarPriceModal(false)"
+    @submit="({ grossPrice }) => handleUpdateCarPrice(grossPrice)"
+  />
+
   <CarModal
     :title-text="carModalTitle"
     :opened="isCarModalOpened"
@@ -304,6 +359,38 @@ const handleEditCarModal = async (id: number, object: CarBid) => {
             </tr>
           </tbody>
         </table>
+        <div v-if="grossCurrency" class="d-flex flex-row justify-content-between w-100 mt-2">
+          <span class="prices-information">
+            <strong>
+              Итого: {{ calculateTotalPrice(car) }}
+            </strong>
+            <br>
+            <strong class="prices-information-details">
+              <span>Цена за автомобиль: </span>
+              <span>
+                {{ formatPrice(car.prices.clientPrice.manualValuePerCar || car.prices.clientPrice.valuePerCar,
+                               grossCurrency.code_char) }}
+              </span>
+              <span
+                v-if="car.prices.clientPrice.manualValuePerCar"
+                v-tooltip="'Цена за автомобиль выставлена вручную'"
+                class="prices-information-details-info"
+              >
+                <InlineIcon icon="touch_app" class="prices-information-details-info-icon" />
+              </span>
+            </strong>
+            <br>
+            <strong class="prices-information-details">
+              <span>
+                <InlineIcon icon="info" class="prices-information-details-info-icon" />
+                Цена указана за 1 день аренды
+              </span>
+            </strong>
+          </span>
+          <a v-if="canChangeCarBidPrice" href="#" @click.prevent="handleEditCarPrice(car.id, car.prices.clientPrice)">
+            Изменить цену автомобиля
+          </a>
+        </div>
       </InfoBlock>
 
       <InfoBlock>
@@ -355,6 +442,43 @@ const handleEditCarModal = async (id: number, object: CarBid) => {
 </template>
 
 <style lang="scss" scoped>
+.prices-information {
+  .prices-information-details {
+    font-weight: 400;
+    font-style: italic;
+
+    &>* {
+      vertical-align: middle
+    }
+
+    .informationIcon {
+      width: auto;
+      height: 1.4em;
+    }
+
+    .prices-information-details-button {
+      margin-left: 0.4rem;
+      border: none;
+      background-color: transparent;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .prices-information-details-info {
+      display: inline-block;
+
+      .prices-information-details-info-icon {
+        opacity: 0.5;
+      }
+    }
+
+    .prices-information-details-button-icon,
+    .prices-information-details-info-icon {
+      font-size: 1.25rem;
+    }
+  }
+}
+
 .pt-card-title {
   margin-top: 0.93rem;
 }

@@ -18,6 +18,12 @@ export type UpdateBookingPricePayload = UpdateBookingPrice & {
   bookingID: number
 }
 
+export interface UpdateCarBookingPricePayload {
+  carBookingId: number
+  bookingID: number
+  grossPrice?: number | null
+}
+
 export const updateBookingPrice = (props: MaybeRef<UpdateBookingPricePayload>) =>
   useAdminAPI(
     props,
@@ -36,6 +42,22 @@ export const updateBookingPrice = (props: MaybeRef<UpdateBookingPricePayload>) =
       ),
     )), 'application/json')
     .json<UpdateBookingStatusResponse>()
+
+export const updateCarBookingPrice = (props: MaybeRef<UpdateCarBookingPricePayload>) =>
+  useAdminAPI(
+    props,
+    ({ bookingID, carBookingId }) => `/service-booking/${bookingID}/cars/${carBookingId}/price`,
+    { immediate: true },
+  )
+    .put(computed<string>(() => JSON.stringify(
+      getNullableRef<UpdateCarBookingPricePayload, any>(
+        props,
+        (payload: UpdateCarBookingPricePayload): any => ({
+          clientPrice: payload.grossPrice,
+        }),
+      ),
+    )), 'application/json')
+    .json<BaseResponse>()
 
 export const useRecalculateBookingPriceAPI = (props: MaybeRef<UpdateBookingPricePayload | null>) =>
   useAdminAPI(props, ({ bookingID }) =>
