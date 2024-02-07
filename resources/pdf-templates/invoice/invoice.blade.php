@@ -232,7 +232,7 @@
                 </div>
                 <div class="column w-50 text-right">
                     @php
-                        $amount = $invoice->totalPenalty ?? $invoice->totalAmount;
+                        $amount = $invoice->totalPenalty > 0 ? $invoice->totalPenalty : $invoice->totalAmount;
                     @endphp
                     <p><b>{{ Format::number($amount) }} {{ $order->currency }}</b></p>
                 </div>
