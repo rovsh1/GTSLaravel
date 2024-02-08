@@ -39,6 +39,7 @@ class TranslationSchema
     {
         $type = Schema::getColumnType($parentTable, 'id');
         $column = match ($type) {
+            'int' => $table->integer('translatable_id'),
             'integer' => $table->integer('translatable_id'),
             'smallint' => $table->smallInteger('translatable_id'),
             'bigint' => $table->bigInteger('translatable_id'),
