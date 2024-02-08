@@ -13,7 +13,7 @@ import BaseDialog from '~components/BaseDialog.vue'
 import DateRangePicker from '~components/DateRangePicker.vue'
 import SelectComponent from '~components/SelectComponent.vue'
 
-import { parseAPIDateToJSDate } from '~helpers/date'
+import { formatDateToAPIDate, parseAPIDateToJSDate } from '~helpers/date'
 
 const props = withDefaults(defineProps<{
   value?: CancelPeriod
@@ -76,15 +76,14 @@ const onModalSubmit = async () => {
     return
   }
   const payload: CancelPeriod = {
-    from: period.value[0].toISOString(),
-    to: period.value[1].toISOString(),
+    from: formatDateToAPIDate(period.value[0]),
+    to: formatDateToAPIDate(period.value[1]),
     noCheckInMarkup: {
       percent: markupPercent.value,
       cancelPeriodType: markupType.value,
     },
     dailyMarkups: [],
   }
-
   emit('submit', payload)
   clearForm()
 }
