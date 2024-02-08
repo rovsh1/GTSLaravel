@@ -14,6 +14,7 @@ use Sdk\Booking\ValueObject\DetailsId;
 use Sdk\Booking\ValueObject\HotelBooking\BookingPeriod;
 use Sdk\Booking\ValueObject\HotelBooking\ExternalNumber;
 use Sdk\Booking\ValueObject\HotelBooking\HotelInfo;
+use Sdk\Module\Support\DateTimeImmutable;
 use Sdk\Shared\Enum\ServiceTypeEnum;
 
 final class HotelBooking extends AbstractDetails implements DetailsInterface
@@ -93,8 +94,8 @@ final class HotelBooking extends AbstractDetails implements DetailsInterface
         );
     }
 
-    public function serviceDate(): ?DateTimeInterface
+    public function serviceDate(): ?DateTimeImmutable
     {
-        return $this->bookingPeriod->dateFrom();
+        return DateTimeImmutable::createFromInterface($this->bookingPeriod->dateFrom());
     }
 }

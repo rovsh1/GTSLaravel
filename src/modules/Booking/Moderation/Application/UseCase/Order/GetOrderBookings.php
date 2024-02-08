@@ -77,15 +77,18 @@ class GetOrderBookings implements UseCaseInterface
             $dateFrom = $details->bookingPeriod()?->dateFrom();
             $dateTo = $details->bookingPeriod()?->dateTo();
         } elseif (method_exists($details, 'serviceDate')) {
-            $dateFrom = new CarbonImmutable($details->serviceDate());
-            $dateTo = new CarbonImmutable($details->serviceDate());
+            $dateFrom = $details->serviceDate();
+            $dateTo = $details->serviceDate();
         }
 
         if ($dateFrom === null && $dateTo === null) {
             return null;
         }
 
-        return new OrderBookingPeriodDto($dateFrom, $dateTo);
+        return new OrderBookingPeriodDto(
+            new CarbonImmutable($dateFrom),
+            new CarbonImmutable($dateTo)
+        );
     }
 
     private function buildServiceInfoDTO(DetailsInterface $details): OrderBookingServiceInfoDto

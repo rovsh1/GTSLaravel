@@ -12,6 +12,7 @@ use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\CityId;
 use Sdk\Booking\ValueObject\DetailsId;
 use Sdk\Booking\ValueObject\ServiceInfo;
+use Sdk\Module\Support\DateTimeImmutable;
 use Sdk\Shared\Enum\ServiceTypeEnum;
 use Sdk\Shared\Support\DateTimeImmutableFactory;
 
@@ -26,7 +27,7 @@ final class IntercityTransfer extends AbstractServiceDetails implements Transfer
         private readonly CityId $fromCityId,
         private readonly CityId $toCityId,
         private readonly bool $returnTripIncluded,
-        protected ?DateTimeInterface $departureDate,
+        protected ?DateTimeImmutable $departureDate,
     ) {
         parent::__construct($id, $bookingId, $serviceInfo);
     }

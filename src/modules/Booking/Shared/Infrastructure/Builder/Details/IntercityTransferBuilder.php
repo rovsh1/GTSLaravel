@@ -9,6 +9,7 @@ use Sdk\Booking\Entity\Details\IntercityTransfer;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\CityId;
 use Sdk\Booking\ValueObject\DetailsId;
+use Sdk\Module\Support\DateTimeImmutable;
 
 class IntercityTransferBuilder extends AbstractServiceDetailsBuilder
 {
@@ -23,7 +24,7 @@ class IntercityTransferBuilder extends AbstractServiceDetailsBuilder
             fromCityId: new CityId($detailsData['fromCityId']),
             toCityId: new CityId($detailsData['toCityId']),
             returnTripIncluded: $detailsData['returnTripIncluded'] ?? false,
-            departureDate: $details->date_start,
+            departureDate: $details->date_start !== null ? DateTimeImmutable::createFromInterface($details->date_start) : null,
         );
     }
 }

@@ -15,6 +15,7 @@ use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\DetailsId;
 use Sdk\Booking\ValueObject\GuestIdCollection;
 use Sdk\Booking\ValueObject\ServiceInfo;
+use Sdk\Module\Support\DateTimeImmutable;
 use Sdk\Shared\Enum\ServiceTypeEnum;
 use Sdk\Shared\Support\DateTimeImmutableFactory;
 
@@ -30,7 +31,7 @@ final class CIPSendoffInAirport extends AbstractServiceDetails implements Airpor
         ServiceInfo $serviceInfo,
         private readonly AirportId $airportId,
         private ?string $flightNumber,
-        private ?DateTimeInterface $departureDate,
+        private ?DateTimeImmutable $departureDate,
         private GuestIdCollection $guestIds,
     ) {
         parent::__construct($id, $bookingId, $serviceInfo);

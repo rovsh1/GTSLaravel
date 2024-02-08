@@ -2,23 +2,23 @@
 
 namespace Sdk\Booking\Entity\Details\Concerns;
 
-use DateTimeInterface;
 use Sdk\Booking\Event\DepartureDateChanged;
+use Sdk\Module\Support\DateTimeImmutable;
 
 trait HasDepartureDateTrait
 {
-    public function departureDate(): ?DateTimeInterface
+    public function departureDate(): ?DateTimeImmutable
     {
         return $this->departureDate;
     }
 
-    public function setDepartureDate(?DateTimeInterface $departureDate): void
+    public function setDepartureDate(?DateTimeImmutable $departureDate): void
     {
         $this->departureDate = $departureDate;
         $this->pushEvent(new DepartureDateChanged($this));
     }
 
-    public function serviceDate(): ?DateTimeInterface
+    public function serviceDate(): ?DateTimeImmutable
     {
         return $this->departureDate;
     }

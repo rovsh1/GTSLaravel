@@ -15,6 +15,7 @@ use Sdk\Booking\ValueObject\BookingPeriod;
 use Sdk\Booking\ValueObject\CityId;
 use Sdk\Booking\ValueObject\DetailsId;
 use Sdk\Booking\ValueObject\ServiceInfo;
+use Sdk\Module\Support\DateTimeImmutable;
 use Sdk\Shared\Enum\ServiceTypeEnum;
 
 final class CarRentWithDriver extends AbstractServiceDetails implements TransferDetailsInterface
@@ -71,7 +72,7 @@ final class CarRentWithDriver extends AbstractServiceDetails implements Transfer
         );
     }
 
-    public function serviceDate(): ?DateTimeInterface
+    public function serviceDate(): ?DateTimeImmutable
     {
         return $this->bookingPeriod()?->dateFrom();
     }

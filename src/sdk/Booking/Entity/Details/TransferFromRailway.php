@@ -14,6 +14,7 @@ use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\DetailsId;
 use Sdk\Booking\ValueObject\RailwayStationId;
 use Sdk\Booking\ValueObject\ServiceInfo;
+use Sdk\Module\Support\DateTimeImmutable;
 use Sdk\Shared\Enum\ServiceTypeEnum;
 use Sdk\Shared\Support\DateTimeImmutableFactory;
 
@@ -30,7 +31,7 @@ final class TransferFromRailway extends AbstractServiceDetails implements Transf
         private readonly RailwayStationId $railwayStationId,
         private ?string $trainNumber,
         private ?string $meetingTablet,
-        private ?DateTimeInterface $arrivalDate,
+        private ?DateTimeImmutable $arrivalDate,
     ) {
         parent::__construct($id, $bookingId, $serviceInfo);
     }

@@ -2,7 +2,7 @@
 
 namespace Sdk\Shared\Support;
 
-use DateTimeImmutable;
+use Sdk\Module\Support\DateTimeImmutable;
 
 abstract class DateTimeImmutableFactory
 {

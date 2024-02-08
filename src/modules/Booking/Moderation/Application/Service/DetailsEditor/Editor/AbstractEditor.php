@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use Sdk\Booking\Contracts\Entity\DetailsInterface;
 use Sdk\Booking\ValueObject\BookingPeriod;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
+use Sdk\Module\Support\DateTimeImmutable;
 
 abstract class AbstractEditor
 {
@@ -29,14 +30,21 @@ abstract class AbstractEditor
         if ($valueType === DateTimeInterface::class) {
             try {
                 $preparedValue = new DateTime($preparedValue);
-            } catch (\Throwable $e) {
+            } catch (\Throwable) {
+                throw new \InvalidArgumentException('Invalid datetime value');
+            }
+        }
+        if ($valueType === DateTimeImmutable::class) {
+            try {
+                $preparedValue = new DateTimeImmutable($preparedValue);
+            } catch (\Throwable) {
                 throw new \InvalidArgumentException('Invalid datetime value');
             }
         }
         if ($valueType === BookingPeriod::class && $value !== null) {
             $dateFrom = new DateTime($value['dateFrom']);
             $dateTo = new DateTime($value['dateTo']);
-            $preparedValue = new BookingPeriod($dateFrom, $dateTo);
+            $preparedValue = BookingPeriod::createFromInterface($dateFrom, $dateTo);
         }
         $details->$setterMethod($preparedValue);
     }

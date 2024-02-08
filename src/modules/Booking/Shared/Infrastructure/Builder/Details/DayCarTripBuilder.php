@@ -9,6 +9,7 @@ use Sdk\Booking\Entity\Details\DayCarTrip;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\CityId;
 use Sdk\Booking\ValueObject\DetailsId;
+use Sdk\Module\Support\DateTimeImmutable;
 
 class DayCarTripBuilder extends AbstractServiceDetailsBuilder
 {
@@ -22,7 +23,7 @@ class DayCarTripBuilder extends AbstractServiceDetailsBuilder
             serviceInfo: $this->buildServiceInfo($detailsData['serviceInfo']),
             cityId: new CityId($detailsData['cityId']),
             destinationsDescription: $detailsData['destinationsDescription'],
-            departureDate: $details->date_start,
+            departureDate: $details->date_start !== null ? DateTimeImmutable::createFromInterface($details->date_start) : null,
         );
     }
 }

@@ -10,6 +10,8 @@ use Sdk\Booking\ValueObject\AirportId;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\DetailsId;
 use Sdk\Booking\ValueObject\GuestIdCollection;
+use Sdk\Module\Support\DateTimeImmutable;
+use Sdk\Shared\Support\DateTimeImmutableFactory;
 
 class CIPMeetingInAirportBuilder extends AbstractServiceDetailsBuilder
 {
@@ -23,7 +25,7 @@ class CIPMeetingInAirportBuilder extends AbstractServiceDetailsBuilder
             serviceInfo: $this->buildServiceInfo($detailsData['serviceInfo']),
             airportId: new AirportId($detailsData['airportId']),
             flightNumber: $detailsData['flightNumber'],
-            arrivalDate: $details->date,
+            arrivalDate: $details->date !== null ? DateTimeImmutable::createFromInterface($details->date) : null,
             guestIds: GuestIdCollection::deserialize($details->guestIds),
         );
     }

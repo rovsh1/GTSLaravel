@@ -4,6 +4,7 @@ namespace Module\Booking\Pricing\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 use Sdk\Booking\ValueObject\BookingPeriod;
+use Sdk\Module\Support\DateTimeImmutable;
 
 class BookingPeriodTest extends TestCase
 {
@@ -16,8 +17,8 @@ class BookingPeriodTest extends TestCase
     public function testCalculateNigthsCount(string $dateFrom, string $dateTo, int $daysCount)
     {
         $period = new BookingPeriod(
-            new \DateTimeImmutable($dateFrom),
-            new \DateTimeImmutable($dateTo),
+            new DateTimeImmutable($dateFrom),
+            new DateTimeImmutable($dateTo),
         );
         $this->assertEquals($period->daysCount(), $daysCount);
     }
