@@ -35,7 +35,7 @@ return new class extends Migration {
 
     public function up()
     {
-        $q = DB::connection('mysql_old')->table('hotels');
+        $q = DB::connection('mysql_old')->table('hotels')->where('name', 'NOT LIKE', '%test%');
         $hotelSupplierTypeId = Cache::get('hotel_supplier_type_id');
         if ($hotelSupplierTypeId === null) {
             throw new \RuntimeException('Неизвестный ID типа поставщика для отеля');

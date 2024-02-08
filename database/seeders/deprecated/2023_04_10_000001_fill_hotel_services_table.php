@@ -12,6 +12,7 @@ return new class extends Migration {
             'INSERT INTO hotel_services (hotel_id, service_id,is_paid)'
             . ' SELECT hotel_id, service_id,pay'
             . ' FROM ' . DB::connection('mysql_old')->getDatabaseName() . '.hotel_services'
+            . ' WHERE EXISTS(SELECT 1 FROM ' . DB::connection()->getDatabaseName() . '.hotels WHERE hotel_id = hotels.id)'
         );
     }
 

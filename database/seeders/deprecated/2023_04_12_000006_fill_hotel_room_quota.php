@@ -22,6 +22,7 @@ return new class extends Migration {
             . ' ELSE ' . QuotaStatusEnum::OPEN->value
             . ' END AS status'
             . ' FROM ' . DB::connection('mysql_old')->getDatabaseName() . '.hotel_room_quotes'
+            . ' WHERE EXISTS(SELECT 1 FROM ' . DB::connection()->getDatabaseName() . '.hotel_rooms WHERE room_id = hotel_rooms.id)'
         );
 //        $q = DB::connection('mysql_old')->table('hotel_room_quotes')
 //            ->where('date', '=>', now()->modify('-1 month')->format('Y-m-d'));

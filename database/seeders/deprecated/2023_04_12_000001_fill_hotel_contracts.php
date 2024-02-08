@@ -10,6 +10,7 @@ return new class extends Migration {
             'INSERT INTO hotel_contracts (id,hotel_id,status,date_start,date_end,created_at,updated_at)'
             . ' SELECT id,hotel_id,status,date_from,date_to,created,NOW()'
             . ' FROM ' . DB::connection('mysql_old')->getDatabaseName() . '.hotel_contracts'
+            . ' WHERE EXISTS(SELECT 1 FROM ' . DB::connection()->getDatabaseName() . '.hotels WHERE hotel_id = hotels.id)'
         );
     }
 

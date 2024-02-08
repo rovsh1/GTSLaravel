@@ -12,6 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         $q = DB::connection('mysql_old')->table('hotel_rules')
+            ->whereExists(function (\Illuminate\Database\Query\Builder $query){
+                $query->selectRaw(1)
+                    ->from(\DB::connection()->getDatabaseName() . '.hotels')
+                    ->whereColumn('hotel_id', 'hotels.id');
+            })
             ->addSelect('hotel_rules.*')
             ->join('hotel_rules_translation','hotel_rules_translation.translatable_id','=','hotel_rules.id')
             ->addSelect('hotel_rules_translation.name as name')

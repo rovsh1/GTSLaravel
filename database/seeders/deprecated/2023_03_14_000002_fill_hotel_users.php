@@ -7,10 +7,16 @@ return new class extends Migration {
     public function up()
     {
         $users = DB::connection('mysql_old')->table('users')
+            ->whereExists(function (\Illuminate\Database\Query\Builder $query){
+                $query->selectRaw(1)
+                    ->from(\DB::connection()->getDatabaseName() . '.hotels')
+                    ->whereColumn('hotel_id', 'hotels.id');
+            })
             ->addSelect('users.*')
             ->addSelect('hotel_administrators.hotel_id')
             ->join('hotel_administrators', 'hotel_administrators.user_id', '=', 'users.id')
             ->get();
+
         foreach ($users as $r) {
             DB::table('hotel_administrators')
                 ->insert([
