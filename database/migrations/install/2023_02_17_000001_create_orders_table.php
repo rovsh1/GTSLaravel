@@ -19,6 +19,8 @@ return new class extends Migration {
             $table->json('voucher')->nullable();
             $table->string('source');
             $table->unsignedInteger('creator_id');
+            $table->string('note')->nullable();
+            $table->string('external_id')->nullable();
             $table->timestamps();
 
             $table->foreign('client_id')

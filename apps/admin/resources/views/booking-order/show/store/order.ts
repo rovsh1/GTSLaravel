@@ -9,6 +9,7 @@ import { useGetOrderBookingsAPI } from '~resources/vue/api/order/booking'
 
 import {
   copyOrder,
+  updateExternalId as executeUpdateExternalId,
   updateManager as executeUpdateManager,
   updateNote as executeUpdateNote,
   updateOrderStatus,
@@ -78,6 +79,11 @@ export const useOrderStore = defineStore('booking-order', () => {
     fetchOrder()
   }
 
+  const updateExternalId = async (externalId?: string) => {
+    await executeUpdateExternalId({ orderID, externalId })
+    fetchOrder()
+  }
+
   const updateManager = async (managerId: number) => {
     await executeUpdateManager({ orderID, managerId })
     bookingManagerId.value = Number(managerId)
@@ -126,6 +132,7 @@ export const useOrderStore = defineStore('booking-order', () => {
     changeStatus,
     copy,
     updateNote,
+    updateExternalId,
     updateManager,
     isVoucherFetching,
     createVoucher,

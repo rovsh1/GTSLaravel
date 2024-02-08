@@ -25,5 +25,7 @@ class OrderDto
         public readonly SourceEnum $source,
         public readonly ?VoucherDto $voucher,
         public readonly ?OrderPeriodDto $period,
+        public readonly ?string $note,
+        public readonly ?string $externalId,
     ) {}
 }

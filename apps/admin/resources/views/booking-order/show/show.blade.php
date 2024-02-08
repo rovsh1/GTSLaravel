@@ -68,12 +68,18 @@
                                 <th>Создана</th>
                                 <td>{{ Format::date($model->createdAt, 'd.m.Y H:i') }}</td>
                             </tr>
-                            <!-- <tr>
+                            <tr>
                                 <th>Примечание</th>
                                 <td>
                                     <div id="order-editable-note"></div>
                                 </td>
-                            </tr> -->
+                            </tr>
+                            <tr>
+                                <th>№ заявки клиента</th>
+                                <td>
+                                    <div id="order-editable-external-id"></div>
+                                </td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>

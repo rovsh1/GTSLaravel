@@ -39,6 +39,8 @@ final class Order extends AbstractAggregateRoot implements EntityInterface
         private ?Money $clientPenalty,
         private readonly Context $context,
         private readonly Timestamps $timestamps,
+        private ?string $note,
+        private ?string $externalId,
     ) {
     }
 
@@ -126,5 +128,25 @@ final class Order extends AbstractAggregateRoot implements EntityInterface
     public function period(): ?OrderPeriod
     {
         return $this->period;
+    }
+
+    public function note(): ?string
+    {
+        return $this->note;
+    }
+
+    public function setNote(?string $note): void
+    {
+        $this->note = $note;
+    }
+
+    public function externalId(): ?string
+    {
+        return $this->externalId;
+    }
+
+    public function setExternalId(?string $externalId): void
+    {
+        $this->externalId = $externalId;
     }
 }

@@ -24,7 +24,8 @@ class CreateOrder implements UseCaseInterface
             new ClientId($request->clientId),
             $request->currency,
             new CreatorId($request->creatorId),
-            $request->legalId
+            $request->legalId,
+            $request->note,
         );
         $this->administratorAdapter->setOrderAdministrator($order->id(), $request->administratorId);
 

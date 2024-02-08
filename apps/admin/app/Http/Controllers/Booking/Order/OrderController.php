@@ -7,6 +7,8 @@ namespace App\Admin\Http\Controllers\Booking\Order;
 use App\Admin\Components\Factory\Prototype;
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Http\Requests\Order\SearchRequest;
+use App\Admin\Http\Requests\Order\UpdateExternalIdRequest;
+use App\Admin\Http\Requests\Order\UpdateNoteRequest;
 use App\Admin\Http\Requests\Order\UpdateStatusRequest;
 use App\Admin\Http\Resources\Order\Booking;
 use App\Admin\Models\Administrator\Administrator;
@@ -24,6 +26,8 @@ use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Grid\SearchForm;
 use App\Admin\Support\View\Layout as LayoutContract;
+use App\Shared\Http\Responses\AjaxResponseInterface;
+use App\Shared\Http\Responses\AjaxSuccessResponse;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -99,6 +103,7 @@ class OrderController extends Controller
                 currency: $currency ?? $client->currency,
                 managerId: $managerId,
                 creatorId: $creatorId,
+                note: $data['note'] ?? null,
             );
         } catch (ApplicationException $e) {
             $form->throwException($e);
@@ -175,6 +180,20 @@ class OrderController extends Controller
         return response()->json(
             OrderAdapter::updateStatus($id, $request->getStatus(), $request->getRefundFee())
         );
+    }
+
+    public function updateNote(UpdateNoteRequest $request, int $id): AjaxResponseInterface
+    {
+        OrderAdapter::updateNote($id, $request->getNote());
+
+        return new AjaxSuccessResponse();
+    }
+
+    public function updateExternalId(UpdateExternalIdRequest $request, int $id): AjaxResponseInterface
+    {
+        OrderAdapter::updateExternalId($id, $request->getExternalId());
+
+        return new AjaxSuccessResponse();
     }
 
     private function prepareGridQuery(Builder $query, array $searchCriteria): Builder
