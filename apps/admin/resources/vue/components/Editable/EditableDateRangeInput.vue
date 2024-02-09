@@ -97,7 +97,7 @@ const applyEditable = () => {
     dateFrom: props.returnOnlyDate ? formatDateToAPIDate(localValue.value[0])
       : formatDateTimeToAPIDateTime(`${formatDateToAPIDate(localValue.value[0])} ${localTime.value}`),
     dateTo: props.returnOnlyDate ? formatDateToAPIDate(localValue.value[1])
-      : formatDateTimeToAPIDateTime(`${formatDateToAPIDate(localValue.value[0])} ${localTime.value}`),
+      : formatDateTimeToAPIDateTime(`${formatDateToAPIDate(localValue.value[1])} ${localTime.value}`),
   })
   isChanged.value = false
   toggleEditable(false)
