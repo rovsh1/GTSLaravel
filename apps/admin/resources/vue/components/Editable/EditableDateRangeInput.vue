@@ -99,6 +99,7 @@ const applyEditable = () => {
     dateTo: props.returnOnlyDate ? formatDateToAPIDate(localValue.value[1])
       : formatDateTimeToAPIDateTime(`${formatDateToAPIDate(localValue.value[0])} ${localTime.value}`),
   })
+  isChanged.value = false
   toggleEditable(false)
 }
 
