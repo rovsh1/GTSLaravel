@@ -10,7 +10,7 @@ import { nanoid } from 'nanoid'
 import DateRangePicker from '~components/DateRangePicker.vue'
 import InlineIcon from '~components/InlineIcon.vue'
 
-import { formatDateToAPIDate, parseAPIDateAndSetDefaultTime } from '~helpers/date'
+import { formatDateTimeToAPIDateTime, formatDateToAPIDate, parseAPIDateAndSetDefaultTime } from '~helpers/date'
 import { usePlatformDetect } from '~helpers/platform'
 
 const props = withDefaults(defineProps<{
@@ -87,7 +87,7 @@ const applyEditable = () => {
     return
   }
   emit('change', props.returnOnlyDate ? formatDateToAPIDate(localValue.value)
-    : `${formatDateToAPIDate(localValue.value)} ${localTime.value}`)
+    : formatDateTimeToAPIDateTime(`${formatDateToAPIDate(localValue.value)} ${localTime.value}`))
   toggleEditable(false)
 }
 

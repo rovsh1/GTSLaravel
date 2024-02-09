@@ -10,7 +10,7 @@ import { nanoid } from 'nanoid'
 import DateRangePicker from '~components/DateRangePicker.vue'
 import InlineIcon from '~components/InlineIcon.vue'
 
-import { formatDateToAPIDate, parseAPIDateAndSetDefaultTime } from '~helpers/date'
+import { formatDateTimeToAPIDateTime, formatDateToAPIDate, parseAPIDateAndSetDefaultTime } from '~helpers/date'
 import { usePlatformDetect } from '~helpers/platform'
 
 type DatePeriod = {
@@ -92,15 +92,12 @@ const applyEditable = () => {
     toggleEditable(false)
     return
   }
-  const inputString = `${formatDateToAPIDate(localValue.value[0])} ${localTime.value}`
-  const dateTime = DateTime.fromFormat(inputString, 'yyyy-MM-dd HH:mm').toISO()
-
-  const inputString2 = `${formatDateToAPIDate(localValue.value[1])} ${localTime.value}`
-  const dateTime2 = DateTime.fromFormat(inputString2, 'yyyy-MM-dd HH:mm').toISO()
 
   emit('change', {
-    dateFrom: props.returnOnlyDate ? formatDateToAPIDate(localValue.value[0]) : dateTime as string,
-    dateTo: props.returnOnlyDate ? formatDateToAPIDate(localValue.value[1]) : dateTime2 as string,
+    dateFrom: props.returnOnlyDate ? formatDateToAPIDate(localValue.value[0])
+      : formatDateTimeToAPIDateTime(`${formatDateToAPIDate(localValue.value[0])} ${localTime.value}`),
+    dateTo: props.returnOnlyDate ? formatDateToAPIDate(localValue.value[1])
+      : formatDateTimeToAPIDateTime(`${formatDateToAPIDate(localValue.value[0])} ${localTime.value}`),
   })
   toggleEditable(false)
 }
