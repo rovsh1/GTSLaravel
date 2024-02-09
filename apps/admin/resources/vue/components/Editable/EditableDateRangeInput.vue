@@ -92,9 +92,15 @@ const applyEditable = () => {
     toggleEditable(false)
     return
   }
+  const inputString = `${formatDateToAPIDate(localValue.value[0])} ${localTime.value}`
+  const dateTime = DateTime.fromFormat(inputString, 'yyyy-MM-dd HH:mm').toISO()
+
+  const inputString2 = `${formatDateToAPIDate(localValue.value[1])} ${localTime.value}`
+  const dateTime2 = DateTime.fromFormat(inputString2, 'yyyy-MM-dd HH:mm').toISO()
+
   emit('change', {
-    dateFrom: props.returnOnlyDate ? formatDateToAPIDate(localValue.value[0]) : `${formatDateToAPIDate(localValue.value[0])} ${localTime.value}`,
-    dateTo: props.returnOnlyDate ? formatDateToAPIDate(localValue.value[1]) : `${formatDateToAPIDate(localValue.value[1])} ${localTime.value}`,
+    dateFrom: props.returnOnlyDate ? formatDateToAPIDate(localValue.value[0]) : dateTime as string,
+    dateTo: props.returnOnlyDate ? formatDateToAPIDate(localValue.value[1]) : dateTime2 as string,
   })
   toggleEditable(false)
 }
