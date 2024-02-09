@@ -96,6 +96,10 @@
             margin-bottom: 10px;
         }
 
+        .document-footer {
+            page-break-inside: avoid !important;
+        }
+
         .document-footer .mark {
             width: 150px;
         }
