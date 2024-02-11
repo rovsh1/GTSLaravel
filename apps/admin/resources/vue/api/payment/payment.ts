@@ -35,7 +35,7 @@ export type PaymentOrder = {
   id: number
   clientId: number
   clientPrice: PaymentPrice
-  clientPenalty: PaymentPrice
+  clientPenalty: PaymentPrice | null
   payedAmount: PaymentPrice
   remainingAmount: PaymentPrice
 }

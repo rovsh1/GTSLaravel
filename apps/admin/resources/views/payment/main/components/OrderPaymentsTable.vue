@@ -159,7 +159,7 @@ const moveOrdersToOrderWaiting = (allOrders?: boolean) => {
   emit('orders', getPaymentOrdersPayload())
 }
 
-const getClientPrice = (order: PaymentOrder) => order.clientPenalty.value || order.clientPrice.value
+const getClientPrice = (order: PaymentOrder) => order.clientPenalty?.value || order.clientPrice.value
 
 onMounted(() => {
   resetLocaleVariables()
