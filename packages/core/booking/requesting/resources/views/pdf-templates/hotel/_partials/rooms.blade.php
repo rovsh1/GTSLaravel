@@ -6,7 +6,7 @@
                 @foreach($room->guests as $index => $guest)
                     <li>
                         @changemark("accommodation[$room->accommodationId].guests")
-                        {{++$index}}. {{ $guest->fullName }}, {{ $guest->gender }}, {{ $guest->countryName }}
+                        {{ $guest->fullName }}, {{ $guest->gender }}, {{ $guest->countryName }}
                         @endchangemark
                     </li>
                 @endforeach
@@ -59,7 +59,7 @@
                     @endchangemark
                 </p>
             </div>
-            <div class="column w-28 text-right">{{ Format::price($room->supplierPrice->amount) }} {{ $room->supplierPrice->currency }}</div>
+            <div class="column w-28 text-right">{{ Format::number($room->supplierPrice->amount) }} {{ $room->supplierPrice->currency }}</div>
         </div>
     </div>
 @endforeach

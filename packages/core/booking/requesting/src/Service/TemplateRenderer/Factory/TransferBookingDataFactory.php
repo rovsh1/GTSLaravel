@@ -7,6 +7,9 @@ use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\DbContext\CarBidDbContextInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Service\DetailOptionsDataFactory;
+use Module\Booking\Shared\Domain\Guest\Guest;
+use Module\Booking\Shared\Domain\Guest\Repository\GuestRepositoryInterface;
+use Pkg\Booking\Requesting\Service\TemplateRenderer\Dto\GuestDto;
 use Pkg\Booking\Requesting\Service\TemplateRenderer\Dto\ServiceDto;
 use Pkg\Booking\Requesting\Service\TemplateRenderer\Dto\TransferBooking\BookingPeriodDto;
 use Pkg\Booking\Requesting\Service\TemplateRenderer\Dto\TransferBooking\CarDto;
@@ -18,17 +21,27 @@ use Sdk\Booking\Entity\Details\CarRentWithDriver;
 use Sdk\Booking\Enum\RequestTypeEnum;
 use Sdk\Booking\ValueObject\BookingPeriod;
 use Sdk\Booking\ValueObject\CarBidCollection;
+use Sdk\Booking\ValueObject\GuestIdCollection;
+use Sdk\Shared\Contracts\Adapter\CountryAdapterInterface;
 use Sdk\Shared\Contracts\Service\TranslatorInterface;
+use Sdk\Shared\Enum\GenderEnum;
 
 class TransferBookingDataFactory
 {
+    private array $countryNamesIndexedId;
+
     public function __construct(
         private readonly DetailsRepositoryInterface $detailsRepository,
         private readonly DetailOptionsDataFactory $detailOptionsFactory,
         private readonly SupplierAdapterInterface $supplierAdapter,
+        private readonly GuestRepositoryInterface $guestRepository,
         private readonly TranslatorInterface $translator,
         private readonly CarBidDbContextInterface $carBidDbContext,
-    ) {}
+        CountryAdapterInterface $countryAdapter,
+    ) {
+        $countries = $countryAdapter->get();
+        $this->countryNamesIndexedId = collect($countries)->keyBy('id')->map->name->all();
+    }
 
     public function build(Booking $booking, RequestTypeEnum $requestType): TemplateDataInterface
     {
@@ -77,12 +90,14 @@ class TransferBookingDataFactory
             $carBid->details()->baggageCount(),
             $carBid->details()->babyCount(),
             new CarPriceDto(
+                $carBid->prices()->supplierPrice()->currency()->name,
                 $carBid->prices()->supplierPrice()->valuePerCar(),
                 $carBid->supplierPriceValue(),
                 $daysCount === null
                     ? $carBid->supplierPriceValue()
                     : $carBid->supplierPriceValue() * $daysCount
-            )
+            ),
+            $this->buildGuests($carBid->guestIds())
         ));
     }
 
@@ -95,5 +110,23 @@ class TransferBookingDataFactory
             $bookingPeriod->dateTo()->format('H:i'),
             $bookingPeriod->daysCount(),
         );
+    }
+
+    /**
+     * @param GuestIdCollection $guestIds
+     * @return GuestDto[]
+     */
+    private function buildGuests(GuestIdCollection $guestIds): array
+    {
+        if ($guestIds->count() === 0) {
+            return [];
+        }
+        $guests = $this->guestRepository->get($guestIds);
+
+        return collect($guests)->map(fn(Guest $guest) => new GuestDto(
+            $guest->fullName(),
+            $guest->gender() === GenderEnum::MALE ? 'Мужской' : 'Женский',
+            $this->countryNamesIndexedId[$guest->countryId()]
+        ))->all();
     }
 }

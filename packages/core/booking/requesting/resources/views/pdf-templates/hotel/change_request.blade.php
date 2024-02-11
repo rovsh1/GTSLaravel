@@ -40,7 +40,7 @@
             <p><b>ИТОГО К ОПЛАТЕ</b></p>
         </div>
         <div class="column w-50 text-right">
-            <p><b>{{ Format::price($booking->supplierPrice->amount) }} {{ $booking->supplierPrice->currency }}</b></p>
+            <p><b>{{ Format::number($booking->supplierPrice->amount) }} {{ $booking->supplierPrice->currency }}</b></p>
         </div>
     </div>
     <div class="note">
