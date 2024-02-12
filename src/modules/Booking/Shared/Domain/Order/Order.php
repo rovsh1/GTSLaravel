@@ -8,6 +8,7 @@ use Carbon\CarbonImmutable;
 use Module\Booking\Moderation\Domain\Order\ValueObject\OrderPeriod;
 use Module\Booking\Moderation\Domain\Order\ValueObject\Voucher;
 use Module\Booking\Shared\Domain\Order\Event\ClientChanged;
+use Module\Booking\Shared\Domain\Order\Event\ClientPenaltyChanged;
 use Module\Booking\Shared\Domain\Order\Support\Concerns\HasStatusesTrait;
 use Sdk\Booking\ValueObject\ClientId;
 use Sdk\Booking\ValueObject\Context;
@@ -41,8 +42,7 @@ final class Order extends AbstractAggregateRoot implements EntityInterface
         private readonly Timestamps $timestamps,
         private ?string $note,
         private ?string $externalId,
-    ) {
-    }
+    ) {}
 
     public function id(): OrderId
     {
@@ -153,5 +153,6 @@ final class Order extends AbstractAggregateRoot implements EntityInterface
     public function setClientPenalty(?Money $clientPenalty): void
     {
         $this->clientPenalty = $clientPenalty;
+        $this->pushEvent(new ClientPenaltyChanged($this));
     }
 }
