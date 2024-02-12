@@ -39,24 +39,38 @@
 @section('footer')
     <div class="clear-both">
         <br/>
-        <div class="column w-72">
+        <div class="column w-72 footer-elements-fix-height">
             <p>Спасибо за сотрудничество.</p>
             <br/>
-            <div class="manager clear-both">
-                <div class="column w-28">
-                    <p>Менеджер:</p>
-                    <p>Email:</p>
-                    <p>Мобильный номер:</p>
+            <div class="manager">
+                <div class="clear-both">
+                    <div class="column w-28">
+                        <p>{{ __('Менеджер') }}:</p>
+                    </div>
+                    <div class="column w-72">
+                        <p><b>{{ $manager->fullName }}</b></p>
+                    </div>
                 </div>
-                <div class="column w-72">
-                    <p><b>{{ $manager->fullName }}</b></p>
-                    <p>{{ $manager->email }}</p>
-                    <p>{{ $manager->phone }}</p>
+                <div class="clear-both">
+                    <div class="column w-28">
+                        <p>E-mail:</p>
+                    </div>
+                    <div class="column w-72">
+                        <p>{{ $manager->email }}</p>
+                    </div>
+                </div>
+                <div class="clear-both">
+                    <div class="column w-28">
+                        <p>{{ __('Мобильный номер') }}:</p>
+                    </div>
+                    <div class="column w-72">
+                        <p>{{ $manager->phone }}</p>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="column w-28 text-right">
-            <img class="mark" src="var:stamp" alt="mark">
+        <div class="column w-28 text-right footer-elements-fix-height">
+            <img class="mark footer-elements-fix-height" src="var:stamp_only" alt="mark">
         </div>
     </div>
 @endsection
