@@ -149,4 +149,9 @@ final class Order extends AbstractAggregateRoot implements EntityInterface
     {
         $this->externalId = $externalId;
     }
+
+    public function setClientPenalty(?Money $clientPenalty): void
+    {
+        $this->clientPenalty = $clientPenalty;
+    }
 }

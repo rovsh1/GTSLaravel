@@ -30,6 +30,11 @@ export interface UpdateExternalIdPayload {
   externalId?: string
 }
 
+export interface UpdatePenaltyPayload {
+  orderID: OrderID
+  clientPenalty?: number
+}
+
 export interface UpdateManagerPayload {
   orderID: OrderID
   managerId: number | `${number}`
@@ -92,6 +97,22 @@ export const updateExternalId = (props: MaybeRef<UpdateExternalIdPayload>) =>
         props,
         (payload: UpdateExternalIdPayload): any => ({
           externalId: payload.externalId,
+        }),
+      ),
+    )), 'application/json')
+    .json<BaseResponse>()
+
+export const updatePenalty = (props: MaybeRef<UpdatePenaltyPayload>) =>
+  useAdminAPI(
+    props,
+    ({ orderID }) => `/booking-order/${orderID}/penalty`,
+    { immediate: true },
+  )
+    .put(computed<string>(() => JSON.stringify(
+      getNullableRef<UpdatePenaltyPayload, any>(
+        props,
+        (payload: UpdatePenaltyPayload): any => ({
+          clientPenalty: payload.clientPenalty,
         }),
       ),
     )), 'application/json')

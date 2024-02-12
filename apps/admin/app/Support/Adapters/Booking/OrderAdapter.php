@@ -21,6 +21,7 @@ use Module\Booking\Moderation\Application\UseCase\Order\Guest\Add;
 use Module\Booking\Moderation\Application\UseCase\Order\Guest\Delete;
 use Module\Booking\Moderation\Application\UseCase\Order\Guest\Get;
 use Module\Booking\Moderation\Application\UseCase\Order\Guest\Update;
+use Module\Booking\Moderation\Application\UseCase\Order\UpdateClientPenalty;
 use Module\Booking\Moderation\Application\UseCase\Order\UpdateExternalId;
 use Module\Booking\Moderation\Application\UseCase\Order\UpdateNote;
 use Module\Booking\Moderation\Application\UseCase\Order\UpdateStatus;
@@ -136,5 +137,10 @@ class OrderAdapter
     public function updateExternalId(int $id, ?string $externalId): void
     {
         app(UpdateExternalId::class)->execute($id, $externalId);
+    }
+
+    public function updateClientPenalty(int $id, float|null $penalty): void
+    {
+        app(UpdateClientPenalty::class)->execute($id, $penalty);
     }
 }

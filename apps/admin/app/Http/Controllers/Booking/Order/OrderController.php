@@ -7,6 +7,7 @@ namespace App\Admin\Http\Controllers\Booking\Order;
 use App\Admin\Components\Factory\Prototype;
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Http\Requests\Order\SearchRequest;
+use App\Admin\Http\Requests\Order\UpdateClientPenaltyRequest;
 use App\Admin\Http\Requests\Order\UpdateExternalIdRequest;
 use App\Admin\Http\Requests\Order\UpdateNoteRequest;
 use App\Admin\Http\Requests\Order\UpdateStatusRequest;
@@ -192,6 +193,13 @@ class OrderController extends Controller
     public function updateExternalId(UpdateExternalIdRequest $request, int $id): AjaxResponseInterface
     {
         OrderAdapter::updateExternalId($id, $request->getExternalId());
+
+        return new AjaxSuccessResponse();
+    }
+
+    public function updateClientPenalty(UpdateClientPenaltyRequest $request, int $id): AjaxResponseInterface
+    {
+        OrderAdapter::updateClientPenalty($id, $request->getClientPenalty());
 
         return new AjaxSuccessResponse();
     }

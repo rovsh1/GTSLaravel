@@ -14,6 +14,7 @@ import {
   updateNote as executeUpdateNote,
   updateOrderStatus,
   UpdateOrderStatusPayload,
+  updatePenalty as executeUpdatePenalty,
   useGetOrderAPI,
 } from '~api/order'
 import { useGetOrderGuestsAPI } from '~api/order/guest'
@@ -108,6 +109,11 @@ export const useOrderStore = defineStore('booking-order', () => {
     isVoucherFetching.value = false
   }
 
+  const updatePenalty = async (clientPenalty?: number) => {
+    await executeUpdatePenalty({ orderID, clientPenalty })
+    refreshOrder()
+  }
+
   onMounted(() => {
     fetchOrder()
     fetchAvailableActions()
@@ -137,5 +143,6 @@ export const useOrderStore = defineStore('booking-order', () => {
     isVoucherFetching,
     createVoucher,
     sendVoucher,
+    updatePenalty,
   }
 })

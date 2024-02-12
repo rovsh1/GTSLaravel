@@ -15,6 +15,7 @@ AclRoute::for('booking-order')
 
     ->put('/{orderId}/note', Controllers\Booking\Order\OrderController::class . '@updateNote', 'update', 'note.update')
     ->put('/{orderId}/external-id', Controllers\Booking\Order\OrderController::class . '@updateExternalId', 'update', 'externalId.update')
+    ->put('/{orderId}/penalty', Controllers\Booking\Order\OrderController::class . '@updateClientPenalty', 'update', 'penalty.update')
 
     ->get('/{orderId}/guests', Controllers\Booking\Order\GuestController::class . '@list', 'read', 'guests.list')
     ->post('/{orderId}/guests/add', Controllers\Booking\Order\GuestController::class . '@addGuest', 'update', 'guests.add')
