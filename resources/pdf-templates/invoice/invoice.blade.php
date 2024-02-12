@@ -157,6 +157,10 @@
             page-break-after: avoid !important;
             orphans: 0;
         }
+
+        .footer-elements-fix-height {
+            height: 225px !important;
+        }
     </style>
 @endpush
 
@@ -423,15 +427,15 @@
                 <br/>
                 <br/>
                 <br/>
-                <div class="column w-50">
+                <div class="column w-50 footer-elements-fix-height">
                     <p>{{ __('Спасибо за сотрудничество.') }}</p>
                     <br/>
                     <br/>
                     <p>{{ $company->name }}</p>
                     <p>{{ __('Директор: :signer', ['signer' => $company->signer]) }}</p>
                 </div>
-                <div class="column w-50 text-center">
-                    <img style="margin-top: -50px" class="mark" src="var:stamp" alt="mark">
+                <div class="column w-50 text-center footer-elements-fix-height">
+                    <img style="margin-top: -50px" class="mark footer-elements-fix-height" src="var:stamp" alt="mark">
                 </div>
             </div>
             <div style="margin-top: -10px;">
