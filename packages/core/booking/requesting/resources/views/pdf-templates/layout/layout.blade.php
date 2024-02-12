@@ -96,10 +96,6 @@
             margin-bottom: 10px;
         }
 
-        .document-footer {
-            page-break-inside: avoid !important;
-        }
-
         .document-footer .mark {
             width: 150px;
         }
@@ -187,7 +183,6 @@
         }
 
         .service-title {
-            page-break-after: avoid !important;
             orphans: 0;
         }
     </style>
