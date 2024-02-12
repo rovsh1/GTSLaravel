@@ -116,12 +116,12 @@
         }
 
         .document-header .document-header__right .document-header-title {
-            font-size: 26px !important;
+            font-size: 22px !important;
         }
 
         .document-wrapper .document-content .document-content-header p b,
         .document-wrapper .document-content .document-content-header p {
-            font-size: 24px !important;
+            font-size: 20px !important;
         }
 
         .document-wrapper .cancelled {
@@ -185,6 +185,11 @@
         .service-title {
             orphans: 0;
         }
+
+        .footer-elements-fix-height {
+            height: 150px !important;
+        }
+
     </style>
 </head>
 
