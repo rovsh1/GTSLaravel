@@ -24,6 +24,13 @@ function site_url($path = ''): string
     return \Str::finish($baseUrl, '/') . trim($path, '/');
 }
 
+function ho_url($path = ''): string
+{
+    $baseUrl = env('HO_URL');
+
+    return \Str::finish($baseUrl, '/') . trim($path, '/');
+}
+
 function api_path($path = ''): string
 {
     return app('path.api') . ($path ? DIRECTORY_SEPARATOR . $path : '');

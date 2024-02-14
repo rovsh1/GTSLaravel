@@ -8,8 +8,8 @@ use Pkg\Booking\Requesting\Domain\Adapter\HotelAdapterInterface;
 use Pkg\Booking\Requesting\Domain\Adapter\SupplierAdapterInterface;
 use Pkg\Booking\Requesting\Domain\Event\BookingRequestEventInterface;
 use Pkg\Booking\Requesting\Domain\Repository\RequestRepositoryInterface;
+use Pkg\Booking\Requesting\Service\MailGenerator;
 use Sdk\Booking\Entity\Details\HotelBooking;
-use Sdk\Booking\Enum\RequestTypeEnum;
 use Sdk\Module\Contracts\Event\DomainEventInterface;
 use Sdk\Module\Contracts\Event\DomainEventListenerInterface;
 use Sdk\Shared\Dto\Mail\AttachmentDto;
@@ -25,6 +25,7 @@ class SendMailNotificationsListener implements DomainEventListenerInterface
         private readonly HotelAdapterInterface $hotelAdapter,
         private readonly SupplierAdapterInterface $supplierAdapter,
         private readonly AdministratorAdapterInterface $administratorAdapter,
+        private readonly MailGenerator $mailGenerator,
         private readonly MailAdapterInterface $mailAdapter,
     ) {}
 
@@ -46,7 +47,7 @@ class SendMailNotificationsListener implements DomainEventListenerInterface
         }
 
         $administrator = $this->administratorAdapter->getManagerByBookingId($event->bookingId()->value());
-        if(!empty($administrator?->email) && $this->isValidEmail($administrator->email)){
+        if (!empty($administrator?->email) && $this->isValidEmail($administrator->email)) {
             $emails[] = $administrator->email;
         }
 
@@ -61,26 +62,17 @@ class SendMailNotificationsListener implements DomainEventListenerInterface
             return;
         }
 
-        $subject = $this->getSubject($request->type());
+        $subject = $this->mailGenerator->getSubject($request);
+        $body = $this->mailGenerator->generate($request);
         $attachments = [new AttachmentDto($request->file()->guid())];
         foreach ($emails as $email) {
-            //@todo получить пример письма запроса от Анвара
             $this->mailAdapter->sendTo(
                 $email,
                 $subject,
-                'Запрос',
+                $body,
                 $attachments,
             );
         }
-    }
-
-    private function getSubject(RequestTypeEnum $type): string
-    {
-        return match ($type) {
-            RequestTypeEnum::BOOKING => __('Запрос на бронирование'),
-            RequestTypeEnum::CHANGE => __('Запрос на изменение'),
-            RequestTypeEnum::CANCEL => __('Запрос на отмену'),
-        };
     }
 
     private function isValidEmail(?string $email): bool

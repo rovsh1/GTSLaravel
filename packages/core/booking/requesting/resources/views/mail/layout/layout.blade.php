@@ -151,9 +151,6 @@
 </head>
 
 <body>
-  
-</body>
-<body>
   <div class="mail-container">
     <div class="mail-row">
       <div class="mail-header">

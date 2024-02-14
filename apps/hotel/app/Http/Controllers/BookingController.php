@@ -184,7 +184,11 @@ class BookingController extends AbstractHotelController
             ->id('id', [
                 'text' => '№',
                 'order' => true,
-                'route' => fn($r) => route('booking.show', $r),
+                'renderer' => function ($row, $val) {
+                    $bookingUrl = route('booking.show', $row['id']);
+
+                    return "<a href='{$bookingUrl}'>{$row['id']}</a>";
+                }
             ])
             ->text('date_start', [
                 'text' => 'Заезд - выезд',

@@ -72,6 +72,7 @@ class TransferBookingDataFactory
                     $bookingPeriodDto?->countDays
                 ),
                 $detailOptions,
+                $bookingDetails->serviceDate(),
                 $bookingPeriodDto,
             ),
         };
