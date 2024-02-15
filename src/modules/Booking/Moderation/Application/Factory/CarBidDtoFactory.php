@@ -13,6 +13,7 @@ use Module\Supplier\Moderation\Application\Dto\CarDto;
 use Sdk\Booking\Contracts\Entity\TransferDetailsInterface;
 use Sdk\Booking\Entity\CarBid;
 use Sdk\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\BookingPeriod;
 use Sdk\Shared\Contracts\Service\TranslatorInterface;
 use Sdk\Shared\Dto\CurrencyDto;
 
@@ -38,10 +39,12 @@ class CarBidDtoFactory
     {
         $carBids = $this->carBidDbContext->getByBookingId($details->bookingId());
 
+        $bookingPeriod = method_exists($details, 'bookingPeriod') ? $details->bookingPeriod() : null;
+
         return $carBids->map(fn(CarBid $carBid) => new CarBidDto(
             id: $carBid->id()->value(),
             carInfo: $this->getSupplierCar($details->serviceInfo()->supplierId(), $carBid->carId()->value()),
-            prices: $this->buildPricesDto($carBid),
+            prices: $this->buildPricesDto($carBid, $bookingPeriod),
             carsCount: $carBid->details()->carsCount(),
             passengersCount: $carBid->details()->passengersCount(),
             baggageCount: $carBid->details()->baggageCount(),
@@ -50,21 +53,26 @@ class CarBidDtoFactory
         ));
     }
 
-    private function buildPricesDto(CarBid $carBid): CarBidPricesDto
+    private function buildPricesDto(CarBid $carBid, ?BookingPeriod $bookingPeriod): CarBidPricesDto
     {
         $supplierPrice = $carBid->prices()->supplierPrice();
         $clientPrice = $carBid->prices()->clientPrice();
+        $daysCount = $bookingPeriod?->daysCount() ?? 1;
+        $supplierTotalAmount = ($supplierPrice->manualValuePerCar() ?? $supplierPrice->valuePerCar()) * $carBid->details()->carsCount() * $daysCount;
+        $clientTotalAmount = ($clientPrice->manualValuePerCar() ?? $clientPrice->valuePerCar()) * $carBid->details()->carsCount() * $daysCount;
 
         return new CarBidPricesDto(
             supplierPrice: new CarBidPriceItemDto(
                 currency: CurrencyDto::fromEnum($supplierPrice->currency(), $this->translator),
                 valuePerCar: $supplierPrice->valuePerCar(),
-                manualValuePerCar: $supplierPrice->manualValuePerCar()
+                manualValuePerCar: $supplierPrice->manualValuePerCar(),
+                totalAmount: $supplierTotalAmount
             ),
             clientPrice: new CarBidPriceItemDto(
                 currency: CurrencyDto::fromEnum($clientPrice->currency(), $this->translator),
                 valuePerCar: $clientPrice->valuePerCar(),
-                manualValuePerCar: $clientPrice->manualValuePerCar()
+                manualValuePerCar: $clientPrice->manualValuePerCar(),
+                totalAmount: $clientTotalAmount,
             ),
         );
     }

@@ -27,7 +27,8 @@ class OrderDbContext implements OrderDbContextInterface
         ClientId $clientId,
         CurrencyEnum $currency,
         CreatorId $creatorId,
-        ?int $legalId = null
+        ?int $legalId = null,
+        ?string $note = null
     ): Order {
         $model = Model::create([
             'status' => OrderStatusEnum::IN_PROGRESS,
@@ -36,6 +37,7 @@ class OrderDbContext implements OrderDbContextInterface
             'currency' => $currency,
             'source' => $this->context->source(),
             'creator_id' => $creatorId->value(),
+            'note' => $note,
         ]);
 
         return $this->orderMapper->fromModel($model);
@@ -83,7 +85,9 @@ class OrderDbContext implements OrderDbContextInterface
             'legal_id' => $order->legalId()?->value(),
             'currency' => $order->currency(),
             'voucher' => $order->voucher()?->serialize(),
-            'manual_client_penalty' => $order->clientPenalty()?->value()
+            'manual_client_penalty' => $order->clientPenalty()?->value(),
+            'note' => $order->note(),
+            'external_id' => $order->externalId(),
         ]);
     }
 

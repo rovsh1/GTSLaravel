@@ -46,10 +46,10 @@ class StatusUpdater
                 break;
             case OrderStatusEnum::REFUND_FEE:
                 $this->ensureAllBookingsCancelled($order);
-                if ($refundFeeAmount === null) {
+                if ($refundFeeAmount === null && (bool)$order->clientPenalty()?->isZero()) {
                     throw new RefundFeeAmountBelowOrEqualZero();
                 }
-                $order->toRefundFee($refundFeeAmount);
+                $order->toRefundFee((float)$refundFeeAmount);
                 break;
             case OrderStatusEnum::REFUND_NO_FEE:
                 $this->ensureAllBookingsCancelled($order);

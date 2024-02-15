@@ -62,7 +62,9 @@ class OrderMapper
             new Timestamps(
                 createdAt: $model->created_at->toImmutable(),
                 updatedAt: $model->updated_at->toImmutable(),
-            )
+            ),
+            $model->note,
+            $model->external_id,
         );
     }
 

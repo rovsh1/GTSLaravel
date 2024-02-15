@@ -4,8 +4,7 @@ namespace Sdk\Booking\ValueObject;
 
 use Carbon\CarbonPeriod;
 use Carbon\CarbonPeriodImmutable;
-use DateTimeImmutable;
-use DateTimeInterface;
+use Sdk\Module\Support\DateTimeImmutable;
 use Sdk\Shared\Contracts\Support\CanEquate;
 use Sdk\Shared\Contracts\Support\SerializableInterface;
 use Sdk\Shared\Support\DateTimeImmutableFactory;
@@ -15,8 +14,8 @@ final class BookingPeriod implements CanEquate, SerializableInterface
     private int $daysCount;
 
     public function __construct(
-        private readonly DateTimeInterface $dateFrom,
-        private readonly DateTimeInterface $dateTo,
+        private readonly DateTimeImmutable $dateFrom,
+        private readonly DateTimeImmutable $dateTo,
     ) {
         $calculatedDaysCount = CarbonPeriod::create($dateFrom, $dateTo, 'P1D')->count();
         if ($calculatedDaysCount > 1) {
@@ -29,17 +28,25 @@ final class BookingPeriod implements CanEquate, SerializableInterface
     public static function fromCarbon(CarbonPeriod|CarbonPeriodImmutable $period): static
     {
         return new static(
-            DateTimeImmutable::createFromFormat('U', $period->getStartDate()->getTimestamp()),
-            DateTimeImmutable::createFromFormat('U', $period->getEndDate()->getTimestamp()),
+            DateTimeImmutableFactory::createFromTimestamp($period->getStartDate()->getTimestamp()),
+            DateTimeImmutableFactory::createFromTimestamp($period->getEndDate()->getTimestamp()),
         );
     }
 
-    public function dateFrom(): DateTimeInterface
+    public static function createFromInterface(\DateTimeInterface $dateFrom, \DateTimeInterface $dateTo): static
+    {
+        return new static(
+            DateTimeImmutableFactory::createFromTimestamp($dateFrom->getTimestamp()),
+            DateTimeImmutableFactory::createFromTimestamp($dateTo->getTimestamp()),
+        );
+    }
+
+    public function dateFrom(): DateTimeImmutable
     {
         return $this->dateFrom;
     }
 
-    public function dateTo(): DateTimeInterface
+    public function dateTo(): DateTimeImmutable
     {
         return $this->dateTo;
     }

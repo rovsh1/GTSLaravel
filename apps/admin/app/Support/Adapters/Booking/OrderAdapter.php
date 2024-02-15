@@ -21,6 +21,9 @@ use Module\Booking\Moderation\Application\UseCase\Order\Guest\Add;
 use Module\Booking\Moderation\Application\UseCase\Order\Guest\Delete;
 use Module\Booking\Moderation\Application\UseCase\Order\Guest\Get;
 use Module\Booking\Moderation\Application\UseCase\Order\Guest\Update;
+use Module\Booking\Moderation\Application\UseCase\Order\UpdateClientPenalty;
+use Module\Booking\Moderation\Application\UseCase\Order\UpdateExternalId;
+use Module\Booking\Moderation\Application\UseCase\Order\UpdateNote;
 use Module\Booking\Moderation\Application\UseCase\Order\UpdateStatus;
 use Sdk\Shared\Enum\CurrencyEnum;
 
@@ -111,7 +114,8 @@ class OrderAdapter
         int|null $legalId,
         CurrencyEnum $currency,
         int $managerId,
-        int $creatorId
+        int $creatorId,
+        ?string $note = null
     ): int {
         return app(CreateOrder::class)->execute(
             new CreateOrderRequestDto(
@@ -119,8 +123,24 @@ class OrderAdapter
                 $legalId,
                 $currency,
                 $managerId,
-                $creatorId
+                $creatorId,
+                $note
             )
         );
+    }
+
+    public function updateNote(int $id, ?string $note): void
+    {
+        app(UpdateNote::class)->execute($id, $note);
+    }
+
+    public function updateExternalId(int $id, ?string $externalId): void
+    {
+        app(UpdateExternalId::class)->execute($id, $externalId);
+    }
+
+    public function updateClientPenalty(int $id, float|null $penalty): void
+    {
+        app(UpdateClientPenalty::class)->execute($id, $penalty);
     }
 }

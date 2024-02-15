@@ -2,6 +2,8 @@
 
 namespace App\Admin\Http\Controllers\Hotel;
 
+use App\Admin\Exceptions\InvalidPointCoordinates;
+use App\Admin\Exceptions\InvalidZipcode;
 use App\Admin\Http\Requests\Hotel\SearchRequest;
 use App\Admin\Http\Requests\Hotel\UpdateSettingsRequest;
 use App\Admin\Http\Resources\Hotel as HotelResource;
@@ -32,9 +34,8 @@ use App\Shared\Http\Responses\AjaxSuccessResponse;
 use Gsdk\Format\View\ParamsTable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Sdk\Shared\Enum\Hotel\RatingEnum;
 use Sdk\Shared\Enum\Hotel\StatusEnum;
 use Sdk\Shared\Enum\Hotel\VisibilityEnum;
 
@@ -65,9 +66,35 @@ class HotelController extends AbstractPrototypeController
             ]);
     }
 
+    public function update(int $id): RedirectResponse
+    {
+        try {
+            return parent::update($id);
+        } catch (InvalidPointCoordinates) {
+            $this->form()->error('Указаны некорректные координаты.');
+            $this->form()->throwError();
+        } catch (InvalidZipcode) {
+            $this->form()->error('Указан некорректный индекс.');
+            $this->form()->throwError();
+        }
+    }
+
     public function create(): LayoutContract
     {
         return parent::create()->view($this->prototype->view('form'));
+    }
+
+    public function store(): RedirectResponse
+    {
+        try {
+            return parent::store();
+        } catch (InvalidPointCoordinates) {
+            $this->form()->error('Указаны некорректные координаты.');
+            $this->form()->throwError();
+        } catch (InvalidZipcode) {
+            $this->form()->error('Указан некорректный индекс.');
+            $this->form()->throwError();
+        }
     }
 
     public function get(Request $request, Hotel $hotel): JsonResponse
@@ -227,8 +254,19 @@ class HotelController extends AbstractPrototypeController
         $from = new Point($city->center_lat, $city->center_lon);
         $to = Point::buildFromCoordinates($data['coordinates']);
         $preparedData['city_distance'] = $this->distanceCalculator->getDistance($from, $to);
+        $this->validateZipCode($data['zipcode']);
 
         return $preparedData;
+    }
+
+    private function validateZipCode(?string $zipCode): void
+    {
+        if (empty($zipCode)) {
+            return;
+        }
+        if (!is_numeric($zipCode) || strlen($zipCode) > 6) {
+            throw new InvalidZipcode();
+        }
     }
 
     private function searchForm(): FormContract

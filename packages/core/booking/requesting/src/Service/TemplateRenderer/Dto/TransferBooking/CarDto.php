@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Pkg\Booking\Requesting\Service\TemplateRenderer\Dto\TransferBooking;
 
+use Pkg\Booking\Requesting\Service\TemplateRenderer\Dto\GuestDto;
+
 class CarDto
 {
     public function __construct(
@@ -14,5 +16,7 @@ class CarDto
         public readonly int $baggageCount,
         public readonly int $babyCount,
         public readonly CarPriceDto $supplierPrice,
+        /** @var GuestDto[] */
+        public readonly array $guests,
     ) {}
 }

@@ -56,7 +56,7 @@ export const updateRoomBookingPrice = (props: MaybeRef<UpdateRoomBookingPricePay
         }),
       ),
     )), 'application/json')
-    .json<UpdateBookingStatusResponse>()
+    .json<BaseResponse>()
 
 export const useRecalculateBookingPriceAPI = (props: MaybeRef<UpdateBookingPricePayload | null>) =>
   useAdminAPI(props, ({ bookingID }) =>

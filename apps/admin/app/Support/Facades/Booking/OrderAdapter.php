@@ -23,7 +23,10 @@ use Sdk\Shared\Enum\CurrencyEnum;
  * @method static OrderAvailableActionsDto getAvailableActions(int $orderId)
  * @method static OrderBookingDto[] getBookings(int $orderId)
  * @method static OrderUpdateStatusResponseDto updateStatus(int $orderId, int $status, float|null $refundFeeAmount)
- * @method static int create(int $clientId, int|null $legalId, CurrencyEnum $currency, int $managerId, int $creatorId)
+ * @method static int create(int $clientId, int|null $legalId, CurrencyEnum $currency, int $managerId, int $creatorId, string|null $note = null)
+ * @method static void updateNote(int $id, string|null $note)
+ * @method static void updateExternalId(int $id, string|null $externalId)
+ * @method static void updateClientPenalty(int $id, float|null $penalty)
  **/
 class OrderAdapter extends Facade
 {

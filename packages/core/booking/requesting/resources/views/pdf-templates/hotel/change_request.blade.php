@@ -1,121 +1,95 @@
-@extends('BookingShared::layout.layout')
+@extends('BookingRequesting::pdf-templates.layout.layout')
 
-@push('css')
-    <style>
-        body {
-            font-size: 1.45em;
-            font-family: Arial, Helvetica, sans-serif;
-        }
-    </style>
-@endpush
+@section('header')
+    <div class="column document-header__left">
+        <img src="var:logo" alt="logo">
+    </div>
+    <div class="column document-header__right">
+        <p class="document-header-title"><b>ИЗМЕНЕНИЕ БРОНИРОВАНИЯ</b></p>
+        <p class="document-header-title"><b>#{{ $booking->number }}</b></p>
+        <p class="document-header-description">Дата создания: {{ $booking->createdAt }}</p>
+        <br/>
+        <p class="document-header-description"><b>{{ $company->name }}</b></p>
+        <p class="document-header-description">{{ $company->phone }}</p>
+        <p class="document-header-description"><a href="mailto:{{ $company->email }}">{{ $company->email }}</a></p>
+        <p class="document-header-description">{{ $company->legalAddress }}</p>
+    </div>
+@endsection
 
 @section('content')
-    <table>
-        <tbody>
-        @include('BookingShared::_partials.company_requisites_header')
-        <tr>
-            <td class="title text-align-center" colspan="2">ИЗМЕНЕНИЕ БРОНИРОВАНИЯ</td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <table>
-                    <tbody>
-                    <tr>
-                        <td>
-                            <table>
-                                <tr>
-                                    <td class="top-table-left" style="font-size: 24px; font-weight: bold; color: red">
-                                        Номер (ID):
-                                    </td>
-                                    <td style="font-size: 24px; font-weight: bold; color: red">{{ $booking->number }}</td>
-                                    <td class="text-align-right" colspan="2">
-                                        <b>Дата и время изменения: {{ $booking->updatedAt }}</b>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>&ensp;</td>
-                                    <td>&ensp;</td>
-                                    <td class="text-align-right" colspan="2">
-                                        <b>Дата и время создания: {{ $booking->createdAt }}</b>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="top-table-left">Гостиница:</td>
-                                    <td>
-                                        <b>{{ $hotel->name }} ({{ $hotel->city }})</b>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="top-table-left">Телефон:</td>
-                                    <td>
-                                        <b>{{ $hotel->phone }}</b>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="top-table-left">Период пребывания:</td>
-                                    <td>
-                                        @changemark('period')
-                                        <b>{{ $bookingPeriod->startDate }}</b> - <b>{{ $bookingPeriod->endDate }}</b>
-                                        @endchangemark
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="top-table-left">Количество ночей:</td>
-                                    <td>
-                                        @changemark('period')
-                                        <b>{{ $bookingPeriod->nightsCount }}</b>
-                                        @endchangemark
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2" style="padding-top: 20px;">
-                <table>
-                    <thead>
-                    <tr>
-                        <th class="text-align-center">№</th>
-                        <th class="text-align-left">Информация о размещении</th>
-                    </tr>
-                    </thead>
-                    <tbody>
+    <div class="document-content-header text-center">
+        <p><b class="changed">ПРОСИМ ВНЕСТИ ИЗМЕНЕНИЯ В БРОНИРОВАНИЕ</b></p>
+    </div>
+    <div class="client-info ">
+        <p><b class="fs-big">Отель: <span>{{ $hotel->name }} ({{ $hotel->city }})</span></b></p>
+        <p class="mb-default">Телефон: <span>{{ $hotel->phone }}</span></p>
+    </div>
+    <div class="service-item">
+        <div class="service-title clear-both">
+            <div class="column w-72">
+                <b>Информация о размещении</b>
+            </div>
+            <div class="column w-28 text-right"><b>Итого стоимость</b></div>
+        </div>
+    </div>
 
-                    @include('BookingRequesting::pdf-templates.hotel._partials.rooms')
+    @include('BookingRequesting::pdf-templates.hotel._partials.rooms')
 
-                    <tr class="first">
-                        <td colspan="3">
-                            <p style="text-align: justify"><b>Внимание!</b> Компания гарантирует оплату за количество
-                                ночей и услуги указанные в заявке,
-                                в случае раннего заезда / позднего выезда и прочих дополнительных услуг не указанных в
-                                заявке компания не несет ответственности и отель обязуется сам взимать оплату с гостя по
-                                своим расценкам.</p>
-                            <p style="text-align: justify"><b>Информация для отеля!</b> Убедительно, просим Вас в день
-                                выезда гостей, выставить счет-фактуры на сайте https://my.soliq.uz</p>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <table>
-                    <tbody>
-                    <tr>
-                        <td style="width: 500px;">
-                            @include('BookingShared::_partials.manager_requisites')
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </td>
-            <td class="text-align-right" style="width: 250px"><img src="var:stamp" alt="" width="250"/></td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="total-amount clear-both">
+        <div class="column w-50">
+            <p><b>ИТОГО К ОПЛАТЕ</b></p>
+        </div>
+        <div class="column w-50 text-right">
+            <p><b>{{ Format::number($booking->supplierPrice->amount) }} {{ $booking->supplierPrice->currency }}</b></p>
+        </div>
+    </div>
+    <div class="note">
+        <i><b>Важное примечание:</b> Компания ООО «GOTOSTANS» гарантирует оплату только за количество ночей и
+            услуги, указанные в форме данной заявки. В случае раннего заезда / позднего выезда и прочих
+            дополнительных услуг, не указанных в заявке компания не несет ответственности и отель обязуется
+            взимать оплату с гостя по своим расценкам.</i>
+    </div>
+    <div class="note">
+        <i><b>Информация для бухгалтерии отеля:</b> Убедительно, просим Вас в день выезда гостей, выставить
+            счет-фактуры на сайте <a href="https://my.soliq.uz">https://my.soliq.uz</a></i>
+    </div>
+@endsection
+
+@section('footer')
+    <div class="clear-both">
+        <br/>
+        <div class="column w-72 footer-elements-fix-height">
+            <p>Спасибо за сотрудничество.</p>
+            <br/>
+            <div class="manager">
+                <div class="clear-both">
+                    <div class="column w-28">
+                        <p>{{ __('Менеджер') }}:</p>
+                    </div>
+                    <div class="column w-72">
+                        <p><b>{{ $manager->fullName }}</b></p>
+                    </div>
+                </div>
+                <div class="clear-both">
+                    <div class="column w-28">
+                        <p>E-mail:</p>
+                    </div>
+                    <div class="column w-72">
+                        <p>{{ $manager->email }}</p>
+                    </div>
+                </div>
+                <div class="clear-both">
+                    <div class="column w-28">
+                        <p>{{ __('Мобильный номер') }}:</p>
+                    </div>
+                    <div class="column w-72">
+                        <p>{{ $manager->phone }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="column w-28 text-right footer-elements-fix-height">
+            <img class="mark footer-elements-fix-height" src="var:stamp_only" alt="mark">
+        </div>
+    </div>
 @endsection

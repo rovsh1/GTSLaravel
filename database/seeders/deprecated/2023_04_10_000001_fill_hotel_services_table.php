@@ -1,17 +1,18 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
     public function up()
     {
-        $t = DB::connection('mysql_old')->getDatabaseName() . '.hotel_services';
         DB::unprepared(
             'INSERT INTO hotel_services (hotel_id, service_id,is_paid)'
             . ' SELECT hotel_id, service_id,pay'
-            . ' FROM ' . $t
-            . ' WHERE ' . $t . '.hotel_id IN (SELECT id FROM hotels)'
+            . ' FROM ' . DB::connection('mysql_old')->getDatabaseName() . '.hotel_services'
+            . ' WHERE EXISTS(SELECT 1 FROM ' . DB::connection()->getDatabaseName() . '.hotels WHERE hotel_id = hotels.id)'
         );
     }
 

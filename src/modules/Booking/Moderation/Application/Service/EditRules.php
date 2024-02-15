@@ -77,7 +77,7 @@ final class EditRules
 
     public function canEditClientPrice(): bool
     {
-        return $this->isOtherService() || $this->booking->serviceType()->isAirportService();
+        return $this->order->inModeration();
     }
 
     /**
@@ -86,7 +86,7 @@ final class EditRules
     public function getAvailableStatusTransitions(): array
     {
         $statusTransitions = $this->statusTransitionsFactory->build($this->booking->serviceType());
-        if (!$this->order->inModeration() && !$this->booking->isWaitingCancellation()) {
+        if (!$this->order->inModeration() && !$this->booking->isWaitingCancellation() && !($this->isOtherService() && $this->booking->isConfirmed())) {
             return [];
         }
 

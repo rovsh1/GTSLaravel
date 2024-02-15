@@ -93,15 +93,18 @@ export interface ShowCancelFeeDialogResponse extends ShowDialogResponse {
 }
 
 export interface CancelFeeDialogOptions {
+  cancelFeeAmount?: number
   withClientCancelFee?: boolean
-  clientCancelFeeCurrencyLabel?: string
   cancelFeeCurrencyLabel: string
+  isRequired?: boolean
+  clientCancelFeeCurrencyLabel?: string
 }
 
 export const showCancelFeeDialog = (options: CancelFeeDialogOptions): Promise<ShowCancelFeeDialogResponse> => new Promise((resolve): void => {
   let clientCancelFeeAmount: number = 0
-  let cancelFeeAmount: number = 0
+  let cancelFeeAmount: number = options.cancelFeeAmount || 0
   let $clientReasonDescriptionField = null
+  const isRequired = options.isRequired !== undefined ? options.isRequired : true
   const $form = $('<form />', { method: 'post' })
 
   const $descriptionElement = $('<input />', {
@@ -109,11 +112,16 @@ export const showCancelFeeDialog = (options: CancelFeeDialogOptions): Promise<Sh
     class: 'form-control',
     type: 'number',
     min: 0,
-    required: true,
+    required: isRequired,
+    value: cancelFeeAmount > 0 ? cancelFeeAmount : undefined,
   }).on('input', (e) => {
     cancelFeeAmount = Number($(e.target).val())
   })
-  const $reasonDescriptionField = $('<div />', { class: 'row form-field field-text field-value field-required' })
+  let fieldClasses = 'row form-field field-text field-value'
+  if (isRequired) {
+    fieldClasses += ' field-required'
+  }
+  const $reasonDescriptionField = $('<div />', { class: fieldClasses })
     .append(`<label for="form_data_penalty_net" class="${options.withClientCancelFee ? 'col-sm-12' : 'col-sm-5'} 
     col-form-label">Сумма штрафа в ${options.cancelFeeCurrencyLabel}</label>`)
     .append(

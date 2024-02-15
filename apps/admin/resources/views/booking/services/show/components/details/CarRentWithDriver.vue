@@ -11,7 +11,7 @@ import EditableDateRangeInput from '~components/Editable/EditableDateRangeInput.
 import EditableTextInput from '~components/Editable/EditableTextInput.vue'
 import EditableTimeInput from '~components/Editable/EditableTimeInput.vue'
 
-import { parseAPIDateAndSetDefaultTime } from '~helpers/date'
+import { formatDateTimeToAPIDateTime, parseAPIDateAndSetDefaultTime } from '~helpers/date'
 
 const bookingStore = useBookingStore()
 
@@ -26,8 +26,8 @@ const handleChangeDetails = async (field: string, value: any) => {
 const handleChangeTimeForPeriod = async (field: string, value: any) => {
   if (!bookingDetails.value?.bookingPeriod?.dateFrom || !bookingDetails.value?.bookingPeriod?.dateTo) return
   await bookingStore.updateDetails(field, {
-    dateFrom: `${parseAPIDateAndSetDefaultTime(bookingDetails.value.bookingPeriod.dateFrom).toFormat('yyyy-LL-dd')} ${value}`,
-    dateTo: `${parseAPIDateAndSetDefaultTime(bookingDetails.value.bookingPeriod.dateTo).toFormat('yyyy-LL-dd')} ${value}`,
+    dateFrom: formatDateTimeToAPIDateTime(`${parseAPIDateAndSetDefaultTime(bookingDetails.value.bookingPeriod.dateFrom).toFormat('yyyy-LL-dd')} ${value}`),
+    dateTo: formatDateTimeToAPIDateTime(`${parseAPIDateAndSetDefaultTime(bookingDetails.value.bookingPeriod.dateTo).toFormat('yyyy-LL-dd')} ${value}`),
   })
 }
 

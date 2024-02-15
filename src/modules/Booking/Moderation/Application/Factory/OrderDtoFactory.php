@@ -50,6 +50,8 @@ class OrderDtoFactory
             $entity->context()->source(),
             $voucherDto,
             $entity->period() !== null ? OrderPeriodDto::fromDomain($entity->period()) : null,
+            $entity->note(),
+            $entity->externalId(),
         );
     }
 

@@ -9,10 +9,12 @@ import { useGetOrderBookingsAPI } from '~resources/vue/api/order/booking'
 
 import {
   copyOrder,
+  updateExternalId as executeUpdateExternalId,
   updateManager as executeUpdateManager,
   updateNote as executeUpdateNote,
   updateOrderStatus,
   UpdateOrderStatusPayload,
+  updatePenalty as executeUpdatePenalty,
   useGetOrderAPI,
 } from '~api/order'
 import { useGetOrderGuestsAPI } from '~api/order/guest'
@@ -78,6 +80,11 @@ export const useOrderStore = defineStore('booking-order', () => {
     fetchOrder()
   }
 
+  const updateExternalId = async (externalId?: string) => {
+    await executeUpdateExternalId({ orderID, externalId })
+    fetchOrder()
+  }
+
   const updateManager = async (managerId: number) => {
     await executeUpdateManager({ orderID, managerId })
     bookingManagerId.value = Number(managerId)
@@ -100,6 +107,11 @@ export const useOrderStore = defineStore('booking-order', () => {
     }
     refreshOrder()
     isVoucherFetching.value = false
+  }
+
+  const updatePenalty = async (clientPenalty?: number) => {
+    await executeUpdatePenalty({ orderID, clientPenalty })
+    refreshOrder()
   }
 
   onMounted(() => {
@@ -126,9 +138,11 @@ export const useOrderStore = defineStore('booking-order', () => {
     changeStatus,
     copy,
     updateNote,
+    updateExternalId,
     updateManager,
     isVoucherFetching,
     createVoucher,
     sendVoucher,
+    updatePenalty,
   }
 })

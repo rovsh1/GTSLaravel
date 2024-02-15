@@ -5,7 +5,7 @@ import { MaybeRef } from '@vueuse/core'
 import { getNullableRef } from '~resources/vue/vue'
 
 import { BaseResponse, useAdminAPI } from '~api'
-import { BaseBooking, BookingID } from '~api/booking/models'
+import { BaseBooking, BookingID, CurrencyDto } from '~api/booking/models'
 import { Car } from '~api/supplier/cars'
 
 export type ServiceType = {
@@ -27,6 +27,18 @@ export type ServiceInfo = ServiceType & {
   supplierId: number
 }
 
+export type CarPriceItem = {
+  valuePerCar: number
+  manualValuePerCar: number | null
+  currency: CurrencyDto
+  totalAmount: number
+}
+
+export type CarPrices = {
+  supplierPrice: CarPriceItem
+  clientPrice: CarPriceItem
+}
+
 export type CarBid = {
   id: number
   carInfo: Car
@@ -35,6 +47,7 @@ export type CarBid = {
   baggageCount: number
   babyCount: number
   guestIds: number[]
+  prices: CarPrices
 }
 
 export interface BookingDetailsType {

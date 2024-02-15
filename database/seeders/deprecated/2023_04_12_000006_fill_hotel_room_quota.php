@@ -13,7 +13,6 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        $t = DB::connection('mysql_old')->getDatabaseName() . '.hotel_room_quotes';
         DB::unprepared(
             'INSERT INTO hotel_room_quota (room_id,`date`, release_days, count_total, status)'
             . ' SELECT room_id,`date`, period, count_available,'
@@ -22,8 +21,8 @@ return new class extends Migration {
             . ' THEN ' . QuotaStatusEnum::CLOSE->value
             . ' ELSE ' . QuotaStatusEnum::OPEN->value
             . ' END AS status'
-            . ' FROM ' . $t
-            . ' WHERE ' . $t . '.room_id IN (SELECT id FROM hotel_rooms)'
+            . ' FROM ' . DB::connection('mysql_old')->getDatabaseName() . '.hotel_room_quotes'
+            . ' WHERE EXISTS(SELECT 1 FROM ' . DB::connection()->getDatabaseName() . '.hotel_rooms WHERE room_id = hotel_rooms.id)'
         );
 //        $q = DB::connection('mysql_old')->table('hotel_room_quotes')
 //            ->where('date', '=>', now()->modify('-1 month')->format('Y-m-d'));

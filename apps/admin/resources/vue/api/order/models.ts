@@ -44,4 +44,5 @@ export type BaseOrder = {
   clientPrice: OrderPrice
   clientPenalty: OrderPrice | null
   note?: string | null
+  externalId?: string | null
 }

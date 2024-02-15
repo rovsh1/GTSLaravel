@@ -1,3 +1,4 @@
+import Cleave from 'cleave.js'
 import { Litepicker } from 'litepicker'
 import { ILPConfiguration } from 'litepicker/dist/types/interfaces'
 import { DateTime } from 'luxon'
@@ -68,6 +69,12 @@ export const useDatePicker = (elementOption: HTMLInputElement, options?: Options
       format: stringifyFormat,
       ...options,
     })
+    new Cleave(element, {
+      delimiters: ['.', '.'],
+      blocks: [2, 2, 4],
+      numericOnly: true,
+      uppercase: false,
+    })
   } else {
     picker = new Litepicker({
       element,
@@ -86,6 +93,12 @@ export const useDatePicker = (elementOption: HTMLInputElement, options?: Options
       },
       ...options,
     })
+    new Cleave(element, {
+      delimiters: ['.', '.', dateRangeDelimiter, '.', '.'],
+      blocks: [2, 2, 4, 2, 2, 4],
+      numericOnly: true,
+      uppercase: false,
+    })
   }
 
   picker.on('render', (ui: HTMLDivElement) => {
@@ -99,7 +112,7 @@ export const useDatePicker = (elementOption: HTMLInputElement, options?: Options
     element?.dispatchEvent(customChangeEvent)
     const { lockDays, minDate, maxDate } = picker.options
     const startDate = DateTime.fromJSDate(date1.dateInstance)
-    const endDate = DateTime.fromJSDate(date2.dateInstance)
+    const endDate = DateTime.fromJSDate(options?.singleMode ? date1.dateInstance : date2.dateInstance)
     const selectedPeriodDays = []
     if (startDate.equals(endDate)) {
       selectedPeriodDays.push(startDate)

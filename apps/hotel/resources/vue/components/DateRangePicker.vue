@@ -10,7 +10,7 @@ import { DatePeriod } from '~api/hotel/markup-settings'
 
 import { useDateRangePicker } from '~widgets/date-picker/date-picker'
 
-import { compareJSDate, formatPeriod, parseAPIDate } from '~helpers/date'
+import { compareJSDate, formatDateToAPIDate, formatPeriod, parseAPIDate } from '~helpers/date'
 
 const props = withDefaults(defineProps<{
   id: string
@@ -56,8 +56,8 @@ const displayValue = computed(() => {
   if (props.value) {
     if (!Array.isArray(props.value)) return ''
     const period = {
-      date_start: props.value[0].toISOString(),
-      date_end: props.value[1].toISOString(),
+      date_start: formatDateToAPIDate(props.value[0]),
+      date_end: formatDateToAPIDate(props.value[1]),
     }
     return formatPeriod(period)
   }
@@ -164,9 +164,12 @@ onMounted(() => {
     picker.on('before:show', () => {
       if (localValue.value) {
         if (Array.isArray(localValue.value)) {
-          picker.setDateRange(localValue.value[0], localValue.value[1])
+          picker.setDateRange(
+            DateTime.fromJSDate(localValue.value[0]).toISODate(),
+            DateTime.fromJSDate(localValue.value[1]).toISODate(),
+          )
         } else {
-          picker.setDate(localValue.value)
+          picker.setDate(DateTime.fromJSDate(localValue.value).toISODate())
         }
       } else {
         picker.clearSelection()
@@ -218,7 +221,7 @@ onUnmounted(() => {
       :disabled="disabled"
       :value="displayValue"
       @keydown.esc="emit('pressEsc')"
-      @keydown.enter="emit('pressEnter')"
+      @keydown.enter.stop="emit('pressEnter')"
     >
     <div v-if="isError" class="invalid-feedback">{{ errorText }}</div>
   </div>

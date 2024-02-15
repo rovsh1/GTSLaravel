@@ -8,13 +8,13 @@ use Module\Booking\Shared\Domain\Booking\Listener\RecalculateBookingPricesListen
 use Module\Booking\Shared\Domain\Booking\Listener\UpdateBookingCancelConditionsListener;
 use Module\Booking\Shared\Domain\Booking\Listener\UpdateCarBidCancelConditionsListener;
 use Module\Booking\Shared\Domain\Booking\Listener\UpdateHotelQuotaListener;
+use Module\Booking\Shared\Domain\Order\Event\ClientPenaltyChanged;
 use Module\Booking\Shared\Domain\Order\Event\OrderCancelled;
 use Module\Booking\Shared\Domain\Order\Event\OrderRefunded;
 use Module\Booking\Shared\Domain\Order\Listener\CancelOrderInvoiceListener;
 use Module\Booking\Shared\Domain\Order\Listener\OrderCancelledListener;
 use Sdk\Booking\Contracts\Event\BookingEventInterface;
 use Sdk\Booking\Contracts\Event\CarBidCancelConditionsDeprecatedEventInterface;
-use Sdk\Booking\Contracts\Event\CarBidEventInterface;
 use Sdk\Booking\Contracts\Event\InvoiceBecomeDeprecatedEventInterface;
 use Sdk\Booking\Contracts\Event\PriceBecomeDeprecatedEventInterface;
 use Sdk\Booking\Contracts\Event\QuotaChangedEventInterface;
@@ -29,6 +29,7 @@ class DomainEventServiceProvider extends ServiceProvider
 
         OrderCancelled::class => OrderCancelledListener::class,
         OrderRefunded::class => OrderCancelledListener::class,
+        ClientPenaltyChanged::class => OrderCancelledListener::class,
         InvoiceBecomeDeprecatedEventInterface::class => CancelOrderInvoiceListener::class,
 
         PriceBecomeDeprecatedEventInterface::class => RecalculateBookingPricesListener::class,

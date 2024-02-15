@@ -45,7 +45,7 @@ class UpdateStatus implements UseCaseInterface
                 $booking->confirm();
                 break;
             case StatusEnum::NOT_CONFIRMED:
-                if ($isHotelBooking && empty($notConfirmedReason)) {
+                if (empty($notConfirmedReason)) {
                     return new UpdateStatusResponseDto(isNotConfirmedReasonRequired: true);
                 }
                 $booking->toNotConfirmed($notConfirmedReason);

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Sdk\Booking\Entity\Details;
 
-use DateTimeInterface;
 use Sdk\Booking\Contracts\Entity\DetailsInterface;
 use Sdk\Booking\Event\ServiceDateChanged;
 use Sdk\Booking\Support\Entity\AbstractServiceDetails;
@@ -21,7 +20,7 @@ final class Other extends AbstractServiceDetails implements DetailsInterface
         BookingId $bookingId,
         ServiceInfo $serviceInfo,
         private ?string $description,
-        private ?DateTimeInterface $date,
+        private ?DateTimeImmutable $date,
     ) {
         parent::__construct($id, $bookingId, $serviceInfo);
     }
@@ -41,12 +40,12 @@ final class Other extends AbstractServiceDetails implements DetailsInterface
         return $this->description;
     }
 
-    public function serviceDate(): ?DateTimeInterface
+    public function serviceDate(): ?DateTimeImmutable
     {
         return $this->date;
     }
 
-    public function setDate(?DateTimeInterface $date): void
+    public function setDate(?DateTimeImmutable $date): void
     {
         $this->date = $date;
         $this->pushEvent(new ServiceDateChanged($this));

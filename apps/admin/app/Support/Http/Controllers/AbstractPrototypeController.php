@@ -29,6 +29,8 @@ abstract class AbstractPrototypeController extends Controller
 
     protected Model $model;
 
+    protected Form $form;
+
     public function __construct()
     {
         $this->prototype = Prototypes::get($this->getPrototypeKey());
@@ -84,7 +86,7 @@ abstract class AbstractPrototypeController extends Controller
         Breadcrumb::prototype($this->prototype)
             ->add($this->prototype->title('create') ?? 'Новая запись');
 
-        $form = $this->formFactory()
+        $form = $this->form()
             ->method('post')
             ->action($this->prototype->route('store'));
 
@@ -99,7 +101,7 @@ abstract class AbstractPrototypeController extends Controller
 
     public function store(): RedirectResponse
     {
-        $form = $this->formFactory()
+        $form = $this->form()
             ->method('post')
             ->failUrl($this->prototype->route('create'));
 
@@ -130,7 +132,7 @@ abstract class AbstractPrototypeController extends Controller
         }
         $breadcrumbs->add($this->prototype->title('edit') ?? 'Редактирование');
 
-        $form = $this->formFactory()
+        $form = $this->form()
             ->method('put')
             ->action($this->prototype->route('update', $model->id));
 
@@ -154,7 +156,7 @@ abstract class AbstractPrototypeController extends Controller
     {
         $this->model = $this->repository->findOrFail($id);
 
-        $form = $this->formFactory()
+        $form = $this->form()
             ->method('put')
             ->failUrl($this->prototype->route('edit', $this->model));
 
@@ -183,6 +185,15 @@ abstract class AbstractPrototypeController extends Controller
         throw new \LogicException('Please implement the gridFactory method on your controller.');
     }
 
+    protected function form(): Form
+    {
+        if (isset($this->form)) {
+            return $this->form;
+        }
+
+        return $this->form = $this->formFactory();
+    }
+
     protected function formFactory(): Form
     {
         throw new \LogicException('Please implement the formFactory method on your controller.');
@@ -203,11 +214,17 @@ abstract class AbstractPrototypeController extends Controller
         throw new \LogicException('Please implement the getShowViewData method on your controller.');
     }
 
-    protected function prepareGridQuery(Builder $query) {}
+    protected function prepareGridQuery(Builder $query)
+    {
+    }
 
-    protected function prepareShowMenu(Model $model) {}
+    protected function prepareShowMenu(Model $model)
+    {
+    }
 
-    protected function prepareEditMenu(Model $model) {}
+    protected function prepareEditMenu(Model $model)
+    {
+    }
 
     protected function saving(array $data): array
     {

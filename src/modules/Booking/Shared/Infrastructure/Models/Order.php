@@ -27,6 +27,8 @@ class Order extends Model
         'voucher',
         'source',
         'creator_id',
+        'note',
+        'external_id',
     ];
 
     protected $casts = [

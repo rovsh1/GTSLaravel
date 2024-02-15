@@ -12,7 +12,7 @@ import { showToast } from '~components/Bootstrap/BootstrapToast'
 import DateRangePicker from '~components/DateRangePicker.vue'
 import SelectComponent from '~components/SelectComponent.vue'
 
-import { formatDateToAPIDate } from '~helpers/date'
+import { formatDateToAPIDate, parseAPIDateToJSDate } from '~helpers/date'
 
 import { stringToNumber } from '../lib/convert'
 import { PricesAccumulationData, SeasonPeriod, SeasonUpdateFormData } from '../lib/types'
@@ -33,13 +33,13 @@ const periodElementID = `${nanoid()}_period`
 const priceElementID = `${nanoid()}_price-filter`
 
 const seasonFormData = reactive<SeasonUpdateFormData>({
-  period: [new Date(props.seasonPeriod.from), new Date(props.seasonPeriod.to)],
+  period: [parseAPIDateToJSDate(props.seasonPeriod.from), parseAPIDateToJSDate(props.seasonPeriod.to)],
   daysWeekSelected: daysOfWeekOptions.map((day) => day.value) as string[],
   price: '',
 })
 
 watch(() => props.cellId, () => {
-  seasonFormData.period = [new Date(props.seasonPeriod.from), new Date(props.seasonPeriod.to)]
+  seasonFormData.period = [parseAPIDateToJSDate(props.seasonPeriod.from), parseAPIDateToJSDate(props.seasonPeriod.to)]
   seasonFormData.daysWeekSelected = daysOfWeekOptions.map((day) => day.value) as string[]
   seasonFormData.price = ''
 })

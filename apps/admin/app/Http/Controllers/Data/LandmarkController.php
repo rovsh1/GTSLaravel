@@ -2,6 +2,7 @@
 
 namespace App\Admin\Http\Controllers\Data;
 
+use App\Admin\Exceptions\InvalidPointCoordinates;
 use App\Admin\Models\Reference\City;
 use App\Admin\Models\Reference\LandmarkType;
 use App\Admin\Support\Distance\Calculator;
@@ -13,6 +14,7 @@ use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Layout as LayoutContract;
+use Illuminate\Http\RedirectResponse;
 
 class LandmarkController extends AbstractPrototypeController
 {
@@ -33,15 +35,36 @@ class LandmarkController extends AbstractPrototypeController
             ->view('data.landmark-form.landmark-form');
     }
 
+    public function update(int $id): RedirectResponse
+    {
+        try {
+            return parent::update($id);
+        } catch (InvalidPointCoordinates) {
+            $this->form()->error('Указаны некорректные координаты.');
+            $this->form()->throwError();
+        }
+    }
+
     public function create(): LayoutContract
     {
         return parent::create()
             ->view('data.landmark-form.landmark-form');
     }
 
+    public function store(): RedirectResponse
+    {
+        try {
+            return parent::store();
+        } catch (InvalidPointCoordinates) {
+            $this->form()->error('Указаны некорректные координаты.');
+            $this->form()->throwError();
+        }
+    }
+
     protected function formFactory(): FormContract
     {
         $coordinates = isset($this->model) ? $this->model->coordinates : null;
+
         return Form::name('data')
             ->city('city_id', ['label' => 'Город', 'emptyItem' => '', 'required' => true])
             ->select('type_id', [
@@ -81,6 +104,7 @@ class LandmarkController extends AbstractPrototypeController
         $from = new Point($city->center_lat, $city->center_lon);
         $to = Point::buildFromCoordinates($data['coordinates']);
         $preparedData['city_distance'] = $this->distanceCalculator->getDistance($from, $to);
+
         return $preparedData;
     }
 }

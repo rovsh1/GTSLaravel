@@ -55,7 +55,7 @@ class BootServiceProvider extends ServiceProvider
         Blade::directive('changemark', function ($expression) {
             $condition = "module('BookingRequesting')->make('" . ChangeMarkRenderer::class . "')->changed({$expression})";
 
-            return "<?php if ($condition) { echo \"<span style='color:red;font-weight: bold;'>\"; } ?>";
+            return "<?php if ($condition) { echo \"<span style='color:blue;font-weight: bold;'>\"; } ?>";
         });
         Blade::directive('endchangemark', function () {
             $condition = "module('BookingRequesting')->make('" . ChangeMarkRenderer::class . "')->endChanged()";

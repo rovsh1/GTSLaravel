@@ -10,6 +10,7 @@ use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
 use Module\Booking\Shared\Domain\Guest\Guest;
 use Module\Booking\Shared\Domain\Guest\Repository\GuestRepositoryInterface;
 use Module\Hotel\Moderation\Application\Dto\ContactDto;
+use Pkg\Booking\Requesting\Service\TemplateRenderer\Dto\BookingPriceDto;
 use Pkg\Booking\Requesting\Service\TemplateRenderer\Dto\GuestDto;
 use Pkg\Booking\Requesting\Service\TemplateRenderer\Dto\HotelBooking\BookingPeriodDto;
 use Pkg\Booking\Requesting\Service\TemplateRenderer\Dto\HotelBooking\HotelInfoDto;
@@ -127,6 +128,14 @@ class HotelBookingDataFactory
                     $checkOutTime,
                     $this->buildGuests($accommodation->guestIds()),
                     $accommodation->details()->guestNote(),
+                    new BookingPriceDto(
+                        $accommodation->prices()->supplierPrice()->manualValue() ?? $accommodation->prices()->supplierPrice()->value(),
+                        'UZS',//@todo валюта поставщика
+                    ),
+                    new BookingPriceDto(
+                        $accommodation->prices()->clientPrice()->manualValue() ?? $accommodation->prices()->clientPrice()->value(),
+                        'UZS',
+                    ),
                 );
             }
         );

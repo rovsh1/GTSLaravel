@@ -93,11 +93,13 @@ trait HasStatusesTrait
 
     public function toRefundFee(float $refundFeeAmount): void
     {
-        if ($refundFeeAmount <= 0) {
+        if (($this->clientPenalty === null || $this->clientPenalty->isZero()) && $refundFeeAmount <= 0) {
             throw new RefundFeeAmountBelowOrEqualZero();
         }
         $this->status = OrderStatusEnum::REFUND_FEE;
-        $this->clientPenalty = new Money($this->clientPrice->currency(), $refundFeeAmount);
+        if ($refundFeeAmount > 0) {
+            $this->clientPenalty = new Money($this->clientPrice->currency(), $refundFeeAmount);
+        }
         $this->pushEvent(new OrderRefunded($this));
     }
 

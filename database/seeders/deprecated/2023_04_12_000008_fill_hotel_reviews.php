@@ -10,7 +10,14 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        $q = DB::connection('mysql_old')->table('hotel_reviews')->cursor();
+        $q = DB::connection('mysql_old')
+            ->table('hotel_reviews')
+            ->whereExists(function (\Illuminate\Database\Query\Builder $query){
+                $query->selectRaw(1)
+                    ->from(\DB::connection()->getDatabaseName() . '.hotels')
+                    ->whereColumn('hotel_id', 'hotels.id');
+            })
+            ->cursor();
         foreach ($q as $r) {
             if (!DB::table('hotels')->where('id', $r->hotel_id)->exists()) {
                 continue;

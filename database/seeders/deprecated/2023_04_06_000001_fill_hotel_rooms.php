@@ -17,6 +17,11 @@ return new class extends Migration {
     {
         $q = DB::connection('mysql_old')->table('hotel_rooms')
             ->addSelect('hotel_rooms.*')
+            ->whereExists(function (\Illuminate\Database\Query\Builder $query) {
+                $query->selectRaw(1)
+                    ->from(\DB::connection()->getDatabaseName() . '.hotels')
+                    ->whereColumn('hotel_id', 'hotels.id');
+            })
             ->addSelect(
                 DB::raw(
                     '(SELECT text FROM hotel_rooms_translation WHERE translatable_id=hotel_rooms.id AND language="ru") as text'

@@ -9,6 +9,7 @@ use Sdk\Booking\Entity\Details\TransferFromAirport;
 use Sdk\Booking\ValueObject\AirportId;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\DetailsId;
+use Sdk\Shared\Support\DateTimeImmutableFactory;
 
 class TransferFromAirportBuilder extends AbstractServiceDetailsBuilder
 {
@@ -22,7 +23,7 @@ class TransferFromAirportBuilder extends AbstractServiceDetailsBuilder
             serviceInfo: $this->buildServiceInfo($detailsData['serviceInfo']),
             airportId: new AirportId($detailsData['airportId']),
             flightNumber: $detailsData['flightNumber'] ?? null,
-            arrivalDate: $details->date_start,
+            arrivalDate: $details->date_start !== null ? DateTimeImmutableFactory::createFromTimestamp($details->date_start->getTimestamp()) : null,
             meetingTablet: $detailsData['meetingTablet'] ?? null,
         );
     }

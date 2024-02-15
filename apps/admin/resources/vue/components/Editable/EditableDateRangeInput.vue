@@ -10,7 +10,7 @@ import { nanoid } from 'nanoid'
 import DateRangePicker from '~components/DateRangePicker.vue'
 import InlineIcon from '~components/InlineIcon.vue'
 
-import { formatDateToAPIDate, parseAPIDateAndSetDefaultTime } from '~helpers/date'
+import { formatDateTimeToAPIDateTime, formatDateToAPIDate, parseAPIDateAndSetDefaultTime } from '~helpers/date'
 import { usePlatformDetect } from '~helpers/platform'
 
 type DatePeriod = {
@@ -92,10 +92,14 @@ const applyEditable = () => {
     toggleEditable(false)
     return
   }
+
   emit('change', {
-    dateFrom: props.returnOnlyDate ? formatDateToAPIDate(localValue.value[0]) : `${formatDateToAPIDate(localValue.value[0])} ${localTime.value}`,
-    dateTo: props.returnOnlyDate ? formatDateToAPIDate(localValue.value[1]) : `${formatDateToAPIDate(localValue.value[1])} ${localTime.value}`,
+    dateFrom: props.returnOnlyDate ? formatDateToAPIDate(localValue.value[0])
+      : formatDateTimeToAPIDateTime(`${formatDateToAPIDate(localValue.value[0])} ${localTime.value}`),
+    dateTo: props.returnOnlyDate ? formatDateToAPIDate(localValue.value[1])
+      : formatDateTimeToAPIDateTime(`${formatDateToAPIDate(localValue.value[1])} ${localTime.value}`),
   })
+  isChanged.value = false
   toggleEditable(false)
 }
 
@@ -140,7 +144,6 @@ const onClickOutsideHandler = () => {
           }"
           @click-outside="onClickOutsideHandler"
           @press-esc="onPressEsc"
-          @press-enter="onPressEnter"
         />
       </div>
       <template #popper>

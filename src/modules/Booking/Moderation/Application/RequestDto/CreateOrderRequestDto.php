@@ -15,5 +15,6 @@ class CreateOrderRequestDto
         public readonly CurrencyEnum $currency,
         public readonly int $administratorId,
         public readonly int $creatorId,
+        public readonly ?string $note,
     ) {}
 }

@@ -8,7 +8,7 @@ import { DateTime } from 'luxon'
 
 import InlineIcon from '~components/InlineIcon.vue'
 
-import { parseAPIDateAndSetDefaultTime } from '~helpers/date'
+import { formatDateTimeToAPIDateTime, parseAPIDateAndSetDefaultTime } from '~helpers/date'
 import { usePlatformDetect } from '~helpers/platform'
 
 const props = withDefaults(defineProps<{
@@ -89,9 +89,9 @@ const applyEditable = () => {
   if (isEmptyValue) {
     emit('change', props.returnOnlyTime ? '00:00' : localDate.value)
   } else {
-    emit('change', props.returnOnlyTime ? localValue.value : `${localDate.value} ${localValue.value}`)
+    emit('change', props.returnOnlyTime ? localValue.value : formatDateTimeToAPIDateTime(`${localDate.value} ${localValue.value}`))
   }
-
+  isChanged.value = false
   toggleEditable(false)
 }
 

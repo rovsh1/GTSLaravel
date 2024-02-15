@@ -9,6 +9,7 @@ use Sdk\Booking\Entity\Details\TransferToRailway;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\DetailsId;
 use Sdk\Booking\ValueObject\RailwayStationId;
+use Sdk\Module\Support\DateTimeImmutable;
 
 class TransferToRailwayBuilder extends AbstractServiceDetailsBuilder
 {
@@ -23,7 +24,7 @@ class TransferToRailwayBuilder extends AbstractServiceDetailsBuilder
             railwayStationId: new RailwayStationId($detailsData['railwayStationId']),
             trainNumber: $detailsData['trainNumber'],
             meetingTablet: $detailsData['meetingTablet'],
-            departureDate: $details->date_start,
+            departureDate: $details->date_start !== null ? DateTimeImmutable::createFromInterface($details->date_start) : null,
         );
     }
 }

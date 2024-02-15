@@ -367,7 +367,9 @@ onMounted(() => {
             <br>
             <strong class="prices-information-details">
               <span>Цена за ночь: </span>
-              <span v-if="getMinDayPrices(room.price.dayPrices, 'gross') === getMaxDayPrices(room.price.dayPrices, 'gross')">
+              <span
+                v-if="getMinDayPrices(room.price.dayPrices, 'gross') === getMaxDayPrices(room.price.dayPrices, 'gross')"
+              >
                 {{ formatPrice(getMinDayPrices(room.price.dayPrices, 'gross') as number, grossCurrency.code_char) }}
               </span>
               <span v-else>

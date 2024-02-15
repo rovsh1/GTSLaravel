@@ -21,6 +21,7 @@ export interface BookingAvailableActionsResponse {
   canCopy: boolean
   canEditSupplierPrice: boolean
   canEditClientPrice: boolean
+  canChangeCarBidPrice: boolean
 }
 
 export interface BookingStatusHistoryData extends Record<string, any> {

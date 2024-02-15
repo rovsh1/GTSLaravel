@@ -19,7 +19,7 @@ class OtherServiceBuilder extends AbstractServiceDetailsBuilder
             bookingId: new BookingId($details->booking_id),
             serviceInfo: $this->buildServiceInfo($details->data['serviceInfo']),
             description: $details->data['description'],
-            date: $details->date,
+            date: $details->date !== null ? DateTimeImmutable::createFromInterface($details->date) : null,
         );
     }
 }

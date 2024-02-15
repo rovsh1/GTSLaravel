@@ -14,6 +14,7 @@ use Sdk\Booking\ValueObject\AirportId;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\DetailsId;
 use Sdk\Booking\ValueObject\ServiceInfo;
+use Sdk\Module\Support\DateTimeImmutable;
 use Sdk\Shared\Enum\ServiceTypeEnum;
 use Sdk\Shared\Support\DateTimeImmutableFactory;
 
@@ -30,7 +31,7 @@ final class TransferFromAirport extends AbstractServiceDetails implements Transf
         private readonly AirportId $airportId,
         private ?string $flightNumber,
         private ?string $meetingTablet,
-        private ?DateTimeInterface $arrivalDate,
+        private ?DateTimeImmutable $arrivalDate,
     ) {
         parent::__construct($id, $bookingId, $serviceInfo);
     }

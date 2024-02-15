@@ -25,7 +25,7 @@ class CarRentWithDriverBuilder extends AbstractServiceDetailsBuilder
             meetingAddress: $detailsData['meetingAddress'] ?? null,
             meetingTablet: $detailsData['meetingTablet'] ?? null,
             bookingPeriod: $details->date_start !== null && $details->date_end !== null
-                ? new BookingPeriod($details->date_start, $details->date_end)
+                ? BookingPeriod::createFromInterface($details->date_start, $details->date_end)
                 : null,
         );
     }

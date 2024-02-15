@@ -159,6 +159,8 @@ const moveOrdersToOrderWaiting = (allOrders?: boolean) => {
   emit('orders', getPaymentOrdersPayload())
 }
 
+const getClientPrice = (order: PaymentOrder) => order.clientPenalty?.value || order.clientPrice.value
+
 onMounted(() => {
   resetLocaleVariables()
   emit('orders', getPaymentOrdersPayload())
@@ -192,9 +194,9 @@ onMounted(() => {
                 }"
               >
                 <td>{{ waitingOrder.id }}</td>
-                <td>{{ formatPrice(waitingOrder.clientPrice.value, waitingOrder.clientPrice.currency.value) }}</td>
+                <td>{{ formatPrice(getClientPrice(waitingOrder), waitingOrder.clientPrice.currency.value) }}</td>
                 <td>
-                  {{ formatPrice((waitingOrder.clientPrice.value
+                  {{ formatPrice((getClientPrice(waitingOrder)
                     - waitingOrder.remainingAmount.value), waitingOrder.clientPrice.currency.value) }}
                 </td>
                 <td>
@@ -283,9 +285,9 @@ onMounted(() => {
                   }"
                 >
                   <td>{{ order.id }}</td>
-                  <td>{{ formatPrice(order.clientPrice.value, order.clientPrice.currency.value) }}</td>
+                  <td>{{ formatPrice(getClientPrice(order), order.clientPrice.currency.value) }}</td>
                   <td>
-                    {{ formatPrice((order.clientPrice.value - order.remainingAmount.value),
+                    {{ formatPrice((getClientPrice(order) - order.remainingAmount.value),
                                    order.clientPrice.currency.value) }}
                   </td>
                   <td>

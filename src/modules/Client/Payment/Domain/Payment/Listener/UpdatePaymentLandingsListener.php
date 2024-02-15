@@ -9,6 +9,7 @@ use Module\Client\Payment\Domain\Payment\Repository\PaymentRepositoryInterface;
 use Module\Client\Payment\Domain\Payment\ValueObject\Landing;
 use Module\Client\Payment\Domain\Payment\ValueObject\LandingCollection;
 use Module\Client\Shared\Domain\ValueObject\OrderId;
+use Sdk\Booking\IntegrationEvent\ClientPenaltyChanged;
 use Sdk\Booking\IntegrationEvent\OrderRefunded;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Shared\Contracts\Event\IntegrationEventListenerInterface;
@@ -26,7 +27,7 @@ class UpdatePaymentLandingsListener implements IntegrationEventListenerInterface
     public function handle(IntegrationEventMessage $message): void
     {
         $event = $message->event;
-        assert($event instanceof OrderRefunded);
+        assert($event instanceof OrderRefunded || $event instanceof ClientPenaltyChanged);
 
         $order = $this->orderRepository->findOrFail(new OrderId($event->orderId));
         $payments = $this->paymentRepository->findByOrderId($order->id());

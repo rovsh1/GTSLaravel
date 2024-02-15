@@ -3,6 +3,7 @@
 namespace App\Admin\Http\Controllers\Hotel;
 
 use App\Admin\Exceptions\FormSubmitFailedException;
+use App\Admin\Exceptions\InvalidPointCoordinates;
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Models\Hotel\Hotel;
 use App\Admin\Models\Reference\Landmark;
@@ -22,7 +23,8 @@ class LandmarkController extends Controller
     public function __construct(
         private readonly Calculator $distanceCalculator,
         private readonly LandmarkRepository $repository
-    ) {}
+    ) {
+    }
 
     public function create(Request $request, Hotel $hotel): LayoutContract
     {
@@ -50,8 +52,13 @@ class LandmarkController extends Controller
         $data = $form->getData();
         $landmarkId = $data['landmark_id'];
         $landmark = Landmark::find($landmarkId);
-        $landmarkPoint = Point::buildFromCoordinates($landmark->coordinates);
-        $hotelPoint = Point::buildFromCoordinates($hotel->coordinates);
+        try {
+            $landmarkPoint = Point::buildFromCoordinates($landmark->coordinates);
+            $hotelPoint = Point::buildFromCoordinates($hotel->coordinates);
+        } catch (InvalidPointCoordinates) {
+            $form->error('Указаны некорректные координаты.');
+            $form->throwError();
+        }
         $distance = $this->distanceCalculator->getDistance($landmarkPoint, $hotelPoint);
         $this->repository->create($hotel->id, $landmarkId, $distance);
 

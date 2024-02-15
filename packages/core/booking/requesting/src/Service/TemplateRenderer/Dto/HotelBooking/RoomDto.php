@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Pkg\Booking\Requesting\Service\TemplateRenderer\Dto\HotelBooking;
 
+use Pkg\Booking\Requesting\Service\TemplateRenderer\Dto\BookingPriceDto;
 use Pkg\Booking\Requesting\Service\TemplateRenderer\Dto\GuestDto;
 
 class RoomDto
@@ -17,5 +18,7 @@ class RoomDto
         /** @var GuestDto[] */
         public readonly array $guests,
         public readonly string|null $note,
+        public readonly BookingPriceDto $supplierPrice,
+        public readonly BookingPriceDto $clientPrice,
     ) {}
 }

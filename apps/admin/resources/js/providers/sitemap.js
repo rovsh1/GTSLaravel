@@ -8,7 +8,7 @@ export default function bootSitemap() {
     if (menuOpenFlagFromStorage) {
       menuOpenFlag = !!JSON.parse(menuOpenFlagFromStorage)
     } else {
-      menuOpenFlag = false
+      menuOpenFlag = true
     }
 
     const checkDisableAnimation = (isFirstLoadPage && menuOpenFlag) || (menuOpenFlag && hoveredEffectActive)

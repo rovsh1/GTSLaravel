@@ -3,6 +3,7 @@
 namespace Module\Booking\Shared\Domain\Order\Listener;
 
 use Module\Booking\Shared\Domain\Order\Adapter\InvoiceAdapterInterface;
+use Module\Booking\Shared\Domain\Order\Event\ClientPenaltyChanged;
 use Module\Booking\Shared\Domain\Order\Event\OrderCancelled;
 use Module\Booking\Shared\Domain\Order\Event\OrderRefunded;
 use Sdk\Module\Contracts\Event\DomainEventInterface;
@@ -16,7 +17,9 @@ class OrderCancelledListener implements DomainEventListenerInterface
 
     public function handle(DomainEventInterface $event)
     {
-        assert($event instanceof OrderCancelled || $event instanceof OrderRefunded);
+        assert(
+            $event instanceof OrderCancelled || $event instanceof OrderRefunded || $event instanceof ClientPenaltyChanged
+        );
 
         $this->invoiceAdapter->cancelInvoice($event->order->id());
     }
