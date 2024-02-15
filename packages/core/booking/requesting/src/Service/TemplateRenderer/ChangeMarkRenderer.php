@@ -43,6 +43,11 @@ class ChangeMarkRenderer
         return $this->changedFlag = $this->cached[$field];
     }
 
+    public function changes(?string $field): array
+    {
+        return $this->changesStorage->get($this->booking->id(), $field);
+    }
+
     public function endChanged(): bool
     {
         return $this->changedFlag;

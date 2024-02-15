@@ -61,5 +61,8 @@
             </div>
             <div class="column w-28 text-right">{{ Format::number($room->supplierPrice->amount) }} {{ $room->supplierPrice->currency }}</div>
         </div>
+        <div>
+            @changes("accommodation[$room->accommodationId]")
+        </div>
     </div>
 @endforeach
