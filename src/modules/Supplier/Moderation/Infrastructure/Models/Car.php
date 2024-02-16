@@ -20,7 +20,8 @@ class Car extends Model
             $query
                 ->addSelect('supplier_cars.supplier_id')
                 ->join('r_transport_cars', 'r_transport_cars.id', '=', 'supplier_cars.car_id')
-                ->addSelect('r_transport_cars.*');
+                ->addSelect('r_transport_cars.*')
+                ->addSelect('supplier_cars.id as id');
         });
     }
 

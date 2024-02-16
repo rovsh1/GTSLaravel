@@ -17,6 +17,7 @@ use Sdk\Booking\ValueObject\CancelCondition\DailyCancelFeeValueCollection;
 use Sdk\Booking\ValueObject\CancelCondition\FeeValue;
 use Sdk\Booking\ValueObject\CancelConditions;
 use Sdk\Booking\ValueObject\CarBidCollection;
+use Sdk\Module\Support\DateTimeImmutable;
 
 class TransferCancelConditionsFactory
 {
@@ -34,7 +35,7 @@ class TransferCancelConditionsFactory
     public function build(
         int $serviceId,
         CarBidCollection $carBids,
-        \DateTimeInterface $bookingDate
+        DateTimeImmutable $bookingDate
     ): ?CancelConditions {
         $cancelConditions = null;
         foreach ($carBids as $carBid) {
@@ -64,7 +65,7 @@ class TransferCancelConditionsFactory
     private function buildCarCancelConditions(
         CancelConditionsDto $carCancelConditions,
         float $price,
-        \DateTimeInterface $bookingDate
+        DateTimeImmutable $bookingDate
     ): CancelConditions {
         $cancelNoFeeDate = null;
         $dailyMarkupOptions = [];
@@ -72,7 +73,6 @@ class TransferCancelConditionsFactory
 
         if ($maxDaysCount !== null && $bookingDate !== null) {
             $cancelNoFeeDate = $bookingDate->modify("-{$maxDaysCount} days");
-            $cancelNoFeeDate = CarbonImmutable::createFromInterface($cancelNoFeeDate);
             $dailyMarkupOptions = collect($carCancelConditions->dailyMarkups)->map(
                 fn(DailyMarkupDto $dailyMarkupDto) => new DailyCancelFeeValue(
                     value: FeeValue::createAbsolute(
@@ -99,7 +99,7 @@ class TransferCancelConditionsFactory
     private function mergeCancelConditions(
         CancelConditions $baseCancelConditions,
         CancelConditions $carCancelConditions,
-        \DateTimeInterface $bookingDate
+        DateTimeImmutable $bookingDate
     ): CancelConditions {
         $noCheckInMarkupValue = $baseCancelConditions->noCheckInMarkup()->value()->value(
             ) + $carCancelConditions->noCheckInMarkup()->value()->value();
@@ -148,7 +148,7 @@ class TransferCancelConditionsFactory
             Arr::first($baseCancelConditions->dailyMarkups()->all())?->daysCount(),
         );
         if ($maxDaysCount !== null) {
-            $cancelNoFeeDate = $bookingDate->clone()->subDays($maxDaysCount)->toImmutable();
+            $cancelNoFeeDate = $bookingDate->modify("-{$maxDaysCount} days");
         }
 
         return new CancelConditions(

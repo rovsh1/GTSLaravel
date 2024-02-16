@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\Dto\Details;
 
+use Carbon\Carbon;
 use Carbon\CarbonInterface;
 use Module\Booking\Moderation\Application\Dto\Details\CancelConditions\CancelFeeValueDto;
 use Module\Booking\Moderation\Application\Dto\Details\CancelConditions\DailyCancelFeeValueDto;
@@ -25,7 +26,9 @@ class CancelConditionsDto extends AbstractDomainBasedDto
         return new static(
             CancelFeeValueDto::fromDomain($entity->noCheckInMarkup()),
             DailyCancelFeeValueDto::collectionFromDomain($entity->dailyMarkups()->all()),
-            $entity->cancelNoFeeDate()
+            $entity->cancelNoFeeDate() !== null
+                ? Carbon::createFromInterface($entity->cancelNoFeeDate())
+                : null
         );
     }
 }
