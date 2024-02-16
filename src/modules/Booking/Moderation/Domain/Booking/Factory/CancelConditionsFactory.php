@@ -49,7 +49,6 @@ class CancelConditionsFactory
         $maxDaysCount = Arr::first($cancelConditionsDto->dailyMarkups)?->daysCount;
         if ($maxDaysCount !== null && $bookingDate !== null) {
             $cancelNoFeeDate = $bookingDate->modify("-{$maxDaysCount} days");
-            $cancelNoFeeDate = CarbonImmutable::createFromInterface($cancelNoFeeDate);
             $dailyMarkupOptions = collect($cancelConditionsDto->dailyMarkups)->map(
                 fn(DailyMarkupDto $dailyMarkupDto) => new DailyCancelFeeValue(
                     value: FeeValue::createPercent($dailyMarkupDto->percent),

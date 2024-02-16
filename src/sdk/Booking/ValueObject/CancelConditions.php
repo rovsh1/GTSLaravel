@@ -7,6 +7,7 @@ namespace Sdk\Booking\ValueObject;
 use Carbon\CarbonImmutable;
 use Sdk\Booking\ValueObject\CancelCondition\CancelFeeValue;
 use Sdk\Booking\ValueObject\CancelCondition\DailyCancelFeeValueCollection;
+use Sdk\Module\Support\DateTimeImmutable;
 use Sdk\Shared\Contracts\Support\SerializableInterface;
 
 class CancelConditions implements SerializableInterface
@@ -14,10 +15,10 @@ class CancelConditions implements SerializableInterface
     public function __construct(
         private readonly CancelFeeValue $noCheckInMarkup,
         private readonly DailyCancelFeeValueCollection $dailyMarkups,
-        private readonly ?CarbonImmutable $cancelNoFeeDate = null,
+        private readonly ?DateTimeImmutable $cancelNoFeeDate = null,
     ) {}
 
-    public function cancelNoFeeDate(): ?CarbonImmutable
+    public function cancelNoFeeDate(): ?DateTimeImmutable
     {
         return $this->cancelNoFeeDate;
     }
@@ -48,7 +49,7 @@ class CancelConditions implements SerializableInterface
         return new static(
             CancelFeeValue::deserialize($payload['noCheckInMarkup']),
             DailyCancelFeeValueCollection::fromData($payload['dailyMarkups']),
-            $cancelNoFeeDate !== null ? CarbonImmutable::createFromTimestamp($cancelNoFeeDate) : null,
+            $cancelNoFeeDate !== null ? DateTimeImmutable::createFromTimestamp($cancelNoFeeDate) : null,
         );
     }
 }
