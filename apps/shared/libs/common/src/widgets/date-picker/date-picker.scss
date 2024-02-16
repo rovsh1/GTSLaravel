@@ -1,0 +1,36 @@
+$primary: #007bff;
+$danger: #DC493A;
+
+:root {
+  --litepicker-is-start-color-bg: #{$primary};
+  --litepicker-day-color-hover: #{$primary};
+  --litepicker-button-prev-month-color-hover: #{$primary};
+  --litepicker-is-today-color: #{$danger};
+}
+
+.litepicker {
+  font-size: inherit;
+  font-family: inherit;
+
+  .month-item-name {
+    text-transform: capitalize;
+  }
+
+  .day-item {
+    :root & {
+      cursor: pointer;
+      transition: border 0.3s;
+    }
+  }
+
+  .button-previous-month,
+  .button-next-month {
+    :root:root:root & {
+      cursor: pointer;
+    }
+
+    svg {
+      transform: scale(0.7);
+    }
+  }
+}
