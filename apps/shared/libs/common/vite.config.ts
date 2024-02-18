@@ -2,9 +2,9 @@ import path from 'node:path'
 import postcssPresetEnv from 'postcss-preset-env'
 import { defineConfig } from 'vite'
 import checker from 'vite-plugin-checker'
-import tsconfigPaths from 'vite-tsconfig-paths'
-import dts from 'vite-plugin-dts'
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
+import dts from 'vite-plugin-dts'
+import tsconfigPaths from 'vite-tsconfig-paths'
 
 import { scripts } from './package.json'
 
@@ -13,21 +13,20 @@ export default defineConfig(({ command }) => ({
     emptyOutDir: true,
     cssCodeSplit: true,
     lib: {
-        entry: {
-          date: path.resolve(__dirname, 'src/helpers/date.ts'),
-          timezone: path.resolve(__dirname, 'src/support/timezone.js')
-        },
-        fileName: (format, entryName) => {
-          if(format === 'es')
-            return `${entryName}.js`
-          return `${entryName}.${format}`
-        },       
+      entry: {
+        date: path.resolve(__dirname, 'src/helpers/date.ts'),
+        timezone: path.resolve(__dirname, 'src/support/timezone.js'),
+      },
+      fileName: (format, entryName) => {
+        if (format === 'es') return `${entryName}.js`
+        return `${entryName}.${format}`
+      },
     },
     rollupOptions: {
-        external: ["luxon","lodash","litepicker","cleave.js","bootstrap","select2","jquery"],
-        output: {
-          assetFileNames: '[name]/[name].[ext]',
-        }
+      external: ['luxon', 'lodash', 'litepicker', 'cleave.js', 'bootstrap', 'select2', 'jquery'],
+      output: {
+        assetFileNames: '[name]/[name].[ext]',
+      },
     },
   },
   plugins: [
@@ -43,8 +42,8 @@ export default defineConfig(({ command }) => ({
         lintCommand: scripts['lint:styles'].replace(/"/, ''),
       },
     }),
-    dts({ 
-      outDir: './dist/types'
+    dts({
+      outDir: './dist/types',
     }),
   ],
   resolve: {

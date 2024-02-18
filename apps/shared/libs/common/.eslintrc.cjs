@@ -27,7 +27,7 @@ module.exports = defineConfig({
     },
   },
   ignorePatterns: [
-    '**/src/**/*.js',
+    '**/*.js',
   ],
   rules: {
     'simple-import-sort/imports': ['warn', {
