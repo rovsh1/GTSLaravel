@@ -1,0 +1,29 @@
+{
+    "compilerOptions": {
+        "composite": true,
+        "module": "ESNext",
+        "lib": [
+            "ESNext",
+            "DOM"
+        ],
+        "moduleResolution": "Node",
+        "allowSyntheticDefaultImports": true,
+        "resolveJsonModule": true,
+        "baseUrl": "./",
+        "paths": {
+            "~helpers/*": [
+                "src/helpers/*",
+            ],
+            "~widgets/*": [
+                "src/widgets/*",
+            ],
+            "~support/*": [
+                "src/support/*",
+            ],
+        }
+    },
+    "include": [
+        "vite.config.ts",
+        "package.json"
+    ]
+}
