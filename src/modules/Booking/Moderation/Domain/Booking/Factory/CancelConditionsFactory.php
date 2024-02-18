@@ -16,6 +16,7 @@ use Sdk\Booking\ValueObject\CancelCondition\DailyCancelFeeValueCollection;
 use Sdk\Booking\ValueObject\CancelCondition\FeeValue;
 use Sdk\Booking\ValueObject\CancelConditions;
 use Sdk\Booking\ValueObject\ServiceId;
+use Sdk\Module\Support\DateTimeImmutable;
 use Sdk\Shared\Enum\ServiceTypeEnum;
 
 class CancelConditionsFactory
@@ -27,7 +28,7 @@ class CancelConditionsFactory
     public function build(
         ServiceId $serviceId,
         ServiceTypeEnum $serviceType,
-        \DateTimeInterface|null $bookingDate
+        DateTimeImmutable|null $bookingDate
     ): ?CancelConditions {
         if ($bookingDate === null) {
             return null;
@@ -42,7 +43,7 @@ class CancelConditionsFactory
 
     private function fromDto(
         CancelConditionsDto $cancelConditionsDto,
-        \DateTimeInterface $bookingDate
+        DateTimeImmutable $bookingDate
     ): CancelConditions {
         $cancelNoFeeDate = null;
         $dailyMarkupOptions = [];
@@ -71,7 +72,7 @@ class CancelConditionsFactory
     private function getSupplierCancelConditions(
         ServiceId $serviceId,
         ServiceTypeEnum $serviceType,
-        \DateTimeInterface $bookingDate,
+        DateTimeImmutable $bookingDate,
     ): ?CancelConditionsDto {
         return match ($serviceType) {
             ServiceTypeEnum::CIP_MEETING_IN_AIRPORT,
