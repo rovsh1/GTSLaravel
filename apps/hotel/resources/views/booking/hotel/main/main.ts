@@ -1,12 +1,11 @@
+import { formatDateTime } from 'gts-common/date'
+import createPopover, { PopoverItem } from 'gts-common/popover'
+
 import axios from '~resources/js/api'
 import { getHumanRequestType } from '~resources/views/booking/shared/lib/constants'
 
 import { downloadDocument } from '~api/booking/document'
 import { BookingRequest } from '~api/booking/request'
-
-import createPopover, { PopoverItem } from '~widgets/popover/popover'
-
-import { formatDateTime } from '~helpers/date'
 
 import '~resources/views/main'
 

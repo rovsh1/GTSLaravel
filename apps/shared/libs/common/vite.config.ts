@@ -1,3 +1,4 @@
+import fs from 'fs'
 import path from 'node:path'
 import postcssPresetEnv from 'postcss-preset-env'
 import { defineConfig } from 'vite'
@@ -8,25 +9,34 @@ import tsconfigPaths from 'vite-tsconfig-paths'
 
 import { scripts } from './package.json'
 
-export default defineConfig(({ command }) => ({
+/* eslint-disable */
+const files = fs.readdirSync('./src/helpers')
+
+const components = files.reduce((obj, component) => {
+  obj[component.split('.')[0]] = `src/helpers/${component}`
+  return obj
+}, {})
+
+components['timezone'] = 'src/support/timezone.js'
+components['date-picker'] = 'src/widgets/date-picker/date-picker.ts'
+components['popover'] = 'src/widgets/popover/popover.ts'
+components['dialog'] = 'src/widgets/dialog/helpers.js'
+components['select-element'] = 'src/widgets/select-element/select-element.ts'
+/* eslint-enable */
+
+export default defineConfig(() => ({
   build: {
     emptyOutDir: true,
     cssCodeSplit: true,
     lib: {
-      entry: {
-        date: path.resolve(__dirname, 'src/helpers/date.ts'),
-        timezone: path.resolve(__dirname, 'src/support/timezone.js'),
-      },
+      entry: components,
       fileName: (format, entryName) => {
-        if (format === 'es') return `${entryName}.js`
-        return `${entryName}.${format}`
+        if (format === 'es') return `${entryName}/${entryName}.js`
+        return `${entryName}/${entryName}.${format}`
       },
     },
     rollupOptions: {
       external: ['luxon', 'lodash', 'litepicker', 'cleave.js', 'bootstrap', 'select2', 'jquery'],
-      output: {
-        assetFileNames: '[name]/[name].[ext]',
-      },
     },
   },
   plugins: [
@@ -44,6 +54,7 @@ export default defineConfig(({ command }) => ({
     }),
     dts({
       outDir: './dist/types',
+      insertTypesEntry: true,
     }),
   ],
   resolve: {

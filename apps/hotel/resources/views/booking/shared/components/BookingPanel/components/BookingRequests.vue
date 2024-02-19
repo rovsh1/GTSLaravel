@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
+import { formatDateTime } from 'gts-common/date'
+
 import RequestBlock from '~resources/views/booking/shared/components/RequestBlock.vue'
 import { getHumanRequestType } from '~resources/views/booking/shared/lib/constants'
 import { useBookingRequestStore } from '~resources/views/booking/shared/store/request'
 
 import { BookingRequest } from '~api/booking/request'
-
-import { formatDateTime } from '~helpers/date'
 
 const requestStore = useBookingRequestStore()
 const bookingRequests = computed<BookingRequest[] | null>(() => requestStore.groupedRequests)

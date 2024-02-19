@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
+import { formatDate } from 'gts-common/date'
+import { formatPrice } from 'gts-common/price'
+
 import { CancelConditionsValueType } from '~resources/js/config/constants'
 import { getCancelPeriodTypeName, getDaysWord } from '~resources/views/booking/shared/lib/constants'
 import { useBookingStore } from '~resources/views/booking/shared/store/booking'
@@ -8,9 +11,6 @@ import { useBookingStore } from '~resources/views/booking/shared/store/booking'
 import { Currency } from '~api/models'
 
 import { useCurrencyStore } from '~stores/currency'
-
-import { formatDate } from '~helpers/date'
-import { formatPrice } from '~helpers/price'
 
 const bookingStore = useBookingStore()
 const { getCurrencyByCodeChar } = useCurrencyStore()

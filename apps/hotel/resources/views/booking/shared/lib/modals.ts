@@ -1,11 +1,12 @@
+import { ShowDialogResponse, ToggleCloseFunction, ToggleLoadingFunction } from 'gts-common/confirm-dialog'
+import { WindowDialog } from 'gts-common/dialog'
+
 import axios from '~resources/js/api'
 
 import { CancelReasonResponse } from '~api/cancel-reason'
 
 import { CacheStorage } from '~cache/cache-storage'
 import { TTLValues } from '~cache/enums'
-
-import { ShowDialogResponse, ToggleCloseFunction, ToggleLoadingFunction } from '~helpers/confirm-dialog'
 
 export interface ShowNotConfirmedReasonDialogResponse extends ShowDialogResponse {
   reason: string
@@ -70,7 +71,7 @@ export const showNotConfirmedReasonDialog = async (): Promise<ShowNotConfirmedRe
 
     const getResolveCloseOptions = () => ({ result: false, reason: reasonDescription, toggleLoading: () => {}, toggleClose: () => {} })
 
-    window.WindowDialog({
+    WindowDialog({
       title: 'Укажите причину',
       html: $form,
       buttons: [{ text: 'Сохранить', cls: 'btn btn-primary', handler: 'submit' }, 'cancel'],
@@ -143,7 +144,7 @@ export const showCancelFeeDialog = (options: CancelFeeDialogOptions): Promise<Sh
 
   const getResolveCloseOptions = () => ({ result: false, clientCancelFeeAmount, cancelFeeAmount, toggleLoading: () => {}, toggleClose: () => {} })
 
-  window.WindowDialog({
+  WindowDialog({
     title: 'Укажите сумму штрафа',
     html: $form,
     buttons: [{ text: 'Сохранить', cls: 'btn btn-primary', handler: 'submit' }, 'cancel'],

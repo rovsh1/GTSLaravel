@@ -27,6 +27,7 @@ module.exports = defineConfig({
     },
   },
   ignorePatterns: [
+    'dist/',
     '**/*.js',
   ],
   rules: {

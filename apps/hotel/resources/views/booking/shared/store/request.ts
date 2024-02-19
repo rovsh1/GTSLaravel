@@ -1,12 +1,11 @@
 import { computed, onMounted } from 'vue'
 
+import { requestInitialData } from 'gts-common/initial-data'
 import { defineStore } from 'pinia'
 import { z } from 'zod'
 
 import { downloadDocument as downloadDocumentRequest } from '~api/booking/document'
 import { BookingRequest, useBookingRequestListAPI } from '~api/booking/request'
-
-import { requestInitialData } from '~helpers/initial-data'
 
 const { bookingID } = requestInitialData(z.object({
   bookingID: z.number(),

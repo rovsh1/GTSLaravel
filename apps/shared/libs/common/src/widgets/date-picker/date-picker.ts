@@ -19,6 +19,8 @@ import {
 
 type Options = Partial<ILPConfiguration>
 
+export { datePickerRootAttributeName } from './lib'
+
 export const useDatePicker = (elementOption: HTMLInputElement, options?: Options) => {
   let element = elementOption
   const reloadElement = destroyOldDatePicker(element)

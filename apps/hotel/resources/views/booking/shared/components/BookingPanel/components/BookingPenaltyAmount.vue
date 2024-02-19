@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 
 import { useToggle } from '@vueuse/core'
+import { formatPrice } from 'gts-common/price'
 
 import PriceModal from '~resources/views/booking/shared/components/PriceModal.vue'
 import { useBookingStore } from '~resources/views/booking/shared/store/booking'
@@ -9,8 +10,6 @@ import { useBookingStore } from '~resources/views/booking/shared/store/booking'
 import { Currency } from '~api/models'
 
 import { useCurrencyStore } from '~stores/currency'
-
-import { formatPrice } from '~helpers/price'
 
 const [isPenaltyModalOpened, togglePenaltyModal] = useToggle<boolean>(false)
 

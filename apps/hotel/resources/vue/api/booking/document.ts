@@ -1,10 +1,9 @@
 import { MaybeRef } from '@vueuse/core'
+import { downloadFile } from 'gts-common/download-file'
 
 import { useAdminAPI } from '~api'
 import { BookingID } from '~api/booking/models'
 import { FileResponse } from '~api/hotel/images'
-
-import { downloadFile } from '~helpers/download-file'
 
 export interface DownloadDocumentRequest {
   bookingID: BookingID

@@ -1,5 +1,5 @@
-import { datePickerRootAttributeName } from '~widgets/date-picker/lib'
-import { selectElementDropDownContainer } from '~widgets/select-element/select-element'
+import { datePickerRootAttributeName } from 'gts-common/date-picker'
+import { selectElementDropDownContainer } from 'gts-common/select-element'
 
 const popupSelector = '#grid-filters-popup'
 

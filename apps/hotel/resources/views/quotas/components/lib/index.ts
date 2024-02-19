@@ -1,11 +1,10 @@
+import { isBusinessDay } from 'gts-common/date'
 import { DateTime } from 'luxon'
 
 import { FiltersPayload } from '~resources/views/quotas/components/QuotasFilters/lib'
 
 import { HotelRoomID } from '~api/hotel'
 import { HotelQuotaID, QuotaStatus, UseHotelQuota } from '~api/hotel/quotas/list'
-
-import { isBusinessDay } from '~helpers/date'
 
 export type RoomQuotaStatus = 'opened' | 'closed' | 'warning'
 

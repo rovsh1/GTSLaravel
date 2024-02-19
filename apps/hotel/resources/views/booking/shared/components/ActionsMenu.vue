@@ -1,8 +1,7 @@
 <script setup lang="ts">
 
+import { requestInitialData } from 'gts-common/initial-data'
 import { z } from 'zod'
-
-import { requestInitialData } from '~helpers/initial-data'
 
 const { timelineUrl } = requestInitialData(z.object({
   timelineUrl: z.string().optional(),
