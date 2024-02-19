@@ -8,6 +8,14 @@ use App\Admin\Models\Administrator\Administrator;
 
 class OrderAdministratorRepository
 {
+    public function update(int $orderId, int $administratorId): void
+    {
+        \DB::table('administrator_orders')->updateOrInsert(
+            ['order_id' => $orderId],
+            ['order_id' => $orderId, 'administrator_id' => $administratorId],
+        );
+    }
+
     public function get(int $orderId): ?Administrator
     {
         return Administrator::query()

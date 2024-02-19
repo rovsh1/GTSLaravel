@@ -10,6 +10,7 @@ AclRoute::for('booking-order')
     ->get('/{orderId}/bookings', Controllers\Booking\Order\OrderController::class . '@bookings', 'read', 'booking.list')
 
     ->get('/status/list', Controllers\Booking\Order\OrderController::class . '@getStatuses', 'read', 'status.list')
+    ->put('/{orderId}/manager', Controllers\Booking\Order\OrderController::class . '@updateManager', 'update', 'manager.update')
     ->put('/{orderId}/status/update', Controllers\Booking\Order\OrderController::class . '@updateStatus', 'update', 'status.update')
     ->get('/{orderId}/actions/available', Controllers\Booking\Order\OrderController::class . '@getAvailableActions', 'read', 'actions.available.get')
 
