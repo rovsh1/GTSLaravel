@@ -112,12 +112,14 @@ class HotelBookingDataFactory
         return $accommodations->map(
             function (HotelAccommodation $accommodation) use ($bookingDetails, $hotelPriceRatesIndexedId) {
                 $checkInTime = $bookingDetails->hotelInfo()->checkInTime()->value();
-                if ($accommodation->details()->earlyCheckIn() !== null) {
-                    $checkInTime = $accommodation->details()->earlyCheckIn()->timePeriod()->from();
+                $earlyCheckIn = $accommodation->details()->earlyCheckIn();
+                if ($earlyCheckIn !== null) {
+                    $checkInTime = $earlyCheckIn->timePeriod()->from() . " ({$earlyCheckIn->priceMarkup()->value()}%)";
                 }
                 $checkOutTime = $bookingDetails->hotelInfo()->checkOutTime()->value();
-                if ($accommodation->details()->lateCheckOut() !== null) {
-                    $checkOutTime = $accommodation->details()->lateCheckOut()->timePeriod()->to();
+                $lateCheckOut = $accommodation->details()->lateCheckOut();
+                if ($lateCheckOut !== null) {
+                    $checkOutTime = $lateCheckOut->timePeriod()->to() . " ({$lateCheckOut->priceMarkup()->value()})";
                 }
 
                 return new RoomDto(
