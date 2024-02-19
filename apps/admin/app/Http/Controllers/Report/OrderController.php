@@ -49,7 +49,9 @@ class OrderController extends Controller
         $data = $form->getData();
         /** @var CarbonPeriod $startPeriod */
         $startPeriod = $data['start_period'];
-        $startPeriod = new CarbonPeriod($startPeriod->getStartDate(), $startPeriod->getEndDate()->setTime(23, 59, 59));
+        if (!empty($startPeriod)) {
+            $startPeriod = new CarbonPeriod($startPeriod->getStartDate(), $startPeriod->getEndDate()->setTime(23, 59, 59));
+        }
         /** @var CarbonPeriod $endPeriod */
         $endPeriod = $data['end_period'];
         $endPeriod = new CarbonPeriod($endPeriod->getStartDate(), $endPeriod->getEndDate()->setTime(23, 59, 59));
@@ -80,6 +82,12 @@ class OrderController extends Controller
             ->selectRaw(
                 '(SELECT name_ru FROM booking_status_settings WHERE status = orders.status AND entity_type = ' . StatusSettingsEntityEnum::ORDER->value . ') as order_status_name'
             )
+            ->selectRaw(
+                'COALESCE(booking_other_details.date, booking_airport_details.date, booking_hotel_details.date_start, booking_transfer_details.date_start) as date_start'
+            )
+            ->selectRaw(
+                'COALESCE(booking_other_details.date, booking_airport_details.date, booking_hotel_details.date_end, booking_transfer_details.date_end) as date_end'
+            )
             ->join('orders', 'orders.id', 'bookings.order_id')
             ->join('administrator_orders', 'administrator_orders.order_id', 'orders.id')
             ->leftJoin('booking_hotel_details', 'booking_hotel_details.booking_id', 'bookings.id')
@@ -98,22 +106,44 @@ class OrderController extends Controller
                 }
             })
             ->where(function (Builder $builder) use ($startPeriod, $endPeriod) {
-                $startPeriodCondition = [$startPeriod->getStartDate(), $startPeriod->getEndDate()];
+                $startPeriodCondition = !empty($startPeriod) ? [$startPeriod->getStartDate(), $startPeriod->getEndDate()] : null;
                 $endPeriodCondition = [$endPeriod->getStartDate(), $endPeriod->getEndDate()];
-                $builder->whereBetween('booking_other_details.date', $endPeriodCondition)
-                    ->orWhereBetween('booking_airport_details.date', $endPeriodCondition)
-                    ->orWhere(function (Builder $query) use ($startPeriodCondition, $endPeriodCondition) {
-                        $query->whereBetween('booking_hotel_details.date_start', $startPeriodCondition)
-                            ->whereBetween('booking_hotel_details.date_end', $endPeriodCondition);
-                    })
-                    ->orWhere(function (Builder $query) use ($endPeriodCondition) {
-                        $query->whereBetween('booking_transfer_details.date_start', $endPeriodCondition)
-                            ->whereNull('booking_transfer_details.date_end');
-                    })
-                    ->orWhere(function (Builder $query) use ($startPeriodCondition, $endPeriodCondition) {
-                        $query->whereBetween('booking_transfer_details.date_start', $startPeriodCondition)
-                            ->whereBetween('booking_transfer_details.date_end', $endPeriodCondition);
-                    });
+
+                $builder->where(function (Builder $query) use ($startPeriodCondition, $endPeriodCondition) {
+                    $query->whereBetween('booking_other_details.date', $endPeriodCondition);
+                    if (!empty($startPeriodCondition)) {
+                        $query->whereBetween('booking_other_details.date', $startPeriodCondition);
+                    }
+                });
+
+                $builder->orWhere(function (Builder $query) use ($startPeriodCondition, $endPeriodCondition) {
+                    $query->whereBetween('booking_airport_details.date', $endPeriodCondition);
+                    if (!empty($startPeriodCondition)) {
+                        $query->whereBetween('booking_airport_details.date', $startPeriodCondition);
+                    }
+                });
+
+                $builder->orWhere(function (Builder $query) use ($startPeriodCondition, $endPeriodCondition) {
+                    $query->whereBetween('booking_hotel_details.date_end', $endPeriodCondition);
+                    if (!empty($startPeriodCondition)) {
+                        $query->whereBetween('booking_hotel_details.date_start', $startPeriodCondition);
+                    }
+                });
+
+                $builder->orWhere(function (Builder $query) use ($startPeriodCondition, $endPeriodCondition) {
+                    $query->whereBetween('booking_transfer_details.date_start', $endPeriodCondition)
+                        ->whereNull('booking_transfer_details.date_end');
+                    if (!empty($startPeriodCondition)) {
+                        $query->whereBetween('booking_transfer_details.date_start', $startPeriodCondition);
+                    }
+                });
+
+                $builder->orWhere(function (Builder $query) use ($startPeriodCondition, $endPeriodCondition) {
+                    $query->whereBetween('booking_transfer_details.date_end', $endPeriodCondition);
+                    if (!empty($startPeriodCondition)) {
+                        $query->whereBetween('booking_transfer_details.date_start', $startPeriodCondition);
+                    }
+                });
             })
             ->get();
 
@@ -142,7 +172,8 @@ class OrderController extends Controller
                         'guests' => $guests->get($firstBooking->order_id),
                         'status' => $firstBooking->order_status_name,
                         'external_id' => $firstBooking->order_external_id,
-                        'period' => '',
+                        'period_start' => null,
+                        'period_end' => null,
                         'service_amount' => 0,
                         'hotel_amount' => 0,
                         'total_amount' => 0,
@@ -165,6 +196,16 @@ class OrderController extends Controller
                                 $orderData['services'][] = $serviceTitle;
                             }
                         }
+
+                        if (empty($orderData['period_start'])) {
+                            $orderData['period_start'] = strtotime($booking->date_start);
+                        } else {
+                            $orderData['period_start'] = min(
+                                $orderData['period_start'],
+                                strtotime($booking->date_start)
+                            );
+                        }
+                        $orderData['period_end'] = max($orderData['period_end'], strtotime($booking->date_end));
                     }
                     if ($firstBooking->order_manual_client_penalty > 0) {
                         $orderData['total_amount'] = $firstBooking->order_manual_client_penalty;
@@ -178,8 +219,7 @@ class OrderController extends Controller
             }
         );
 
-        $reportPeriod = new CarbonPeriod($startPeriod->getStartDate(), $endPeriod->getEndDate());
-        $report = $this->reportCompiler->generate($reportRowsGroupedByClient->toArray(), $reportPeriod);
+        $report = $this->reportCompiler->generate(request()->user(), $reportRowsGroupedByClient->toArray());
         $tempFileMetadata = stream_get_meta_data($report);
         $tempFilePath = Arr::get($tempFileMetadata, 'uri');
 
@@ -192,9 +232,9 @@ class OrderController extends Controller
     protected function formFactory(): FormContract
     {
         return Form::name('data')
-            ->dateRange('start_period', ['label' => 'Дата заеда/начала', 'emptyItem' => '', 'required' => true])
             ->dateRange('end_period', ['label' => 'Дата выезда/завершения', 'emptyItem' => '', 'required' => true])
             ->client('client_ids', ['label' => 'Клиент', 'required' => true, 'multiple' => true])
+            ->dateRange('start_period', ['label' => 'Дата заеда/начала', 'emptyItem' => ''])
             ->manager('manager_ids', ['label' => 'Менеджер', 'multiple' => true]);
     }
 }
