@@ -88,16 +88,11 @@ class OrderReportCompiler extends AbstractReportCompiler
         $headerValueFont = [...$headerFont, 'bold' => true];
         $cellStyle = $this->getCellStyle();
         $cellValueStyle = $this->getCellStyle('FEFF03');
-        $sheet->getCell([1, $currentRow])->setValue('Клиент:')->getStyle()->applyFromArray($cellStyle)->getFont(
-        )->applyFromArray($headerFont);
-        $sheet->getCell([2, $currentRow])->setValue($client->name)->getStyle()->applyFromArray(
-            $cellValueStyle
-        )->getFont()->applyFromArray($headerValueFont);
+        $sheet->getCell([1, $currentRow])->setValue('Клиент:')->getStyle()->applyFromArray($cellStyle)->getFont()->applyFromArray($headerFont);
+        $sheet->getCell([2, $currentRow])->setValue($client->name)->getStyle()->applyFromArray($cellValueStyle)->getFont()->applyFromArray($headerValueFont);
         $currentRow++;
-        $sheet->getCell([1, $currentRow])->setValue('Валюта:')->getStyle()->applyFromArray($cellStyle)->getFont(
-        )->applyFromArray($headerFont);
-        $sheet->getCell([2, $currentRow])->setValue('USD')->getStyle()->applyFromArray($cellStyle)->getFont(
-        )->applyFromArray($headerValueFont);
+        $sheet->getCell([1, $currentRow])->setValue('Валюта:')->getStyle()->applyFromArray($cellStyle)->getFont()->applyFromArray($headerFont);
+        $sheet->getCell([2, $currentRow])->setValue('USD')->getStyle()->applyFromArray($cellStyle)->getFont()->applyFromArray($headerValueFont);
         $currentRow++;
 
         if (count($rows) > 0) {
@@ -199,29 +194,17 @@ class OrderReportCompiler extends AbstractReportCompiler
         }
 
         $sheet->insertNewRowBefore($sheet->getHighestRow());
-        $totalRow = [
-            'Итого',
-            '',
-            '',
-            '',
-            '',
-            $guestsTotal,
-            '',
-            $hotelsTotal . ' ' . $row['currency'],
-            '',
-            $servicesTotal . ' ' . $row['currency'],
-            $amountTotal . ' ' . $row['currency'],
-            $payedTotal . ' ' . $row['currency'],
-            $remainingTotal . ' ' . $row['currency'],
-            ''
-        ];
-        $cellStyle = $this->getCellStyle();
-        foreach ($totalRow as $index => $value) {
-            $sheet->getCell([++$index, $currentRow])
-                ->setValue($value)
-                ->getStyle()->applyFromArray($cellStyle)
-                ->getFont()->applyFromArray($this->defaultFont);
-        }
+        $defaultCellStyle = $this->getCellStyle('FFFFFF', true);
+        $totalCellStyle = $this->getCellStyle('FEFF03');
+        $payedCellStyle = $this->getCellStyle('66FF67');
+        $remainingCellFont = [...$boldFont, 'color' => ['rgb' => 'FF0000']];
+        $sheet->getCell('A' . $currentRow )->setValue('Итого')->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
+        $sheet->getCell('F' . $currentRow )->setValue($guestsTotal)->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
+        $sheet->getCell('H' . $currentRow )->setValue($hotelsTotal . ' ' . $row['currency'])->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
+        $sheet->getCell('J' . $currentRow )->setValue($servicesTotal . ' ' . $row['currency'])->getStyle()->applyFromArray($totalCellStyle)->getFont()->applyFromArray($boldFont);
+        $sheet->getCell('K' . $currentRow )->setValue($amountTotal . ' ' . $row['currency'])->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
+        $sheet->getCell('L' . $currentRow )->setValue($payedTotal . ' ' . $row['currency'])->getStyle()->applyFromArray($payedCellStyle)->getFont()->applyFromArray($boldFont);
+        $sheet->getCell('M' . $currentRow )->setValue($remainingTotal . ' ' . $row['currency'])->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($remainingCellFont);
 
         $this->updateReportTotalData('hotel', $row['currency'], $hotelsTotal);
         $this->updateReportTotalData('service', $row['currency'], $servicesTotal);
