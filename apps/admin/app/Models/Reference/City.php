@@ -40,7 +40,7 @@ class City extends Model
 
     protected array $quicksearch = ['id', 'r_cities.name%'];
 
-    protected array $translatable = ['name'];
+    protected array $translatable = ['r_cities.name'];
 
     protected $table = 'r_cities';
 
