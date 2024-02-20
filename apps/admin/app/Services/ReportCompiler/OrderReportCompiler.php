@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Admin\Services\ReportCompiler;
 
+use App\Admin\Models\Administrator\Administrator;
 use App\Admin\Models\Client\Client;
-use Carbon\CarbonPeriod;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
@@ -23,6 +23,8 @@ class OrderReportCompiler extends AbstractReportCompiler
     ];
 
     private array $reportTotalData = [];
+    private int $reportPeriodStart;
+    private int $reportPeriodEnd;
 
     public function __construct()
     {
@@ -32,21 +34,22 @@ class OrderReportCompiler extends AbstractReportCompiler
     }
 
     /**
+     * @param Administrator $administrator
      * @param array $data
      * @return resource
      */
-    public function generate(array $data, CarbonPeriod $period): mixed
+    public function generate(Administrator $administrator, array $data): mixed
     {
         $this->setCreatedAtDate(now());
-        $this->setReportPeriod($period);
-        $this->setManager('Manager');
+        $this->setManager($administrator->presentation);
 
         foreach ($data as $clientId => $orders) {
             $client = Client::find($clientId);
             $this->appendClientRows($client, $orders);
         }
 
-        $this->appendReportTotal();
+        $this->fillReportPeriod();
+        $this->fillReportTotal();
 
         $writer = $this->getWritter();
         $tempFile = tmpfile();
@@ -60,11 +63,11 @@ class OrderReportCompiler extends AbstractReportCompiler
         $this->fillValueByPlaceholder('{createdAt}', $date->format('d/m/y H:i'));
     }
 
-    private function setReportPeriod(CarbonPeriod $period): void
+    private function fillReportPeriod(): void
     {
         $this->fillValueByPlaceholder(
             '{reportPeriod}',
-            $period->getStartDate()->format('d.m.Y') . ' - ' . $period->getEndDate()->format('d.m.Y')
+            date('d.m.Y', $this->reportPeriodStart) . ' - ' . date('d.m.Y', $this->reportPeriodEnd)
         );
     }
 
@@ -134,8 +137,9 @@ class OrderReportCompiler extends AbstractReportCompiler
         $amountTotal = 0;
         $payedTotal = 0;
         $remainingTotal = 0;
-        foreach ($rows as $index => $row) {
-            $bgColor = ($index === 0 || $index % 2 === 0) ? 'DEEAF6' : 'FFFFFF';
+        $orderIndex = 0;
+        foreach ($rows as $row) {
+            $bgColor = ($orderIndex === 0 || $orderIndex % 2 === 0) ? 'DEEAF6' : 'FFFFFF';
             $cellStyle = $this->getCellStyle($bgColor);
 
             $guestsCount = count($row['guests']);
@@ -147,43 +151,50 @@ class OrderReportCompiler extends AbstractReportCompiler
             $remainingTotal += $row['remaining_amount'];
 
             $sheet->insertNewRowBefore($sheet->getHighestRow());
-            $sheet->getCell('A' . $currentRow)->setValue($row['id'])->getStyle()->applyFromArray($cellStyle)->getFont(
-            )->applyFromArray($this->defaultFont);
-            $sheet->getCell('B' . $currentRow)->setValue($row['status'])->getStyle()->applyFromArray(
-                $cellStyle
-            )->getFont()->applyFromArray($this->defaultFont);
-            $sheet->getCell('C' . $currentRow)->setValue($row['external_id'])->getStyle()->applyFromArray(
-                $cellStyle
-            )->getFont()->applyFromArray($this->defaultFont);
-            $sheet->getCell('D' . $currentRow)->setValue($row['period'])->getStyle()->applyFromArray(
-                $cellStyle
-            )->getFont()->applyFromArray($this->defaultFont);
-            $sheet->getCell('E' . $currentRow)->setValue(implode("\n", $row['guests']))->getStyle()->applyFromArray(
-                $cellStyle
-            )->getFont()->applyFromArray($this->defaultFont);
-            $sheet->getCell('F' . $currentRow)->setValue($guestsCount)->getStyle()->applyFromArray($cellStyle)->getFont(
-            )->applyFromArray($this->defaultFont);
-            $sheet->getCell('G' . $currentRow)->setValue(implode("\n", $row['hotels']))->getStyle()->applyFromArray(
-                $cellStyle
-            )->getFont()->applyFromArray($this->defaultFont);
-            $sheet->getCell('H' . $currentRow)->setValue($row['hotel_amount'] . ' ' . $row['currency'])->getStyle(
-            )->applyFromArray($cellStyle)->getFont()->applyFromArray($this->defaultFont);
-            $sheet->getCell('I' . $currentRow)->setValue(implode("\n", $row['services']))->getStyle()->applyFromArray(
-                $cellStyle
-            )->getFont()->applyFromArray($this->defaultFont);
-            $sheet->getCell('J' . $currentRow)->setValue($row['service_amount'] . ' ' . $row['currency'])->getStyle(
-            )->applyFromArray($cellStyle)->getFont()->applyFromArray($this->defaultFont);
-            $sheet->getCell('K' . $currentRow)->setValue($row['total_amount'] . ' ' . $row['currency'])->getStyle(
-            )->applyFromArray($cellStyle)->getFont()->applyFromArray($this->defaultFont);
-            $sheet->getCell('L' . $currentRow)->setValue($row['payed_amount'] . ' ' . $row['currency'])->getStyle(
-            )->applyFromArray($cellStyle)->getFont()->applyFromArray($this->defaultFont);
-            $sheet->getCell('M' . $currentRow)->setValue($row['remaining_amount'] . ' ' . $row['currency'])->getStyle(
-            )->applyFromArray($cellStyle)->getFont()->applyFromArray($this->defaultFont);
-            $sheet->getCell('N' . $currentRow)->setValue($row['manager'])->getStyle()->applyFromArray(
-                $cellStyle
-            )->getFont()->applyFromArray($this->defaultFont);
+
+            $data = [
+                'A' . $currentRow => $row['id'],
+                'B' . $currentRow => $row['status'],
+                'C' . $currentRow => $row['external_id'],
+                'D' . $currentRow => date('d.m.Y', $row['period_start']) . ' - ' . date('d.m.Y', $row['period_end']),
+                'E' . $currentRow => implode("\n", $row['guests']),
+                'F' . $currentRow => count($row['guests']),
+                'G' . $currentRow => implode("\n", $row['hotels']),
+                'H' . $currentRow => $row['hotel_amount'] . ' ' . $row['currency'],
+                'I' . $currentRow => implode("\n", $row['services']),
+                'J' . $currentRow => $row['service_amount'] . ' ' . $row['currency'],
+                'K' . $currentRow => $row['total_amount'] . ' ' . $row['currency'],
+                'L' . $currentRow => $row['payed_amount'] . ' ' . $row['currency'],
+                'M' . $currentRow => $row['remaining_amount'] . ' ' . $row['currency'],
+                'N' . $currentRow => $row['manager'],
+            ];
+
+            foreach ($data as $coordinates => $value) {
+                $sheet->getCell($coordinates)
+                    ->setValue($value)
+                    ->getStyle()
+                    ->applyFromArray($cellStyle)
+                    ->getFont()
+                    ->applyFromArray($this->defaultFont);
+            }
+
+            $rowHeight = max(count($row['hotels']), count($row['services']), count($row['guests']));
+            $sheet->getRowDimension($currentRow)->setRowHeight($rowHeight * 15);
+
+            if (!isset($this->reportPeriodStart)) {
+                $this->reportPeriodStart = $row['period_start'];
+            } else {
+                $this->reportPeriodStart = min($row['period_start'], $this->reportPeriodStart);
+            }
+
+            if (!isset($this->reportPeriodEnd)) {
+                $this->reportPeriodEnd = $row['period_end'];
+            } else {
+                $this->reportPeriodEnd = max($row['period_end'], $this->reportPeriodEnd);
+            }
 
             $currentRow++;
+            $orderIndex++;
         }
 
         $sheet->insertNewRowBefore($sheet->getHighestRow());
@@ -218,7 +229,7 @@ class OrderReportCompiler extends AbstractReportCompiler
         $this->updateReportTotalData('remaining', $row['currency'], $remainingTotal);
     }
 
-    private function appendReportTotal(): void
+    private function fillReportTotal(): void
     {
         $sheet = $this->spreadsheet->getActiveSheet();
         $lastRow = $sheet->getHighestRow();
@@ -257,21 +268,15 @@ class OrderReportCompiler extends AbstractReportCompiler
         foreach ($this->reportTotalData as $currency => $totalAmounts) {
             $sheet->insertNewRowBefore($sheet->getHighestRow());
             $currentRow++;
-            $sheet->getCell('G' . $currentRow)->setValue($currency)->getStyle()->applyFromArray(
-                $defaultCellStyle
-            )->getFont()->applyFromArray($boldFont);
-            $sheet->getCell('H' . $currentRow)->setValue($totalAmounts['hotel_amount'] . ' ' . $currency)->getStyle(
-            )->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
-            $sheet->getCell('J' . $currentRow)->setValue($totalAmounts['service_amount'] . ' ' . $currency)->getStyle(
-            )->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
-            $sheet->getCell('K' . $currentRow)->setValue($totalAmounts['total_amount'] . ' ' . $currency)->getStyle(
-            )->applyFromArray($totalCellStyle)->getFont()->applyFromArray($boldFont);
-            $sheet->getCell('L' . $currentRow)->setValue($totalAmounts['payed_amount'] . ' ' . $currency)->getStyle(
-            )->applyFromArray($payedCellStyle)->getFont()->applyFromArray($boldFont);
-            $sheet->getCell('M' . $currentRow)->setValue($totalAmounts['remaining_amount'] . ' ' . $currency)->getStyle(
-            )->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($remainingCellFont);
+            $sheet->getCell('G' . $currentRow)->setValue($currency)->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
+            $sheet->getCell('H' . $currentRow)->setValue($totalAmounts['hotel_amount'] . ' ' . $currency)->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
+            $sheet->getCell('J' . $currentRow)->setValue($totalAmounts['service_amount'] . ' ' . $currency)->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
+            $sheet->getCell('K' . $currentRow)->setValue($totalAmounts['total_amount'] . ' ' . $currency)->getStyle()->applyFromArray($totalCellStyle)->getFont()->applyFromArray($boldFont);
+            $sheet->getCell('L' . $currentRow)->setValue($totalAmounts['payed_amount'] . ' ' . $currency)->getStyle()->applyFromArray($payedCellStyle)->getFont()->applyFromArray($boldFont);
+            $sheet->getCell('M' . $currentRow)->setValue($totalAmounts['remaining_amount'] . ' ' . $currency)->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($remainingCellFont);
         }
-        $firstRow = $currentRow - count($this->reportTotalData) + 1;
+        $countCurrencies = count($this->reportTotalData);
+        $firstRow = $currentRow - $countCurrencies + 1;
         $alignmentStyle = [
             'horizontal' => Alignment::HORIZONTAL_CENTER,
             'vertical' => Alignment::VERTICAL_CENTER,
@@ -280,6 +285,7 @@ class OrderReportCompiler extends AbstractReportCompiler
         $style->getAlignment()->applyFromArray($alignmentStyle);
         $style->getFont()->applyFromArray([...$boldFont, 'size' => 22]);
         $sheet->mergeCells("A{$firstRow}:F{$currentRow}");
+        $sheet->getRowDimension($firstRow)->setRowHeight($countCurrencies * 15);
     }
 
     private function getCellStyle(string $bgColor = 'FFFFFF', bool $withBorders = false): array
