@@ -202,8 +202,8 @@ class OrderReportCompiler extends AbstractReportCompiler
 
         $this->insertNewRowBefore($sheet->getHighestRow());
         $defaultCellStyle = $this->getCellStyle('FFFFFF', true);
-        $totalCellStyle = $this->getCellStyle('FEFF03');
-        $payedCellStyle = $this->getCellStyle('66FF67');
+        $totalCellStyle = $this->getCellStyle('FEFF03', true);
+        $payedCellStyle = $this->getCellStyle('66FF67', true);
         $remainingCellFont = [...$boldFont, 'color' => ['rgb' => 'FF0000']];
         $sheet->getCell('A' . $currentRow)->setValue('Итого')->getStyle()->applyFromArray($defaultCellStyle)->getFont(
         )->applyFromArray($boldFont);
@@ -279,8 +279,8 @@ class OrderReportCompiler extends AbstractReportCompiler
         }
 
         $defaultCellStyle = $this->getCellStyle('FFFFFF', true);
-        $totalCellStyle = $this->getCellStyle('FEFF03');
-        $payedCellStyle = $this->getCellStyle('66FF67');
+        $totalCellStyle = $this->getCellStyle('FEFF03', true);
+        $payedCellStyle = $this->getCellStyle('66FF67', true);
         $remainingCellFont = [...$boldFont, 'color' => ['rgb' => 'FF0000']];
         foreach ($this->reportTotalData as $currency => $totalAmounts) {
             $this->insertNewRowBefore($sheet->getHighestRow());
