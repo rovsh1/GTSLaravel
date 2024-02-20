@@ -57,7 +57,7 @@ class Client extends \Module\Client\Shared\Infrastructure\Models\Client
         });
     }
 
-    public function scopeWhereType(Builder $builder, TypeEnum $type): void
+    public function scopeWhereType(Builder $builder, TypeEnum|int $type): void
     {
         $builder->where('clients.type', $type);
     }
