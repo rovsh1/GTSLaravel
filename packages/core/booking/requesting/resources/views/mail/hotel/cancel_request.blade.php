@@ -6,9 +6,7 @@
             <p>{{ __('Уважаемый партнер,') }}</p>
         </div>
         <div class="text-block">
-            <p>Просим Вас обработать <span class="cancelled">запрос на аннулирование бронирования</span> <a
-                    href="{{ ho_url("/booking/{$booking->number}") }}" target="_blank">по
-                    ссылке</a></p>
+            <p>Просим Вас обработать <span class="cancelled">запрос на аннулирование бронирования</span> <span class="selected-text">во вложении</span></p>
         </div>
         <div class="table-block">
             <table class="with-divider">
