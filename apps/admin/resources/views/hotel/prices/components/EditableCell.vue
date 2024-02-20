@@ -3,6 +3,8 @@ import { nextTick, onMounted, ref, watch } from 'vue'
 
 import { onClickOutside } from '@vueuse/core'
 
+import { formatPrice } from '~helpers/price'
+
 import EditableButton from './EditableButton.vue'
 
 const props = withDefaults(defineProps<{
@@ -81,8 +83,8 @@ onMounted(() => {
 <template>
   <div :style="{ height: isChanged ? '100%' : 'auto' }" aria-hidden="true" @click.prevent="handleChanged">
     <a v-if="!isChanged">
-      <span v-if="value !== null">{{ value }}</span>
-      <span v-else class="value-place-holder">{{ valuePlaceHolder }}</span>
+      <span v-if="value !== null">{{ formatPrice(value) }}</span>
+      <span v-else class="value-place-holder">{{ typeof valuePlaceHolder === 'number' ? formatPrice(valuePlaceHolder) : '' }}</span>
       <EditableButton v-if="enableContextMenu" @click.stop="() => { emit('activatedContextMenu') }" />
     </a>
     <input

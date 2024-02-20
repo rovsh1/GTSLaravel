@@ -95,7 +95,7 @@ class AirportController extends Controller
                 'label' => 'Аэропорт',
                 'required' => true,
                 'emptyItem' => '',
-                'items' => AirportReference::whereIn('r_airports.id', $provider->cities)
+                'items' => AirportReference::whereIn('r_airports.city_id', $provider->cities)
                     ->get()
                     ->map(fn($r) => [
                         'value' => $r->id,

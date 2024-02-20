@@ -106,6 +106,7 @@ export default defineConfig(({ command }) => ({
         'resources/views/markup-group/rules/form/form.ts',
         'resources/views/locale-dictionary/locale-dictionary.ts',
         'resources/views/locale-dictionary/locale-dictionary.scss',
+        'resources/views/report/form/form.ts',
         'resources/views/main.scss',
         'resources/views/main.ts',
       ],

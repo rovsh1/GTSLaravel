@@ -27,7 +27,7 @@ class CancelConditionsDataFactory
             noCheckInMarkup: $noCheckInMarkup->value()->value(),
             noCheckInMarkupType: $this->getHumanCancelPeriodType($noCheckInMarkup->cancelPeriodType()->value),
             dailyMarkups: $dailyMarkups,
-            cancelNoFeeDate: $cancelConditions->cancelNoFeeDate()?->toDateTimeImmutable()
+            cancelNoFeeDate: $cancelConditions->cancelNoFeeDate()
         );
     }
 

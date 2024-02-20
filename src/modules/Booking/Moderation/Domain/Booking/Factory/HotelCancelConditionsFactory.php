@@ -14,6 +14,7 @@ use Sdk\Booking\ValueObject\CancelCondition\DailyCancelFeeValueCollection;
 use Sdk\Booking\ValueObject\CancelCondition\FeeValue;
 use Sdk\Booking\ValueObject\CancelConditions;
 use Sdk\Booking\ValueObject\HotelBooking\BookingPeriod;
+use Sdk\Module\Support\DateTimeImmutable;
 
 class HotelCancelConditionsFactory
 {
@@ -71,7 +72,9 @@ class HotelCancelConditionsFactory
                 CancelFeePeriodTypeEnum::from($availablePeriod->noCheckInMarkup->cancelPeriodType)
             ),
             $dailyMarkups,
-            $cancelNoFeeDate
+            $cancelNoFeeDate !== null
+                ? DateTimeImmutable::createFromInterface($cancelNoFeeDate)
+                : null
         );
     }
 }

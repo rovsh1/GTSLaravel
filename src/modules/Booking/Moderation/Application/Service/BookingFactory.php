@@ -28,6 +28,7 @@ use Sdk\Booking\ValueObject\OrderId;
 use Sdk\Booking\ValueObject\ServiceId;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
+use Sdk\Module\Support\DateTimeImmutable;
 use Sdk\Shared\Enum\CurrencyEnum;
 use Sdk\Shared\Enum\ServiceTypeEnum;
 
@@ -156,7 +157,7 @@ class BookingFactory
         $cancelConditions = $this->cancelConditionsFactory->build(
             new ServiceId($service->id),
             $service->type,
-            $details['date'] ?? null
+            !empty($details['date']) ? DateTimeImmutable::createFromInterface($details['date']) : null,
         );
         $isTransferServiceBooking = in_array($service->type, ServiceTypeEnum::getTransferCases());
         if ($cancelConditions === null && !$isTransferServiceBooking) {
