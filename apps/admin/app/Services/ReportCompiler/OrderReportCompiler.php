@@ -199,12 +199,20 @@ class OrderReportCompiler extends AbstractReportCompiler
         $payedCellStyle = $this->getCellStyle('66FF67');
         $remainingCellFont = [...$boldFont, 'color' => ['rgb' => 'FF0000']];
         $sheet->getCell('A' . $currentRow )->setValue('Итого')->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
+        $sheet->getCell('B' . $currentRow )->setValue('')->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
+        $sheet->getCell('C' . $currentRow )->setValue('')->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
+        $sheet->getCell('D' . $currentRow )->setValue('')->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
+        $sheet->getCell('E' . $currentRow )->setValue('')->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
         $sheet->getCell('F' . $currentRow )->setValue($guestsTotal)->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
+        $sheet->getCell('G' . $currentRow )->setValue('')->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
         $sheet->getCell('H' . $currentRow )->setValue($hotelsTotal . ' ' . $row['currency'])->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
-        $sheet->getCell('J' . $currentRow )->setValue($servicesTotal . ' ' . $row['currency'])->getStyle()->applyFromArray($totalCellStyle)->getFont()->applyFromArray($boldFont);
-        $sheet->getCell('K' . $currentRow )->setValue($amountTotal . ' ' . $row['currency'])->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
+        $sheet->getCell('I' . $currentRow )->setValue('')->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
+        $sheet->getCell('J' . $currentRow )->setValue($servicesTotal . ' ' . $row['currency'])->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
+        $sheet->getCell('K' . $currentRow )->setValue($amountTotal . ' ' . $row['currency'])->getStyle()->applyFromArray($totalCellStyle)->getFont()->applyFromArray($boldFont);
         $sheet->getCell('L' . $currentRow )->setValue($payedTotal . ' ' . $row['currency'])->getStyle()->applyFromArray($payedCellStyle)->getFont()->applyFromArray($boldFont);
         $sheet->getCell('M' . $currentRow )->setValue($remainingTotal . ' ' . $row['currency'])->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($remainingCellFont);
+        $sheet->getCell('N' . $currentRow )->setValue('')->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
+        $sheet->getRowDimension($currentRow)->setRowHeight(15);
 
         $this->updateReportTotalData('hotel', $row['currency'], $hotelsTotal);
         $this->updateReportTotalData('service', $row['currency'], $servicesTotal);
