@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Builder as Query;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
+use Sdk\Shared\Enum\Client\TypeEnum;
 
 class Client extends \Module\Client\Shared\Infrastructure\Models\Client
 {
@@ -54,6 +55,11 @@ class Client extends \Module\Client\Shared\Infrastructure\Models\Client
         $builder->whereHas('orders', function (Builder $query) {
             $query->whereIn('status', Order::getActiveStatuses());
         });
+    }
+
+    public function scopeWhereType(Builder $builder, TypeEnum $type): void
+    {
+        $builder->where('clients.type', $type);
     }
 
     public function legals(): HasMany

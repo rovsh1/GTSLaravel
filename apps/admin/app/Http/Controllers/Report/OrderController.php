@@ -200,10 +200,7 @@ class OrderController extends Controller
                         if (empty($orderData['period_start'])) {
                             $orderData['period_start'] = strtotime($booking->date_start);
                         } else {
-                            $orderData['period_start'] = min(
-                                $orderData['period_start'],
-                                strtotime($booking->date_start)
-                            );
+                            $orderData['period_start'] = min($orderData['period_start'], strtotime($booking->date_start));
                         }
                         $orderData['period_end'] = max($orderData['period_end'], strtotime($booking->date_end));
                     }
