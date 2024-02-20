@@ -65,6 +65,11 @@ class OrderReportCompiler extends AbstractReportCompiler
 
     private function fillReportPeriod(): void
     {
+        if (!isset($this->reportPeriodStart) || !isset($this->reportPeriodEnd)) {
+            $this->fillValueByPlaceholder('{reportPeriod}', '');
+
+            return;
+        }
         $this->fillValueByPlaceholder(
             '{reportPeriod}',
             date('d.m.Y', $this->reportPeriodStart) . ' - ' . date('d.m.Y', $this->reportPeriodEnd)
