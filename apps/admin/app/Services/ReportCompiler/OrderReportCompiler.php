@@ -90,16 +90,11 @@ class OrderReportCompiler extends AbstractReportCompiler
         $headerValueFont = [...$headerFont, 'bold' => true];
         $cellStyle = $this->getCellStyle();
         $cellValueStyle = $this->getCellStyle('FEFF03');
-        $sheet->getCell([1, $currentRow])->setValue('Клиент:')->getStyle()->applyFromArray($cellStyle)->getFont(
-        )->applyFromArray($headerFont);
-        $sheet->getCell([2, $currentRow])->setValue($client->name)->getStyle()->applyFromArray(
-            $cellValueStyle
-        )->getFont()->applyFromArray($headerValueFont);
+        $sheet->getCell([1, $currentRow])->setValue('Клиент:')->getStyle()->applyFromArray($cellStyle)->getFont()->applyFromArray($headerFont);
+        $sheet->getCell([2, $currentRow])->setValue($client->name)->getStyle()->applyFromArray($cellValueStyle)->getFont()->applyFromArray($headerValueFont);
         $currentRow++;
-        $sheet->getCell([1, $currentRow])->setValue('Валюта:')->getStyle()->applyFromArray($cellStyle)->getFont(
-        )->applyFromArray($headerFont);
-        $sheet->getCell([2, $currentRow])->setValue('USD')->getStyle()->applyFromArray($cellStyle)->getFont(
-        )->applyFromArray($headerValueFont);
+        $sheet->getCell([1, $currentRow])->setValue('Валюта:')->getStyle()->applyFromArray($cellStyle)->getFont()->applyFromArray($headerFont);
+        $sheet->getCell([2, $currentRow])->setValue($client->currency->name)->getStyle()->applyFromArray($cellStyle)->getFont()->applyFromArray($headerValueFont);
         $currentRow++;
 
         if (count($rows) > 0) {
