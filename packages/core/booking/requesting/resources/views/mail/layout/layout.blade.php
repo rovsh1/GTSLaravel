@@ -139,7 +139,7 @@
       color: red !important;
     }
 
-    .mail-container .changed {
+    .mail-container .changed, .mail-container .selected-text {
       color: blue !important;
     }
 

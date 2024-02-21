@@ -42,7 +42,7 @@
             </div>
 
             <div class="form-buttons">
-                <button type="submit" class="btn btn-primary">{{ $submitText ?? 'Сохранить' }}</button>
+                <button type="submit" class="btn btn-primary retry-submit-lock">{{ $submitText ?? 'Сохранить' }}</button>
                 @if(isset($cancelUrl))
                     <a href="{{ $cancelUrl }}" class="btn btn-cancel">Отмена</a>
                 @endif
