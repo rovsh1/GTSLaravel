@@ -67,7 +67,11 @@ class BootServiceProvider extends ServiceProvider
         Blade::directive('changes', function ($expression) {
             $changes = "module('BookingRequesting')->make('" . ChangeMarkRenderer::class . "')->changes({$expression})";
 
-            return "<?php foreach ( $changes as $change ) { echo \"<li>{$change->description}</li>\"; } ?>";
+            return '<?php foreach (' . $changes . ' as $change): ?>';
+        });
+
+        Blade::directive('endchanges', function () {
+            return "<?php endforeach; ?>";
         });
     }
 

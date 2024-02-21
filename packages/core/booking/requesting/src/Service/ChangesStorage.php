@@ -59,7 +59,7 @@ class ChangesStorage implements ChangesStorageInterface
         return Model::where('booking_id', $bookingId->value())
             ->where(function (Builder $query) use ($field) {
                 if (!empty($field)) {
-                    $query->where('field', $field);
+                    $query->where('field', 'LIKE', "{$field}%");
                 }
             })
             ->get()
@@ -85,7 +85,7 @@ class ChangesStorage implements ChangesStorageInterface
         return new Changes(
             new ChangesIdentifier($model->booking_id, $model->field),
             $model->status,
-            $model->field,
+            $model->description,
             $model->payload,
         );
     }

@@ -59,10 +59,16 @@
                     @endchangemark
                 </p>
             </div>
-            <div class="column w-28 text-right">{{ Format::number($room->supplierPrice->amount) }} {{ $room->supplierPrice->currency }}</div>
+            <div
+                class="column w-28 text-right">{{ Format::number($room->supplierPrice->amount) }} {{ $room->supplierPrice->currency }}</div>
         </div>
         <div>
-            @changes("accommodation[$room->accommodationId]")
+            <p style="color: blue; font-weight: bold">Изменения:</p>
+            <ul style="margin-top: 3px; padding-inline-start: 25px; color: blue; font-weight: bold">
+                @changes("accommodation[$room->accommodationId]")
+                <li>{{ $change->description() }}</li>
+                @endchanges
+            </ul>
         </div>
     </div>
 @endforeach
