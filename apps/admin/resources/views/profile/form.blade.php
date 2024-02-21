@@ -6,7 +6,7 @@
     </div>
 
     <div class="form-buttons">
-        <button type="submit" class="btn btn-primary">@lang('Сохранить')</button>
+        <button type="submit" class="btn btn-primary retry-submit-lock">@lang('Сохранить')</button>
         <button type="button" class="btn btn-cancel" data-action="close">@lang('Отмена')</button>
     </div>
 </form>
