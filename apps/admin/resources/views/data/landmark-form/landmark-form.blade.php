@@ -12,7 +12,7 @@
     <div class="content-body">
         <div class="card card-form">
             <div class="card-body">
-                <form action="{{ $form->action }}" method="{{ strtoupper($form->method) === 'GET' ? 'GET' : 'POST' }}"
+                <form class="retry-submit-lock" action="{{ $form->action }}" method="{{ strtoupper($form->method) === 'GET' ? 'GET' : 'POST' }}"
                       enctype="multipart/form-data">
                     <div class="form-group d-flex">
                         <div class="form-fields col-6">
@@ -23,7 +23,7 @@
 
 
                     <div class="form-buttons">
-                        <button type="submit" class="btn btn-primary retry-submit-lock">{{ $submitText ?? 'Сохранить' }}</button>
+                        <button type="submit" class="btn btn-primary">{{ $submitText ?? 'Сохранить' }}</button>
                         @if(isset($cancelUrl))
                             <a href="{{ $cancelUrl }}" class="btn btn-cancel">Отмена</a>
                         @endif

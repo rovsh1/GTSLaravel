@@ -29,8 +29,8 @@ function bootDateRangePicker() {
   })
 }
 
-function bootSubmitButton() {
-  $('.retry-submit-lock').closest('form').submit(function (e) {
+function bootSubmit() {
+  $('.retry-submit-lock').submit(function (e) {
     const submitButton = $(this).find('[type="submit"]')
     if (submitButton.prop('disabled')) {
       e.preventDefault()
@@ -148,5 +148,5 @@ export default function bootForms() {
   bootTabsAnchor()
   bootGridFilters()
   bootTooltips()
-  bootSubmitButton()
+  bootSubmit()
 }

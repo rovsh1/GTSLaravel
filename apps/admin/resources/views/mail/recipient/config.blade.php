@@ -8,7 +8,7 @@
     <x-ui.content-title/>
 
     <div class="content-body">
-        <form method="POST"
+        <form class="retry-submit-lock" method="POST"
         >
             <div class="card card-form">
                 <div class="card-body">
@@ -17,7 +17,7 @@
             </div>
 
             <div class="form-buttons">
-                <button type="submit" class="btn btn-primary retry-submit-lock">Сохранить</button>
+                <button type="submit" class="btn btn-primary">Сохранить</button>
             </div>
         </form>
     </div>
