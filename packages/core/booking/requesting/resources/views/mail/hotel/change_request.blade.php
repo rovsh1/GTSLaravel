@@ -6,7 +6,10 @@
             <p>{{ __('Уважаемый партнер,') }}</p>
         </div>
         <div class="text-block">
-            <p>Просим Вас обработать <span class="changed">запрос на изменение бронирования</span> <span class="selected-text">во вложении</span></p>
+            <p>Просим Вас обработать <span class="changed">запрос на изменение бронирования</span> <a
+                    href="{{ route('service-booking.show', $booking->number) }}"
+                    target="_blank">по
+                    ссылке</a></p>
         </div>
         <div class="table-block">
             <table class="with-divider">

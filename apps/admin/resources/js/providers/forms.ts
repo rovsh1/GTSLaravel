@@ -29,6 +29,18 @@ function bootDateRangePicker() {
   })
 }
 
+function bootSubmitButton() {
+  $('.retry-submit-lock').closest('form').submit(function (e) {
+    const submitButton = $(this).find('[type="submit"]')
+    if (submitButton.prop('disabled')) {
+      e.preventDefault()
+      return
+    }
+    submitButton.prop('disabled', true)
+    submitButton.focus()
+  })
+}
+
 function bootFileFields() {
   $('div.field-file div.thumb div.btn-remove').click(function (e) {
     e.preventDefault()
@@ -136,4 +148,5 @@ export default function bootForms() {
   bootTabsAnchor()
   bootGridFilters()
   bootTooltips()
+  bootSubmitButton()
 }
