@@ -34,16 +34,6 @@ return [
             'driver' => 'sync',
         ],
 
-        'mail' => [
-            'driver' => 'mail',
-            'retry_after' => 90,
-        ],
-
-        'integrationEvent' => [
-            'driver' => 'integrationEvent',
-            'retry_after' => 90,
-        ],
-
         'database' => [
             'driver' => 'database',
             'table' => 'jobs',

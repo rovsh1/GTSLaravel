@@ -38,15 +38,7 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'customer',
-        ],
-        'admin' => [
-            'driver' => 'session',
-            'provider' => 'admin',
-        ],
-        'hotel' => [
-            'driver' => 'session',
-            'provider' => 'hotel',
+            'provider' => 'users',
         ],
     ],
 
@@ -68,18 +60,15 @@ return [
     */
 
     'providers' => [
-        'customer' => [
+        'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
-        'admin' => [
-            'driver' => 'eloquent',
-            'model' => \App\Admin\Models\Administrator\Administrator::class
-        ],
-        'hotel' => [
-            'driver' => 'eloquent',
-            'model' => \App\Hotel\Models\Administrator::class
-        ],
+
+        // 'users' => [
+        //     'driver' => 'database',
+        //     'table' => 'users',
+        // ],
     ],
 
     /*
