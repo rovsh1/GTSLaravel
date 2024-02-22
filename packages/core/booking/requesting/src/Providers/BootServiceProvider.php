@@ -62,6 +62,17 @@ class BootServiceProvider extends ServiceProvider
 
             return "<?php if ($condition) { echo \"</span>\"; } ?>";
         });
+
+
+        Blade::directive('changes', function ($expression) {
+            $changes = "module('BookingRequesting')->make('" . ChangeMarkRenderer::class . "')->changes({$expression})";
+
+            return '<?php foreach (' . $changes . ' as $change): ?>';
+        });
+
+        Blade::directive('endchanges', function () {
+            return "<?php endforeach; ?>";
+        });
     }
 
     protected function registerMigrations(): void
