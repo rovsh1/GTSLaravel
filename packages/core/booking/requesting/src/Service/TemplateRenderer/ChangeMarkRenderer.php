@@ -14,6 +14,8 @@ class ChangeMarkRenderer
 
     private array $cached = [];
 
+    private array $renderedFields = [];
+
     public function __construct(
         private readonly ChangesStorageInterface $changesStorage
     ) {}
@@ -45,7 +47,12 @@ class ChangeMarkRenderer
 
     public function changes(?string $field): array
     {
-        return $this->changesStorage->get($this->booking->id(), $field);
+        if ($field !== null) {
+            $this->renderedFields[] = $field;
+        }
+        $excludeFields = $field === null && !empty($this->renderedFields) ? $this->renderedFields : null;
+
+        return $this->changesStorage->get($this->booking->id(), $field, $excludeFields);
     }
 
     public function endChanged(): bool

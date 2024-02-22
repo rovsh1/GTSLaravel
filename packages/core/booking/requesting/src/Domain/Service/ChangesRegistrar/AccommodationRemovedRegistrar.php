@@ -6,6 +6,7 @@ use Pkg\Booking\Requesting\Domain\Entity\Changes;
 use Pkg\Booking\Requesting\Domain\ValueObject\ChangesIdentifier;
 use Sdk\Booking\IntegrationEvent\BookingEventInterface;
 use Sdk\Booking\IntegrationEvent\HotelBooking\AccommodationDeleted;
+use Sdk\Booking\ValueObject\BookingId;
 
 class AccommodationRemovedRegistrar extends AbstractRegistrar
 {
@@ -31,7 +32,7 @@ class AccommodationRemovedRegistrar extends AbstractRegistrar
             $this->changesStorage->store($currentChanges);
         }
 
-        $changes = $this->changesStorage->get($event->bookingId, "accommodation[$event->accommodationId].");
+        $changes = $this->changesStorage->get(new BookingId($event->bookingId), "accommodation[$event->accommodationId].");
         foreach ($changes as $change) {
             $this->changesStorage->remove($change->identifier());
         }

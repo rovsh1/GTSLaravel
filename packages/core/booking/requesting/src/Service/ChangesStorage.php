@@ -54,12 +54,19 @@ class ChangesStorage implements ChangesStorageInterface
             ->delete();
     }
 
-    public function get(BookingId $bookingId, ?string $field): array
+    public function get(BookingId $bookingId, ?string $field, ?array $excludeFields = null): array
     {
         return Model::where('booking_id', $bookingId->value())
             ->where(function (Builder $query) use ($field) {
                 if (!empty($field)) {
                     $query->where('field', 'LIKE', "{$field}%");
+                }
+            })
+            ->where(function (Builder $query) use ($excludeFields) {
+                if (!empty($excludeFields)) {
+                    foreach ($excludeFields as $excludeField) {
+                        $query->where('field', 'NOT LIKE', "{$excludeField}%");
+                    }
                 }
             })
             ->get()
