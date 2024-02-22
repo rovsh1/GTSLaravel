@@ -41,7 +41,7 @@ return [
     |
     */
 
-    'debug' => (bool)env('APP_DEBUG', false),
+    'debug' => (bool) env('APP_DEBUG', false),
 
     /*
     |--------------------------------------------------------------------------
@@ -82,7 +82,7 @@ return [
     |
     */
 
-    'locale' => 'ru',
+    'locale' => 'en',
 
     /*
     |--------------------------------------------------------------------------
@@ -95,7 +95,7 @@ return [
     |
     */
 
-    'fallback_locale' => 'ru',
+    'fallback_locale' => 'en',
 
     /*
     |--------------------------------------------------------------------------
@@ -108,7 +108,7 @@ return [
     |
     */
 
-    'faker_locale' => 'ru_RU',
+    'faker_locale' => 'en_US',
 
     /*
     |--------------------------------------------------------------------------
@@ -185,13 +185,16 @@ return [
         /*
          * Package Service Providers...
          */
-        \Gsdk\FileStorage\FileStorageServiceProvider::class,
 
         /*
          * Application Service Providers...
          */
-        \App\Shared\Providers\HorizonServiceProvider::class,
-        \App\Shared\Providers\AppServiceProvider::class,
+        GTS\Shared\Infrastructure\Providers\AppServiceProvider::class,
+        GTS\Shared\Interface\Common\Providers\AppServiceProvider::class,
+        // App\Providers\AuthServiceProvider::class,
+        // App\Providers\BroadcastServiceProvider::class,
+        // App\Providers\EventServiceProvider::class,
+        // App\Providers\RouteServiceProvider::class,
 
     ],
 
@@ -207,7 +210,7 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        'Js' => \App\Shared\Support\Js::class
+        // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
 
 ];

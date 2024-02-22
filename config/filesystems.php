@@ -29,12 +29,6 @@ return [
     */
 
     'disks' => [
-        'files' => [
-            'driver' => 'local',
-            'root' => storage_path('app/files'),
-            'url' => env('APP_URL') . '/file',
-            'throw' => false,
-        ],
 
         'local' => [
             'driver' => 'local',
@@ -45,15 +39,7 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => env('APP_URL') . '/storage',
-            'visibility' => 'public',
-            'throw' => false,
-        ],
-
-        'upload' => [
-            'driver' => 'local',
-            'root' => storage_path('app/upload'),
-            'url' => env('APP_URL') . '/upload',
+            'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
             'throw' => false,
         ],
@@ -84,9 +70,7 @@ return [
     */
 
     'links' => [
-        base_path('apps/site/public/storage') => storage_path('app/public'),
-        base_path('apps/site/public/upload') => storage_path('app/upload'),
-        base_path('apps/site/public/file') => storage_path('app/files'),
+        public_path('storage') => storage_path('app/public'),
     ],
 
 ];

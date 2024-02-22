@@ -11,9 +11,10 @@
 |
 */
 
-$app = new \App\Shared\Application(
+$app = new Illuminate\Foundation\Application(
     $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
 );
+
 /*
 |--------------------------------------------------------------------------
 | Bind Important Interfaces
@@ -27,17 +28,17 @@ $app = new \App\Shared\Application(
 
 $app->singleton(
     Illuminate\Contracts\Http\Kernel::class,
-    \App\Shared\Http\Kernel::class
+    GTS\Shared\Interface\Common\Http\Kernel::class
 );
 
 $app->singleton(
     Illuminate\Contracts\Console\Kernel::class,
-    \App\Shared\Console\Kernel::class
+    GTS\Shared\Interface\Console\Kernel::class
 );
 
 $app->singleton(
     Illuminate\Contracts\Debug\ExceptionHandler::class,
-    \App\Shared\Exceptions\Handler::class
+    GTS\Shared\Interface\Common\Exceptions\Handler::class
 );
 
 /*

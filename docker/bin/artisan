@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-source `dirname $0`/env.sh
-
-echo "php artisan $*";
-
-${COMPOSE} exec php /bin/bash -c "php artisan $*"
-

@@ -1,1 +1,0 @@
-@extends('default/grid.grid')
