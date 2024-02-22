@@ -1,0 +1,109 @@
+<script setup lang="ts">
+import { MaybeRef } from '@vueuse/core'
+
+import { getCancelPeriodTypeName } from '~resources/views/booking/shared/lib/constants'
+import EditTableRowButton from '~resources/views/hotel/settings/components/EditTableRowButton.vue'
+
+import { CancelPeriod, DailyMarkup } from '~api/hotel/markup-settings'
+
+import EditableCell from '~components/Editable/EditableNumberInput.vue'
+
+withDefaults(defineProps<{
+  cancelPeriod: CancelPeriod
+  dailyMarkups: DailyMarkup[]
+  title: string
+  loading?: MaybeRef<boolean>
+  canEditBase?: boolean
+}>(), {
+  loading: false,
+  canEditBase: true,
+})
+
+type DailyMarkupField = keyof DailyMarkup
+
+defineEmits<{
+  (event: 'editBase'): void
+  (event: 'deleteBase'): void
+  (event: 'edit', index: number): void
+  (event: 'edit-field', payload: { field: DailyMarkupField; value: number; index: number }): void
+  (event: 'add'): void
+  (event: 'delete', index: number): void
+}>()
+
+</script>
+
+<template>
+  <div>
+    <div class="d-flex align-items-center">
+      <h6 class="mb-0" style="margin-left: 0.5rem;">{{ title }}</h6>
+      <EditTableRowButton
+        can-add
+        :can-edit="canEditBase"
+        add-title="Добавить условие"
+        @add="$emit('add')"
+        @edit="$emit('editBase')"
+        @delete="$emit('deleteBase')"
+      />
+    </div>
+    <div class="card-body">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th class="w-25" scope="col">Кол-во дней</th>
+            <th class="w-25" scope="col">Наценка</th>
+            <th class="w-auto" scope="col">Тип</th>
+            <th class="w-auto" scope="col" />
+          </tr>
+        </thead>
+        <tbody :class="{ loading: loading }">
+          <tr>
+            <td>Не заезд</td>
+            <td>
+              {{ cancelPeriod.noCheckInMarkup.percent }} %
+            </td>
+            <td>
+              {{ getCancelPeriodTypeName(cancelPeriod.noCheckInMarkup.cancelPeriodType) }}
+            </td>
+            <td />
+          </tr>
+          <tr v-for="(dailyMarkup, idx) in dailyMarkups" :key="idx">
+            <td>
+              <EditableCell
+                :value="dailyMarkup.daysCount"
+                required
+                @change="value => $emit('edit-field', { field: 'daysCount', index: idx, value })"
+              />
+            </td>
+            <td>
+              <div class="text-nowrap">
+                <EditableCell
+                  :value="dailyMarkup.percent"
+                  required
+                  dimension="%"
+                  @change="value => $emit('edit-field', { field: 'percent', index: idx, value })"
+                />
+              </div>
+            </td>
+            <td>{{ getCancelPeriodTypeName(dailyMarkup.cancelPeriodType) }}</td>
+            <td class="column-edit">
+              <EditTableRowButton @edit="$emit('edit', idx)" @delete="$emit('delete', idx)" />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</template>
+
+<style scoped lang="scss">
+tr td {
+  vertical-align: middle;
+}
+
+a i {
+  vertical-align: top;
+  margin-left: 0.313rem;
+  font-weight: bold;
+  font-size: 1.125rem;
+}
+</style>

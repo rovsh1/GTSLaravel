@@ -1,0 +1,11 @@
+/node_modules
+npm-debug.log
+yarn-error.log
+
+/public/css
+/public/js
+/public/assets
+/public/mix-manifest.json
+/public/upload
+/public/file
+/public/storage

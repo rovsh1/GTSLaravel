@@ -1,0 +1,53 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Module\Hotel\Moderation\Domain\Hotel\ValueObject\MarkupSettings;
+
+use Sdk\Shared\Contracts\Support\SerializableInterface;
+use Sdk\Shared\ValueObject\Percent;
+use Sdk\Shared\ValueObject\TimePeriod;
+
+final class Condition implements SerializableInterface
+{
+    public function __construct(
+        private TimePeriod $timePeriod,
+        private Percent $priceMarkup
+    ) {}
+
+    public function timePeriod(): TimePeriod
+    {
+        return $this->timePeriod;
+    }
+
+    public function priceMarkup(): Percent
+    {
+        return $this->priceMarkup;
+    }
+
+    public function setTimePeriod(TimePeriod $timePeriod): void
+    {
+        $this->timePeriod = $timePeriod;
+    }
+
+    public function setPriceMarkup(Percent $priceMarkup): void
+    {
+        $this->priceMarkup = $priceMarkup;
+    }
+
+    public function serialize(): array
+    {
+        return [
+            'timePeriod' => $this->timePeriod->serialize(),
+            'priceMarkup' => $this->priceMarkup->value()
+        ];
+    }
+
+    public static function deserialize(array $payload): static
+    {
+        return new static(
+            TimePeriod::deserialize($payload['timePeriod']),
+            new Percent($payload['priceMarkup'])
+        );
+    }
+}

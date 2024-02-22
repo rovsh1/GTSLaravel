@@ -1,0 +1,75 @@
+#hotel-switcher {
+  position: relative;
+}
+
+.hotel-switcher-toggle-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2.063rem;
+  height: 2.063rem;
+  padding: 0.188rem;
+  border: 5px solid #2584FA;
+  border-radius: 2px;
+  background-color: #fff;
+  opacity: 0.7;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #d3d3d3;
+  }
+}
+
+.hotel-switcher-menu-list-container {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 30;
+  display: none;
+  min-width: 16.25rem;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 20%);
+  font-size: 0.813rem;
+
+  .hotel-switcher-menu-list {
+    overflow-y: scroll;
+    max-height: 31.25rem;
+
+    .hotel-switcher-menu-list-item {
+      padding: 0.563rem 1rem;
+      line-height: 1;
+      white-space: nowrap;
+      cursor: pointer;
+
+      &:hover {
+        background: #f8fafb;
+      }
+    }
+  }
+
+  .hotel-switcher-search-container {
+    padding: 0.313rem;
+    border-bottom: 1px solid #c0c0c0;
+
+    input {
+      height: 1.625rem;
+      padding: 0 0.625rem;
+      border: 1px solid #c0c0c0;
+      border-radius: 2px;
+    }
+  }
+
+  .hotel-switcher-loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: #fff url("~resources/images/preload.svg") 50% 50% no-repeat;
+    background-size: 48px 48px;
+    text-align: center;
+  }
+}

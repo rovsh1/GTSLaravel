@@ -1,0 +1,15 @@
+@import "~resources/sass/variables";
+
+// Configuration
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/variables";
+@import "node_modules/bootstrap/scss/variables-dark";
+@import "node_modules/bootstrap/scss/maps";
+@import "node_modules/bootstrap/scss/mixins";
+@import "node_modules/bootstrap/scss/utilities";
+
+// @see ~bootstrap/scss/helpers/_color-bg.scss
+@mixin color-bg($color) {
+  background-color: $color;
+  color: color-contrast($color);
+}

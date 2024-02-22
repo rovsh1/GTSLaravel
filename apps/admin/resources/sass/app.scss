@@ -1,0 +1,12 @@
+@use "~resources/fonts/GoogleSans/style.css" as GoogleSans;
+@use "~resources/fonts/MaterialSymbolsOutlined/style.css" as MaterialSymbolsOutlined;
+
+@use "vendor/bootstrap/common" as bs;
+
+@use 'select2/dist/css/select2.min.css' as select2base;
+@use '@ttskch/select2-bootstrap4-theme/dist/select2-bootstrap4.min.css' as select2bootstrap;
+@use 'partials/plugins/multiselect-select2.scss' as select2Multiselect;
+
+@use "layout/layout";
+
+@use "partials/common" as partials;

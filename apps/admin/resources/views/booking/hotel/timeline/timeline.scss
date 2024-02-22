@@ -1,0 +1,116 @@
+@use "~resources/views/main";
+
+.vertical-timeline {
+  position: relative;
+  width: 100%;
+  padding: 1rem 0;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 115px;
+    width: 4px;
+    height: 100%;
+    border-radius: 0.25rem;
+    background: #e9ecef;
+  }
+
+  .vertical-timeline-element {
+    position: relative;
+    margin: 0 0 1rem;
+
+    &:last-child {
+      margin: 0;
+    }
+
+    .vertical-timeline-element-icon {
+      position: absolute;
+      top: 50%;
+      left: 108px;
+      transform: translateY(-50%);
+
+      .badge-dot-xl {
+        box-shadow: 0 0 0 5px #fff;
+      }
+    }
+
+    .vertical-timeline-element-content {
+      position: relative;
+      margin-left: 138px;
+      font-size: 0.8rem;
+
+      &::after {
+        content: "";
+        display: table;
+        clear: both;
+      }
+
+      .timeline-title {
+        margin: 0 0 0.5rem;
+        padding: 2px 0 0;
+        font-weight: bold;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+      }
+
+      .vertical-timeline-element-date {
+        position: absolute;
+        top: 50%;
+        left: -135px;
+        display: block;
+        padding-right: 10px;
+        color: #adb5bd;
+        font-size: 0.7619rem;
+        text-align: right;
+        white-space: nowrap;
+        transform: translateY(-50%);
+      }
+    }
+
+    .badge {
+      display: block;
+      border-radius: 3px;
+    }
+
+    .badge-dot-xl {
+      position: relative;
+      width: 18px;
+      height: 18px;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 10px;
+        height: 10px;
+        margin: -5px 0 0 -5px;
+        border-radius: 0.25rem;
+        background: #fff;
+      }
+    }
+
+    .badge:empty {
+      display: none;
+    }
+  }
+
+  .alert {
+    position: relative;
+    padding: 0.5rem 1rem;
+    border: 1px solid transparent;
+    border-color: transparent;
+    border-radius: 0.25rem;
+  }
+
+  .alert-secondary {
+    border-color: #d3d6d8;
+    background-color: #e2e3e5;
+    color: #41464b;
+  }
+
+  .btn-data-content {
+    display: inherit;
+  }
+}

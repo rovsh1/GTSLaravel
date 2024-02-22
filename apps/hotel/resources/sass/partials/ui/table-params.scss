@@ -1,0 +1,14 @@
+table.table-params {
+  line-height: 20px;
+
+  th {
+    padding-right: 2rem;
+  }
+
+  tr:not(:last-child) {
+    th,
+    td {
+      padding-bottom: 0.5rem;
+    }
+  }
+}

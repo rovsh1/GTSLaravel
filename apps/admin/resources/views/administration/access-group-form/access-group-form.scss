@@ -1,0 +1,133 @@
+@use "~resources/views/main";
+@import "~resources/sass/variables";
+
+.permissions-control-wrapper {
+  flex-grow: 1;
+  user-select: none;
+}
+
+#permissions-tabs {
+  padding-top: 1.5rem;
+
+  button {
+    line-height: 20px;
+    text-align: right;
+  }
+
+  button:not(.allowed) {
+    opacity: 0.6;
+  }
+
+  button:not(.allowed, .active) {
+    color: rgb(0 0 0 / 60%);
+  }
+}
+
+.permissions-category-menu {
+  nav {
+    display: flex;
+    flex-direction: column;
+  }
+
+  nav > .menu-item {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    padding: 0 1rem;
+    color: #000;
+    line-height: 2rem;
+  }
+
+  nav > .menu-item:not(.active) {
+    color: rgb(0 0 0 / 40%);
+  }
+
+  nav > .menu-item:hover {
+    background: #EBEBEB;
+  }
+
+  nav i {
+    color: rgb(0 0 0 / 56%);
+    font-size: 16px;
+  }
+
+  .menu-item input {
+    margin: 0;
+  }
+
+  .group:not(:last-child) {
+    margin-bottom: 1rem;
+  }
+
+  .group-title {
+    margin-bottom: 0.25rem;
+    padding: 0 0.5rem 0 1rem;
+    color: rgb(0 0 0 / 54%);
+    font-size: 14px;
+  }
+
+  .item {
+    display: flex;
+    align-items: center;
+  }
+
+  .permissions {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    margin-right: 4px;
+  }
+
+  .permissions i {
+    font-size: 16px;
+    opacity: 0.4;
+    cursor: pointer;
+  }
+
+  .permissions .item:hover i {
+    opacity: 1;
+  }
+
+  .permissions .allowed i {
+    color: #000;
+    opacity: 1;
+  }
+}
+
+.permissions-control {
+  display: flex;
+
+  .list-wrapper {
+    flex-grow: 1;
+    flex-basis: 40%;
+    overflow: auto;
+    height: 318px;
+    padding: 4px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    line-height: 20px;
+  }
+
+  .controls {
+    width: 48px;
+  }
+
+  .prototype-item {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    padding: 4px;
+    border-radius: 2px;
+    cursor: pointer;
+
+    .title {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    &:hover {
+      background: #EBEBEB;
+    }
+  }
+}

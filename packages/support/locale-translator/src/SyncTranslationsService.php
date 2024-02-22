@@ -1,0 +1,75 @@
+<?php
+
+namespace Support\LocaleTranslator;
+
+use DirectoryIterator;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
+use Support\LocaleTranslator\Model\Dictionary;
+use Support\LocaleTranslator\Storage\CacheStorage;
+
+class SyncTranslationsService
+{
+    public function __construct(
+        private readonly string $langPath,
+        private readonly CacheStorage $cacheStorage
+    ) {}
+
+    public function execute(bool $truncate = false): void
+    {
+        $this->cacheStorage->delete('ru');
+
+        if ($truncate) {
+            Schema::disableForeignKeyConstraints();
+            DB::table('r_locale_dictionary_values')->truncate();
+            DB::table('r_locale_dictionary')->truncate();
+            Schema::enableForeignKeyConstraints();
+        }
+
+        $this->readDir($this->langPath . '/ru');
+    }
+
+    private function readDir(string $path): void
+    {
+        $iterator = new DirectoryIterator($path);
+        foreach ($iterator as $fileinfo) {
+            if ($fileinfo->isDot()) {
+                continue;
+            } elseif ($fileinfo->isFile()) {
+                $this->readFile($fileinfo->getPathname());
+            }
+//            elseif ($fileinfo->isDir()) {
+//                $this->readDir($fileinfo->getPathname(), $prefix);
+//            }
+        }
+    }
+
+    private function readFile(string $filename): void
+    {
+        if (str_ends_with($filename, '.php')) {
+            $this->syncItems(substr(basename($filename), 0, -4), include $filename);
+        }
+//        elseif (str_ends_with($filename, '.js')) {
+//            $this->syncItems(json_decode(file_get_contents($filename), true));
+//        }
+    }
+
+    private function syncItems(string $prefix, array $items): void
+    {
+        foreach ($items as $k => $value) {
+            if (empty($k)) {
+                continue;
+            }
+            $key = ucfirst($prefix) . '::' . $k;
+            $d = Dictionary::where('key', $key)->first();
+            if ($d === null) {
+                $d = Dictionary::create(['key' => $key]);
+            }
+
+            DB::table('r_locale_dictionary_values')->updateOrInsert(
+                ['dictionary_id' => $d->id, 'language' => 'ru'],
+                ['value' => $value ?: $key]
+            );
+        }
+    }
+}
