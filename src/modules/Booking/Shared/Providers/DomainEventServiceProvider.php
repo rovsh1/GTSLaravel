@@ -8,6 +8,7 @@ use Module\Booking\Shared\Domain\Booking\Listener\RecalculateBookingPricesListen
 use Module\Booking\Shared\Domain\Booking\Listener\UpdateBookingCancelConditionsListener;
 use Module\Booking\Shared\Domain\Booking\Listener\UpdateCarBidCancelConditionsListener;
 use Module\Booking\Shared\Domain\Booking\Listener\UpdateHotelQuotaListener;
+use Module\Booking\Shared\Domain\Guest\Event\GuestModified;
 use Module\Booking\Shared\Domain\Order\Event\ClientPenaltyChanged;
 use Module\Booking\Shared\Domain\Order\Event\OrderCancelled;
 use Module\Booking\Shared\Domain\Order\Event\OrderRefunded;
@@ -38,6 +39,7 @@ class DomainEventServiceProvider extends ServiceProvider
         CarBidCancelConditionsDeprecatedEventInterface::class => UpdateCarBidCancelConditionsListener::class,
         BookingDateChangedEventInterface::class => UpdateBookingCancelConditionsListener::class,
 
-        BookingEventInterface::class => PublishIntegrationEventListener::class
+        BookingEventInterface::class => PublishIntegrationEventListener::class,
+        GuestModified::class => PublishIntegrationEventListener::class,
     ];
 }

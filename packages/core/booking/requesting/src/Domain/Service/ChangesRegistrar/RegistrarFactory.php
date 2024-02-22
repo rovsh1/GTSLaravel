@@ -37,6 +37,7 @@ class RegistrarFactory
             AccommodationReplaced::class => AccommodationReplacedRegistrar::class,
             GuestAdded::class => GuestAddedRegistrar::class,
             GuestRemoved::class => GuestRemovedRegistrar::class,
+            IntegrationEvent\HotelBooking\GuestEdited::class => GuestEditedRegistrar::class,
             IntegrationEvent\AirportBooking\GuestAdded::class => ChangesRegistrar\AirportBooking\GuestAddedRegistrar::class,
             IntegrationEvent\AirportBooking\GuestRemoved::class => ChangesRegistrar\AirportBooking\GuestRemovedRegistrar::class,
             IntegrationEvent\TransferBooking\GuestAdded::class => ChangesRegistrar\TransferBooking\GuestAddedRegistrar::class,

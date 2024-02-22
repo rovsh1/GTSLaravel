@@ -30,5 +30,10 @@ class AccommodationRemovedRegistrar extends AbstractRegistrar
             $currentChanges->setDescription("Размещение \"$event->roomName\" удалено");
             $this->changesStorage->store($currentChanges);
         }
+
+        $changes = $this->changesStorage->get($event->bookingId, "accommodation[$event->accommodationId].");
+        foreach ($changes as $change) {
+            $this->changesStorage->remove($change->identifier());
+        }
     }
 }

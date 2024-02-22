@@ -18,6 +18,11 @@ interface ChangesStorageInterface
 
     public function store(Changes $changes): void;
 
+    /**
+     * @param BookingId $bookingId
+     * @param string|null $field
+     * @return Changes[]
+     */
     public function get(BookingId $bookingId, ?string $field): array;
 
     public function clear(BookingId $bookingId): void;
