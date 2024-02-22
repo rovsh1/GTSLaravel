@@ -1,3 +1,4 @@
+import bootActionsmenu from '~resources/js/providers/actions-menu'
 import bootCookies from '~resources/js/providers/cookies'
 import bootFilesDownloader from '~resources/js/providers/files'
 import bootForms from '~resources/js/providers/forms'
@@ -25,6 +26,7 @@ $(() => {
   bootForms()
   bootGrid()
   bootFilesDownloader()
+  bootActionsmenu()
 
   document.body.classList.add('loaded')
 })

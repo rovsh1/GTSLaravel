@@ -10,13 +10,13 @@
     </div>
 
     <div class="content-body">
-        <form method="POST" class="htmleditor-form">
+        <form method="POST" class="htmleditor-form retry-submit-lock">
             <div class="textarea-wrapper">
                 <textarea name="notes" id="hotel-notes-textarea" style="visibility: hidden">{!! $value ?? '' !!}</textarea>
             </div>
 
             <div class="form-buttons">
-                <button type="submit" class="btn btn-primary retry-submit-lock">Сохранить</button>
+                <button type="submit" class="btn btn-primary">Сохранить</button>
                 <a href="{{ $cancelUrl ?? '' }}" class="btn btn-cancel">Отмена</a>
             </div>
         </form>

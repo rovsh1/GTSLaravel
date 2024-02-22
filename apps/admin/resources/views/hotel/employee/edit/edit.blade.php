@@ -17,7 +17,7 @@
             </div>
             <div class="card-body">
                 <form
-                    class="tab-content"
+                    class="tab-content retry-submit-lock"
                     action="{{ $form->action }}"
                     method="{{ strtoupper($form->method) === 'GET' ? 'GET' : 'POST' }}"
                     enctype="multipart/form-data"
@@ -31,7 +31,7 @@
                     </div>
 
                     <div class="form-buttons">
-                        <button type="submit" class="btn btn-primary retry-submit-lock">{{ $submitText ?? 'Сохранить' }}</button>
+                        <button type="submit" class="btn btn-primary">{{ $submitText ?? 'Сохранить' }}</button>
                         @if(isset($cancelUrl))
                             <a href="{{ $cancelUrl }}" class="btn btn-cancel">Отмена</a>
                         @endif
