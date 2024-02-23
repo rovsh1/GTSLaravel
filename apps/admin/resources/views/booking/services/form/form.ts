@@ -78,12 +78,12 @@ $(async () => {
 
     const $legalIdInput = $('#form_data_legal_id')
     if ($legalIdInput.is('input')) {
-      // еще не был инстанцирован, т.е. выведен как hidden input в html через php form
       $legalIdInput.childCombo({
         url: '/client/legals/search',
         disabledText: 'Выберите клиента',
         parent: $clientIdInput,
         dataIndex: 'client_id',
+        autoSelect: true,
       })
     }
   }
