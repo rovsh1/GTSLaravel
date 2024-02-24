@@ -32,6 +32,8 @@ abstract class ApplicationException extends \RuntimeException
     public const BOOKING_SUPPLIER_PENALTY_CANNOT_BE_ZERO     = 1021;
     public const BOOKING_PERIOD_DATES_CANNOT_BE_EQUAL        = 1022;
     public const ORDER_HAS_NOT_CANCELLED_BOOKING             = 1023;
+    public const LEND_BOOKING_TO_PAYMENT_INSUFFICIENT_FUNDS  = 1024;
+    public const LEND_BOOKING_INVALID_SUM_DECIMALS           = 1025;
 
     private static array $errorsArray;
 
