@@ -14,7 +14,7 @@ use Sdk\Shared\Dto\FileDto;
 use Sdk\Shared\Dto\UploadedFileDto;
 use Sdk\Shared\Enum\PaymentStatusEnum;
 
-class Payment extends \Module\Supplier\Payment\Infrastructure\Models\Payment
+class Payment extends \Module\Client\Payment\Infrastructure\Models\Payment
 {
     use HasQuicksearch;
 
