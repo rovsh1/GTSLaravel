@@ -176,9 +176,9 @@ onMounted(() => {
         <table class="table table-bordered mb-0 w-100 table-sm">
           <thead class="table-light">
             <tr>
-              <th scope="col">№ Заказа</th>
+              <th scope="col">№ Брони</th>
               <th class="column-text">Цена продажи</th>
-              <th class="column-text">Распределено по заказу</th>
+              <th class="column-text">Распределено по броне</th>
               <th class="column-text">Остаток</th>
             </tr>
           </thead>
@@ -266,9 +266,9 @@ onMounted(() => {
           <table class="table table-bordered mb-0 w-100 table-sm">
             <thead class="table-light">
               <tr>
-                <th scope="col">№ Заказа</th>
+                <th scope="col">№ Брони</th>
                 <th class="column-text">Цена продажи</th>
-                <th class="column-text">Распределено по заказу</th>
+                <th class="column-text">Распределено по броне</th>
                 <th class="column-text">Распределено из оплаты</th>
                 <th class="column-text">Остаток</th>
               </tr>
