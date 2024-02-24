@@ -29,6 +29,8 @@ class Client extends \Module\Client\Shared\Infrastructure\Models\Client
                 ->joinTranslatable('r_currencies', 'name as currency_name')
                 ->leftJoin('administrator_clients', 'administrator_clients.client_id', 'clients.id')
                 ->addSelect('administrator_clients.administrator_id')
+                ->leftJoin('administrators', 'administrators.id', 'administrator_clients.administrator_id')
+                ->addSelect('administrators.presentation as administrator_name')
                 ->join('client_markup_groups', 'client_markup_groups.id', '=', 'clients.markup_group_id')
                 ->addSelect('client_markup_groups.name as markup_group_name');
         });
