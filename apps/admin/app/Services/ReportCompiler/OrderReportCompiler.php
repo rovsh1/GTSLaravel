@@ -8,22 +8,11 @@ use App\Admin\Models\Administrator\Administrator;
 use App\Admin\Models\Client\Client;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
-use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 
 class OrderReportCompiler extends AbstractReportCompiler
 {
-    private const DEFAULT_ROW_HEIGHT = 14;
-
     private readonly string $templatePath;
-
-    private array $defaultFont = [
-        'name' => 'Arial',
-        'size' => 12,
-        'color' => ['rgb' => '000000'],
-        'bold' => false,
-        'italic' => false,
-    ];
 
     private array $reportTotalData = [];
     private int $reportPeriodStart;
@@ -329,41 +318,6 @@ class OrderReportCompiler extends AbstractReportCompiler
         $sheet->mergeCells("A{$firstRow}:F{$currentRow}");
         $rowHeight = $countCurrencies * 20 > 30 ? $countCurrencies * 20 : 30;
         $sheet->getRowDimension($firstRow)->setRowHeight($rowHeight);
-    }
-
-    private function insertNewRowBefore(int $before, int $numberOfRows = 1): void
-    {
-        $sheet = $this->spreadsheet->getActiveSheet();
-        $sheet->insertNewRowBefore($before, $numberOfRows);
-
-        $defaultCellStyle = $this->getCellStyle();
-        for ($i = $before; $i <= $before + $numberOfRows; $i++) {
-            foreach ($sheet->getColumnIterator() as $column) {
-                $sheet->getCell($column->getColumnIndex() . $i)->getStyle()->applyFromArray($defaultCellStyle)->getFont(
-                )->applyFromArray($this->defaultFont);
-            }
-            $sheet->getRowDimension($i)->setRowHeight(self::DEFAULT_ROW_HEIGHT);
-        }
-    }
-
-    private function getCellStyle(string $bgColor = 'FFFFFF', bool $withBorders = false): array
-    {
-        $style = [
-            'fill' => [
-                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                'startColor' => ['rgb' => $bgColor],
-            ],
-        ];
-        if ($withBorders) {
-            $style['borders'] = [
-                'outline' => [
-                    'borderStyle' => Border::BORDER_THIN,
-                    'color' => ['rgb' => '000000'],
-                ],
-            ];
-        }
-
-        return $style;
     }
 
     /**
