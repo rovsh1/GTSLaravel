@@ -3,6 +3,7 @@
 import { computed, ref } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
+import { requestInitialData } from 'gts-common/helpers/initial-data'
 import { z } from 'zod'
 
 import CollapsableBlock from '~resources/views/hotel/settings/components/CollapsableBlock.vue'
@@ -24,8 +25,6 @@ import {
 } from '~api/hotel/markup-settings'
 
 import { showToast } from '~components/Bootstrap/BootstrapToast'
-
-import { requestInitialData } from 'gts-common/helpers/initial-data'
 
 const { hotelID } = requestInitialData(
   z.object({

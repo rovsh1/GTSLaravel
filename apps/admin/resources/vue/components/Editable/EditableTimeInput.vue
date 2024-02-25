@@ -4,12 +4,11 @@ import { computed, ref, watch } from 'vue'
 
 import { onClickOutside, useToggle } from '@vueuse/core'
 import { Tooltip } from 'floating-vue'
+import { formatDateTimeToAPIDateTime, parseAPIDateAndSetDefaultTime } from 'gts-common/helpers/date'
+import { usePlatformDetect } from 'gts-common/helpers/platform'
 import { DateTime } from 'luxon'
 
 import InlineIcon from '~components/InlineIcon.vue'
-
-import { formatDateTimeToAPIDateTime, parseAPIDateAndSetDefaultTime } from 'gts-common/helpers/date'
-import { usePlatformDetect } from 'gts-common/helpers/platform'
 
 const props = withDefaults(defineProps<{
   value: string | undefined

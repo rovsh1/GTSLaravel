@@ -1,7 +1,7 @@
 import { formatDate } from 'gts-common/helpers/date'
 import { useApplicationEventBus } from 'gts-common/helpers/event-bus'
 import { requestInitialData } from 'gts-common/helpers/initial-data'
-import { useSelectElement } from 'gts-common/widgets/select-element/select-element'
+import { useSelectElement } from 'gts-common/widgets/select-element'
 import { isEmpty } from 'lodash'
 import { createPinia } from 'pinia'
 import { z } from 'zod'

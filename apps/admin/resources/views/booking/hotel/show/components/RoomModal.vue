@@ -3,6 +3,7 @@
 import { computed, nextTick, Ref, ref, watch, watchEffect } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
+import { requestInitialData } from 'gts-common/helpers/initial-data'
 import { z } from 'zod'
 
 import { useHotelRoomsStore } from '~resources/views/booking/hotel/show/store/hotel-rooms'
@@ -22,7 +23,6 @@ import { SelectOption } from '~components/Bootstrap/lib'
 import SelectComponent from '~components/SelectComponent.vue'
 
 import { isDataValid, validateForm } from '~helpers/form'
-import { requestInitialData } from 'gts-common/helpers/initial-data'
 
 const props = defineProps<{
   opened: MaybeRef<boolean>

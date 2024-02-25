@@ -3,7 +3,7 @@ import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 
 import { onClickOutside } from '@vueuse/core'
 import { compareJSDate, formatDateToAPIDate, formatPeriod, parseAPIDate } from 'gts-common/helpers/date'
-import { useDateRangePicker } from 'gts-common/widgets/date-picker/date-picker'
+import { useDateRangePicker } from 'gts-common/widgets/date-picker'
 import { Litepicker } from 'litepicker'
 import { DateTime } from 'luxon'
 

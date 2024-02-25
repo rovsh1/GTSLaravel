@@ -4,6 +4,7 @@ import { computed, ref, unref, watch } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
 import { showConfirmDialog } from 'gts-common/helpers/confirm-dialog'
+import { requestInitialData } from 'gts-common/helpers/initial-data'
 import { storeToRefs } from 'pinia'
 import { z } from 'zod'
 
@@ -26,8 +27,6 @@ import EditableTimeInput from '~components/Editable/EditableTimeInput.vue'
 import IconButton from '~components/IconButton.vue'
 
 import { useCountryStore } from '~stores/countries'
-
-import { requestInitialData } from 'gts-common/helpers/initial-data'
 
 const { bookingID } = requestInitialData(z.object({
   bookingID: z.number(),

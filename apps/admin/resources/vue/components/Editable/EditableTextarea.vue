@@ -4,10 +4,9 @@ import { computed, ref, watch } from 'vue'
 
 import { onClickOutside, useToggle } from '@vueuse/core'
 import { Tooltip } from 'floating-vue'
+import { usePlatformDetect } from 'gts-common/helpers/platform'
 
 import InlineIcon from '~components/InlineIcon.vue'
-
-import { usePlatformDetect } from 'gts-common/helpers/platform'
 
 const props = withDefaults(defineProps<{
   value: string | undefined

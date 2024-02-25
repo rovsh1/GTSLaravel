@@ -2,12 +2,11 @@
 
 import { computed } from 'vue'
 
+import { useDeleteWithConfirm } from 'gts-common/helpers/delete-dialog'
+import { requestInitialData } from 'gts-common/helpers/initial-data'
 import { z } from 'zod'
 
 import { useOrderStore } from '~resources/views/booking-order/show/store/order'
-
-import { useDeleteWithConfirm } from 'gts-common/helpers/delete-dialog'
-import { requestInitialData } from 'gts-common/helpers/initial-data'
 
 const { editUrl, deleteUrl } = requestInitialData(z.object({
   editUrl: z.string().optional(),

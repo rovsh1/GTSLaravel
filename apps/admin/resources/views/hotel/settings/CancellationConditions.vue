@@ -6,7 +6,7 @@ import { MaybeRef } from '@vueuse/core'
 import { showConfirmDialog } from 'gts-common/helpers/confirm-dialog'
 import { formatDate } from 'gts-common/helpers/date'
 import { requestInitialData } from 'gts-common/helpers/initial-data'
-import { defaultDisabledDate } from 'gts-common/widgets/date-picker/lib'
+import { defaultDisabledDate } from 'gts-common/widgets/date-picker'
 import { z } from 'zod'
 
 import DailyMarkupModal from '~resources/views/hotel/settings/components/DailyMarkupModal.vue'

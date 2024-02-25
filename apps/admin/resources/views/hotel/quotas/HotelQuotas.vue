@@ -2,6 +2,8 @@
 import { computed, nextTick, ref, watch, watchEffect } from 'vue'
 
 import { useToggle } from '@vueuse/core'
+import { formatDateToAPIDate } from 'gts-common/helpers/date'
+import { requestInitialData } from 'gts-common/helpers/initial-data'
 import { z } from 'zod'
 
 import { HotelResponse, useHotelGetAPI } from '~api/hotel/get'
@@ -16,9 +18,6 @@ import EmptyData from '~components/EmptyData.vue'
 import OverlayLoading from '~components/OverlayLoading.vue'
 
 import { createHotelSwitcher } from '~widgets/hotel-switcher/hotel-switcher'
-
-import { formatDateToAPIDate } from 'gts-common/helpers/date'
-import { requestInitialData } from 'gts-common/helpers/initial-data'
 
 import QuotasFilters from './components/QuotasFilters/QuotasFilters.vue'
 import QuotasStatusSwitcher from './components/QuotasStatusSwitcher.vue'

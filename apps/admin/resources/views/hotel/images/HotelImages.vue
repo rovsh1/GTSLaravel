@@ -3,6 +3,7 @@ import { computed, nextTick, ref, watch, watchEffect } from 'vue'
 import { VueDraggable } from 'vue-draggable-plus'
 
 import { useUrlSearchParams } from '@vueuse/core'
+import { requestInitialData } from 'gts-common/helpers/initial-data'
 import { z } from 'zod'
 
 import AttachmentDialog from '~resources/views/hotel/images/components/AttachmentDialog.vue'
@@ -33,8 +34,6 @@ import LoadingSpinner from '~components/LoadingSpinner.vue'
 import OverlayLoading from '~components/OverlayLoading.vue'
 
 import { createHotelSwitcher } from '~widgets/hotel-switcher/hotel-switcher'
-
-import { requestInitialData } from 'gts-common/helpers/initial-data'
 
 import UploadDialog from './components/UploadDialog.vue'
 

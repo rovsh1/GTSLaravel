@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { computed, reactive, watch } from 'vue'
 
+import { formatDateToAPIDate, parseAPIDateToJSDate } from 'gts-common/helpers/date'
 import { nanoid } from 'nanoid'
 
 import { daysOfWeekOptions } from '~resources/js/config/constants'
@@ -11,8 +12,6 @@ import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButt
 import { showToast } from '~components/Bootstrap/BootstrapToast'
 import DateRangePicker from '~components/DateRangePicker.vue'
 import SelectComponent from '~components/SelectComponent.vue'
-
-import { formatDateToAPIDate, parseAPIDateToJSDate } from 'gts-common/helpers/date'
 
 import { stringToNumber } from '../lib/convert'
 import { PricesAccumulationData, SeasonPeriod, SeasonUpdateFormData } from '../lib/types'

@@ -1,4 +1,4 @@
-import { useSelectElement } from 'gts-common/widgets/select-element/select-element'
+import { useSelectElement } from 'gts-common/widgets/select-element'
 
 import axios from '~resources/js/api'
 import HtmlEditor from '~resources/js/plugins/htmleditor/htmleditor'

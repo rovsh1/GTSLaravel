@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
+import { formatDateTime } from 'gts-common/helpers/date'
+
 import RequestBlock from '~resources/views/booking/shared/components/RequestBlock.vue'
 import { useExternalNumber } from '~resources/views/booking/shared/composables/external-number'
 import { getHumanRequestType } from '~resources/views/booking/shared/lib/constants'
@@ -10,8 +12,6 @@ import { useBookingStatusHistoryStore } from '~resources/views/booking/shared/st
 
 import { BookingRequest } from '~api/booking/request'
 import { BookingAvailableActionsResponse } from '~api/booking/status'
-
-import { formatDateTime } from 'gts-common/helpers/date'
 
 const statusHistoryStore = useBookingStatusHistoryStore()
 const { fetchStatusHistory } = statusHistoryStore

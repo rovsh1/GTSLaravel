@@ -2,6 +2,7 @@
 
 import { computed } from 'vue'
 
+import { requestInitialData } from 'gts-common/helpers/initial-data'
 import { z } from 'zod'
 
 import InfoBlock from '~resources/views/booking/shared/components/InfoBlock/InfoBlock.vue'
@@ -10,8 +11,6 @@ import BookingsTable from '~resources/views/booking-order/show/components/Bookin
 import { useOrderStore } from '~resources/views/booking-order/show/store/order'
 
 import ActionsMenu, { Action } from '~components/ActionsMenu.vue'
-
-import { requestInitialData } from 'gts-common/helpers/initial-data'
 
 const { serviceBookingCreate, hotelBookingCreate, clientID } = requestInitialData(z.object({
   serviceBookingCreate: z.string(),

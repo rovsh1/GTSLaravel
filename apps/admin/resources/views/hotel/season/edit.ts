@@ -1,6 +1,6 @@
 import { formatUtcToIsoDate } from 'gts-common/helpers/date'
 import { requestInitialData } from 'gts-common/helpers/initial-data'
-import { useDateRangePicker } from 'gts-common/widgets/date-picker/date-picker'
+import { useDateRangePicker } from 'gts-common/widgets/date-picker'
 import { Litepicker } from 'litepicker'
 import { z } from 'zod'
 

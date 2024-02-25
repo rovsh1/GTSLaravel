@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
+import { formatPrice } from 'gts-common/helpers/price'
+
 import { showCancelFeeDialog } from '~resources/views/booking/shared/lib/modals'
 import { useOrderStore } from '~resources/views/booking-order/show/store/order'
 
@@ -8,8 +10,6 @@ import { Currency } from '~api/models'
 import { Order } from '~api/order'
 
 import { useCurrencyStore } from '~stores/currency'
-
-import { formatPrice } from 'gts-common/helpers/price'
 
 const orderStore = useOrderStore()
 const { getCurrencyByCodeChar } = useCurrencyStore()

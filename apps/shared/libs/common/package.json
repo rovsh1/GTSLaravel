@@ -1,7 +1,7 @@
 {
     "name": "gts-common",
     "private": false,
-    "version": "1.1.8",
+    "version": "1.2.0",
     "type": "module",
     "files": [
         "dist"
@@ -82,54 +82,6 @@
             ],
             "helpers/*": [
                 "dist/helpers/*.d.ts"
-            ],
-            "helpers/confirm-dialog": [
-                "dist/helpers/confirm-dialog.d.ts"
-            ],
-            "helpers/date": [
-                "dist/helpers/date.d.ts"
-            ],
-            "widgets/date-picker": [
-                "dist/widgets/date-picker.d.ts"
-            ],
-            "helpers/delete-dialog": [
-                "dist/helpers/delete-dialog.d.ts"
-            ],
-            "widgets/dialog": [
-                "dist/widgets/dialog.d.ts"
-            ],
-            "helpers/download-file": [
-                "dist/helpers/download-file.d.ts"
-            ],
-            "helpers/event-bus": [
-                "dist/helpers/event-bus.d.ts"
-            ],
-            "helpers/initial-data": [
-                "dist/helpers/initial-data.d.ts"
-            ],
-            "helpers/platform": [
-                "dist/helpers/platform.d.ts"
-            ],
-            "helpers/plural": [
-                "dist/helpers/plural.d.ts"
-            ],
-            "widgets/popover": [
-                "dist/widgets/popover.d.ts"
-            ],
-            "helpers/price": [
-                "dist/helpers/price.d.ts"
-            ],
-            "widgets/select-element": [
-                "dist/widgets/select-element.d.ts"
-            ],
-            "helpers/show-data": [
-                "dist/helpers/show-data.d.ts"
-            ],
-            "helpers/strings": [
-                "dist/helpers/strings.d.ts"
-            ],
-            "support/timezone": [
-                "dist/support/timezone.d.ts"
             ]
         }
     },

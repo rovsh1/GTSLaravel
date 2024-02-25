@@ -1,4 +1,4 @@
-import { useSelectElement } from 'gts-common/widgets/select-element/select-element'
+import { useSelectElement } from 'gts-common/widgets/select-element'
 
 import '~resources/views/main'
 import '~resources/js/plugins/coordinates-input'

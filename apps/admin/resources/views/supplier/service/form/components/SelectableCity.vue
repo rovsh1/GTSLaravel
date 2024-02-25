@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
+import { requestInitialData } from 'gts-common/helpers/initial-data'
 import { z } from 'zod'
 
 import { mapEntitiesToSelectOptions } from '~resources/views/booking/shared/lib/constants'
 
 import SelectComponent from '~components/SelectComponent.vue'
-
-import { requestInitialData } from 'gts-common/helpers/initial-data'
 
 const { cities } = requestInitialData(z.object({
   cities: z.array(z.object({

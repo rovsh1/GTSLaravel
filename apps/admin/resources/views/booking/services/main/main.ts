@@ -1,6 +1,6 @@
 import { showConfirmDialog } from 'gts-common/helpers/confirm-dialog'
 import { formatDateTime } from 'gts-common/helpers/date'
-import createPopover, { PopoverItem } from 'gts-common/widgets/popover/popover'
+import createPopover, { PopoverItem } from 'gts-common/widgets/popover'
 
 import axios from '~resources/js/api'
 import { getHumanRequestType } from '~resources/views/booking/shared/lib/constants'

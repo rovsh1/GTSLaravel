@@ -3,6 +3,7 @@
 import { computed, ref } from 'vue'
 
 import { useToggle } from '@vueuse/core'
+import { requestInitialData } from 'gts-common/helpers/initial-data'
 import { z } from 'zod'
 
 import PricesModal from '~resources/views/supplier/service/price/ components/PricesModal.vue'
@@ -11,7 +12,6 @@ import { useCurrenciesStore } from '~resources/views/supplier/service/price/comp
 import { Airport, Money, Season } from '~api/models'
 import { ServicePriceResponse, updateAirportPrice } from '~api/supplier/airport'
 
-import { requestInitialData } from 'gts-common/helpers/initial-data'
 import { useQuickSearch } from '~helpers/quick-search'
 
 import PricesTable from './PricesTable.vue'

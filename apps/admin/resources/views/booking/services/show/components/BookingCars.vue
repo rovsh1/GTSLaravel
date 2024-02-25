@@ -6,6 +6,7 @@ import { useToggle } from '@vueuse/core'
 import { showConfirmDialog } from 'gts-common/helpers/confirm-dialog'
 import { requestInitialData } from 'gts-common/helpers/initial-data'
 import { pluralForm } from 'gts-common/helpers/plural'
+import { formatPrice } from 'gts-common/helpers/price'
 import { storeToRefs } from 'pinia'
 import { z } from 'zod'
 
@@ -40,8 +41,6 @@ import InlineIcon from '~components/InlineIcon.vue'
 
 import { useCountryStore } from '~stores/countries'
 import { useCurrencyStore } from '~stores/currency'
-
-import { formatPrice } from 'gts-common/helpers/price'
 
 const { bookingID } = requestInitialData(z.object({
   bookingID: z.number(),

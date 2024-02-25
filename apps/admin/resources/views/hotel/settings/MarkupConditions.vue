@@ -2,6 +2,7 @@
 
 import { computed } from 'vue'
 
+import { requestInitialData } from 'gts-common/helpers/initial-data'
 import { z } from 'zod'
 
 import CollapsableBlock from '~resources/views/hotel/settings/components/CollapsableBlock.vue'
@@ -10,8 +11,6 @@ import { useMarkupSettingsStore } from '~resources/views/hotel/settings/composab
 import { updateConditionHotelMarkupSettings } from '~api/hotel/markup-settings'
 
 import EditableCell from '~components/Editable/EditableNumberInput.vue'
-
-import { requestInitialData } from 'gts-common/helpers/initial-data'
 
 const { hotelID } = requestInitialData(
   z.object({

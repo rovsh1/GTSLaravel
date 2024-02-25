@@ -1,11 +1,11 @@
 <script setup lang="ts">
 
+import { formatDate, formatPeriod } from 'gts-common/helpers/date'
+import { formatBookingPrice } from 'gts-common/helpers/price'
+
 import { OrderBooking } from '~api/order/booking'
 
 import { useCurrencyStore } from '~stores/currency'
-
-import { formatDate, formatPeriod } from 'gts-common/helpers/date'
-import { formatBookingPrice } from 'gts-common/helpers/price'
 
 defineProps<{
   orderBookings: OrderBooking[]

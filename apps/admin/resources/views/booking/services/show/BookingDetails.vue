@@ -3,6 +3,7 @@
 import { computed, defineAsyncComponent, nextTick, shallowRef } from 'vue'
 
 import { watchOnce } from '@vueuse/core'
+import { toPascalCase } from 'gts-common/helpers/strings'
 
 import ErrorComponent from '~resources/views/booking/shared/components/ErrorComponent.vue'
 import { useBookingStore } from '~resources/views/booking/shared/store/booking'
@@ -11,8 +12,6 @@ import { useGetBookingDetailsTypesAPI } from '~api/booking/service'
 
 import Card from '~components/Bootstrap/BootstrapCard/BootstrapCard.vue'
 import CardTitle from '~components/Bootstrap/BootstrapCard/components/BootstrapCardTitle.vue'
-
-import { toPascalCase } from 'gts-common/helpers/strings'
 
 const bookingStore = useBookingStore()
 const booking = computed(() => bookingStore.booking)
