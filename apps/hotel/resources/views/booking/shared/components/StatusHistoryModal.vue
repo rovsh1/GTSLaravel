@@ -3,7 +3,7 @@
 import { computed, watch } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
-import { formatDateTime } from 'gts-common/date'
+import { formatDateTime } from 'gts-common/helpers/date'
 
 import { BookingStatusHistoryResponse } from '~api/booking/status'
 

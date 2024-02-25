@@ -2,7 +2,7 @@
 import { computed, ref, watch } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
-import { compareJSDate } from 'gts-common/date'
+import { compareJSDate } from 'gts-common/helpers/date'
 import { isEqual } from 'lodash'
 import { DateTime } from 'luxon'
 import { nanoid } from 'nanoid'

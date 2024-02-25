@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import { formatPrice } from 'gts-common/price'
+import { formatPrice } from 'gts-common/helpers/price'
 
 import { useBookingStore } from '~resources/views/booking/shared/store/booking'
 

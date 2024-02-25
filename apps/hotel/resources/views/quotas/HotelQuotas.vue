@@ -2,7 +2,7 @@
 import { computed, nextTick, ref, watch } from 'vue'
 
 import { useToggle } from '@vueuse/core'
-import { formatDateToAPIDate } from 'gts-common/date'
+import { formatDateToAPIDate } from 'gts-common/helpers/date'
 
 import { HotelResponse, useHotelGetAPI } from '~api/hotel/get'
 import { useUpdateHotelRoomQuotasBatch } from '~api/hotel/quotas/batch'

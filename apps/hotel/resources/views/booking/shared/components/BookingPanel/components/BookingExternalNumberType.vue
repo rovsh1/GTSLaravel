@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import { requestInitialData } from 'gts-common/initial-data'
+import { requestInitialData } from 'gts-common/helpers/initial-data'
 import { z } from 'zod'
 
 import { useExternalNumber } from '~resources/views/booking/shared/composables/external-number'

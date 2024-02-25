@@ -1,4 +1,4 @@
-import timezone from 'gts-common/timezone'
+import timezone from 'gts-common/support/timezone'
 
 export default function () {
   Object.assign($.cookie.defaults, {

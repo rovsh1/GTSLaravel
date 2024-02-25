@@ -13,15 +13,15 @@ import { scripts } from './package.json'
 const files = fs.readdirSync('./src/helpers')
 
 const components = files.reduce((obj, component) => {
-  obj[component.split('.')[0]] = `src/helpers/${component}`
+  obj[`helpers/${component.split('.')[0]}`] = `src/helpers/${component}`
   return obj
 }, {})
 
-components['timezone'] = 'src/support/timezone.js'
-components['date-picker'] = 'src/widgets/date-picker/date-picker.ts'
-components['popover'] = 'src/widgets/popover/popover.ts'
-components['dialog'] = 'src/widgets/dialog/helpers.js'
-components['select-element'] = 'src/widgets/select-element/select-element.ts'
+components['support/timezone'] = 'src/support/timezone.js'
+components['widgets/date-picker'] = 'src/widgets/date-picker/date-picker.ts'
+components['widgets/popover'] = 'src/widgets/popover/popover.ts'
+components['widgets/dialog'] = 'src/widgets/dialog/helpers.js'
+components['widgets/select-element'] = 'src/widgets/select-element/select-element.ts'
 /* eslint-enable */
 
 export default defineConfig(() => ({
@@ -31,8 +31,11 @@ export default defineConfig(() => ({
     lib: {
       entry: components,
       fileName: (format, entryName) => {
-        if (format === 'es') return `${entryName}/${entryName}.js`
-        return `${entryName}/${entryName}.${format}`
+        const moduleFolder = entryName.split('/')[0]
+        const moduleName = entryName.split('/')[1]
+        const modulePath = `${moduleFolder}/${moduleName}/${moduleName}`
+        if (format === 'es') return `${modulePath}.js`
+        return `${modulePath}.${format}`
       },
     },
     rollupOptions: {
@@ -53,7 +56,7 @@ export default defineConfig(() => ({
       },
     }),
     dts({
-      outDir: './dist/types',
+
       insertTypesEntry: true,
     }),
   ],

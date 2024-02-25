@@ -1,6 +1,6 @@
 import { Tab, Tooltip } from 'bootstrap'
-import { useDateRangePicker } from 'gts-common/date-picker'
-import { useSelectElement } from 'gts-common/select-element'
+import { useDateRangePicker } from 'gts-common/widgets/date-picker'
+import { useSelectElement } from 'gts-common/widgets/select-element'
 
 function bootSelect() {
   const elements = document.querySelectorAll<HTMLSelectElement>('.form-select-element')

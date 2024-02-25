@@ -1,4 +1,4 @@
-import { showDataModal } from 'gts-common/show-data'
+import { showDataModal } from 'gts-common/helpers/show-data'
 
 import '~resources/views/main'
 

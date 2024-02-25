@@ -1,5 +1,5 @@
-import { ShowDialogResponse, ToggleCloseFunction, ToggleLoadingFunction } from 'gts-common/confirm-dialog'
-import { WindowDialog } from 'gts-common/dialog'
+import { ShowDialogResponse, ToggleCloseFunction, ToggleLoadingFunction } from 'gts-common/helpers/confirm-dialog'
+import { WindowDialog } from 'gts-common/widgets/dialog'
 
 import axios from '~resources/js/api'
 

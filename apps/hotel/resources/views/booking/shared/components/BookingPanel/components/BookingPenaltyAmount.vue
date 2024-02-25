@@ -2,7 +2,7 @@
 import { computed, ref } from 'vue'
 
 import { useToggle } from '@vueuse/core'
-import { formatPrice } from 'gts-common/price'
+import { formatPrice } from 'gts-common/helpers/price'
 
 import PriceModal from '~resources/views/booking/shared/components/PriceModal.vue'
 import { useBookingStore } from '~resources/views/booking/shared/store/booking'

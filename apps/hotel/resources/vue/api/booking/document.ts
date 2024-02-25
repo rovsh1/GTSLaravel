@@ -1,5 +1,5 @@
 import { MaybeRef } from '@vueuse/core'
-import { downloadFile } from 'gts-common/download-file'
+import { downloadFile } from 'gts-common/helpers/download-file'
 
 import { useAdminAPI } from '~api'
 import { BookingID } from '~api/booking/models'

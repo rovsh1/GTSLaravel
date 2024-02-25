@@ -2,7 +2,7 @@
 
 import { computed, onMounted } from 'vue'
 
-import { formatPrice } from 'gts-common/price'
+import { formatPrice } from 'gts-common/helpers/price'
 import { storeToRefs } from 'pinia'
 
 import GuestsTable from '~resources/views/booking/shared/components/GuestsTable.vue'

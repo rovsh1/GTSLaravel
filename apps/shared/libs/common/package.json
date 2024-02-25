@@ -1,126 +1,135 @@
 {
     "name": "gts-common",
     "private": false,
-    "version": "1.0.1",
+    "version": "1.1.8",
     "type": "module",
     "files": [
         "dist"
     ],
     "exports": {
-        "./confirm-dialog": {
-            "import": "./dist/confirm-dialog/confirm-dialog.js",
-            "require": "./dist/confirm-dialog/confirm-dialog.cjs"
+        "./helpers/confirm-dialog": {
+            "import": "./dist/helpers/confirm-dialog/confirm-dialog.js",
+            "require": "./dist/helpers/confirm-dialog/confirm-dialog.cjs"
         },
-        "./date": {
-            "import": "./dist/date/date.js",
-            "require": "./dist/date/date.cjs"
+        "./helpers/date": {
+            "import": "./dist/helpers/date/date.js",
+            "require": "./dist/helpers/date/date.cjs"
         },
-        "./date-picker": {
-            "import": "./dist/date-picker/date-picker.js",
-            "require": "./dist/date-picker/date-picker.cjs"
+        "./widgets/date-picker": {
+            "import": "./dist/widgets/date-picker/date-picker.js",
+            "require": "./dist/widgets/date-picker/date-picker.cjs"
         },
-        "./delete-dialog": {
-            "import": "./dist/delete-dialog/delete-dialog.js",
-            "require": "./dist/delete-dialog/delete-dialog.cjs"
+        "./helpers/delete-dialog": {
+            "import": "./dist/helpers/delete-dialog/delete-dialog.js",
+            "require": "./dist/helpers/delete-dialog/delete-dialog.cjs"
         },
-        "./dialog": {
-            "import": "./dist/dialog/dialog.js",
-            "require": "./dist/dialog/dialog.cjs"
+        "./widgets/dialog": {
+            "import": "./dist/widgets/dialog/dialog.js",
+            "require": "./dist/widgets/dialog/dialog.cjs"
         },
-        "./download-file": {
-            "import": "./dist/download-file/download-file.js",
-            "require": "./dist/download-file/download-file.cjs"
+        "./helpers/download-file": {
+            "import": "./dist/helpers/download-file/download-file.js",
+            "require": "./dist/helpers/download-file/download-file.cjs"
         },
-        "./event-bus": {
-            "import": "./dist/event-bus/event-bus.js",
-            "require": "./dist/event-bus/event-bus.cjs"
+        "./helpers/event-bus": {
+            "import": "./dist/helpers/event-bus/event-bus.js",
+            "require": "./dist/helpers/event-bus/event-bus.cjs"
         },
-        "./initial-data": {
-            "import": "./dist/initial-data/initial-data.js",
-            "require": "./dist/initial-data/initial-data.cjs"
+        "./helpers/initial-data": {
+            "import": "./dist/helpers/initial-data/initial-data.js",
+            "require": "./dist/helpers/initial-data/initial-data.cjs"
         },
-        "./platform": {
-            "import": "./dist/platform/platform.js",
-            "require": "./dist/platform/platform.cjs"
+        "./helpers/platform": {
+            "import": "./dist/helpers/platform/platform.js",
+            "require": "./dist/helpers/platform/platform.cjs"
         },
-        "./plural": {
-            "import": "./dist/plural/plural.js",
-            "require": "./dist/plural/plural.cjs"
+        "./helpers/plural": {
+            "import": "./dist/helpers/plural/plural.js",
+            "require": "./dist/helpers/plural/plural.cjs"
         },
-        "./popover": {
-            "import": "./dist/popover/popover.js",
-            "require": "./dist/popover/popover.cjs"
+        "./widgets/popover": {
+            "import": "./dist/widgets/popover/popover.js",
+            "require": "./dist/widgets/popover/popover.cjs"
         },
-        "./price": {
-            "import": "./dist/price/price.js",
-            "require": "./dist/price/price.cjs"
+        "./helpers/price": {
+            "import": "./dist/helpers/price/price.js",
+            "require": "./dist/helpers/price/price.cjs"
         },
-        "./select-element": {
-            "import": "./dist/select-element/select-element.js",
-            "require": "./dist/select-element/select-element.cjs"
+        "./widgets/select-element": {
+            "import": "./dist/widgets/select-element/select-element.js",
+            "require": "./dist/widgets/select-element/select-element.cjs"
         },
-        "./show-data": {
-            "import": "./dist/show-data/show-data.js",
-            "require": "./dist/show-data/show-data.cjs"
+        "./helpers/show-data": {
+            "import": "./dist/helpers/show-data/show-data.js",
+            "require": "./dist/helpers/show-data/show-data.cjs"
         },
-        "./strings": {
-            "import": "./dist/strings/strings.js",
-            "require": "./dist/strings/strings.cjs"
+        "./helpers/strings": {
+            "import": "./dist/helpers/strings/strings.js",
+            "require": "./dist/helpers/strings/strings.cjs"
         },
-        "./timezone": {
-            "import": "./dist/timezone/timezone.js",
-            "require": "./dist/timezone/timezone.cjs"
+        "./support/timezone": {
+            "import": "./dist/support/timezone/timezone.js",
+            "require": "./dist/support/timezone/timezone.cjs"
         }
     },
     "typesVersions": {
         "*": {
-            "confirm-dialog": [
-                "dist/types/confirm-dialog.d.ts"
+            "support/*": [
+                "dist/support/*.d.ts"
             ],
-            "date": [
-                "dist/types/date.d.ts"
+            "widgets/*": [
+                "dist/widgets/*.d.ts"
             ],
-            "date-picker": [
-                "dist/types/date-picker.d.ts"
+            "helpers/*": [
+                "dist/helpers/*.d.ts"
             ],
-            "delete-dialog": [
-                "dist/types/delete-dialog.d.ts"
+            "helpers/confirm-dialog": [
+                "dist/helpers/confirm-dialog.d.ts"
             ],
-            "dialog": [
-                "dist/types/dialog.d.ts"
+            "helpers/date": [
+                "dist/helpers/date.d.ts"
             ],
-            "download-file": [
-                "dist/types/download-file.d.ts"
+            "widgets/date-picker": [
+                "dist/widgets/date-picker.d.ts"
             ],
-            "event-bus": [
-                "dist/types/event-bus.d.ts"
+            "helpers/delete-dialog": [
+                "dist/helpers/delete-dialog.d.ts"
             ],
-            "initial-data": [
-                "dist/types/initial-data.d.ts"
+            "widgets/dialog": [
+                "dist/widgets/dialog.d.ts"
             ],
-            "platform": [
-                "dist/types/platform.d.ts"
+            "helpers/download-file": [
+                "dist/helpers/download-file.d.ts"
             ],
-            "plural": [
-                "dist/types/plural.d.ts"
+            "helpers/event-bus": [
+                "dist/helpers/event-bus.d.ts"
             ],
-            "popover": [
-                "dist/types/popover.d.ts"
+            "helpers/initial-data": [
+                "dist/helpers/initial-data.d.ts"
             ],
-            "price": [
-                "dist/types/price.d.ts"
+            "helpers/platform": [
+                "dist/helpers/platform.d.ts"
             ],
-            "select-element": [
-                "dist/types/select-element.d.ts"
+            "helpers/plural": [
+                "dist/helpers/plural.d.ts"
             ],
-            "show-data": [
-                "dist/types/show-data.d.ts"
+            "widgets/popover": [
+                "dist/widgets/popover.d.ts"
             ],
-            "strings": [
-                "dist/types/strings.d.ts"
+            "helpers/price": [
+                "dist/helpers/price.d.ts"
             ],
-            "timezone": [
-                "dist/types/timezone.d.ts"
+            "widgets/select-element": [
+                "dist/widgets/select-element.d.ts"
+            ],
+            "helpers/show-data": [
+                "dist/helpers/show-data.d.ts"
+            ],
+            "helpers/strings": [
+                "dist/helpers/strings.d.ts"
+            ],
+            "support/timezone": [
+                "dist/support/timezone.d.ts"
             ]
         }
     },

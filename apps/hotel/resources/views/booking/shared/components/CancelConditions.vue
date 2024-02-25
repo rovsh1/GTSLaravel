@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import { formatDate } from 'gts-common/date'
-import { formatPrice } from 'gts-common/price'
+import { formatDate } from 'gts-common/helpers/date'
+import { formatPrice } from 'gts-common/helpers/price'
 
 import { CancelConditionsValueType } from '~resources/js/config/constants'
 import { getCancelPeriodTypeName, getDaysWord } from '~resources/views/booking/shared/lib/constants'

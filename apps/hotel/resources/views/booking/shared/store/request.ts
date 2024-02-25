@@ -1,6 +1,6 @@
 import { computed, onMounted } from 'vue'
 
-import { requestInitialData } from 'gts-common/initial-data'
+import { requestInitialData } from 'gts-common/helpers/initial-data'
 import { defineStore } from 'pinia'
 import { z } from 'zod'
 

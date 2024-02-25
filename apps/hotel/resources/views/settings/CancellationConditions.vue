@@ -2,7 +2,7 @@
 
 import { computed } from 'vue'
 
-import { formatDate } from 'gts-common/date'
+import { formatDate } from 'gts-common/helpers/date'
 
 import CancelPeriodSettingsTable from '~resources/views/settings/components/CancelPeriodSettingsTable.vue'
 

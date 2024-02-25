@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import { formatDateTime } from 'gts-common/date'
+import { formatDateTime } from 'gts-common/helpers/date'
 
 import RequestBlock from '~resources/views/booking/shared/components/RequestBlock.vue'
 import { getHumanRequestType } from '~resources/views/booking/shared/lib/constants'

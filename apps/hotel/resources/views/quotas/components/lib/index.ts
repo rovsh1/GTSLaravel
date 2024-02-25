@@ -1,4 +1,4 @@
-import { isBusinessDay } from 'gts-common/date'
+import { isBusinessDay } from 'gts-common/helpers/date'
 import { DateTime } from 'luxon'
 
 import { FiltersPayload } from '~resources/views/quotas/components/QuotasFilters/lib'
