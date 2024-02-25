@@ -30,8 +30,8 @@ class PriceChangedMapper implements MapperInterface
         if (!$beforePrices->supplierPrice()->isEqual($afterPrices->supplierPrice())) {
             $events[] = new SupplierPriceChanged(
                 $event->bookingId()->value(),
-                $this->makePriceDto($beforePrices->clientPrice()),
-                $this->makePriceDto($afterPrices->clientPrice()),
+                $this->makePriceDto($beforePrices->supplierPrice()),
+                $this->makePriceDto($afterPrices->supplierPrice()),
             );
         }
 

@@ -12,10 +12,10 @@ use Module\Client\Payment\Domain\Payment\Exception\PaymentInsufficientFunds;
 use Module\Client\Payment\Domain\Payment\ValueObject\InvoiceNumber;
 use Module\Client\Payment\Domain\Payment\ValueObject\LandingCollection;
 use Module\Client\Payment\Domain\Payment\ValueObject\PaymentDocument;
-use Module\Client\Payment\Domain\Payment\ValueObject\PaymentStatusEnum;
 use Module\Client\Shared\Domain\ValueObject\ClientId;
 use Module\Client\Shared\Domain\ValueObject\PaymentId;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
+use Sdk\Shared\Enum\PaymentStatusEnum;
 use Sdk\Shared\ValueObject\Money;
 
 final class Payment extends AbstractAggregateRoot

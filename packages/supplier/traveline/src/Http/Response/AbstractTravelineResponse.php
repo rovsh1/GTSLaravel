@@ -12,7 +12,7 @@ abstract class AbstractTravelineResponse implements \JsonSerializable
     public function jsonSerialize(): mixed
     {
         return [
-            'status' => $this->status,
+            'success' => $this->status,
             'data' => $this->data
         ];
     }

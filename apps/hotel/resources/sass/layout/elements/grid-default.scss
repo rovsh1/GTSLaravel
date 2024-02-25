@@ -67,6 +67,7 @@
     top: 100%;
     right: 0;
     z-index: 10;
+    display: none;
     width: 200px;
     border-radius: 4px;
     background: #fff;
@@ -75,10 +76,6 @@
 
   .actions-menu hr {
     margin: 0;
-  }
-
-  .actions-menu-wrapper:not(:hover) .actions-menu {
-    display: none;
   }
 
   button {

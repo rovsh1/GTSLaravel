@@ -62,7 +62,7 @@ export const useBookingStore = defineStore('booking', () => {
     isStatusUpdateFetching.value = true
     updateStatusPayload.status = status
     const { data: updateStatusResponse } = await updateBookingStatus(updateStatusPayload)
-    if (updateStatusResponse.value?.isNotConfirmedReasonRequired && isHotelBooking) {
+    if (updateStatusResponse.value?.isNotConfirmedReasonRequired) {
       const { result: isConfirmed, reason, toggleClose } = await showNotConfirmedReasonDialog()
       if (isConfirmed) {
         updateStatusPayload.notConfirmedReason = reason

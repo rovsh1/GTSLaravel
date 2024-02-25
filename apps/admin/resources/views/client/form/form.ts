@@ -1,3 +1,5 @@
+import '~resources/views/main'
+
 $(() => {
   const $legalTypeSelect = $('#form_data_type')
   const $genderInput = $('#form_data_gender')

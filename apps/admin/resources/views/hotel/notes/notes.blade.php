@@ -10,7 +10,7 @@
     </div>
 
     <div class="content-body">
-        <form method="POST" class="htmleditor-form">
+        <form method="POST" class="htmleditor-form retry-submit-lock">
             <div class="textarea-wrapper">
                 <textarea name="notes" id="hotel-notes-textarea" style="visibility: hidden">{!! $value ?? '' !!}</textarea>
             </div>

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Builder as Query;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
+use Sdk\Shared\Enum\Client\TypeEnum;
 
 class Client extends \Module\Client\Shared\Infrastructure\Models\Client
 {
@@ -28,6 +29,8 @@ class Client extends \Module\Client\Shared\Infrastructure\Models\Client
                 ->joinTranslatable('r_currencies', 'name as currency_name')
                 ->leftJoin('administrator_clients', 'administrator_clients.client_id', 'clients.id')
                 ->addSelect('administrator_clients.administrator_id')
+                ->leftJoin('administrators', 'administrators.id', 'administrator_clients.administrator_id')
+                ->addSelect('administrators.presentation as administrator_name')
                 ->join('client_markup_groups', 'client_markup_groups.id', '=', 'clients.markup_group_id')
                 ->addSelect('client_markup_groups.name as markup_group_name');
         });
@@ -54,6 +57,11 @@ class Client extends \Module\Client\Shared\Infrastructure\Models\Client
         $builder->whereHas('orders', function (Builder $query) {
             $query->whereIn('status', Order::getActiveStatuses());
         });
+    }
+
+    public function scopeWhereType(Builder $builder, TypeEnum|int $type): void
+    {
+        $builder->where('clients.type', $type);
     }
 
     public function legals(): HasMany

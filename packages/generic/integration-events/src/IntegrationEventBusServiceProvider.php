@@ -13,6 +13,7 @@ class IntegrationEventBusServiceProvider extends ServiceProvider
         'BookingEventSourcing',
         'BookingRequesting',
         'ClientPayment',
+        'SupplierPayment',
     ];
 
     public function register(): void

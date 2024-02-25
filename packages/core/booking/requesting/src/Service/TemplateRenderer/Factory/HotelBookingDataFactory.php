@@ -114,12 +114,12 @@ class HotelBookingDataFactory
                 $checkInTime = $bookingDetails->hotelInfo()->checkInTime()->value();
                 $earlyCheckIn = $accommodation->details()->earlyCheckIn();
                 if ($earlyCheckIn !== null) {
-                    $checkInTime = $earlyCheckIn->timePeriod()->from() . " ({$earlyCheckIn->priceMarkup()->value()}%)";
+                    $checkInTime = $earlyCheckIn->timePeriod()->from() . " (+{$earlyCheckIn->priceMarkup()->value()}%)";
                 }
                 $checkOutTime = $bookingDetails->hotelInfo()->checkOutTime()->value();
                 $lateCheckOut = $accommodation->details()->lateCheckOut();
                 if ($lateCheckOut !== null) {
-                    $checkOutTime = $lateCheckOut->timePeriod()->to() . " ({$lateCheckOut->priceMarkup()->value()})";
+                    $checkOutTime = $lateCheckOut->timePeriod()->to() . " (+{$lateCheckOut->priceMarkup()->value()}%)";
                 }
 
                 return new RoomDto(

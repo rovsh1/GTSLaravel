@@ -22,4 +22,9 @@ class Order extends \Module\Booking\Shared\Infrastructure\Models\Order
             OrderStatusEnum::PARTIAL_PAID,
         ];
     }
+
+    private static function getPayedAmountQuery(): string
+    {
+        return '(select COALESCE(SUM(sum), 0) from client_payment_landings where client_payment_landings.order_id = orders.id)';
+    }
 }

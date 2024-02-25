@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Moderation\Application\UseCase\Order\Guest;
 
 use Module\Booking\Moderation\Application\Dto\UpdateGuestDto;
-use Module\Booking\Shared\Domain\Guest\Event\GuestEdited;
+use Module\Booking\Shared\Domain\Guest\Event\GuestModified;
 use Module\Booking\Shared\Domain\Guest\Repository\GuestRepositoryInterface;
 use Sdk\Booking\ValueObject\GuestId;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
@@ -26,6 +26,7 @@ class Update implements UseCaseInterface
         if ($guest === null) {
             throw new EntityNotFoundException('Guest not found');
         }
+        $guestBefore = clone $guest;
         if ($guest->fullName() !== $request->fullName) {
             $guest->setFullName($request->fullName);
         }
@@ -44,6 +45,6 @@ class Update implements UseCaseInterface
         }
 
         $this->guestRepository->store($guest);
-        $this->eventDispatcher->dispatch(new GuestEdited($guest->id()));
+        $this->eventDispatcher->dispatch(new GuestModified($guest, $guestBefore));
     }
 }

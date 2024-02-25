@@ -17,7 +17,7 @@
             </div>
             <div class="card-body">
                 <form
-                    class="tab-content"
+                    class="tab-content retry-submit-lock"
                     action="{{ $form->action }}"
                     method="{{ strtoupper($form->method) === 'GET' ? 'GET' : 'POST' }}"
                     enctype="multipart/form-data"

@@ -6,9 +6,9 @@ namespace Module\Supplier\Moderation\Domain\Payment;
 
 use Module\Client\Invoicing\Domain\Invoice\ValueObject\InvoiceId;
 use Module\Client\Invoicing\Domain\Invoice\ValueObject\PaymentMethodEnum;
-use Module\Client\Payment\Domain\Payment\ValueObject\InvoiceNumber;
-use Module\Client\Payment\Domain\Payment\ValueObject\PaymentAmount;
-use Module\Client\Payment\Domain\Payment\ValueObject\PaymentDocument;
+use Module\Supplier\Payment\Domain\Payment\ValueObject\InvoiceNumber;
+use Module\Supplier\Payment\Domain\Payment\ValueObject\PaymentAmount;
+use Module\Supplier\Payment\Domain\Payment\ValueObject\PaymentDocument;
 use Module\Supplier\Moderation\Domain\Payment\ValueObject\SupplierPaymentId;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;

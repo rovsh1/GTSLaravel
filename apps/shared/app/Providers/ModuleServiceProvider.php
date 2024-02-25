@@ -36,6 +36,7 @@ class ModuleServiceProvider extends ServiceProvider
         'BookingNotification' => 'Booking/Notification',
         'BookingInvoicing' => 'Booking/Invoicing',
         'SupplierModeration' => 'Supplier/Moderation',
+        'SupplierPayment' => 'Supplier/Payment',
     ];
 
     private array $pkgModules = [

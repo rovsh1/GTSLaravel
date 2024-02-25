@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Shared\Domain\Order\Event;
 
 use Module\Booking\Shared\Domain\Order\Order;
-use Sdk\Booking\IntegrationEvent\OrderRefunded as IntegrationEvent;
+use Sdk\Booking\IntegrationEvent\Order\OrderRefunded as IntegrationEvent;
 use Sdk\Module\Contracts\Event\HasIntegrationEventInterface;
 use Sdk\Shared\Contracts\Event\IntegrationEventInterface;
 

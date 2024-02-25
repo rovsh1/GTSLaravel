@@ -45,6 +45,15 @@ class SupplierController extends AbstractPrototypeController
         );
     }
 
+    public function currencies(Supplier $supplier): JsonResponse
+    {
+        $currency = $supplier->currency;
+
+        return response()->json([
+            ['id' => $currency->value, 'name' => $currency->name]
+        ]);
+    }
+
     protected function supplierParams(Supplier $model): ParamsTable
     {
         return (new ParamsTable())

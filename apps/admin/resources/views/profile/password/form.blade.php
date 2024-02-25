@@ -14,7 +14,7 @@
     <div class="content-body">
         <div class="card card-form">
             <div class="card-body">
-                <form method="post" data-title="{{ $title }}" class="settings-form {{ $cls ?? '' }}">
+                <form method="post" data-title="{{ $title }}" class="retry-submit-lock settings-form {{ $cls ?? '' }}">
                     {!! isset($description) ? '<p>' . $description . '</p>' : '' !!}
 
                     <div class="fields-wrap">

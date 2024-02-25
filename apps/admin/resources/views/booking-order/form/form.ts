@@ -67,6 +67,7 @@ $(async () => {
         disabledText: 'Выберите клиента',
         parent: $clientIdInput,
         dataIndex: 'client_id',
+        autoSelect: true,
       })
     }
   }

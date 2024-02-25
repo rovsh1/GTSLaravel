@@ -6,6 +6,7 @@ namespace App\Admin\Http\Controllers\Booking\Order;
 
 use App\Admin\Components\Factory\Prototype;
 use App\Admin\Http\Controllers\Controller;
+use App\Admin\Http\Requests\Booking\UpdateManagerRequest;
 use App\Admin\Http\Requests\Order\SearchRequest;
 use App\Admin\Http\Requests\Order\UpdateClientPenaltyRequest;
 use App\Admin\Http\Requests\Order\UpdateExternalIdRequest;
@@ -181,6 +182,13 @@ class OrderController extends Controller
         return response()->json(
             OrderAdapter::updateStatus($id, $request->getStatus(), $request->getRefundFee())
         );
+    }
+
+    public function updateManager(UpdateManagerRequest $request, int $id): AjaxResponseInterface
+    {
+        $this->administratorRepository->update($id, $request->getManagerId());
+
+        return new AjaxSuccessResponse();
     }
 
     public function updateNote(UpdateNoteRequest $request, int $id): AjaxResponseInterface

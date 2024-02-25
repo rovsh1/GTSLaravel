@@ -12,6 +12,7 @@ $.fn.childCombo = async function (options) {
     emptyText: 'Пусто',
     hidden: false,
     dateRange: false,
+    autoSelect: false,
     ...options,
   }
   let currentParentValue = undefined
@@ -171,7 +172,11 @@ $.fn.childCombo = async function (options) {
         if (preparedOptions.allowEmpty && preparedOptions.emptyItem !== '') {
           child.val('')
         } else {
-          child.val([])
+          if (items?.length && preparedOptions.autoSelect) {
+            child.val(items[0].id)
+          } else {
+            child.val([])
+          }
         }
       }
       child.change()

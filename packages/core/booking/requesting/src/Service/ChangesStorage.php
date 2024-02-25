@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Pkg\Booking\Requesting\Service;
 
+use Illuminate\Database\Eloquent\Builder;
 use Pkg\Booking\Requesting\Domain\Entity\Changes;
 use Pkg\Booking\Requesting\Domain\Service\ChangesStorageInterface;
 use Pkg\Booking\Requesting\Domain\ValueObject\ChangesIdentifier;
@@ -16,12 +17,7 @@ class ChangesStorage implements ChangesStorageInterface
     {
         $model = $this->findModel($identifier);
 
-        return $model ? new Changes(
-            $identifier,
-            $model->status,
-            $model->field,
-            $model->payload,
-        ) : null;
+        return $model ? $this->buildChanges($model) : null;
     }
 
     public function exists(ChangesIdentifier $identifier): bool
@@ -58,6 +54,26 @@ class ChangesStorage implements ChangesStorageInterface
             ->delete();
     }
 
+    public function get(BookingId $bookingId, ?string $field, ?array $excludeFields = null): array
+    {
+        return Model::where('booking_id', $bookingId->value())
+            ->where(function (Builder $query) use ($field) {
+                if (!empty($field)) {
+                    $query->where('field', 'LIKE', "{$field}%");
+                }
+            })
+            ->where(function (Builder $query) use ($excludeFields) {
+                if (!empty($excludeFields)) {
+                    foreach ($excludeFields as $excludeField) {
+                        $query->where('field', 'NOT LIKE', "{$excludeField}%");
+                    }
+                }
+            })
+            ->get()
+            ->map(fn(Model $model) => $this->buildChanges($model))
+            ->all();
+    }
+
     public function clear(BookingId $bookingId): void
     {
         Model::where('booking_id', $bookingId->value())
@@ -69,5 +85,15 @@ class ChangesStorage implements ChangesStorageInterface
         return Model::where('booking_id', $identifier->bookingId())
             ->where('field', $identifier->field())
             ->first();
+    }
+
+    private function buildChanges(Model $model): Changes
+    {
+        return new Changes(
+            new ChangesIdentifier($model->booking_id, $model->field),
+            $model->status,
+            $model->description,
+            $model->payload,
+        );
     }
 }

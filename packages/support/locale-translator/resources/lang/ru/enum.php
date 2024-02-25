@@ -98,10 +98,10 @@ return [
     'Hotel\\MealPlanTypeEnum::HALF_BOARD' => 'Полупансион',
     'Hotel\\MealPlanTypeEnum::BREAKFAST' => 'Завтрак',
 
-    'Module\Client\Payment\Domain\Payment\ValueObject\PaymentStatusEnum::NOT_PAID' => 'Не распределен',
-    'Module\Client\Payment\Domain\Payment\ValueObject\PaymentStatusEnum::PARTIAL_PAID' => 'Частично распределен',
-    'Module\Client\Payment\Domain\Payment\ValueObject\PaymentStatusEnum::PAID' => 'Распределен',
-    'Module\Client\Payment\Domain\Payment\ValueObject\PaymentStatusEnum::ARCHIVE' => 'Архив',
+    'PaymentStatusEnum::NOT_PAID' => 'Не распределен',
+    'PaymentStatusEnum::PARTIAL_PAID' => 'Частично распределен',
+    'PaymentStatusEnum::PAID' => 'Распределен',
+    'PaymentStatusEnum::ARCHIVE' => 'Архив',
 
 //    'Module\Booking\Shared\Domain\Shared\Event\Status\BookingCreated' => 'Новая',
 //    'Module\Booking\Shared\Domain\Shared\Event\Status\BookingProcessing' => 'В работе',

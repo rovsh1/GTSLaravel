@@ -7,7 +7,8 @@
         </div>
         <div class="text-block">
             <p>Просим Вас обработать <span class="changed">запрос на изменение бронирования</span> <a
-                    href="{{ ho_url("/booking/{$booking->number}") }}" target="_blank">по
+                    href="{{ route('service-booking.show', $booking->number) }}"
+                    target="_blank">по
                     ссылке</a></p>
         </div>
         <div class="table-block">

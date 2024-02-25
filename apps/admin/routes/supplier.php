@@ -5,6 +5,7 @@ use App\Admin\Support\Facades\AclRoute;
 
 AclRoute::for('supplier')
     ->get('/search', Supplier\SupplierController::class . '@search', 'read', 'search')
+    ->get('/{supplier}/currencies', Supplier\SupplierController::class . '@currencies', 'read', 'currencies.get')
     ->resource('contacts', Supplier\ContactController::class, [
         'except' => ['show', 'index']
     ])
