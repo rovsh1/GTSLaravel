@@ -3,7 +3,7 @@ import { nextTick, onMounted, ref, watch } from 'vue'
 
 import { onClickOutside } from '@vueuse/core'
 
-import { formatPrice } from '~helpers/price'
+import { formatPrice } from 'gts-common/helpers/price'
 
 import EditableButton from './EditableButton.vue'
 

@@ -10,8 +10,8 @@ import { nanoid } from 'nanoid'
 import DateRangePicker from '~components/DateRangePicker.vue'
 import InlineIcon from '~components/InlineIcon.vue'
 
-import { formatDateTimeToAPIDateTime, formatDateToAPIDate, parseAPIDateAndSetDefaultTime } from '~helpers/date'
-import { usePlatformDetect } from '~helpers/platform'
+import { formatDateTimeToAPIDateTime, formatDateToAPIDate, parseAPIDateAndSetDefaultTime } from 'gts-common/helpers/date'
+import { usePlatformDetect } from 'gts-common/helpers/platform'
 
 const props = withDefaults(defineProps<{
   value: string | undefined

@@ -7,7 +7,7 @@ import { mapEntitiesToSelectOptions } from '~resources/views/booking/shared/lib/
 
 import SelectComponent from '~components/SelectComponent.vue'
 
-import { requestInitialData } from '~helpers/initial-data'
+import { requestInitialData } from 'gts-common/helpers/initial-data'
 
 const { airports } = requestInitialData(z.object({
   airports: z.array(z.object({

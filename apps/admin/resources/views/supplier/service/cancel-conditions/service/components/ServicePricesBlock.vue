@@ -5,7 +5,7 @@ import CollapsableBlock from '~resources/views/hotel/settings/components/Collaps
 import { Season } from '~api/models'
 import { ExistCancelConditions } from '~api/supplier/cancel-conditions/service'
 
-import { formatPeriod } from '~helpers/date'
+import { formatPeriod } from 'gts-common/helpers/date'
 
 const props = defineProps<{
   header: string

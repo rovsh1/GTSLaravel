@@ -7,7 +7,7 @@ import { z } from 'zod'
 
 import { Season } from '~api/models'
 
-import { requestInitialData } from '~helpers/initial-data'
+import { requestInitialData } from 'gts-common/helpers/initial-data'
 import { useQuickSearch } from '~helpers/quick-search'
 
 import CancelConditionsModal from './CancelConditionsModal.vue'

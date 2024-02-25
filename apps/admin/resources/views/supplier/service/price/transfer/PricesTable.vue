@@ -7,7 +7,7 @@ import CollapsableBlock from '~resources/views/hotel/settings/components/Collaps
 import { Car, Season } from '~api/models'
 import { ServicePriceResponse, useServiceProviderTransferPricesAPI } from '~api/supplier/transfer'
 
-import { formatPeriod } from '~helpers/date'
+import { formatPeriod } from 'gts-common/helpers/date'
 
 const props = defineProps<{
   header: string

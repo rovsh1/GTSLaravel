@@ -1,9 +1,8 @@
+import { useApplicationEventBus } from 'gts-common/helpers/event-bus'
 import { createPinia } from 'pinia'
 
 import OrderPaymentModal from '~resources/views/supplier-payment/main/components/BookingPaymentModal.vue'
 import { createVueInstance } from '~resources/vue/vue'
-
-import { useApplicationEventBus } from '~helpers/event-bus'
 
 import '~resources/views/main'
 

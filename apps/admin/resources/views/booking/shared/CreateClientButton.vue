@@ -3,6 +3,7 @@
 import { computed, nextTick, onMounted, reactive, ref } from 'vue'
 
 import { useToggle } from '@vueuse/core'
+import { useApplicationEventBus } from 'gts-common/helpers/event-bus'
 import { storeToRefs } from 'pinia'
 
 import { tabsItemsSettings } from '~resources/views/booking/hotel/form/lib/composables'
@@ -32,7 +33,6 @@ import { useCityStore } from '~stores/city'
 import { useCurrencyStore } from '~stores/currency'
 import { useMarkupGroupStore } from '~stores/markup-group'
 
-import { useApplicationEventBus } from '~helpers/event-bus'
 import { isDataValid } from '~helpers/form'
 
 const { cities } = storeToRefs(useCityStore())

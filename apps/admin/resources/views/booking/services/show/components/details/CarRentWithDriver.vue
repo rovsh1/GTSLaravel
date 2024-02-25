@@ -11,7 +11,7 @@ import EditableDateRangeInput from '~components/Editable/EditableDateRangeInput.
 import EditableTextInput from '~components/Editable/EditableTextInput.vue'
 import EditableTimeInput from '~components/Editable/EditableTimeInput.vue'
 
-import { formatDateTimeToAPIDateTime, parseAPIDateAndSetDefaultTime } from '~helpers/date'
+import { formatDateTimeToAPIDateTime, parseAPIDateAndSetDefaultTime } from 'gts-common/helpers/date'
 
 const bookingStore = useBookingStore()
 

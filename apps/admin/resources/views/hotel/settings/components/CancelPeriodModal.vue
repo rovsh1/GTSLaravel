@@ -13,7 +13,7 @@ import BaseDialog from '~components/BaseDialog.vue'
 import DateRangePicker from '~components/DateRangePicker.vue'
 import SelectComponent from '~components/SelectComponent.vue'
 
-import { formatDateToAPIDate, parseAPIDateToJSDate } from '~helpers/date'
+import { formatDateToAPIDate, parseAPIDateToJSDate } from 'gts-common/helpers/date'
 
 const props = withDefaults(defineProps<{
   value?: CancelPeriod

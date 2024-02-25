@@ -12,7 +12,7 @@ import { updateRoomSeasonPricesByDay, useRoomSeasonsDaysPricesListAPI } from '~a
 import { showToast } from '~components/Bootstrap/BootstrapToast'
 import OverlayLoading from '~components/OverlayLoading.vue'
 
-import { formatDateTimeToAPIDate, formatSeasonPeriod, parseAPIDate } from '~helpers/date'
+import { formatDateTimeToAPIDate, formatSeasonPeriod, parseAPIDate } from 'gts-common/helpers/date'
 
 import EditableCell from './EditableCell.vue'
 

@@ -7,7 +7,7 @@ import { PaymentInfo, PaymentOrder, PaymentOrderPayload } from '~api/payment/pay
 
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 
-import { formatPrice } from '~helpers/price'
+import { formatPrice } from 'gts-common/helpers/price'
 
 type PaymentOrderDistributed = PaymentOrder & {
   distributedAmount: number

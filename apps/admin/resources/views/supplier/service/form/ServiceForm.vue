@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onMounted, reactive, ref, shallowRef } from 'vue'
 
+import { showConfirmDialog } from 'gts-common/helpers/confirm-dialog'
 import { z } from 'zod'
 
 import ErrorComponent from '~resources/views/booking/shared/components/ErrorComponent.vue'
@@ -15,9 +16,8 @@ import { SelectOption } from '~components/Bootstrap/lib'
 import OverlayLoading from '~components/OverlayLoading.vue'
 import SelectComponent from '~components/SelectComponent.vue'
 
-import { showConfirmDialog } from '~helpers/confirm-dialog'
-import { requestInitialData } from '~helpers/initial-data'
-import { toPascalCase } from '~helpers/strings'
+import { requestInitialData } from 'gts-common/helpers/initial-data'
+import { toPascalCase } from 'gts-common/helpers/strings'
 
 function intTransformator(value: any) {
   return parseInt(value, 10)

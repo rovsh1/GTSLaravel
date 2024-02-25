@@ -1,14 +1,12 @@
+import { formatUtcToIsoDate } from 'gts-common/helpers/date'
+import { requestInitialData } from 'gts-common/helpers/initial-data'
+import { useDateRangePicker } from 'gts-common/widgets/date-picker/date-picker'
 import { Litepicker } from 'litepicker'
 import { z } from 'zod'
 
 import { getNullableRef } from '~resources/vue/vue'
 
 import { ContractID, useHotelContractGetAPI } from '~api/hotel/contract'
-
-import { useDateRangePicker } from '~widgets/date-picker/date-picker'
-
-import { formatUtcToIsoDate } from '~helpers/date'
-import { requestInitialData } from '~helpers/initial-data'
 
 import '~resources/views/main'
 

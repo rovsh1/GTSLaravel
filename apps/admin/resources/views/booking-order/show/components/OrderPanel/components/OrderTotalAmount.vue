@@ -9,7 +9,7 @@ import { Order } from '~api/order'
 
 import { useCurrencyStore } from '~stores/currency'
 
-import { formatPrice } from '~helpers/price'
+import { formatPrice } from 'gts-common/helpers/price'
 
 const orderStore = useOrderStore()
 const { getCurrencyByCodeChar } = useCurrencyStore()

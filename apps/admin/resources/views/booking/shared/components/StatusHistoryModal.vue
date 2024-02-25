@@ -8,7 +8,7 @@ import { BookingStatusHistoryResponse } from '~api/booking/status'
 
 import BaseDialog from '~components/BaseDialog.vue'
 
-import { formatDateTime } from '~helpers/date'
+import { formatDateTime } from 'gts-common/helpers/date'
 
 const props = defineProps<{
   opened: MaybeRef<boolean>

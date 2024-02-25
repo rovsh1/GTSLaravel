@@ -11,9 +11,9 @@ import BaseDialog from '~components/BaseDialog.vue'
 import { showToast } from '~components/Bootstrap/BootstrapToast'
 import OverlayLoading from '~components/OverlayLoading.vue'
 
-import { formatSeasonPeriod } from '~helpers/date'
+import { formatSeasonPeriod } from 'gts-common/helpers/date'
 import { generateHashFromObject } from '~helpers/hash'
-import { requestInitialData } from '~helpers/initial-data'
+import { requestInitialData } from 'gts-common/helpers/initial-data'
 
 import EditableCell from './EditableCell.vue'
 import SeasonEditPrice from './SeasonEditPrice.vue'

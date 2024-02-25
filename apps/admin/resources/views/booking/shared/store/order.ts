@@ -1,12 +1,11 @@
 import { computed, onMounted } from 'vue'
 
+import { requestInitialData } from 'gts-common/helpers/initial-data'
 import { defineStore } from 'pinia'
 import { z } from 'zod'
 
 import { Currency } from '~api/models'
 import { useGetOrderGuestsAPI } from '~api/order/guest'
-
-import { requestInitialData } from '~helpers/initial-data'
 
 const { order, currencies } = requestInitialData(
   z.object({

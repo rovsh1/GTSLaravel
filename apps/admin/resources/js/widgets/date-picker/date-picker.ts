@@ -1,9 +1,8 @@
 import Cleave from 'cleave.js'
+import { dateRangeDelimiter } from 'gts-common/helpers/date'
 import { Litepicker } from 'litepicker'
 import { ILPConfiguration } from 'litepicker/dist/types/interfaces'
 import { DateTime } from 'luxon'
-
-import { dateRangeDelimiter } from '~helpers/date'
 
 import 'litepicker/dist/plugins/ranges'
 import './style.scss'

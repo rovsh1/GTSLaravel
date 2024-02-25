@@ -1,9 +1,8 @@
+import { requestInitialData } from 'gts-common/helpers/initial-data'
 import { defineStore } from 'pinia'
 import { z } from 'zod'
 
 import { useBookingStatusHistoryAPI } from '~api/booking/status'
-
-import { requestInitialData } from '~helpers/initial-data'
 
 const { bookingID } = requestInitialData(z.object({
   bookingID: z.number(),

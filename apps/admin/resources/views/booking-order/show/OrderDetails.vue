@@ -11,7 +11,7 @@ import { useOrderStore } from '~resources/views/booking-order/show/store/order'
 
 import ActionsMenu, { Action } from '~components/ActionsMenu.vue'
 
-import { requestInitialData } from '~helpers/initial-data'
+import { requestInitialData } from 'gts-common/helpers/initial-data'
 
 const { serviceBookingCreate, hotelBookingCreate, clientID } = requestInitialData(z.object({
   serviceBookingCreate: z.string(),

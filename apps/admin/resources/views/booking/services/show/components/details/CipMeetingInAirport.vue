@@ -3,6 +3,7 @@
 import { computed, ref, unref, watch } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
+import { showConfirmDialog } from 'gts-common/helpers/confirm-dialog'
 import { storeToRefs } from 'pinia'
 import { z } from 'zod'
 
@@ -26,8 +27,7 @@ import IconButton from '~components/IconButton.vue'
 
 import { useCountryStore } from '~stores/countries'
 
-import { showConfirmDialog } from '~helpers/confirm-dialog'
-import { requestInitialData } from '~helpers/initial-data'
+import { requestInitialData } from 'gts-common/helpers/initial-data'
 
 const { bookingID } = requestInitialData(z.object({
   bookingID: z.number(),

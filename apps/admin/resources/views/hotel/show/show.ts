@@ -1,3 +1,4 @@
+import { requestInitialData } from 'gts-common/helpers/initial-data'
 import { z } from 'zod'
 
 import initServicesModal from '~resources/views/hotel/_modals/services-modal'
@@ -6,7 +7,6 @@ import initUsabilitiesModal from '~resources/views/hotel/_modals/usabilities-mod
 import { createHotelSwitcher } from '~widgets/hotel-switcher/hotel-switcher'
 
 import { editableTable } from '~helpers/editable-table'
-import { requestInitialData } from '~helpers/initial-data'
 
 import '~resources/views/main'
 import '~resources/js/plugins/card-contacts'

@@ -12,7 +12,7 @@ import { showToast } from '~components/Bootstrap/BootstrapToast'
 import DateRangePicker from '~components/DateRangePicker.vue'
 import SelectComponent from '~components/SelectComponent.vue'
 
-import { formatDateToAPIDate, parseAPIDateToJSDate } from '~helpers/date'
+import { formatDateToAPIDate, parseAPIDateToJSDate } from 'gts-common/helpers/date'
 
 import { stringToNumber } from '../lib/convert'
 import { PricesAccumulationData, SeasonPeriod, SeasonUpdateFormData } from '../lib/types'

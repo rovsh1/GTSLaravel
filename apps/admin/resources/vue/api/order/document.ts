@@ -1,9 +1,8 @@
 import { MaybeRef } from '@vueuse/core'
+import { downloadFile } from 'gts-common/helpers/download-file'
 
 import { useAdminAPI } from '~api'
 import { FileResponse } from '~api/hotel/images'
-
-import { downloadFile } from '~helpers/download-file'
 
 export interface DownloadDocumentRequest {
   orderID: number

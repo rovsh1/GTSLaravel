@@ -12,7 +12,7 @@ import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButt
 import DateRangePicker from '~components/DateRangePicker.vue'
 import SelectComponent from '~components/SelectComponent.vue'
 
-import { compareJSDate } from '~helpers/date'
+import { compareJSDate } from 'gts-common/helpers/date'
 
 import {
   AvailabilityValue,

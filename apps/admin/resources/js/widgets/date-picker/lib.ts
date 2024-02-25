@@ -1,7 +1,6 @@
+import { dateRangeDelimiter } from 'gts-common/helpers/date'
 import { Litepicker } from 'litepicker'
 import { DateTime } from 'luxon'
-
-import { dateRangeDelimiter } from '~helpers/date'
 
 type DatePickerInstance = {
   element: HTMLInputElement

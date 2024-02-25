@@ -25,7 +25,7 @@ import {
 
 import { showToast } from '~components/Bootstrap/BootstrapToast'
 
-import { requestInitialData } from '~helpers/initial-data'
+import { requestInitialData } from 'gts-common/helpers/initial-data'
 
 const { hotelID } = requestInitialData(
   z.object({

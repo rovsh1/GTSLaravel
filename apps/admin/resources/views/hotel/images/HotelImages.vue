@@ -34,7 +34,7 @@ import OverlayLoading from '~components/OverlayLoading.vue'
 
 import { createHotelSwitcher } from '~widgets/hotel-switcher/hotel-switcher'
 
-import { requestInitialData } from '~helpers/initial-data'
+import { requestInitialData } from 'gts-common/helpers/initial-data'
 
 import UploadDialog from './components/UploadDialog.vue'
 

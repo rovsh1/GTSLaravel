@@ -3,6 +3,9 @@
 import { computed, MaybeRef, onMounted, reactive, ref, unref, watch } from 'vue'
 
 import { useToggle } from '@vueuse/core'
+import { showConfirmDialog } from 'gts-common/helpers/confirm-dialog'
+import { requestInitialData } from 'gts-common/helpers/initial-data'
+import { formatPrice } from 'gts-common/helpers/price'
 import { storeToRefs } from 'pinia'
 import { z } from 'zod'
 
@@ -43,10 +46,6 @@ import InlineIcon from '~components/InlineIcon.vue'
 
 import { useCountryStore } from '~stores/countries'
 import { useCurrencyStore } from '~stores/currency'
-
-import { showConfirmDialog } from '~helpers/confirm-dialog'
-import { requestInitialData } from '~helpers/initial-data'
-import { formatPrice } from '~helpers/price'
 
 const [isOpenedPriceDetailsModal, toggleModalPriceDetails] = useToggle()
 const [isShowRoomModal, toggleRoomModal] = useToggle()

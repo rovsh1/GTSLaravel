@@ -11,7 +11,7 @@ import { updateConditionHotelMarkupSettings } from '~api/hotel/markup-settings'
 
 import EditableCell from '~components/Editable/EditableNumberInput.vue'
 
-import { requestInitialData } from '~helpers/initial-data'
+import { requestInitialData } from 'gts-common/helpers/initial-data'
 
 const { hotelID } = requestInitialData(
   z.object({

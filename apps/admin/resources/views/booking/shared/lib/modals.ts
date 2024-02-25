@@ -1,10 +1,10 @@
+import { ShowDialogResponse, ToggleCloseFunction, ToggleLoadingFunction } from 'gts-common/helpers/confirm-dialog'
+
 import axios from '~resources/js/api'
 import { CancelReasonResponse } from '~resources/vue/api/cancel-reason'
 
 import { CacheStorage } from '~cache/cache-storage'
 import { TTLValues } from '~cache/enums'
-
-import { ShowDialogResponse, ToggleCloseFunction, ToggleLoadingFunction } from '~helpers/confirm-dialog'
 
 export interface ShowNotConfirmedReasonDialogResponse extends ShowDialogResponse {
   reason: string

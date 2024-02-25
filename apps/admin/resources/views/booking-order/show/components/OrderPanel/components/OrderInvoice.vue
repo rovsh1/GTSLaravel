@@ -11,7 +11,7 @@ import { OrderAvailableActionsResponse } from '~api/order/status'
 import { showToast } from '~components/Bootstrap/BootstrapToast'
 import InlineIcon from '~components/InlineIcon.vue'
 
-import { formatDateTime } from '~helpers/date'
+import { formatDateTime } from 'gts-common/helpers/date'
 
 const orderStore = useOrderStore()
 const availableActions = computed<OrderAvailableActionsResponse | null>(() => orderStore.availableActions)

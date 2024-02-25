@@ -1,8 +1,8 @@
 <script setup lang="ts">
 
-import { Currency } from '~api/models'
+import { formatPrice } from 'gts-common/helpers/price'
 
-import { formatPrice } from '~helpers/price'
+import { Currency } from '~api/models'
 
 withDefaults(defineProps<{
   title: string

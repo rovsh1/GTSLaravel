@@ -1,4 +1,4 @@
-import { WindowDialog } from '~widgets/dialog/helpers'
+import { WindowDialog } from 'gts-common/widgets/dialog/helpers'
 
 import '~resources/views/main'
 

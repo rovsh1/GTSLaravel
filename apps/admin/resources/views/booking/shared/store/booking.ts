@@ -1,5 +1,6 @@
 import { computed, onMounted, ref } from 'vue'
 
+import { requestInitialData } from 'gts-common/helpers/initial-data'
 import { defineStore, storeToRefs } from 'pinia'
 import { z } from 'zod'
 
@@ -21,8 +22,6 @@ import {
 import { UpdateBookingPrice, updateBookingPrice, useRecalculateBookingPriceAPI } from '~api/booking/service/price'
 import { useBookingAvailableActionsAPI } from '~api/booking/status'
 import { useHotelMarkupSettingsAPI } from '~api/hotel/markup-settings'
-
-import { requestInitialData } from '~helpers/initial-data'
 
 const { bookingID, manager, hotelID, isOtherServiceBooking, isHotelBooking } = requestInitialData(z.object({
   hotelID: z.number().optional(),

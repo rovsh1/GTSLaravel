@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue'
 
+import { formatPrice } from 'gts-common/helpers/price'
+
 import { createSelectionState } from '~resources/views/supplier-payment/main/lib/selected-item'
 
 import { PaymentBooking, PaymentBookingPayload, PaymentInfo } from '~api/supplier/payment'
 
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
-
-import { formatPrice } from '~helpers/price'
 
 type PaymentOrderDistributed = PaymentBooking & {
   distributedAmount: number

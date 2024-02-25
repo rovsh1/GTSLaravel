@@ -4,8 +4,8 @@ import { OrderBooking } from '~api/order/booking'
 
 import { useCurrencyStore } from '~stores/currency'
 
-import { formatDate, formatPeriod } from '~helpers/date'
-import { formatBookingPrice } from '~helpers/price'
+import { formatDate, formatPeriod } from 'gts-common/helpers/date'
+import { formatBookingPrice } from 'gts-common/helpers/price'
 
 defineProps<{
   orderBookings: OrderBooking[]

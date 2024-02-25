@@ -12,7 +12,7 @@ import { useGetBookingDetailsTypesAPI } from '~api/booking/service'
 import Card from '~components/Bootstrap/BootstrapCard/BootstrapCard.vue'
 import CardTitle from '~components/Bootstrap/BootstrapCard/components/BootstrapCardTitle.vue'
 
-import { toPascalCase } from '~helpers/strings'
+import { toPascalCase } from 'gts-common/helpers/strings'
 
 const bookingStore = useBookingStore()
 const booking = computed(() => bookingStore.booking)

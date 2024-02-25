@@ -1,9 +1,8 @@
+import { showConfirmDialog } from 'gts-common/helpers/confirm-dialog'
+import { requestInitialData } from 'gts-common/helpers/initial-data'
 import { z } from 'zod'
 
 import axios from '~resources/js/api'
-
-import { showConfirmDialog } from '~helpers/confirm-dialog'
-import { requestInitialData } from '~helpers/initial-data'
 
 import '~resources/views/main'
 

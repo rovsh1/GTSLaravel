@@ -14,7 +14,7 @@ import { Currency } from '~api/models'
 
 import { useCurrencyStore } from '~stores/currency'
 
-import { formatPrice } from '~helpers/price'
+import { formatPrice } from 'gts-common/helpers/price'
 
 const [isNetPriceModalOpened, toggleNetPriceModal] = useToggle<boolean>(false)
 const [isGrossPriceModalOpened, toggleGrossPriceModal] = useToggle<boolean>(false)

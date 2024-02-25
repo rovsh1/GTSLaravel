@@ -1,10 +1,9 @@
 import { MaybeRef } from '@vueuse/core'
+import { downloadFile } from 'gts-common/helpers/download-file'
 
 import { BaseResponse, DateResponse, useAdminAPI } from '~api'
 import { FileResponse } from '~api/hotel/images'
 import { OrderID } from '~api/order/models'
-
-import { downloadFile } from '~helpers/download-file'
 
 export interface OrderInvoicePayload {
   orderID: OrderID

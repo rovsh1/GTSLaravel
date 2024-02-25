@@ -22,7 +22,7 @@ import { SelectOption } from '~components/Bootstrap/lib'
 import SelectComponent from '~components/SelectComponent.vue'
 
 import { isDataValid, validateForm } from '~helpers/form'
-import { requestInitialData } from '~helpers/initial-data'
+import { requestInitialData } from 'gts-common/helpers/initial-data'
 
 const props = defineProps<{
   opened: MaybeRef<boolean>
