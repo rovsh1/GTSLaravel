@@ -3,12 +3,11 @@
 import { computed, watch } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
+import { formatDateTime } from 'gts-common/helpers/date'
 
 import { BookingStatusHistoryResponse } from '~api/booking/status'
 
 import BaseDialog from '~components/BaseDialog.vue'
-
-import { formatDateTime } from '~helpers/date'
 
 const props = defineProps<{
   opened: MaybeRef<boolean>

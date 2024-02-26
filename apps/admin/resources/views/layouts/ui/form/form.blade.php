@@ -1,4 +1,4 @@
-<form action="{{ $form->action }}" method="{{ strtoupper($form->method) === 'GET' ? 'GET' : 'POST' }}" enctype="multipart/form-data">
+<form class="retry-submit-lock" action="{{ $form->action }}" method="{{ strtoupper($form->method) === 'GET' ? 'GET' : 'POST' }}" enctype="multipart/form-data">
     {!! $errors !!}
     @method(strtoupper($form->method))
     <div class="form-fields">{!! $elements !!}</div>

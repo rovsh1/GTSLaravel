@@ -8,7 +8,7 @@
     <x-ui.content-title/>
 
     <div class="content-body">
-        <form action="{{ $form->action }}" method="{{ strtoupper($form->method) === 'GET' ? 'GET' : 'POST' }}"
+        <form class="retry-submit-lock" action="{{ $form->action }}" method="{{ strtoupper($form->method) === 'GET' ? 'GET' : 'POST' }}"
         >
             <div class="card card-form">
                 <div class="card-body">

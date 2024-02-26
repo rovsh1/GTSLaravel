@@ -1,5 +1,7 @@
 import { nextTick, onMounted, Ref, ref } from 'vue'
 
+import { showConfirmDialog } from 'gts-common/helpers/confirm-dialog'
+import { requestInitialData } from 'gts-common/helpers/initial-data'
 import { defineStore, storeToRefs } from 'pinia'
 import { z } from 'zod'
 
@@ -20,9 +22,6 @@ import {
 import { useGetOrderGuestsAPI } from '~api/order/guest'
 import { useOrderAvailableActionsAPI } from '~api/order/status'
 import { createOrderVoucher, OrderVoucher, sendOrderVoucher } from '~api/order/voucher'
-
-import { showConfirmDialog } from '~helpers/confirm-dialog'
-import { requestInitialData } from '~helpers/initial-data'
 
 const { orderID, manager } = requestInitialData(z.object({
   orderID: z.number(),

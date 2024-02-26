@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 
 import { useToggle } from '@vueuse/core'
+import { formatPrice } from 'gts-common/helpers/price'
 
 import AmountBlock from '~resources/views/booking/shared/components/AmountBlock.vue'
 import BookingStatusReason
@@ -13,8 +14,6 @@ import { ProfitItem } from '~api/booking/models'
 import { Currency } from '~api/models'
 
 import { useCurrencyStore } from '~stores/currency'
-
-import { formatPrice } from '~helpers/price'
 
 const [isNetPriceModalOpened, toggleNetPriceModal] = useToggle<boolean>(false)
 const [isGrossPriceModalOpened, toggleGrossPriceModal] = useToggle<boolean>(false)

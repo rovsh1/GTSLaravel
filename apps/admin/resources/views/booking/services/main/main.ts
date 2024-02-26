@@ -1,14 +1,13 @@
+import { showConfirmDialog } from 'gts-common/helpers/confirm-dialog'
+import { formatDateTime } from 'gts-common/helpers/date'
+import createPopover, { PopoverItem } from 'gts-common/widgets/popover'
+
 import axios from '~resources/js/api'
 import { getHumanRequestType } from '~resources/views/booking/shared/lib/constants'
 
 import { downloadDocument } from '~api/booking/document'
 import { BookingRequest } from '~api/booking/request'
 import { BookingAvailableActionsResponse } from '~api/booking/status'
-
-import createPopover, { PopoverItem } from '~widgets/popover/popover'
-
-import { showConfirmDialog } from '~helpers/confirm-dialog'
-import { formatDateTime } from '~helpers/date'
 
 import '~resources/views/main'
 

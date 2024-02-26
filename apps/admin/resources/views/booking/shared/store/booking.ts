@@ -1,5 +1,6 @@
 import { computed, onMounted, ref } from 'vue'
 
+import { requestInitialData } from 'gts-common/helpers/initial-data'
 import { defineStore, storeToRefs } from 'pinia'
 import { z } from 'zod'
 
@@ -21,8 +22,6 @@ import {
 import { UpdateBookingPrice, updateBookingPrice, useRecalculateBookingPriceAPI } from '~api/booking/service/price'
 import { useBookingAvailableActionsAPI } from '~api/booking/status'
 import { useHotelMarkupSettingsAPI } from '~api/hotel/markup-settings'
-
-import { requestInitialData } from '~helpers/initial-data'
 
 const { bookingID, manager, hotelID, isOtherServiceBooking, isHotelBooking } = requestInitialData(z.object({
   hotelID: z.number().optional(),
@@ -62,7 +61,7 @@ export const useBookingStore = defineStore('booking', () => {
     isStatusUpdateFetching.value = true
     updateStatusPayload.status = status
     const { data: updateStatusResponse } = await updateBookingStatus(updateStatusPayload)
-    if (updateStatusResponse.value?.isNotConfirmedReasonRequired && isHotelBooking) {
+    if (updateStatusResponse.value?.isNotConfirmedReasonRequired) {
       const { result: isConfirmed, reason, toggleClose } = await showNotConfirmedReasonDialog()
       if (isConfirmed) {
         updateStatusPayload.notConfirmedReason = reason

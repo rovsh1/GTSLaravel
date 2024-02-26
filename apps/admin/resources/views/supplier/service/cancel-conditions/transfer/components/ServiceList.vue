@@ -3,11 +3,11 @@
 import { computed } from 'vue'
 
 import { useToggle } from '@vueuse/core'
+import { requestInitialData } from 'gts-common/helpers/initial-data'
 import { z } from 'zod'
 
 import { Car, Season } from '~api/models'
 
-import { requestInitialData } from '~helpers/initial-data'
 import { useQuickSearch } from '~helpers/quick-search'
 
 import CancelConditionsModal from './CancelConditionsModal.vue'

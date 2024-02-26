@@ -1,5 +1,5 @@
 import axios from '~resources/js/api'
-import { useSelectElement } from '~widgets/select-element/select-element'
+import { useSelectElement } from 'gts-common/widgets/select-element'
 
 $.fn.childCombo = async function (options) {
   const preparedOptions = {
@@ -12,6 +12,7 @@ $.fn.childCombo = async function (options) {
     emptyText: 'Пусто',
     hidden: false,
     dateRange: false,
+    autoSelect: false,
     ...options,
   }
   let currentParentValue = undefined
@@ -171,7 +172,11 @@ $.fn.childCombo = async function (options) {
         if (preparedOptions.allowEmpty && preparedOptions.emptyItem !== '') {
           child.val('')
         } else {
-          child.val([])
+          if (items?.length && preparedOptions.autoSelect) {
+            child.val(items[0].id)
+          } else {
+            child.val([])
+          }
         }
       }
       child.change()

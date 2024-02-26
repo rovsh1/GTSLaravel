@@ -8,21 +8,11 @@ use App\Admin\Models\Administrator\Administrator;
 use App\Admin\Models\Client\Client;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
-use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 
 class OrderReportCompiler extends AbstractReportCompiler
 {
-    private const DEFAULT_ROW_HEIGHT = 14;
-
     private readonly string $templatePath;
-
-    private array $defaultFont = [
-        'name' => 'Arial',
-        'size' => 12,
-        'color' => ['rgb' => '000000'],
-        'bold' => false,
-        'italic' => false,
-    ];
 
     private array $reportTotalData = [];
     private int $reportPeriodStart;
@@ -44,6 +34,7 @@ class OrderReportCompiler extends AbstractReportCompiler
     {
         $this->setCreatedAtDate(now());
         $this->setManager($administrator->presentation);
+        $this->setLogo();
 
         foreach ($data as $clientId => $orders) {
             $client = Client::find($clientId);
@@ -79,6 +70,21 @@ class OrderReportCompiler extends AbstractReportCompiler
         $this->fillValueByPlaceholder('{manager}', $manager);
     }
 
+    private function setLogo(): void
+    {
+        $drawing = new Drawing();
+        $drawing->setPath(storage_path('app/public/company-logo-small.png'));
+        $drawing->setHeight(100);
+
+        $drawing->setCoordinates('A1');
+        $drawing->setOffsetY(15);
+        $drawing->setOffsetX(15);
+
+        $this->spreadsheet->getActiveSheet()
+            ->getDrawingCollection()
+            ->append($drawing);
+    }
+
     private function appendClientRows(Client $client, array $rows): void
     {
         $sheet = $this->spreadsheet->getActiveSheet();
@@ -90,11 +96,17 @@ class OrderReportCompiler extends AbstractReportCompiler
         $headerValueFont = [...$headerFont, 'bold' => true];
         $cellStyle = $this->getCellStyle();
         $cellValueStyle = $this->getCellStyle('FEFF03');
-        $sheet->getCell([1, $currentRow])->setValue('Клиент:')->getStyle()->applyFromArray($cellStyle)->getFont()->applyFromArray($headerFont);
-        $sheet->getCell([2, $currentRow])->setValue($client->name)->getStyle()->applyFromArray($cellValueStyle)->getFont()->applyFromArray($headerValueFont);
+        $sheet->getCell([1, $currentRow])->setValue('Клиент:')->getStyle()->applyFromArray($cellStyle)->getFont(
+        )->applyFromArray($headerFont);
+        $sheet->getCell([2, $currentRow])->setValue($client->name)->getStyle()->applyFromArray(
+            $cellValueStyle
+        )->getFont()->applyFromArray($headerValueFont);
         $currentRow++;
-        $sheet->getCell([1, $currentRow])->setValue('Валюта:')->getStyle()->applyFromArray($cellStyle)->getFont()->applyFromArray($headerFont);
-        $sheet->getCell([2, $currentRow])->setValue($client->currency->name)->getStyle()->applyFromArray($cellStyle)->getFont()->applyFromArray($headerValueFont);
+        $sheet->getCell([1, $currentRow])->setValue('Валюта:')->getStyle()->applyFromArray($cellStyle)->getFont(
+        )->applyFromArray($headerFont);
+        $sheet->getCell([2, $currentRow])->setValue($client->currency->name)->getStyle()->applyFromArray(
+            $cellStyle
+        )->getFont()->applyFromArray($headerValueFont);
         $currentRow++;
 
         if (count($rows) > 0) {
@@ -280,12 +292,19 @@ class OrderReportCompiler extends AbstractReportCompiler
         foreach ($this->reportTotalData as $currency => $totalAmounts) {
             $this->insertNewRowBefore($sheet->getHighestRow());
             $currentRow++;
-            $sheet->getCell('G' . $currentRow)->setValue($currency)->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
-            $sheet->getCell('H' . $currentRow)->setValue($totalAmounts['hotel_amount'] . ' ' . $currency)->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
-            $sheet->getCell('J' . $currentRow)->setValue($totalAmounts['service_amount'] . ' ' . $currency)->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
-            $sheet->getCell('K' . $currentRow)->setValue($totalAmounts['total_amount'] . ' ' . $currency)->getStyle()->applyFromArray($totalCellStyle)->getFont()->applyFromArray($boldFont);
-            $sheet->getCell('L' . $currentRow)->setValue($totalAmounts['payed_amount'] . ' ' . $currency)->getStyle()->applyFromArray($payedCellStyle)->getFont()->applyFromArray($boldFont);
-            $sheet->getCell('M' . $currentRow)->setValue($totalAmounts['remaining_amount'] . ' ' . $currency)->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($remainingCellFont);
+            $sheet->getCell('G' . $currentRow)->setValue($currency)->getStyle()->applyFromArray(
+                $defaultCellStyle
+            )->getFont()->applyFromArray($boldFont);
+            $sheet->getCell('H' . $currentRow)->setValue($totalAmounts['hotel_amount'] . ' ' . $currency)->getStyle(
+            )->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
+            $sheet->getCell('J' . $currentRow)->setValue($totalAmounts['service_amount'] . ' ' . $currency)->getStyle(
+            )->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
+            $sheet->getCell('K' . $currentRow)->setValue($totalAmounts['total_amount'] . ' ' . $currency)->getStyle(
+            )->applyFromArray($totalCellStyle)->getFont()->applyFromArray($boldFont);
+            $sheet->getCell('L' . $currentRow)->setValue($totalAmounts['payed_amount'] . ' ' . $currency)->getStyle(
+            )->applyFromArray($payedCellStyle)->getFont()->applyFromArray($boldFont);
+            $sheet->getCell('M' . $currentRow)->setValue($totalAmounts['remaining_amount'] . ' ' . $currency)->getStyle(
+            )->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($remainingCellFont);
         }
         $countCurrencies = count($this->reportTotalData);
         $firstRow = $currentRow - $countCurrencies + 1;
@@ -299,40 +318,6 @@ class OrderReportCompiler extends AbstractReportCompiler
         $sheet->mergeCells("A{$firstRow}:F{$currentRow}");
         $rowHeight = $countCurrencies * 20 > 30 ? $countCurrencies * 20 : 30;
         $sheet->getRowDimension($firstRow)->setRowHeight($rowHeight);
-    }
-
-    private function insertNewRowBefore(int $before, int $numberOfRows = 1): void
-    {
-        $sheet = $this->spreadsheet->getActiveSheet();
-        $sheet->insertNewRowBefore($before, $numberOfRows);
-
-        $defaultCellStyle = $this->getCellStyle();
-        for ($i = $before; $i <= $before + $numberOfRows; $i++) {
-            foreach ($sheet->getColumnIterator() as $column) {
-                $sheet->getCell($column->getColumnIndex() . $i)->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($this->defaultFont);
-            }
-            $sheet->getRowDimension($i)->setRowHeight(self::DEFAULT_ROW_HEIGHT);
-        }
-    }
-
-    private function getCellStyle(string $bgColor = 'FFFFFF', bool $withBorders = false): array
-    {
-        $style = [
-            'fill' => [
-                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                'startColor' => ['rgb' => $bgColor],
-            ],
-        ];
-        if ($withBorders) {
-            $style['borders'] = [
-                'outline' => [
-                    'borderStyle' => Border::BORDER_THIN,
-                    'color' => ['rgb' => '000000'],
-                ],
-            ];
-        }
-
-        return $style;
     }
 
     /**

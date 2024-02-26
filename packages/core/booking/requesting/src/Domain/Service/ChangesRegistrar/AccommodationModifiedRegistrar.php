@@ -28,10 +28,10 @@ class AccommodationModifiedRegistrar extends AbstractRegistrar
         }
         $this->changesStorage->store($currentChanges);
 
-        $this->registerFieldChanges($event, 'earlyCheckIn','Изменено время раннего заезда');
-        $this->registerFieldChanges($event, 'lateCheckOut','Изменено время позднего выезда');
-        $this->registerFieldChanges($event, 'guestNote','Изменен комментарий гостя');
-        $this->registerFieldChanges($event, 'rateId','Изменен тариф');
+        $this->registerFieldChanges($event, 'earlyCheckIn', 'Изменено время раннего заезда');
+        $this->registerFieldChanges($event, 'lateCheckOut', 'Изменено время позднего выезда');
+        $this->registerFieldChanges($event, 'guestNote', 'Изменен комментарий гостя');
+        $this->registerFieldChanges($event, 'rateId', 'Изменен тариф');
     }
 
     private function registerFieldChanges(AccommodationModified $event, string $field, string $description): void

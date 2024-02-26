@@ -2,6 +2,8 @@
 
 import { computed } from 'vue'
 
+import { formatDate } from 'gts-common/helpers/date'
+
 import CancelPeriodSettingsTable from '~resources/views/settings/components/CancelPeriodSettingsTable.vue'
 
 import { CancelPeriod } from '~api/hotel/markup-settings'
@@ -9,8 +11,6 @@ import { CancelPeriod } from '~api/hotel/markup-settings'
 import CollapsableBlock from '~components/CollapsableBlock.vue'
 
 import { useMarkupSettingsStore } from '~stores/markup-settings'
-
-import { formatDate } from '~helpers/date'
 
 const markupSettingsStore = useMarkupSettingsStore()
 const cancelPeriods = computed(() => markupSettingsStore.markupSettings?.cancelPeriods)

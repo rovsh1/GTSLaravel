@@ -2,7 +2,9 @@
 
 namespace Module\Booking\Shared\Domain\Booking\Service\IntegrationEventMapper;
 
+use Module\Booking\Shared\Domain\Guest\Event\GuestModified;
 use Sdk\Booking\Event\ArrivalDateChanged;
+use Sdk\Booking\Event\BookingCancelledEventInterface;
 use Sdk\Booking\Event\DepartureDateChanged;
 use Sdk\Booking\Event\HotelBooking\AccommodationDetailsEdited;
 use Sdk\Booking\Event\HotelBooking\GuestBinded as AccommodationGuestBinded;
@@ -31,9 +33,10 @@ class MapperFactory
 
     private function getClass(string $event): ?string
     {
-        return match ($event) {
+        $class = match ($event) {
             AccommodationGuestBinded::class => AccommodationGuestBindedMapper::class,
             AccommodationGuestUnbinded::class => AccommodationGuestUnbindedMapper::class,
+            GuestModified::class => AccommodationGuestEditedMapper::class,
             AccommodationDetailsEdited::class => AccommodationModifiedMapper::class,
             TransferGuestBinded::class => TransferGuestBindedMapper::class,
             TransferGuestUnbinded::class => TransferGuestUnbindedMapper::class,
@@ -45,5 +48,15 @@ class MapperFactory
             ServiceDateChanged::class => ServiceDateChangedMapper::class,
             default => null
         };
+
+        if ($class !== null) {
+            return $class;
+        }
+
+        if (is_subclass_of($event, BookingCancelledEventInterface::class)) {
+            return BookingCancelledMapper::class;
+        }
+
+        return null;
     }
 }

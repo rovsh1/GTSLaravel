@@ -2,15 +2,13 @@
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 
 import { onClickOutside } from '@vueuse/core'
+import { compareJSDate, formatDateToAPIDate, formatPeriod, parseAPIDate } from 'gts-common/helpers/date'
+import { useDateRangePicker } from 'gts-common/widgets/date-picker'
 import { Litepicker } from 'litepicker'
 import { DateTime } from 'luxon'
 
 import { DateResponse } from '~api'
 import { DatePeriod } from '~api/hotel/markup-settings'
-
-import { useDateRangePicker } from '~widgets/date-picker/date-picker'
-
-import { compareJSDate, formatDateToAPIDate, formatPeriod, parseAPIDate } from '~helpers/date'
 
 const props = withDefaults(defineProps<{
   id: string
@@ -88,7 +86,7 @@ const blockedPeriods = ref(setBlockPeriodsValue())
 const isValidSingleDateOrRange = (date1: any, date2: any): boolean => {
   const startDate = DateTime.fromJSDate(date1.dateInstance).startOf('day')
   const endDate = DateTime.fromJSDate(props.singleMode ? date1.dateInstance : date2.dateInstance).endOf('day')
-  const selectedPeriodDays = []
+  const selectedPeriodDays: DateTime[] = []
   if (startDate.equals(endDate)) {
     selectedPeriodDays.push(startDate)
   } else {

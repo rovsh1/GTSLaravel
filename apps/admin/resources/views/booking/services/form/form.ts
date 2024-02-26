@@ -1,3 +1,7 @@
+import { formatDate } from 'gts-common/helpers/date'
+import { useApplicationEventBus } from 'gts-common/helpers/event-bus'
+import { requestInitialData } from 'gts-common/helpers/initial-data'
+import { useSelectElement } from 'gts-common/widgets/select-element'
 import { isEmpty } from 'lodash'
 import { createPinia } from 'pinia'
 import { z } from 'zod'
@@ -8,12 +12,6 @@ import { mapClientsToSelect2Options, Select2Option } from '~resources/views/book
 import { createVueInstance } from '~resources/vue/vue'
 
 import { Client } from '~api/client'
-
-import { useSelectElement } from '~widgets/select-element/select-element'
-
-import { formatDate } from '~helpers/date'
-import { useApplicationEventBus } from '~helpers/event-bus'
-import { requestInitialData } from '~helpers/initial-data'
 
 import '~resources/views/main'
 
@@ -78,12 +76,12 @@ $(async () => {
 
     const $legalIdInput = $('#form_data_legal_id')
     if ($legalIdInput.is('input')) {
-      // еще не был инстанцирован, т.е. выведен как hidden input в html через php form
       $legalIdInput.childCombo({
         url: '/client/legals/search',
         disabledText: 'Выберите клиента',
         parent: $clientIdInput,
         dataIndex: 'client_id',
+        autoSelect: true,
       })
     }
   }

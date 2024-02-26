@@ -2,12 +2,12 @@
 
 import { onMounted, ref, watch } from 'vue'
 
+import { formatPeriod } from 'gts-common/helpers/date'
+
 import CollapsableBlock from '~resources/views/hotel/settings/components/CollapsableBlock.vue'
 
 import { Car, Season } from '~api/models'
 import { ServicePriceResponse, useServiceProviderTransferPricesAPI } from '~api/supplier/transfer'
-
-import { formatPeriod } from '~helpers/date'
 
 const props = defineProps<{
   header: string

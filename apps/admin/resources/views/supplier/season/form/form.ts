@@ -1,8 +1,6 @@
+import { requestInitialData } from 'gts-common/helpers/initial-data'
+import { useDateRangePicker } from 'gts-common/widgets/date-picker'
 import { z } from 'zod'
-
-import { useDateRangePicker } from '~widgets/date-picker/date-picker'
-
-import { requestInitialData } from '~helpers/initial-data'
 
 import '~resources/views/main'
 

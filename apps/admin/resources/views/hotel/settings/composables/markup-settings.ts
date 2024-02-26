@@ -1,5 +1,6 @@
 import { onMounted } from 'vue'
 
+import { requestInitialData } from 'gts-common/helpers/initial-data'
 import { defineStore } from 'pinia'
 import { z } from 'zod'
 
@@ -8,8 +9,6 @@ import {
   updateConditionHotelMarkupSettings,
   useHotelMarkupSettingsAPI,
 } from '~api/hotel/markup-settings'
-
-import { requestInitialData } from '~helpers/initial-data'
 
 const { hotelID } = requestInitialData(
   z.object({

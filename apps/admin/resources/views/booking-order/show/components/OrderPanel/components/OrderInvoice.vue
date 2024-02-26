@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
+import { formatDateTime } from 'gts-common/helpers/date'
+
 import RequestBlock from '~resources/views/booking/shared/components/RequestBlock.vue'
 import { useOrderInvoiceStore } from '~resources/views/booking-order/show/store/invoice'
 import { useOrderStore } from '~resources/views/booking-order/show/store/order'
@@ -10,8 +12,6 @@ import { OrderAvailableActionsResponse } from '~api/order/status'
 
 import { showToast } from '~components/Bootstrap/BootstrapToast'
 import InlineIcon from '~components/InlineIcon.vue'
-
-import { formatDateTime } from '~helpers/date'
 
 const orderStore = useOrderStore()
 const availableActions = computed<OrderAvailableActionsResponse | null>(() => orderStore.availableActions)

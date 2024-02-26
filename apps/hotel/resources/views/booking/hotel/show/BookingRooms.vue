@@ -2,6 +2,7 @@
 
 import { computed, onMounted } from 'vue'
 
+import { formatPrice } from 'gts-common/helpers/price'
 import { storeToRefs } from 'pinia'
 
 import GuestsTable from '~resources/views/booking/shared/components/GuestsTable.vue'
@@ -26,8 +27,6 @@ import EmptyData from '~components/EmptyData.vue'
 
 import { useCountryStore } from '~stores/countries'
 import { useCurrencyStore } from '~stores/currency'
-
-import { formatPrice } from '~helpers/price'
 
 const { getCurrencyByCodeChar } = useCurrencyStore()
 const bookingStore = useBookingStore()

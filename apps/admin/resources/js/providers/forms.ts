@@ -1,7 +1,6 @@
 import { Tab, Tooltip } from 'bootstrap'
-
-import { useDateRangePicker } from '~widgets/date-picker/date-picker'
-import { useSelectElement } from '~widgets/select-element/select-element'
+import { useDateRangePicker } from 'gts-common/widgets/date-picker'
+import { useSelectElement } from 'gts-common/widgets/select-element'
 
 function bootDeleteButtons() {
   $('button.btn-delete')
@@ -26,6 +25,18 @@ function bootDateRangePicker() {
   const elements = document.querySelectorAll<HTMLInputElement>('.daterange')
   elements.forEach((element) => {
     useDateRangePicker(element)
+  })
+}
+
+function bootSubmit() {
+  $('.retry-submit-lock').submit(function (e) {
+    const submitButton = $(this).find('[type="submit"]')
+    if (submitButton.prop('disabled')) {
+      e.preventDefault()
+      return
+    }
+    submitButton.prop('disabled', true)
+    submitButton.focus()
   })
 }
 
@@ -136,4 +147,5 @@ export default function bootForms() {
   bootTabsAnchor()
   bootGridFilters()
   bootTooltips()
+  bootSubmit()
 }

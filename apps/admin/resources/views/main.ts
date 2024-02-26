@@ -1,3 +1,4 @@
+import bootActionsmenu from '~resources/js/providers/actions-menu'
 import bootCookies from '~resources/js/providers/cookies'
 import bootFilesDownloader from '~resources/js/providers/files'
 import bootForms from '~resources/js/providers/forms'
@@ -6,8 +7,8 @@ import bootSitemap from '~resources/js/providers/sitemap'
 
 import '~resources/js/support/bootstrap'
 import '~resources/js/vendor/jquery.cookie'
-import '~widgets/date-picker/date-picker'
-import '~widgets/dialog/helpers'
+import 'gts-common/widgets/date-picker'
+import 'gts-common/widgets/dialog'
 import '~resources/js/plugins/child-combo'
 import '~resources/js/support/select2'
 import '~resources/js/support/functions'
@@ -25,6 +26,7 @@ $(() => {
   bootForms()
   bootGrid()
   bootFilesDownloader()
+  bootActionsmenu()
 
   document.body.classList.add('loaded')
 })

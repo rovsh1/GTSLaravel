@@ -134,6 +134,28 @@ class ClientController extends AbstractPrototypeController
         return $layout;
     }
 
+    public function update(int $id): RedirectResponse
+    {
+        $this->model = $this->repository->findOrFail($id);
+
+        $form = $this->form()
+            ->method('put')
+            ->failUrl($this->prototype->route('edit', $this->model));
+
+        $form->submitOrFail();
+
+        $preparedData = $this->saving($form->getData());
+        $newAdministratorId = (int)$preparedData['administrator_id'];
+        if (!empty($newAdministratorId) && $this->model->administrator_id !== $newAdministratorId) {
+            $this->clientAdministratorRepository->update($id, $newAdministratorId);
+        }
+        $this->repository->update($this->model->id, $preparedData);
+
+        $redirectUrl = $this->prototype->route('show', $this->model);
+
+        return redirect($redirectUrl);
+    }
+
     public function currencies(Client $client): JsonResponse
     {
         $currency = $client->currency;

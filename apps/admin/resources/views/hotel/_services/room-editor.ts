@@ -1,6 +1,5 @@
+import { requestInitialData } from 'gts-common/helpers/initial-data'
 import { z } from 'zod'
-
-import { requestInitialData } from '~helpers/initial-data'
 
 const { bedTypes } = requestInitialData(
   z.object({
