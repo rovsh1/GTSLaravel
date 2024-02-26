@@ -27,7 +27,6 @@ trait HasGuestsTrait
 
     public function getFillable(): array
     {
-        $this->ensureBooted();
         return [
             ...parent::getFillable(),
             'guestIds',
@@ -37,6 +36,7 @@ trait HasGuestsTrait
     public function guests(): BelongsToMany
     {
         $this->ensureBooted();
+
         return $this->belongsToMany(
             Guest::class,
             $this->getGuestsTable(),
@@ -48,6 +48,7 @@ trait HasGuestsTrait
     public function guestIds(): Attribute
     {
         $this->ensureBooted();
+
         return Attribute::make(
             get: fn() => $this->guests()->pluck('guest_id')->toArray(),
             set: function (array $guestIds) {
