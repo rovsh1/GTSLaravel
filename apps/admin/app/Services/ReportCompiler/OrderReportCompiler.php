@@ -8,19 +8,16 @@ use App\Admin\Models\Administrator\Administrator;
 use App\Admin\Models\Client\Client;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
-use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 
 class OrderReportCompiler extends AbstractReportCompiler
 {
     private readonly string $templatePath;
 
     private array $reportTotalData = [];
-    private int $reportPeriodStart;
-    private int $reportPeriodEnd;
 
     public function __construct()
     {
-        $this->templatePath = resource_path('report-templates/orders.xlsx');
+        $this->templatePath = resource_path('report-templates/base_template.xlsx');
         $reader = IOFactory::createReaderForFile($this->templatePath);
         $this->spreadsheet = $reader->load($this->templatePath);
     }
@@ -30,11 +27,13 @@ class OrderReportCompiler extends AbstractReportCompiler
      * @param array $data
      * @return resource
      */
-    public function generate(Administrator $administrator, array $data): mixed
+    public function generate(Administrator $administrator, string $title, array $data): mixed
     {
         $this->setCreatedAtDate(now());
         $this->setManager($administrator->presentation);
+        $this->setReportPeriodLabel('Период заказов:');
         $this->setLogo();
+        $this->setSheetTitle($this->spreadsheet->getActiveSheet(), $title);
 
         foreach ($data as $clientId => $orders) {
             $client = Client::find($clientId);
@@ -49,40 +48,6 @@ class OrderReportCompiler extends AbstractReportCompiler
         $writer->save($tempFile);
 
         return $tempFile;
-    }
-
-    private function setCreatedAtDate(\DateTimeInterface $date): void
-    {
-        $this->fillValueByPlaceholder('{createdAt}', $date->format('d/m/y H:i'));
-    }
-
-    private function fillReportPeriod(): void
-    {
-        $period = '';
-        if (isset($this->reportPeriodStart) && isset($this->reportPeriodEnd)) {
-            $period = date('d.m.Y', $this->reportPeriodStart) . ' - ' . date('d.m.Y', $this->reportPeriodEnd);
-        }
-        $this->fillValueByPlaceholder('{reportPeriod}', $period);
-    }
-
-    private function setManager(string $manager): void
-    {
-        $this->fillValueByPlaceholder('{manager}', $manager);
-    }
-
-    private function setLogo(): void
-    {
-        $drawing = new Drawing();
-        $drawing->setPath(storage_path('app/public/company-logo-small.png'));
-        $drawing->setHeight(100);
-
-        $drawing->setCoordinates('A1');
-        $drawing->setOffsetY(15);
-        $drawing->setOffsetX(15);
-
-        $this->spreadsheet->getActiveSheet()
-            ->getDrawingCollection()
-            ->append($drawing);
     }
 
     private function appendClientRows(Client $client, array $rows): void

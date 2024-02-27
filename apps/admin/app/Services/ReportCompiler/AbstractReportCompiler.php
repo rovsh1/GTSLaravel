@@ -8,6 +8,8 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Writer\IWriter;
 
 abstract class AbstractReportCompiler
@@ -23,6 +25,10 @@ abstract class AbstractReportCompiler
         'bold' => false,
         'italic' => false,
     ];
+
+    protected int $reportPeriodStart;
+
+    protected int $reportPeriodEnd;
 
     public function getWritter(): IWriter
     {
@@ -42,6 +48,52 @@ abstract class AbstractReportCompiler
             }
             $sheet->getRowDimension($i)->setRowHeight(self::DEFAULT_ROW_HEIGHT);
         }
+    }
+
+
+    protected function setCreatedAtDate(\DateTimeInterface $date): void
+    {
+        $this->fillValueByPlaceholder('{createdAt}', $date->format('d/m/y H:i'));
+    }
+
+    protected function setReportPeriodLabel(string $label): void
+    {
+        $this->fillValueByPlaceholder('{periodLabel}', $label);
+    }
+
+    protected function fillReportPeriod(): void
+    {
+        $period = '';
+        if (isset($this->reportPeriodStart) && isset($this->reportPeriodEnd)) {
+            $period = date('d.m.Y', $this->reportPeriodStart) . ' - ' . date('d.m.Y', $this->reportPeriodEnd);
+        }
+        $this->fillValueByPlaceholder('{reportPeriod}', $period);
+    }
+
+    protected function setManager(string $manager): void
+    {
+        $this->fillValueByPlaceholder('{manager}', $manager);
+    }
+
+    protected function setSheetTitle(Worksheet $sheet, string $title): void
+    {
+        $sheet->setTitle($title);
+        $this->fillValueByPlaceholder('{sheetTitle}', mb_strtoupper($title), $sheet);
+    }
+
+    protected function setLogo(): void
+    {
+        $drawing = new Drawing();
+        $drawing->setPath(storage_path('app/public/company-logo-small.png'));
+        $drawing->setHeight(100);
+
+        $drawing->setCoordinates('A1');
+        $drawing->setOffsetY(15);
+        $drawing->setOffsetX(15);
+
+        $this->spreadsheet->getActiveSheet()
+            ->getDrawingCollection()
+            ->append($drawing);
     }
 
     protected function getCellStyle(string $bgColor = 'FFFFFF', bool $withBorders = false): array
@@ -64,14 +116,16 @@ abstract class AbstractReportCompiler
         return $style;
     }
 
-    protected function fillCellValue(string $coordinate, mixed $value): void
+    protected function fillCellValue(string $coordinate, mixed $value, ?Worksheet $sheet = null): void
     {
-        $this->spreadsheet->getActiveSheet()->getCell($coordinate)->setValue($value);
+        $worksheet = $sheet ?? $this->spreadsheet->getActiveSheet();
+        $worksheet->getCell($coordinate)->setValue($value);
     }
 
-    protected function fillValueByPlaceholder(string $placeholder, mixed $value): void
+    protected function fillValueByPlaceholder(string $placeholder, mixed $value, ?Worksheet $sheet = null): void
     {
-        $coordinates = $this->searchCoordinatesOnPage($placeholder);
+        $worksheet = $sheet ?? $this->spreadsheet->getActiveSheet();
+        $coordinates = $this->searchCoordinatesOnPage($placeholder, $worksheet);
         $coordinate = current($coordinates);
         $this->fillCellValue($coordinate, $value);
     }
@@ -82,10 +136,12 @@ abstract class AbstractReportCompiler
         $writter->save($filename);
     }
 
-    protected function searchCoordinatesOnPage(string $search): array
+    protected function searchCoordinatesOnPage(string $search, ?Worksheet $sheet = null): array
     {
+        $worksheet = $sheet ?? $this->spreadsheet->getActiveSheet();
+
         $foundInCells = [];
-        foreach ($this->spreadsheet->getActiveSheet()->getRowIterator() as $row) {
+        foreach ($worksheet->getRowIterator() as $row) {
             $cellIterator = $row->getCellIterator();
             $cellIterator->setIterateOnlyExistingCells(true);
             foreach ($cellIterator as $cell) {

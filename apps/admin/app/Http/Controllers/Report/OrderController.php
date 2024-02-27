@@ -86,7 +86,7 @@ class OrderController extends Controller
                 'COALESCE(booking_other_details.date, booking_airport_details.date, booking_hotel_details.date_start, booking_transfer_details.date_start) as date_start'
             )
             ->selectRaw(
-                'COALESCE(booking_other_details.date, booking_airport_details.date, booking_hotel_details.date_end, booking_transfer_details.date_end) as date_end'
+                'COALESCE(booking_other_details.date, booking_airport_details.date, booking_hotel_details.date_end, booking_transfer_details.date_end, booking_transfer_details.date_start) as date_end'
             )
             ->join('orders', 'orders.id', 'bookings.order_id')
             ->join('administrator_orders', 'administrator_orders.order_id', 'orders.id')
@@ -216,7 +216,11 @@ class OrderController extends Controller
             }
         );
 
-        $report = $this->reportCompiler->generate(request()->user(), $reportRowsGroupedByClient->toArray());
+        $report = $this->reportCompiler->generate(
+            request()->user(),
+            'Отчет по заказам',
+            $reportRowsGroupedByClient->toArray()
+        );
         $tempFileMetadata = stream_get_meta_data($report);
         $tempFilePath = Arr::get($tempFileMetadata, 'uri');
 
