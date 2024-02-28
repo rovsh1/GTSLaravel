@@ -154,6 +154,7 @@ class RoomQuotaRepository
 
     public function reserveQuotas(int $bookingId, int $roomId, CarbonPeriod $period, int $count): void
     {
+        \Log::debug('Traveline::reserveQuotas', ['$bookingId' => $bookingId, 'roomId' => $roomId]);
         DB::transaction(function () use ($bookingId, $roomId, $period, $count) {
             foreach ($period as $date) {
                 /** @var HotelRoomQuota $quota */
@@ -168,6 +169,7 @@ class RoomQuotaRepository
     {
         DB::transaction(function () use ($bookingId) {
             $quotas = $this->getBookingQuotas($bookingId);
+            \Log::debug('Traveline::cancelQuotasReserve', ['quotas' => $quotas]);
             foreach ($quotas as $quota) {
                 ['quotaId' => $quotaId, 'count' => $count] = $quota;
                 /** @var HotelRoomQuota $quota */
