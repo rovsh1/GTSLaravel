@@ -2,6 +2,7 @@
 
 namespace Pkg\IntegrationEventBus\Service;
 
+use Illuminate\Support\Facades\Log;
 use Pkg\IntegrationEventBus\Entity\Message;
 use Pkg\Supplier\Traveline\Contracts\IntegrationEventDispatcherInterface as TravelineEventDispatcher;
 use Sdk\Shared\Contracts\Event\IntegrationEventInterface;
