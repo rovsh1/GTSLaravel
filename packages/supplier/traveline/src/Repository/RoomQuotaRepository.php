@@ -158,16 +158,19 @@ class RoomQuotaRepository
             foreach ($period as $date) {
                 /** @var HotelRoomQuota $quota */
                 $quota = HotelRoomQuota::whereDate($date)->whereRoomId($roomId)->first();
+                $countBefore = $quota->count_available;
+                $quota->reserveQuota($count);
                 \Log::debug(
                     'Traveline::reserveQuotas',
                     [
                         '$bookingId' => $bookingId,
                         'roomId' => $roomId,
                         'date' => $date->toIso8601String(),
-                        'quota_id' => $quota->id
+                        'quota_id' => $quota->id,
+                        '$countBefore' => $countBefore,
+                        'countAfter' => $quota->count_available,
                     ]
                 );
-                $quota->reserveQuota($count);
                 $this->appendBookingQuota($bookingId, $quota->id, $count);
             }
         });
