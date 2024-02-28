@@ -37,6 +37,12 @@ class HotelRoomQuota extends Model
         'count_available' => 'int',
     ];
 
+    public function cancelQuotaReserve(int $count): void
+    {
+        $this->count_available += $count;
+        $this->save();
+    }
+
     public function reserveQuota(int $count): void
     {
         if ($this->count_available < $count) {

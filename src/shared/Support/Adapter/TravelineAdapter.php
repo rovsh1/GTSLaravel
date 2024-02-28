@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Shared\Support\Adapter;
 
 use Carbon\CarbonPeriod;
+use Pkg\Supplier\Traveline\UseCase\CancelBookingQuotas;
 use Pkg\Supplier\Traveline\UseCase\CheckHasAvailable;
 use Pkg\Supplier\Traveline\UseCase\CheckHotelIntegrationEnabled;
 use Pkg\Supplier\Traveline\UseCase\GetAvailableCount;
@@ -75,6 +76,7 @@ class TravelineAdapter implements TravelineAdapterInterface
     public function reserve(int $bookingId, int $roomId, CarbonPeriod $period, int $count): void
     {
         // Сначала мы резервируем квоты (уменьшаем count_available) в БД. После этого бронь подтверждается автоматически и TL присылает актуальные квоты.
+        app(CancelBookingQuotas::class)->execute($bookingId);
         app(ReserveQuotas::class)->execute($bookingId, $roomId, $period, $count);
     }
 

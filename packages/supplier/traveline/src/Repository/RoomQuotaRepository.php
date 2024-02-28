@@ -7,6 +7,7 @@ namespace Pkg\Supplier\Traveline\Repository;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Pkg\Supplier\Traveline\Dto\QuotaDto;
 use Pkg\Supplier\Traveline\Exception\RoomNotFoundException;
@@ -154,21 +155,53 @@ class RoomQuotaRepository
     /**
      * Метод для резерва квот, до момента обновления квот от Traveline.
      *
+     * @param int $bookingId
      * @param int $roomId
      * @param CarbonPeriod $period
      * @param int $count
      * @return void
      */
-    public function reserveQuotas(int $roomId, CarbonPeriod $period, int $count): void
+    public function reserveQuotas(int $bookingId, int $roomId, CarbonPeriod $period, int $count): void
     {
-        DB::transaction(function () use ($roomId, $period, $count) {
+        DB::transaction(function () use ($bookingId, $roomId, $period, $count) {
             foreach ($period as $date) {
                 /** @var HotelRoomQuota $quota */
                 $quota = HotelRoomQuota::whereDate($date)->whereRoomId($roomId)->first();
-                \Log::debug('Try to reserve quota', ['quota' => $quota, 'count' => $count, 'date' => $date]);
-                $quota?->reserveQuota($count);
+                $quota->reserveQuota($count);
+                $this->appendBookingQuota($bookingId, $quota->id, $count);
             }
         });
+    }
+
+    public function cancelQuotasReserve(int $bookingId): void
+    {
+        DB::transaction(function () use ($bookingId) {
+            $quotas = $this->getBookingQuotas($bookingId);
+            foreach ($quotas as $quota) {
+                ['quotaId' => $quotaId, 'count' => $count] = $quota;
+                /** @var HotelRoomQuota $quota */
+                $quota = HotelRoomQuota::find($quotaId);
+                $quota->cancelQuotaReserve($count);
+            }
+            Cache::forget($this->getBookingQuotasCacheKey($bookingId));
+        });
+    }
+
+    private function getBookingQuotas(int $bookingId): array
+    {
+        return Cache::get($this->getBookingQuotasCacheKey($bookingId), []);
+    }
+
+    private function appendBookingQuota(int $bookingId, int $quotaId, int $count): void
+    {
+        $quotas = $this->getBookingQuotas($bookingId);
+        $quotas[] = ['quotaId' => $quotaId, 'count' => $count];
+        Cache::forever($this->getBookingQuotasCacheKey($bookingId), $quotas);
+    }
+
+    private function getBookingQuotasCacheKey(int $bookingId): string
+    {
+        return "traveline-quotas:booking:{$bookingId}";
     }
 
     private function bootQuery(int $hotelId, CarbonPeriod $period, ?int $roomId): Builder|HotelRoomQuota
