@@ -3,7 +3,7 @@
 namespace Pkg\Booking\Requesting\Domain\Listener;
 
 use Illuminate\Support\Facades\Log;
-use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\DbContext\BookingDbContextInterface;
 use Pkg\Booking\Requesting\Domain\Service\ChangesRegistrar\RegistrarFactory;
 use Sdk\Booking\Enum\StatusEnum;
 use Sdk\Booking\IntegrationEvent\BookingEventInterface;
@@ -14,7 +14,7 @@ use Sdk\Shared\Event\IntegrationEventMessage;
 class RegisterChangesListener implements IntegrationEventListenerInterface
 {
     public function __construct(
-        private readonly BookingRepositoryInterface $bookingRepository,
+        private readonly BookingDbContextInterface $bookingRepository,
         private readonly RegistrarFactory $registrarFactory,
     ) {}
 
