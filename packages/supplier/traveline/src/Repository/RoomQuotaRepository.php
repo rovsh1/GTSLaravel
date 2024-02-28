@@ -153,6 +153,12 @@ class RoomQuotaRepository
             'period_end' => $period->getEndDate()->toIso8601String(),
             'result' => $isReleaseDaysAvailable,
             'releaseDays' => $releaseDays,
+            'sql'=>HotelRoomQuota::whereDate($period->getStartDate())
+                ->whereRoomId($roomId)
+                ->whereOpened()
+                ->whereHasAvailable($count)
+                ->whereReleaseDaysBelowOrEqual($releaseDays)
+                ->toRawSql(),
         ]);
 
         if (!$isReleaseDaysAvailable) {
