@@ -72,16 +72,10 @@ class RoomQuotaRepository
             return 0;
         }
 
-        $resp = (int)DB::table(
+        return (int)DB::table(
             HotelRoomQuota::query()->whereRoomId($roomId)->wherePeriod($period)->whereOpened(),
             't'
         )->min('t.count_available');
-        \Log::debug('Traveline::getAvailableCount', [
-            'room_id' => $roomId,
-            'min_quota' => $resp,
-        ]);
-
-        return $resp;
     }
 
     /**
@@ -145,12 +139,20 @@ class RoomQuotaRepository
     public function hasAvailable(int $roomId, CarbonPeriod $period, int $count): bool
     {
         $releaseDays = now()->diffInDays($period->getStartDate());
-        $isReleaseDaysAvailable = HotelRoomQuota::whereDate($period->getEndDate())
+        $isReleaseDaysAvailable = HotelRoomQuota::whereDate($period->getStartDate())
             ->whereRoomId($roomId)
             ->whereOpened()
             ->whereHasAvailable($count)
             ->whereReleaseDaysBelowOrEqual($releaseDays)
             ->exists();
+
+        \Log::debug('RoomQuotaRepository::hasAvailable', [
+            'room_id' => $roomId,
+            '$count' => $count,
+            'period_start' => $period->getStartDate()->toIso8601String(),
+            'period_end' => $period->getEndDate()->toIso8601String(),
+            'result' => $isReleaseDaysAvailable,
+        ]);
 
         if (!$isReleaseDaysAvailable) {
             return false;
