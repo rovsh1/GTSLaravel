@@ -291,6 +291,7 @@ class HotelController extends AbstractPrototypeController
     {
         return (new ParamsTable())
             ->id('id', 'ID')
+            ->text('supplier_name', 'Поставщик')
             ->text('name', 'Наименование')
             ->text('type_name', 'Категория')
             ->enum('visibility', 'Видимость', VisibilityEnum::class)
