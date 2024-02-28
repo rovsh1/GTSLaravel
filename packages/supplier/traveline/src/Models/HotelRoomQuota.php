@@ -37,6 +37,15 @@ class HotelRoomQuota extends Model
         'count_available' => 'int',
     ];
 
+    public function reserveQuota(int $count): void
+    {
+        if ($this->count_available < $count) {
+            throw new \RuntimeException('Quota limit exceed');
+        }
+        $this->count_available -= $count;
+        $this->save();
+    }
+
     public function scopeWhereDate(Builder $builder, \DateTimeInterface $date): void
     {
         $builder->whereRaw('DATE(date) = ?', [$date->format('Y-m-d')]);

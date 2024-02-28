@@ -62,12 +62,6 @@ class RoomQuotaRepository
     public function getAvailableCount(int $roomId, CarbonPeriod $period): int
     {
         $isQuotaAvailable = $this->hasAvailable($roomId, $period, 1);
-        \Log::debug('Traveline::getAvailableCount', [
-            'room_id' => $roomId,
-            'period_start' => $period->getStartDate()->toIso8601String(),
-            'period_end' => $period->getEndDate()->toIso8601String(),
-            '$isQuotaAvailable' => $isQuotaAvailable,
-        ]);
         if (!$isQuotaAvailable) {
             return 0;
         }
@@ -146,21 +140,6 @@ class RoomQuotaRepository
             ->whereReleaseDaysBelowOrEqual($releaseDays)
             ->exists();
 
-        \Log::debug('RoomQuotaRepository::hasAvailable', [
-            'room_id' => $roomId,
-            '$count' => $count,
-            'period_start' => $period->getStartDate()->toIso8601String(),
-            'period_end' => $period->getEndDate()->toIso8601String(),
-            'result' => $isReleaseDaysAvailable,
-            'releaseDays' => $releaseDays,
-            'sql'=>HotelRoomQuota::whereDate($period->getStartDate())
-                ->whereRoomId($roomId)
-                ->whereOpened()
-                ->whereHasAvailable($count)
-                ->whereReleaseDaysBelowOrEqual($releaseDays)
-                ->toRawSql(),
-        ]);
-
         if (!$isReleaseDaysAvailable) {
             return false;
         }
@@ -170,6 +149,25 @@ class RoomQuotaRepository
             ->whereOpened()
             ->whereHasAvailable($count)
             ->exists();
+    }
+
+    /**
+     * Метод для резерва квот, до момента обновления квот от Traveline.
+     *
+     * @param int $roomId
+     * @param CarbonPeriod $period
+     * @param int $count
+     * @return void
+     */
+    public function reserveQuotas(int $roomId, CarbonPeriod $period, int $count): void
+    {
+        DB::transaction(function () use ($roomId, $period, $count) {
+            foreach ($period as $date) {
+                /** @var HotelRoomQuota $quota */
+                $quota = HotelRoomQuota::whereDate($date)->whereRoomId($roomId)->first();
+                $quota?->reserveQuota($count);
+            }
+        });
     }
 
     private function bootQuery(int $hotelId, CarbonPeriod $period, ?int $roomId): Builder|HotelRoomQuota

@@ -12,6 +12,7 @@ use Pkg\Supplier\Traveline\UseCase\GetAvailableQuotas;
 use Pkg\Supplier\Traveline\UseCase\GetClosedQuotas;
 use Pkg\Supplier\Traveline\UseCase\GetQuotas;
 use Pkg\Supplier\Traveline\UseCase\GetSoldQuotas;
+use Pkg\Supplier\Traveline\UseCase\ReserveQuotas;
 use Shared\Contracts\Adapter\TravelineAdapterInterface;
 
 class TravelineAdapter implements TravelineAdapterInterface
@@ -68,7 +69,8 @@ class TravelineAdapter implements TravelineAdapterInterface
 
     public function book(int $bookingId, int $roomId, CarbonPeriod $period, int $count): void
     {
-        // Тут приходит запрос от тревелайна и мы обновляем квоты. Внутреннее обновление не требуется.
+        // Сначала мы резервируем квоты (уменьшаем count_available) в БД. После этого бронь подтверждается автоматически и TL присылает актуальные квоты.
+        app(ReserveQuotas::class)->execute($bookingId, $roomId, $period, $roomId);
     }
 
     public function reserve(int $bookingId, int $roomId, CarbonPeriod $period, int $count): void
