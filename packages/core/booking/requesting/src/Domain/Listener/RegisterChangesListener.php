@@ -27,7 +27,11 @@ class RegisterChangesListener implements IntegrationEventListenerInterface
         Log::debug('RegisterChangesListener::handle event', ['event' => $event]);
         $booking = $this->bookingRepository->findOrFail(new BookingId($event->bookingId));
         if (!$this->needStoreChanges($booking->status()->value())) {
-            Log::debug('RegisterChangesListener::handle dont need store');
+            Log::debug('RegisterChangesListener::handle dont need store', [
+                'booking' => $booking,
+                'status' => $booking->status(),
+            ]);
+
             return;
         }
 
@@ -35,6 +39,7 @@ class RegisterChangesListener implements IntegrationEventListenerInterface
         $registrar = $this->registrarFactory->build($event);
         if (!$registrar) {
             Log::debug('RegisterChangesListener::handle dont find registrar');
+
             return;
         }
 
