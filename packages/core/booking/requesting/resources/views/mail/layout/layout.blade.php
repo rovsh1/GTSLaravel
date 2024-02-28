@@ -136,10 +136,16 @@
     }
 
     .mail-container .cancelled {
-      color: red !important;
+      color: #fff !important;
+      background-color: red !important;
     }
 
-    .mail-container .changed, .mail-container .selected-text {
+    .mail-container .changed {
+      color: #fff !important;
+      background-color: blue !important;
+    }
+
+    .mail-container .selected-text {
       color: blue !important;
     }
 
