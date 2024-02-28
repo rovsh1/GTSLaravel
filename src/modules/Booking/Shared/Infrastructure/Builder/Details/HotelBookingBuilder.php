@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Infrastructure\Builder\Details;
 
-use Carbon\CarbonImmutable;
 use Module\Booking\Shared\Infrastructure\Models\Details\Hotel;
 use Sdk\Booking\Entity\Details\HotelBooking;
 use Sdk\Booking\ValueObject\BookingId;
@@ -25,10 +24,7 @@ class HotelBookingBuilder
             id: new DetailsId($details->id),
             bookingId: new BookingId($details->booking_id),
             hotelInfo: HotelInfo::deserialize($detailsData['hotelInfo']),
-            bookingPeriod: new HotelBookingPeriod(
-                new CarbonImmutable($details->date_start),
-                new CarbonImmutable($details->date_end),
-            ),
+            bookingPeriod: HotelBookingPeriod::deserialize($detailsData['period']),
             externalNumber: $externalNumberData ? ExternalNumber::deserialize($externalNumberData) : null,
             quotaProcessingMethod: $details->quota_processing_method,
         );

@@ -82,9 +82,9 @@ class HotelRoomQuota extends Model
         $builder->whereStatus(QuotaStatusEnum::CLOSE);
     }
 
-    public function scopeWhereHasAvailable(Builder $builder, int $count = 0): void
+    public function scopeWhereHasAvailable(Builder $builder, int $count = 1): void
     {
-        $builder->where('count_available', '>', $count);
+        $builder->where('count_available', '>=', $count);
     }
 
     public function scopeWhereReleaseDaysBelowOrEqual(Builder $builder, int $releaseDays): void
