@@ -62,6 +62,12 @@ class RoomQuotaRepository
     public function getAvailableCount(int $roomId, CarbonPeriod $period): int
     {
         $isQuotaAvailable = $this->hasAvailable($roomId, $period, 1);
+        \Log::debug('Traveline::getAvailableCount', [
+            'room_id' => $roomId,
+            'period_start' => $period->getStartDate()->toIso8601String(),
+            'period_end' => $period->getEndDate()->toIso8601String(),
+            '$isQuotaAvailable' => $isQuotaAvailable,
+        ]);
         if (!$isQuotaAvailable) {
             return 0;
         }
