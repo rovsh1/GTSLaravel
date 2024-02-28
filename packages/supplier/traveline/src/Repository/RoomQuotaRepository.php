@@ -169,7 +169,7 @@ class RoomQuotaRepository
     {
         DB::transaction(function () use ($bookingId) {
             $quotas = $this->getBookingQuotas($bookingId);
-            \Log::debug('Traveline::cancelQuotasReserve', ['quotas' => $quotas]);
+            \Log::debug('Traveline::cancelQuotasReserve', $quotas);
             foreach ($quotas as $quota) {
                 ['quotaId' => $quotaId, 'count' => $count] = $quota;
                 /** @var HotelRoomQuota $quota */
