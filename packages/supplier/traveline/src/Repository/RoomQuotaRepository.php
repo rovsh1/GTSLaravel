@@ -154,11 +154,19 @@ class RoomQuotaRepository
 
     public function reserveQuotas(int $bookingId, int $roomId, CarbonPeriod $period, int $count): void
     {
-        \Log::debug('Traveline::reserveQuotas', ['$bookingId' => $bookingId, 'roomId' => $roomId]);
         DB::transaction(function () use ($bookingId, $roomId, $period, $count) {
             foreach ($period as $date) {
                 /** @var HotelRoomQuota $quota */
                 $quota = HotelRoomQuota::whereDate($date)->whereRoomId($roomId)->first();
+                \Log::debug(
+                    'Traveline::reserveQuotas',
+                    [
+                        '$bookingId' => $bookingId,
+                        'roomId' => $roomId,
+                        'date' => $date->toIso8601String(),
+                        'quota_id' => $quota->id
+                    ]
+                );
                 $quota->reserveQuota($count);
                 $this->appendBookingQuota($bookingId, $quota->id, $count);
             }
