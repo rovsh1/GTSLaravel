@@ -165,6 +165,7 @@ class RoomQuotaRepository
             foreach ($period as $date) {
                 /** @var HotelRoomQuota $quota */
                 $quota = HotelRoomQuota::whereDate($date)->whereRoomId($roomId)->first();
+                \Log::debug('Try to reserve quota', ['quota' => $quota, 'count' => $count, 'date' => $date]);
                 $quota?->reserveQuota($count);
             }
         });
