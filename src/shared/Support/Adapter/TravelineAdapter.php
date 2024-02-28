@@ -69,13 +69,13 @@ class TravelineAdapter implements TravelineAdapterInterface
 
     public function book(int $bookingId, int $roomId, CarbonPeriod $period, int $count): void
     {
-        // Сначала мы резервируем квоты (уменьшаем count_available) в БД. После этого бронь подтверждается автоматически и TL присылает актуальные квоты.
-        app(ReserveQuotas::class)->execute($bookingId, $roomId, $period, $roomId);
+        // Тут приходит запрос от тревелайна и мы обновляем квоты. Внутреннее обновление не требуется.
     }
 
     public function reserve(int $bookingId, int $roomId, CarbonPeriod $period, int $count): void
     {
-        // Тут приходит запрос от тревелайна и мы обновляем квоты. Внутреннее обновление не требуется.
+        // Сначала мы резервируем квоты (уменьшаем count_available) в БД. После этого бронь подтверждается автоматически и TL присылает актуальные квоты.
+        app(ReserveQuotas::class)->execute($bookingId, $roomId, $period, $roomId);
     }
 
     public function cancelBooking(int $bookingId): void
