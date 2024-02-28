@@ -30,6 +30,7 @@ import OverlayLoading from '~components/OverlayLoading.vue'
 import SelectComponent from '~components/SelectComponent.vue'
 
 import { useCityStore } from '~stores/city'
+import { useCountryStore } from '~stores/countries'
 import { useCurrencyStore } from '~stores/currency'
 import { useMarkupGroupStore } from '~stores/markup-group'
 
@@ -37,9 +38,17 @@ import { isDataValid } from '~helpers/form'
 
 const { cities } = storeToRefs(useCityStore())
 const cityOptions = computed(() => {
-  const citiesOptions: any[] | null = cities.value ? cities.value : []
+  const citiesOptions = cities.value ? cities.value : []
   return citiesOptions.map(
     (entity) => ({ value: entity.id, label: entity.name, group: entity.country_name }),
+  ) as SelectOption[]
+})
+
+const { countries } = storeToRefs(useCountryStore())
+const countryOptions = computed(() => {
+  const countriesOptions = countries.value ? countries.value : []
+  return countriesOptions.map(
+    (entity) => ({ value: entity.id, label: entity.name }),
   ) as SelectOption[]
 })
 
@@ -70,8 +79,7 @@ const tabsItems = ref<TabItem[]>(tabsItemsSettings)
 
 const basicData = reactive<BasicFormData>({
   name: '',
-  type: 1,
-  cityId: null,
+  type: 2,
   status: 1,
   currency: null,
   managerId: null,
@@ -80,6 +88,7 @@ const basicData = reactive<BasicFormData>({
 })
 
 const legalEntityData = reactive<LegalEntityFormData>({
+  cityId: null,
   name: null,
   industry: null,
   address: '',
@@ -94,6 +103,7 @@ const legalEntityData = reactive<LegalEntityFormData>({
 })
 
 const physicalEntityData = reactive<PhysicalEntityFormData>({
+  countryId: null,
   gender: null,
 })
 
@@ -106,17 +116,19 @@ const getActiveTab = computed(() => {
 })
 
 const validateBaseDataForm = computed(() => (isDataValid(null, basicData.name)
-  && isDataValid(null, basicData.type) && isDataValid(null, basicData.cityId)
+  && isDataValid(null, basicData.type)
   && isDataValid(null, basicData.currency) && isDataValid(null, basicData.residency)
   && isDataValid(null, basicData.markupGroupId)))
 
 const validateLegalDataForm = computed(() => (isDataValid(null, legalEntityData.name)
-  && isDataValid(null, legalEntityData.address)))
+  && isDataValid(null, legalEntityData.address) && isDataValid(null, legalEntityData.cityId)))
+
+const validatePhysicalDataForm = computed(() => (isDataValid(null, physicalEntityData.countryId)))
 
 const isFormValid = (): boolean => {
   switch (basicData.type) {
     case 1:
-      return !!validateBaseDataForm.value
+      return !!(validateBaseDataForm.value && validatePhysicalDataForm.value)
     case 2:
       return !!(validateBaseDataForm.value && validateLegalDataForm.value)
     default:
@@ -149,13 +161,13 @@ const showTabByClientType = (clientType: number | null, tabType: number | undefi
 
 const resetForm = () => {
   basicData.name = ''
-  basicData.type = null
-  basicData.cityId = null
+  basicData.type = 2
   basicData.status = 1
   basicData.currency = null
   basicData.managerId = null
   basicData.residency = null
   basicData.markupGroupId = null
+  legalEntityData.cityId = null
   legalEntityData.name = null
   legalEntityData.industry = null
   legalEntityData.address = ''
@@ -168,6 +180,7 @@ const resetForm = () => {
   legalEntityData.bankName = null
   legalEntityData.currentAccount = null
   physicalEntityData.gender = null
+  physicalEntityData.countryId = null
   switchTab(tabsItems.value[0])
   nextTick(() => {
     $('.is-invalid').removeClass('is-invalid')
@@ -231,7 +244,7 @@ onMounted(() => {
             :tab-name="tab.name"
             :is-active="tab.isActive"
             :is-required="tab.isRequired"
-            :is-disabled="tab.isDisabled && !validateBaseDataForm"
+            :is-disabled="tab.isDisabled && (!validateBaseDataForm || (basicData.type === 2 && !legalEntityData.cityId))"
             @click.prevent="switchTab(tab)"
           >
             {{ tab.title }}
@@ -241,20 +254,6 @@ onMounted(() => {
       <template #tabs>
         <BootstrapTabsTabContent tab-name="basic-details" :is-active="tabsItems[0].isActive">
           <form ref="clientGeneralForm" class="tab-content">
-            <div class="col-md-12 mt-2">
-              <div class="field-required">
-                <label class="form-label" for="name">ФИО или название компании</label>
-                <input
-                  id="name"
-                  v-model="basicData.name"
-                  class="form-control"
-                  required
-                  @blur="isDataValid($event.target, basicData.name)"
-                  @input="isDataValid($event.target, basicData.name)"
-                >
-              </div>
-            </div>
-
             <div class="col-md-12 mt-2">
               <SelectComponent
                 v-if="isOpened"
@@ -270,17 +269,60 @@ onMounted(() => {
               />
             </div>
 
-            <div class="col-md-12 mt-2 city-wrapper">
+            <div class="col-md-12 mt-2">
+              <div class="field-required">
+                <label class="form-label" for="name">ФИО или название компании</label>
+                <input
+                  id="name"
+                  v-model="basicData.name"
+                  class="form-control"
+                  required
+                  @blur="isDataValid($event.target, basicData.name)"
+                  @input="isDataValid($event.target, basicData.name)"
+                >
+              </div>
+            </div>
+
+            <div v-if="basicData.type === 1" class="col-md-12 mt-2">
+              <SelectComponent
+                v-if="isOpened"
+                :options="genderOptions"
+                label="Пол"
+                :returned-empty-value="null"
+                :value="physicalEntityData.gender"
+                @change="(value, event) => {
+                  physicalEntityData.gender = value ? Number(value) : value
+                }"
+              />
+            </div>
+
+            <div v-if="basicData.type === 1" class="col-md-12 mt-2 country-wrapper">
+              <SelectComponent
+                v-if="isOpened"
+                :options="countryOptions"
+                required
+                label="Страна (гражданство)"
+                :returned-empty-value="null"
+                :value="physicalEntityData.countryId"
+                :enable-tags="true"
+                @change="(value, event) => {
+                  physicalEntityData.countryId = Number(value)
+                  isDataValid(event, value)
+                }"
+              />
+            </div>
+
+            <div v-if="basicData.type === 2" class="col-md-12 mt-2 city-wrapper">
               <SelectComponent
                 v-if="isOpened"
                 :options="cityOptions"
                 required
                 label="Город"
                 :returned-empty-value="null"
-                :value="basicData.cityId"
+                :value="legalEntityData.cityId"
                 :enable-tags="true"
                 @change="(value, event) => {
-                  basicData.cityId = Number(value)
+                  legalEntityData.cityId = Number(value)
                   isDataValid(event, value)
                 }"
               />
@@ -352,7 +394,7 @@ onMounted(() => {
             </div>
           </form>
         </BootstrapTabsTabContent>
-        <BootstrapTabsTabContent v-if="basicData.type == 2" tab-name="legal-details" :is-active="tabsItems[2].isActive">
+        <BootstrapTabsTabContent v-if="basicData.type == 2" tab-name="legal-details" :is-active="tabsItems[1].isActive">
           <form ref="clientLegalForm" class="tab-content">
             <div class="col-md-12 mt-2">
               <div class="field-required">
@@ -452,26 +494,6 @@ onMounted(() => {
             </div>
           </form>
         </BootstrapTabsTabContent>
-        <BootstrapTabsTabContent
-          v-else-if="basicData.type == 1"
-          tab-name="physical-details"
-          :is-active="tabsItems[1].isActive"
-        >
-          <form ref="clientPhysicalForm" class="tab-content">
-            <div class="col-md-12 mt-2">
-              <SelectComponent
-                v-if="isOpened"
-                :options="genderOptions"
-                label="Пол"
-                :returned-empty-value="null"
-                :value="physicalEntityData.gender"
-                @change="(value, event) => {
-                  physicalEntityData.gender = value ? Number(value) : value
-                }"
-              />
-            </div>
-          </form>
-        </BootstrapTabsTabContent>
       </template>
     </BootstrapTabs>
     <template #actions-start>
@@ -481,17 +503,17 @@ onMounted(() => {
     </template>
     <template #actions-end>
       <button
-        v-if="getActiveTab === 'basic-details'"
-        :disabled="!validateBaseDataForm"
+        v-if="getActiveTab === 'basic-details' && basicData.type === 2"
+        :disabled="!validateBaseDataForm || !legalEntityData.cityId"
         class="btn btn-primary"
         type="button"
-        @click="switchTab(tabsItems[basicData.type ? basicData.type : 0])"
+        @click="switchTab(tabsItems[basicData.type ? 1 : 0])"
       >
         Далее
       </button>
       <button
         v-else
-        :disabled="(basicData.type == 1 && !validateBaseDataForm)
+        :disabled="(basicData.type == 1 && (!validateBaseDataForm || !validatePhysicalDataForm))
           || (basicData.type == 2 && !validateLegalDataForm) || waitCreatingClient"
         class="btn btn-primary"
         type="button"
@@ -525,6 +547,7 @@ a.has-required-fields::after {
   color: #DC493A;
 }
 
+.country-wrapper,
 .city-wrapper,
 .price-types-wrapper,
 .manager-wrapper {
