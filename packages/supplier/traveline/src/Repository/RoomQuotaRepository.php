@@ -152,6 +152,7 @@ class RoomQuotaRepository
             'period_start' => $period->getStartDate()->toIso8601String(),
             'period_end' => $period->getEndDate()->toIso8601String(),
             'result' => $isReleaseDaysAvailable,
+            'releaseDays' => $releaseDays,
         ]);
 
         if (!$isReleaseDaysAvailable) {
