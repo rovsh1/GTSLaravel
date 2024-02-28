@@ -152,15 +152,6 @@ class RoomQuotaRepository
             ->exists();
     }
 
-    /**
-     * Метод для резерва квот, до момента обновления квот от Traveline.
-     *
-     * @param int $bookingId
-     * @param int $roomId
-     * @param CarbonPeriod $period
-     * @param int $count
-     * @return void
-     */
     public function reserveQuotas(int $bookingId, int $roomId, CarbonPeriod $period, int $count): void
     {
         DB::transaction(function () use ($bookingId, $roomId, $period, $count) {
