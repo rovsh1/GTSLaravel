@@ -72,10 +72,16 @@ class RoomQuotaRepository
             return 0;
         }
 
-        return (int)DB::table(
+        $resp = (int)DB::table(
             HotelRoomQuota::query()->whereRoomId($roomId)->wherePeriod($period)->whereOpened(),
             't'
         )->min('t.count_available');
+        \Log::debug('Traveline::getAvailableCount', [
+            'room_id' => $roomId,
+            'min_quota' => $resp,
+        ]);
+
+        return $resp;
     }
 
     /**
