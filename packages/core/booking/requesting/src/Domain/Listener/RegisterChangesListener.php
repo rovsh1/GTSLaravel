@@ -2,6 +2,7 @@
 
 namespace Pkg\Booking\Requesting\Domain\Listener;
 
+use Illuminate\Support\Facades\Log;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Pkg\Booking\Requesting\Domain\Service\ChangesRegistrar\RegistrarFactory;
 use Sdk\Booking\Enum\StatusEnum;
@@ -19,7 +20,7 @@ class RegisterChangesListener implements IntegrationEventListenerInterface
 
     public function handle(IntegrationEventMessage $message): void
     {
-        \Log::debug('RegisterChangesListener::handle', ['message' => $message]);
+        Log::debug('RegisterChangesListener::handle', ['message' => $message]);
         $event = $message->event;
         assert($event instanceof BookingEventInterface);
 
