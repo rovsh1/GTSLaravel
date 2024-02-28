@@ -19,6 +19,7 @@ class RegisterChangesListener implements IntegrationEventListenerInterface
 
     public function handle(IntegrationEventMessage $message): void
     {
+        \Log::debug('RegisterChangesListener::handle', ['message' => $message]);
         $event = $message->event;
         assert($event instanceof BookingEventInterface);
 
