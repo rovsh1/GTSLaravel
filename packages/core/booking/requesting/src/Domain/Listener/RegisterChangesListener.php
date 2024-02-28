@@ -27,10 +27,7 @@ class RegisterChangesListener implements IntegrationEventListenerInterface
         Log::debug('RegisterChangesListener::handle event', ['event' => $event]);
         $booking = $this->bookingRepository->findOrFail(new BookingId($event->bookingId));
         if (!$this->needStoreChanges($booking->status()->value())) {
-            Log::debug('RegisterChangesListener::handle dont need store', [
-                'booking' => $booking,
-                'status' => $booking->status(),
-            ]);
+            Log::debug('RegisterChangesListener::handle dont need store', ['status' => $booking->status()->value()]);
 
             return;
         }
