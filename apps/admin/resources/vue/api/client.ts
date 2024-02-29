@@ -22,6 +22,7 @@ export interface Industry {
 
 interface CreateClientPayload {
   name: string
+  language: string
   type: number
   cityId: number
   currency: number

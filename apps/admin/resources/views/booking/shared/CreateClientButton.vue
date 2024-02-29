@@ -12,8 +12,9 @@ import { BasicFormData, LegalEntityFormData, PhysicalEntityFormData } from '~res
 import ManagerSelect from '~resources/views/booking/shared/components/ManagerSelect.vue'
 import {
   clientTypeOptions,
-  genderOptions,
-  mapEntitiesToSelectOptions, residentTypeOptions,
+  genderOptions, languageOptions,
+  mapEntitiesToSelectOptions,
+  residentTypeOptions,
 } from '~resources/views/booking/shared/lib/constants'
 
 import { createClient, useIndustryListAPI } from '~api/client'
@@ -79,6 +80,7 @@ const tabsItems = ref<TabItem[]>(tabsItemsSettings)
 
 const basicData = reactive<BasicFormData>({
   name: '',
+  language: 'ru',
   type: 2,
   status: 1,
   currency: null,
@@ -118,7 +120,7 @@ const getActiveTab = computed(() => {
 const validateBaseDataForm = computed(() => (isDataValid(null, basicData.name)
   && isDataValid(null, basicData.type)
   && isDataValid(null, basicData.currency) && isDataValid(null, basicData.residency)
-  && isDataValid(null, basicData.markupGroupId)))
+  && isDataValid(null, basicData.markupGroupId) && isDataValid(null, basicData.language)))
 
 const validateLegalDataForm = computed(() => (isDataValid(null, legalEntityData.name)
   && isDataValid(null, legalEntityData.address) && isDataValid(null, legalEntityData.cityId)))
@@ -161,6 +163,7 @@ const showTabByClientType = (clientType: number | null, tabType: number | undefi
 
 const resetForm = () => {
   basicData.name = ''
+  basicData.language = ''
   basicData.type = 2
   basicData.status = 1
   basicData.currency = null
@@ -194,7 +197,8 @@ const getClientDataByType = (type: number | null): any => {
       physical: { ...physicalEntityData },
     }
     return physicalClientData
-  } if (type === 2) {
+  }
+  if (type === 2) {
     const legalClientData: any = {
       ...basicData,
       legal: { ...legalEntityData },
@@ -381,6 +385,21 @@ onMounted(() => {
                 :value="basicData.markupGroupId"
                 @change="(value, event) => {
                   basicData.markupGroupId = value ? Number(value) : value
+                  isDataValid(event, value)
+                }"
+              />
+            </div>
+
+            <div class="col-md-12 mt-2">
+              <SelectComponent
+                v-if="isOpened"
+                :options="languageOptions"
+                required
+                label="Язык"
+                :returned-empty-value="null"
+                :value="basicData.language"
+                @change="(value, event) => {
+                  basicData.language = value
                   isDataValid(event, value)
                 }"
               />

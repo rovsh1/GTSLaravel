@@ -58,6 +58,7 @@ class UserController extends AbstractPrototypeController
             ->text('name', 'Имя')
             ->text('patronymic', 'Отчество')
             ->enum('gender', 'Пол', GenderEnum::class)
+            ->text('country_name', 'Страна (гражданство)')
             ->text('email', 'Email')
             ->text('phone', 'Телефон')
             ->date('created_at', 'Создан')

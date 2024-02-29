@@ -59,6 +59,8 @@ class User extends Model
         static::addGlobalScope('default', function (Builder $builder) {
             $builder
                 ->addSelect('users.*')
+                ->join('r_countries', 'r_countries.id', '=', 'users.country_id')
+                ->joinTranslatable('r_countries', 'name as country_name')
                 ->leftJoin('clients', 'clients.id', '=', 'users.client_id')
                 ->addSelect('clients.name as client_name')
                 ->leftJoin('r_cities', 'r_cities.id', '=', 'clients.city_id')

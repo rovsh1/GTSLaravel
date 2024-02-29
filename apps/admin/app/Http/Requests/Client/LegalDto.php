@@ -8,6 +8,7 @@ final class LegalDto
 {
     public function __construct(
         public readonly string $name,
+        public readonly int $cityId,
         public readonly ?int $industry,
         public readonly string $address,
         public readonly ?string $bik,

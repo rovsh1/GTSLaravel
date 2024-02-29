@@ -84,6 +84,7 @@ class ClientController extends AbstractPrototypeController
             'name' => $request->getName(),
             'status' => $request->getStatus() ?? StatusEnum::ACTIVE,
             'residency' => $request->getResidency(),
+            'language' => $request->getLanguage(),
             'markup_group_id' => $request->getMarkupGroupId(),
         ]);
         $this->model = $this->repository->create($data);
@@ -91,7 +92,7 @@ class ClientController extends AbstractPrototypeController
         if ($legalData !== null) {
             $legal = Legal::create([
                 'client_id' => $this->model->id,
-                'city_id' => $request->getCityId(),
+                'city_id' => $legalData->cityId,
                 'industry_id' => $legalData->industry,
                 'name' => $legalData->name,
                 'address' => $legalData->address,
@@ -110,9 +111,9 @@ class ClientController extends AbstractPrototypeController
             );
         }
 
-        if ($this->model->type === TypeEnum::PHYSICAL) {
-            $gender = $data['gender'] ?? null;
-            $this->createUser($request->getCountryId(), $gender);
+        $physical = $request->getPhysical();
+        if ($this->model->type === TypeEnum::PHYSICAL && $physical !== null) {
+            $this->createUser($physical->countryId, $physical->gender);
         }
 
         $managerId = $request->user()->id;
@@ -250,7 +251,7 @@ class ClientController extends AbstractPrototypeController
             ->currency('currency', ['label' => 'Валюта', 'required' => true, 'emptyItem' => ''])
             ->enum(
                 'residency',
-                ['label' => 'Тип цены', 'enum' => ResidencyEnum::class, 'required' => true, 'emptyItem' => '']
+                ['label' => 'Группа наценки', 'enum' => ResidencyEnum::class, 'required' => true, 'emptyItem' => '']
             )
             ->enum(
                 'language',

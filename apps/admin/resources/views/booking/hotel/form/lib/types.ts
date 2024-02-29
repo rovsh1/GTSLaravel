@@ -23,6 +23,7 @@ export interface BasicFormData {
   type: number | null
   status: number | null
   currency: string | null
+  language: string
   managerId: number | null
   residency: number | null
   markupGroupId: number | null
