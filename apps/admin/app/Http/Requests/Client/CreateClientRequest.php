@@ -20,7 +20,7 @@ class CreateClientRequest extends FormRequest
         return [
             'name' => ['required', 'string'],
             'type' => ['required', 'numeric'],
-            'cityId' => ['required', 'numeric'],
+            'cityId' => ['required_with:legal', 'numeric'],
             'currency' => ['required', new Enum(CurrencyEnum::class)],
             'markupGroupId' => ['required', 'numeric'],
             'residency' => ['required', new Enum(ResidencyEnum::class)],
@@ -28,6 +28,7 @@ class CreateClientRequest extends FormRequest
             'managerId' => ['nullable', 'numeric'],
 
             'physical' => ['required_without:legal', 'array'],
+            'countryId' => ['required_without:legal', 'numeric'],
             'physical.gender' => ['nullable', 'numeric'],
 
             'legal' => ['required_without:physical', 'array'],
@@ -58,6 +59,11 @@ class CreateClientRequest extends FormRequest
     public function getCityId(): int
     {
         return $this->post('cityId');
+    }
+
+    public function getCountryId(): int
+    {
+        return $this->post('countryId');
     }
 
     public function getCurrency(): string

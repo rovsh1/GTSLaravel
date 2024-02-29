@@ -58,7 +58,7 @@ class ClientController extends AbstractPrototypeController
         $this->model = $this->repository->create($preparedData);
         if ($this->model->type === TypeEnum::PHYSICAL) {
             $gender = $preparedData['gender'] ?? null;
-            $this->createUser($gender);
+            $this->createUser($preparedData['country_id'], $gender);
         }
 
         $managerId = $preparedData['administrator_id'] ?? null;
@@ -112,7 +112,7 @@ class ClientController extends AbstractPrototypeController
 
         if ($this->model->type === TypeEnum::PHYSICAL) {
             $gender = $data['gender'] ?? null;
-            $this->createUser($gender);
+            $this->createUser($request->getCountryId(), $gender);
         }
 
         $managerId = $request->user()->id;
@@ -212,11 +212,11 @@ class ClientController extends AbstractPrototypeController
             ->data($this->model);
     }
 
-    private function createUser(int|string|null $gender): void
+    private function createUser(int $countryId, int|string|null $gender): void
     {
         User::create([
             'client_id' => $this->model->id,
-            'country_id' => $this->model->country_id,
+            'country_id' => $countryId,
             'gender' => $gender !== null ? (int)$gender : null,
             'name' => $this->model->name,
             'presentation' => $this->model->name,
@@ -244,6 +244,7 @@ class ClientController extends AbstractPrototypeController
         return Form::text('name', ['label' => 'ФИО или название компании', 'required' => true])
             ->enum('type', ['label' => 'Тип', 'enum' => TypeEnum::class, 'required' => true, 'emptyItem' => ''])
             ->hidden('gender', ['label' => 'Пол'])
+            ->hidden('country_id', ['label' => 'Страна (гражданство)'])
             ->city('city_id', ['label' => 'Город', 'required' => true, 'emptyItem' => ''])
             ->enum('status', ['label' => 'Статус', 'enum' => StatusEnum::class])
             ->currency('currency', ['label' => 'Валюта', 'required' => true, 'emptyItem' => ''])
