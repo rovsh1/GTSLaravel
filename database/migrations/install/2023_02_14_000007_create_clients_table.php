@@ -10,7 +10,7 @@ return new class extends Migration {
     {
         Schema::create('clients', function (Blueprint $table) {
             $table->integer('id')->unsigned()->autoIncrement();
-            $table->integer('city_id')->unsigned()->nullable();
+            $table->integer('city_id')->unsigned();
             $table->char('currency', 3)->nullable();
             $table->tinyInteger('type')->unsigned();
             $table->tinyInteger('status')->unsigned();
