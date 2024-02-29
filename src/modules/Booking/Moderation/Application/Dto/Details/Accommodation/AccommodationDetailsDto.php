@@ -13,10 +13,10 @@ class AccommodationDetailsDto extends AbstractDomainBasedDto
     public function __construct(
         public readonly int $rateId,
         public readonly bool $isResident,
+        public readonly int $discount,
         public readonly ConditionDto|null $earlyCheckIn = null,
         public readonly ConditionDto|null $lateCheckOut = null,
         public readonly string|null $guestNote = null,
-        public readonly int $discount,
     ) {}
 
     public static function fromDomain(mixed $entity): static
@@ -26,10 +26,10 @@ class AccommodationDetailsDto extends AbstractDomainBasedDto
         return new static(
             $entity->rateId(),
             $entity->isResident(),
+            $entity->discount()->value(),
             $entity->earlyCheckIn() !== null ? ConditionDto::fromDomain($entity->earlyCheckIn()) : null,
             $entity->lateCheckOut() !== null ? ConditionDto::fromDomain($entity->lateCheckOut()) : null,
             $entity->guestNote(),
-            $entity->discount()->value()
         );
     }
 }
