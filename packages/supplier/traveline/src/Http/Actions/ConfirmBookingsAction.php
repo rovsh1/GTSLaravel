@@ -13,6 +13,7 @@ class ConfirmBookingsAction
 
     public function handle(ConfirmBookingsActionRequest $request)
     {
+        \Log::debug('[Traveline] Confirm bookings', $request->toArray());
         $errors = $this->bookingService->confirmReservations($request->getReservations());
         if (empty($errors)) {
             return new EmptySuccessResponse();
