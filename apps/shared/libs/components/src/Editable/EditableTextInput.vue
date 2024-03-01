@@ -6,7 +6,7 @@ import { onClickOutside, useToggle } from '@vueuse/core'
 import { Tooltip } from 'floating-vue'
 import { usePlatformDetect } from 'gts-common/helpers/platform'
 
-import InlineIcon from '~components/InlineIcon.vue'
+import InlineIcon from '~components/Base/InlineIcon.vue'
 
 type TextInputType = 'text' | 'time'
 

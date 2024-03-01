@@ -9,8 +9,8 @@ import { usePlatformDetect } from 'gts-common/helpers/platform'
 import { DateTime } from 'luxon'
 import { nanoid } from 'nanoid'
 
-import DateRangePicker from '~components/DateRangePicker.vue'
-import InlineIcon from '~components/InlineIcon.vue'
+import DateRangePicker from '~components/Base/DateRangePicker.vue'
+import InlineIcon from '~components/Base/InlineIcon.vue'
 
 const props = withDefaults(defineProps<{
   value: string | undefined

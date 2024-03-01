@@ -4,7 +4,7 @@ import { computed, watch } from 'vue'
 import { OnClickOutside } from '@vueuse/components'
 import { MaybeElementRef, MaybeRef, OnClickOutsideOptions } from '@vueuse/core'
 
-import BodyScrollLock from '~components/BodyScrollLock.vue'
+import BodyScrollLock from '~components/Base/BodyScrollLock.vue'
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 
 const emit = defineEmits<{
@@ -25,7 +25,7 @@ const props = withDefaults(defineProps<{
   clickOutsideIgnore: undefined,
   autoWidth: false,
   watchOtsideClick: false,
-  keydownEnterCallback: () => {},
+  keydownEnterCallback: () => { },
 })
 
 const close = (isOutsideClick?: boolean) => {

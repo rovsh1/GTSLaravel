@@ -8,7 +8,7 @@ import { formatDateTimeToAPIDateTime, parseAPIDateAndSetDefaultTime } from 'gts-
 import { usePlatformDetect } from 'gts-common/helpers/platform'
 import { DateTime } from 'luxon'
 
-import InlineIcon from '~components/InlineIcon.vue'
+import InlineIcon from '~components/Base/InlineIcon.vue'
 
 const props = withDefaults(defineProps<{
   value: string | undefined
