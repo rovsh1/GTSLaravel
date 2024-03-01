@@ -3,9 +3,9 @@ import { computed, unref } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
 
+import InlineIcon from '~components/Base/InlineIcon.vue'
+import LoadingSpinner from '~components/Base/LoadingSpinner.vue'
 import { BootstrapSeverity } from '~components/Bootstrap/lib'
-import InlineIcon from '~components/InlineIcon.vue'
-import LoadingSpinner from '~components/LoadingSpinner.vue'
 
 import { ButtonSeverity, ButtonSize, ButtonType, ButtonVariant } from './lib'
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
+import LoadingSpinner from '~components/Base/LoadingSpinner.vue'
 import { BootstrapSeverity } from '~components/Bootstrap/lib'
-import LoadingSpinner from '~components/LoadingSpinner.vue'
 
 type SpinnerSeverity = BootstrapSeverity
 

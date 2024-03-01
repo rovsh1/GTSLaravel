@@ -1,11 +1,158 @@
 {
     "name": "gts-components",
     "private": false,
-    "version": "0.0.1",
+    "version": "0.0.2",
     "type": "module",
     "files": [
         "dist"
     ],
+    "exports": {
+        "./Base/CollapsableBlock": {
+            "import": "./dist/Base/CollapsableBlock/CollapsableBlock.js",
+            "require": "./dist/Base/CollapsableBlock/CollapsableBlock.cjs"
+        },
+        "./Base/ActionsMenu": {
+            "import": "./dist/Base/ActionsMenu/ActionsMenu.js",
+            "require": "./dist/Base/ActionsMenu/ActionsMenu.cjs"
+        },
+        "./Base/BaseDialog": {
+            "import": "./dist/Base/BaseDialog/BaseDialog.js",
+            "require": "./dist/Base/BaseDialog/BaseDialog.cjs"
+        },
+        "./Base/BaseLayout": {
+            "import": "./dist/Base/BaseLayout/BaseLayout.js",
+            "require": "./dist/Base/BaseLayout/BaseLayout.cjs"
+        },
+        "./Base/BodyScrollLock": {
+            "import": "./dist/Base/BodyScrollLock/BodyScrollLock.js",
+            "require": "./dist/Base/BodyScrollLock/BodyScrollLock.cjs"
+        },
+        "./Base/ButtonLoadingSpinner": {
+            "import": "./dist/Base/ButtonLoadingSpinner/ButtonLoadingSpinner.js",
+            "require": "./dist/Base/ButtonLoadingSpinner/ButtonLoadingSpinner.cjs"
+        },
+        "./Base/DateRangePicker": {
+            "import": "./dist/Base/DateRangePicker/DateRangePicker.js",
+            "require": "./dist/Base/DateRangePicker/DateRangePicker.cjs"
+        },
+        "./Base/EmptyData": {
+            "import": "./dist/Base/EmptyData/EmptyData.js",
+            "require": "./dist/Base/EmptyData/EmptyData.cjs"
+        },
+        "./Base/IconButton": {
+            "import": "./dist/Base/IconButton/IconButton.js",
+            "require": "./dist/Base/IconButton/IconButton.cjs"
+        },
+        "./Base/ImageZoom": {
+            "import": "./dist/Base/ImageZoom/ImageZoom.js",
+            "require": "./dist/Base/ImageZoom/ImageZoom.cjs"
+        },
+        "./Base/InlineIcon": {
+            "import": "./dist/Base/InlineIcon/InlineIcon.js",
+            "require": "./dist/Base/InlineIcon/InlineIcon.cjs"
+        },
+        "./Base/LoadingSpinner": {
+            "import": "./dist/Base/LoadingSpinner/LoadingSpinner.js",
+            "require": "./dist/Base/LoadingSpinner/LoadingSpinner.cjs"
+        },
+        "./Base/OverlayLoading": {
+            "import": "./dist/Base/OverlayLoading/OverlayLoading.js",
+            "require": "./dist/Base/OverlayLoading/OverlayLoading.cjs"
+        },
+        "./Base/SelectComponent": {
+            "import": "./dist/Base/SelectComponent/SelectComponent.js",
+            "require": "./dist/Base/SelectComponent/SelectComponent.cjs"
+        },
+        "./Base/SmallDeleteButton": {
+            "import": "./dist/Base/SmallDeleteButton/SmallDeleteButton.js",
+            "require": "./dist/Base/SmallDeleteButton/SmallDeleteButton.cjs"
+        },
+        "./Editable/EditableDateInput": {
+            "import": "./dist/Editable/EditableDateInput/EditableDateInput.js",
+            "require": "./dist/Editable/EditableDateInput/EditableDateInput.cjs"
+        },
+        "./Editable/EditableDateRangeInput": {
+            "import": "./dist/Editable/EditableDateRangeInput/EditableDateRangeInput.js",
+            "require": "./dist/Editable/EditableDateRangeInput/EditableDateRangeInput.cjs"
+        },
+        "./Editable/EditableNumberInput": {
+            "import": "./dist/Editable/EditableNumberInput/EditableNumberInput.js",
+            "require": "./dist/Editable/EditableNumberInput/EditableNumberInput.cjs"
+        },
+        "./Editable/EditableSelect": {
+            "import": "./dist/Editable/EditableSelect/EditableSelect.js",
+            "require": "./dist/Editable/EditableSelect/EditableSelect.cjs"
+        },
+        "./Editable/EditableTextarea": {
+            "import": "./dist/Editable/EditableTextarea/EditableTextarea.js",
+            "require": "./dist/Editable/EditableTextarea/EditableTextarea.cjs"
+        },
+        "./Editable/EditableTextInput": {
+            "import": "./dist/Editable/EditableTextInput/EditableTextInput.js",
+            "require": "./dist/Editable/EditableTextInput/EditableTextInput.cjs"
+        },
+        "./Editable/EditableTimeInput": {
+            "import": "./dist/Editable/EditableTimeInput/EditableTimeInput.js",
+            "require": "./dist/Editable/EditableTimeInput/EditableTimeInput.cjs"
+        },
+        "./Bootstrap/BootstrapButton/BootstrapButton": {
+            "import": "./dist/Bootstrap/BootstrapButton/BootstrapButton/BootstrapButton.js",
+            "require": "./dist/Bootstrap/BootstrapButton/BootstrapButton/BootstrapButton.cjs"
+        },
+        "./Bootstrap/BootstrapButton/BootstrapButtonsDemo": {
+            "import": "./dist/Bootstrap/BootstrapButton/BootstrapButtonsDemo/BootstrapButtonsDemo.js",
+            "require": "./dist/Bootstrap/BootstrapButton/BootstrapButtonsDemo/BootstrapButtonsDemo.cjs"
+        },
+        "./Bootstrap/BootstrapButton/lib": {
+            "import": "./dist/Bootstrap/BootstrapButton/lib/lib.js",
+            "require": "./dist/Bootstrap/BootstrapButton/lib/lib.cjs"
+        },
+        "./Bootstrap/BootstrapCard/BootstrapCard": {
+            "import": "./dist/Bootstrap/BootstrapCard/BootstrapCard/BootstrapCard.js",
+            "require": "./dist/Bootstrap/BootstrapCard/BootstrapCard/BootstrapCard.cjs"
+        },
+        "./Bootstrap/BootstrapCard/BootstrapCardTitle": {
+            "import": "./dist/Bootstrap/BootstrapCard/BootstrapCardTitle/BootstrapCardTitle.js",
+            "require": "./dist/Bootstrap/BootstrapCard/BootstrapCardTitle/BootstrapCardTitle.cjs"
+        },
+        "./Bootstrap/BootstrapCheckBox": {
+            "import": "./dist/Bootstrap/BootstrapCheckBox/BootstrapCheckBox/BootstrapCheckBox.js",
+            "require": "./dist/Bootstrap/BootstrapCheckBox/BootstrapCheckBox/BootstrapCheckBox.cjs"
+        },
+        "./Bootstrap/BootstrapTabs/BootstrapTabs": {
+            "import": "./dist/Bootstrap/BootstrapTabs/BootstrapTabs/BootstrapTabs.js",
+            "require": "./dist/Bootstrap/BootstrapTabs/BootstrapTabs/BootstrapTabs.cjs"
+        },
+        "./Bootstrap/BootstrapTabs/BootstrapTabsLink": {
+            "import": "./dist/Bootstrap/BootstrapTabs/BootstrapTabsLink/BootstrapTabsLink.js",
+            "require": "./dist/Bootstrap/BootstrapTabs/BootstrapTabsLink/BootstrapTabsLink.cjs"
+        },
+        "./Bootstrap/BootstrapTabs/BootstrapTabsTabContent": {
+            "import": "./dist/Bootstrap/BootstrapTabs/BootstrapTabsTabContent/BootstrapTabsTabContent.js",
+            "require": "./dist/Bootstrap/BootstrapTabs/BootstrapTabsTabContent/BootstrapTabsTabContent.cjs"
+        },
+        "./Bootstrap/BootstrapToast/BootstrapToast": {
+            "import": "./dist/Bootstrap/BootstrapToast/BootstrapToast/BootstrapToast.js",
+            "require": "./dist/Bootstrap/BootstrapToast/BootstrapToast/BootstrapToast.cjs"
+        },
+        "./Bootstrap/BootstrapToast/index": {
+            "import": "./dist/Bootstrap/BootstrapToast/index/index.js",
+            "require": "./dist/Bootstrap/BootstrapToast/index/index.cjs"
+        }
+    },
+    "typesVersions": {
+        "*": {
+            "Base/*": [
+                "dist/Base/*.d.ts"
+            ],
+            "Bootstrap/*": [
+                "dist/Bootstrap/*.d.ts"
+            ],
+            "Editable/*": [
+                "dist/Editable/*.d.ts"
+            ]
+        }
+    },
     "scripts": {
         "dev": "vite",
         "build": "npm run lint && vite build",
@@ -20,24 +167,18 @@
     "volta": {
         "node": "18.16.0"
     },
-    "dependencies": {
+    "peerDependencies": {
         "@floating-ui/vue": "^1.0.0",
-        "@mdi/svg": "^7.2.96",
         "@ttskch/select2-bootstrap4-theme": "^1.5.2",
-        "@types/cleave.js": "^1.4.12",
         "@vueuse/components": "^10.0.2",
         "@vueuse/core": "^10.0.2",
-        "axios": "^1.3.4",
         "body-scroll-lock": "^4.0.0-beta.0",
         "bootstrap": "^5.3.2",
-        "cleave.js": "^1.6.0",
-        "crypto-js": "^4.1.1",
         "floating-vue": "^2.0.0-beta.20",
         "gts-common": "^1.2.0",
         "jquery": "^3.6.0",
         "jquery-ui": "^1.13.0",
         "litepicker": "^2.0.12",
-        "lodash": "^4.17.21",
         "luxon": "^3.3.0",
         "medium-zoom": "^1.0.8",
         "mosha-vue-toastify": "^1.0.23",
@@ -46,10 +187,8 @@
         "qs": "^6.11.1",
         "sass": "^1.62.0",
         "select2": "^4.1.0-rc.0",
-        "tinymce": "^6.8.2",
         "vue": "^3.2.47",
-        "vue-draggable-plus": "^0.1.6",
-        "zod": "^3.21.4"
+        "vue-draggable-plus": "^0.1.6"
     },
     "devDependencies": {
         "@types/body-scroll-lock": "^3.1.0",

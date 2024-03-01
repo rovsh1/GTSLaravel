@@ -4,8 +4,8 @@ import { computed, ref } from 'vue'
 
 import { onClickOutside, useToggle } from '@vueuse/core'
 
+import SelectComponent from '~components/Base/SelectComponent.vue'
 import { SelectedValue, SelectOption } from '~components/Bootstrap/lib'
-import SelectComponent from '~components/SelectComponent.vue'
 
 const props = withDefaults(defineProps<{
   id: string
