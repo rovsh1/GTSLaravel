@@ -6,13 +6,13 @@ abstract class AbstractTravelineResponse implements \JsonSerializable
 {
     public function __construct(
         public readonly mixed $data,
-        public readonly bool  $status = true,
+        public readonly bool  $success = true,
     ) {}
 
     public function jsonSerialize(): mixed
     {
         return [
-            'success' => $this->status,
+            'success' => $this->success,
             'data' => $this->data
         ];
     }
