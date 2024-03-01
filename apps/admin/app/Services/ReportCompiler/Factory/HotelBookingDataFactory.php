@@ -45,7 +45,7 @@ class HotelBookingDataFactory
                 }
             });
 
-        $bookingsData = DB::query()
+        $bookings = DB::query()
             ->fromSub($hotelBookingsQuery, 'b')
             ->addSelect('b.id')
             ->addSelect('b.hotel_name')
@@ -57,7 +57,7 @@ class HotelBookingDataFactory
             ->selectRaw('DATEDIFF(b.date_end, b.date_start) AS nights_count')
             ->get();
 
-        $bookingIds = $bookingsData->pluck('id')->toArray();
+        $bookingIds = $bookings->pluck('id')->toArray();
 
         $guestsIndexedByBookingId = [];
         if (count($bookingIds) > 0) {
@@ -74,5 +74,10 @@ class HotelBookingDataFactory
                     )->all()
                 );
         }
+
+        return [
+            'bookings' => $bookings->toArray(),
+            'guestsIndexedByBookingId' => $guestsIndexedByBookingId->toArray(),
+        ];
     }
 }

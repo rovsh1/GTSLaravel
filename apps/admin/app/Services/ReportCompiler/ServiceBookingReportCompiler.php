@@ -130,7 +130,7 @@ class ServiceBookingReportCompiler extends AbstractReportCompiler
                 $this->reportPeriodEnd = max($bookingEndDate, $this->reportPeriodEnd);
             }
 
-            $bgColor = ($index === 0 || $index % 2 === 0) ? 'DEEAF6' : 'FFFFFF';
+            $bgColor = ($index === 0 || $index % 2 === 0) ? 'FFFFFF' : 'DEEAF6';
             $cellStyle = $this->getCellStyle($bgColor);
             $this->insertNewRowBefore($sheet->getHighestRow());
             $currentRow++;
@@ -163,6 +163,7 @@ class ServiceBookingReportCompiler extends AbstractReportCompiler
             $sheet->getRowDimension($currentRow)->setRowHeight($rowHeight * 15);
         }
 
+        $cellStyle = $this->getCellStyle('FFFFFF', true);
         $this->insertNewRowBefore($sheet->getHighestRow());
         $sheet->getCell('A' . $currentRow)->setValue('Итого')->getStyle()->applyFromArray($cellStyle)->getFont()->applyFromArray($boldFont);
         $sheet->getCell('B' . $currentRow)->setValue('')->getStyle()->applyFromArray($cellStyle)->getFont()->applyFromArray($boldFont);

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Admin\Services\ReportCompiler;
 
 use App\Admin\Models\Administrator\Administrator;
-use App\Admin\Models\Client\Client;
 use App\Admin\Services\ReportCompiler\Factory\HotelBookingDataFactory;
 use App\Admin\Services\ReportCompiler\Factory\HotelCostsDataFactory;
+use App\Admin\Support\Facades\Format;
 use Carbon\CarbonPeriod;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
@@ -31,21 +31,18 @@ class HotelReportCompiler extends AbstractReportCompiler
      */
     public function generate(
         Administrator $administrator,
-        string $title,
         CarbonPeriod $endPeriod,
         ?CarbonPeriod $startPeriod = null,
         array $managerIds = []
     ): mixed {
-        $this->setCreatedAtDate(now());
-        $this->setManager($administrator->presentation);
-        $this->setReportPeriodLabel('Период броней:');
-        $this->setLogo();
-        $this->setSheetTitle($this->spreadsheet->getActiveSheet(), $title);
+        $hotelBookingsReportSheet = clone $this->spreadsheet->getActiveSheet();
+        $hotelBookingsReportSheet->setTitle('List2');
+        $this->spreadsheet->addSheet($hotelBookingsReportSheet);
 
-        $costsData = $this->costsDataFactory->build($endPeriod, $startPeriod);
-        $bookingsData = $this->bookingDataFactory->build($endPeriod, $startPeriod, $managerIds);
+        $this->generateHotelCostsReport($administrator, 'Расходы по отелям', $endPeriod, $startPeriod, $managerIds);
 
-        $this->fillReportPeriod();
+        $this->spreadsheet->setActiveSheetIndex($this->spreadsheet->getActiveSheetIndex() + 1);
+        $this->generateHotelBookingReport($administrator, 'Отчёт по броням - ОТЕЛИ', $endPeriod, $startPeriod, $managerIds);
 
         $writer = $this->getWritter();
         $tempFile = tmpfile();
@@ -54,98 +51,101 @@ class HotelReportCompiler extends AbstractReportCompiler
         return $tempFile;
     }
 
-    private function appendClientRows(Client $client, array $rows): void
+    private function generateHotelCostsReport(
+        Administrator $administrator,
+        string $title,
+        CarbonPeriod $endPeriod,
+        ?CarbonPeriod $startPeriod = null,
+        array $managerIds = []
+    ) {
+        $this->setCreatedAtDate(now());
+        $this->setManager($administrator->presentation);
+        $this->setReportPeriodLabel('Период:');
+        $this->setLogo();
+        $this->setSheetTitle($this->spreadsheet->getActiveSheet(), $title);
+
+        $costsRows = $this->costsDataFactory->build($endPeriod, $startPeriod, $managerIds);
+        $this->appendCostsRows($costsRows);
+
+        $this->fillReportPeriod();
+    }
+
+    private function generateHotelBookingReport(
+        Administrator $administrator,
+        string $title,
+        CarbonPeriod $endPeriod,
+        ?CarbonPeriod $startPeriod = null,
+        array $managerIds = []
+    ) {
+        $this->setCreatedAtDate(now());
+        $this->setManager($administrator->presentation);
+        $this->setReportPeriodLabel('Период броней:');
+        $this->setLogo();
+        $this->setSheetTitle($this->spreadsheet->getActiveSheet(), $title);
+
+        [
+            'bookings' => $bookings,
+            'guestsIndexedByBookingId' => $guests,
+        ] = $this->bookingDataFactory->build($endPeriod, $startPeriod, $managerIds);
+        $this->appendBookingsRows($bookings, $guests);
+
+        $this->fillReportPeriod();
+    }
+
+    private function appendCostsRows(array $rows): void
     {
-        $sheet = $this->spreadsheet->getActiveSheet();
-        $lastRow = $sheet->getHighestRow();
-        $this->insertNewRowBefore($lastRow, 3);
-        $currentRow = $lastRow + 1;
-
-        $headerFont = [...$this->defaultFont, 'size' => 14];
-        $headerValueFont = [...$headerFont, 'bold' => true];
-        $cellStyle = $this->getCellStyle();
-        $cellValueStyle = $this->getCellStyle('FEFF03');
-        $sheet->getCell([1, $currentRow])->setValue('Клиент:')->getStyle()->applyFromArray($cellStyle)->getFont(
-        )->applyFromArray($headerFont);
-        $sheet->getCell([2, $currentRow])->setValue($client->name)->getStyle()->applyFromArray(
-            $cellValueStyle
-        )->getFont()->applyFromArray($headerValueFont);
-        $currentRow++;
-        $sheet->getCell([1, $currentRow])->setValue('Валюта:')->getStyle()->applyFromArray($cellStyle)->getFont(
-        )->applyFromArray($headerFont);
-        $sheet->getCell([2, $currentRow])->setValue($client->currency->name)->getStyle()->applyFromArray(
-            $cellStyle
-        )->getFont()->applyFromArray($headerValueFont);
-        $currentRow++;
-
-        if (count($rows) > 0) {
-            $this->insertNewRowBefore($sheet->getHighestRow(), 2);
-            $currentRow++;
-            $headerRow = [
-                '№ Заказа',
-                'Статус',
-                '№ заявки клиента',
-                'Период',
-                'ФИО гостей',
-                'Кол-во гостей',
-                'Отели',
-                'Сумма за отели',
-                'Услуги',
-                'Сумма за услуги',
-                'ИТОГО',
-                'Оплачено',
-                'Остаток к оплате',
-                'Менеджер'
-            ];
-
-            $style = $this->getCellStyle('5B9BD5');
-            $boldFont = [...$this->defaultFont, 'bold' => true];
-
-            foreach ($headerRow as $index => $value) {
-                $sheet->getCell([++$index, $currentRow])
-                    ->setValue($value)
-                    ->getStyle()->applyFromArray($style)
-                    ->getFont()->applyFromArray($boldFont);
-            }
+        if (count($rows) === 0) {
+            return;
         }
+        $sheet = $this->spreadsheet->getActiveSheet();
+        $currentRow = $sheet->getHighestRow();
+
+        $this->insertNewRowBefore($sheet->getHighestRow(), 2);
         $currentRow++;
+        $headerRow = [
+            'Отель',
+            'Город',
+            'Итого оборот',
+            'Выплачено',
+            'Остаток к оплате',
+            'Кол-во броней',
+        ];
 
-        $guestsTotal = 0;
-        $hotelsTotal = 0;
-        $servicesTotal = 0;
-        $amountTotal = 0;
-        $payedTotal = 0;
-        $remainingTotal = 0;
-        $orderIndex = 0;
-        foreach ($rows as $row) {
-            $bgColor = ($orderIndex === 0 || $orderIndex % 2 === 0) ? 'DEEAF6' : 'FFFFFF';
+        $style = $this->getCellStyle('5B9BD5', true);
+        $boldFont = [...$this->defaultFont, 'bold' => true];
+
+        foreach ($headerRow as $index => $value) {
+            $sheet->getCell([++$index, $currentRow])
+                ->setValue($value)
+                ->getStyle()->applyFromArray($style)
+                ->getFont()->applyFromArray($boldFont);
+        }
+
+        $totalAmount = 0;
+        $totalPayedAmount = 0;
+        $totalRemainingAmount = 0;
+        $totalCountBookings = 0;
+        foreach ($rows as $index => $row) {
+            $bgColor = ($index === 0 || $index % 2 === 0) ? 'FFFFFF' : 'DEEAF6';
             $cellStyle = $this->getCellStyle($bgColor);
-
-            $guestsCount = count($row['guests']);
-            $guestsTotal += $guestsCount;
-            $hotelsTotal += $row['hotel_amount'];
-            $servicesTotal += $row['service_amount'];
-            $amountTotal += $row['total_amount'];
-            $payedTotal += $row['payed_amount'];
-            $remainingTotal += $row['remaining_amount'];
-
             $this->insertNewRowBefore($sheet->getHighestRow());
+            $currentRow++;
 
+            $price = (int)$row->hotel_supplier_price;
+            $payedAmount = (int)$row->payed_amount;
+            $remainingAmount = $price - $payedAmount;
+            $countBookings = (int)$row->bookings_count;
+            $totalAmount += $price;
+            $totalPayedAmount += $payedAmount;
+            $totalRemainingAmount += $remainingAmount;
+            $totalCountBookings += $countBookings;
             $data = [
-                'A' . $currentRow => $row['id'],
-                'B' . $currentRow => $row['status'],
-                'C' . $currentRow => $row['external_id'],
-                'D' . $currentRow => date('d.m.Y', $row['period_start']) . ' - ' . date('d.m.Y', $row['period_end']),
-                'E' . $currentRow => implode("\n", $row['guests']),
-                'F' . $currentRow => count($row['guests']),
-                'G' . $currentRow => implode("\n", $row['hotels']),
-                'H' . $currentRow => $row['hotel_amount'] . ' ' . $row['currency'],
-                'I' . $currentRow => implode("\n", $row['services']),
-                'J' . $currentRow => $row['service_amount'] . ' ' . $row['currency'],
-                'K' . $currentRow => $row['total_amount'] . ' ' . $row['currency'],
-                'L' . $currentRow => $row['payed_amount'] . ' ' . $row['currency'],
-                'M' . $currentRow => $row['remaining_amount'] . ' ' . $row['currency'],
-                'N' . $currentRow => $row['manager'],
+                'A' . $currentRow => $row->hotel_name,
+                'B' . $currentRow => $row->city_name,
+                'C' . $currentRow => Format::number($price) . ' ' . $row->currency,
+                'D' . $currentRow => Format::number($remainingAmount) . ' ' . $row->currency,
+                'E' . $currentRow => Format::number($payedAmount) . ' ' . $row->currency,
+                'F' . $currentRow => $countBookings,
             ];
 
             foreach ($data as $coordinates => $value) {
@@ -156,69 +156,122 @@ class HotelReportCompiler extends AbstractReportCompiler
                     ->getFont()
                     ->applyFromArray($this->defaultFont);
             }
+        }
 
-            $rowHeight = max(count($row['hotels']), count($row['services']), count($row['guests']));
-            $sheet->getRowDimension($currentRow)->setRowHeight($rowHeight * 15);
+        $cellStyle = $this->getCellStyle('FFFFFF', true);
+        $remainingCellFont = [...$boldFont, 'color' => ['rgb' => 'FF0000']];
+        $this->insertNewRowBefore($sheet->getHighestRow());
+        $currentRow++;
+        $sheet->getCell('A' . $currentRow)->setValue('Итого')->getStyle()->applyFromArray($cellStyle)->getFont()->applyFromArray($boldFont);
+        $sheet->getCell('B' . $currentRow)->setValue('')->getStyle()->applyFromArray($cellStyle)->getFont()->applyFromArray($boldFont);
+        $sheet->getCell('C' . $currentRow)->setValue(Format::number($totalAmount) . ' ' . $row->currency)->getStyle()->applyFromArray($cellStyle)->getFont()->applyFromArray($boldFont);
+        $sheet->getCell('D' . $currentRow)->setValue(Format::number($totalPayedAmount) . ' ' . $row->currency)->getStyle()->applyFromArray($cellStyle)->getFont()->applyFromArray($boldFont);
+        $sheet->getCell('E' . $currentRow)->setValue(Format::number($totalRemainingAmount) . ' ' . $row->currency)->getStyle()->applyFromArray($cellStyle)->getFont()->applyFromArray($remainingCellFont);
+        $sheet->getCell('F' . $currentRow)->setValue($totalCountBookings)->getStyle()->applyFromArray($cellStyle)->getFont()->applyFromArray($boldFont);
+        $sheet->getRowDimension($currentRow)->setRowHeight(15);
+    }
 
+    private function appendBookingsRows(array $bookings, array $guests): void
+    {
+        if (count($bookings) === 0) {
+            return;
+        }
+        $sheet = $this->spreadsheet->getActiveSheet();
+        $currentRow = $sheet->getHighestRow();
+
+        $this->insertNewRowBefore($sheet->getHighestRow(), 2);
+        $currentRow++;
+        $headerRow = [
+            '№ Брони',
+            'Отели',
+            'Дата заезда',
+            'Дата выезда',
+            'Кол-во номеров',
+            'Кол-во ночей',
+            'Кол-во номер*ночей',
+            'ФИО гостей',
+            'Кол-во гостей',
+        ];
+
+        $style = $this->getCellStyle('5B9BD5', true);
+        $boldFont = [...$this->defaultFont, 'bold' => true];
+
+        foreach ($headerRow as $index => $value) {
+            $sheet->getCell([++$index, $currentRow])
+                ->setValue($value)
+                ->getStyle()->applyFromArray($style)
+                ->getFont()->applyFromArray($boldFont);
+        }
+
+        $totalRoomsCount = 0;
+        $totalNights = 0;
+        $totalRoomNights = 0;
+        $totalGuestCount = 0;
+        foreach ($bookings as $index => $booking) {
+            $bookingStartDate = strtotime($booking->date_start);
+            $bookingEndDate = strtotime($booking->date_end);
             if (!isset($this->reportPeriodStart)) {
-                $this->reportPeriodStart = $row['period_start'];
+                $this->reportPeriodStart = $bookingStartDate;
             } else {
-                $this->reportPeriodStart = min($row['period_start'], $this->reportPeriodStart);
+                $this->reportPeriodStart = min($bookingStartDate, $this->reportPeriodStart);
             }
 
             if (!isset($this->reportPeriodEnd)) {
-                $this->reportPeriodEnd = $row['period_end'];
+                $this->reportPeriodEnd = $bookingEndDate;
             } else {
-                $this->reportPeriodEnd = max($row['period_end'], $this->reportPeriodEnd);
+                $this->reportPeriodEnd = max($bookingEndDate, $this->reportPeriodEnd);
             }
 
+            $bgColor = ($index === 0 || $index % 2 === 0) ? 'FFFFFF' : 'DEEAF6';
+            $cellStyle = $this->getCellStyle($bgColor);
+            $this->insertNewRowBefore($sheet->getHighestRow());
             $currentRow++;
-            $orderIndex++;
+
+            $bookingId = (int)$booking->id;
+            $roomsCount = (int)$booking->rooms_count;
+            $nightsCount = (int)$booking->nights_count;
+            $roomNightsCount = $roomsCount * $nightsCount;
+            $bookingGuests = $guests[$bookingId];
+            $guestsCount = count($bookingGuests);
+
+            $totalRoomsCount += $roomsCount;
+            $totalNights += $nightsCount;
+            $totalRoomNights += $roomNightsCount;
+            $totalGuestCount += $guestsCount;
+            $data = [
+                'A' . $currentRow => $bookingId,
+                'B' . $currentRow => $booking->hotel_name,
+                'C' . $currentRow => date('d/m/Y', $bookingStartDate),
+                'D' . $currentRow => date('d/m/Y', $bookingEndDate),
+                'E' . $currentRow => $roomsCount,
+                'F' . $currentRow => $nightsCount,
+                'G' . $currentRow => $roomNightsCount,
+                'H' . $currentRow => implode(', ', $bookingGuests),
+                'I' . $currentRow => $guestsCount,
+            ];
+
+            foreach ($data as $coordinates => $value) {
+                $sheet->getCell($coordinates)
+                    ->setValue($value)
+                    ->getStyle()
+                    ->applyFromArray($cellStyle)
+                    ->getFont()
+                    ->applyFromArray($this->defaultFont);
+            }
         }
 
+        $cellStyle = $this->getCellStyle('FFFFFF', true);
         $this->insertNewRowBefore($sheet->getHighestRow());
-        $defaultCellStyle = $this->getCellStyle('FFFFFF', true);
-        $totalCellStyle = $this->getCellStyle('FEFF03', true);
-        $payedCellStyle = $this->getCellStyle('66FF67', true);
-        $remainingCellFont = [...$boldFont, 'color' => ['rgb' => 'FF0000']];
-        $sheet->getCell('A' . $currentRow)->setValue('Итого')->getStyle()->applyFromArray($defaultCellStyle)->getFont(
-        )->applyFromArray($boldFont);
-        $sheet->getCell('B' . $currentRow)->setValue('')->getStyle()->applyFromArray($defaultCellStyle)->getFont(
-        )->applyFromArray($boldFont);
-        $sheet->getCell('C' . $currentRow)->setValue('')->getStyle()->applyFromArray($defaultCellStyle)->getFont(
-        )->applyFromArray($boldFont);
-        $sheet->getCell('D' . $currentRow)->setValue('')->getStyle()->applyFromArray($defaultCellStyle)->getFont(
-        )->applyFromArray($boldFont);
-        $sheet->getCell('E' . $currentRow)->setValue('')->getStyle()->applyFromArray($defaultCellStyle)->getFont(
-        )->applyFromArray($boldFont);
-        $sheet->getCell('F' . $currentRow)->setValue($guestsTotal)->getStyle()->applyFromArray(
-            $defaultCellStyle
-        )->getFont()->applyFromArray($boldFont);
-        $sheet->getCell('G' . $currentRow)->setValue('')->getStyle()->applyFromArray($defaultCellStyle)->getFont(
-        )->applyFromArray($boldFont);
-        $sheet->getCell('H' . $currentRow)->setValue($hotelsTotal . ' ' . $row['currency'])->getStyle()->applyFromArray(
-            $defaultCellStyle
-        )->getFont()->applyFromArray($boldFont);
-        $sheet->getCell('I' . $currentRow)->setValue('')->getStyle()->applyFromArray($defaultCellStyle)->getFont(
-        )->applyFromArray($boldFont);
-        $sheet->getCell('J' . $currentRow)->setValue($servicesTotal . ' ' . $row['currency'])->getStyle(
-        )->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
-        $sheet->getCell('K' . $currentRow)->setValue($amountTotal . ' ' . $row['currency'])->getStyle()->applyFromArray(
-            $totalCellStyle
-        )->getFont()->applyFromArray($boldFont);
-        $sheet->getCell('L' . $currentRow)->setValue($payedTotal . ' ' . $row['currency'])->getStyle()->applyFromArray(
-            $payedCellStyle
-        )->getFont()->applyFromArray($boldFont);
-        $sheet->getCell('M' . $currentRow)->setValue($remainingTotal . ' ' . $row['currency'])->getStyle(
-        )->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($remainingCellFont);
-        $sheet->getCell('N' . $currentRow)->setValue('')->getStyle()->applyFromArray($defaultCellStyle)->getFont(
-        )->applyFromArray($boldFont);
+        $currentRow++;
+        $sheet->getCell('A' . $currentRow)->setValue('Итого')->getStyle()->applyFromArray($cellStyle)->getFont()->applyFromArray($boldFont);
+        $sheet->getCell('B' . $currentRow)->setValue('')->getStyle()->applyFromArray($cellStyle)->getFont()->applyFromArray($boldFont);
+        $sheet->getCell('C' . $currentRow)->setValue('')->getStyle()->applyFromArray($cellStyle)->getFont()->applyFromArray($boldFont);
+        $sheet->getCell('D' . $currentRow)->setValue('')->getStyle()->applyFromArray($cellStyle)->getFont()->applyFromArray($boldFont);
+        $sheet->getCell('E' . $currentRow)->setValue($totalRoomsCount)->getStyle()->applyFromArray($cellStyle)->getFont()->applyFromArray($boldFont);
+        $sheet->getCell('F' . $currentRow)->setValue($totalNights)->getStyle()->applyFromArray($cellStyle)->getFont()->applyFromArray($boldFont);
+        $sheet->getCell('G' . $currentRow)->setValue($totalRoomNights)->getStyle()->applyFromArray($cellStyle)->getFont()->applyFromArray($boldFont);
+        $sheet->getCell('H' . $currentRow)->setValue('')->getStyle()->applyFromArray($cellStyle)->getFont()->applyFromArray($boldFont);
+        $sheet->getCell('I' . $currentRow)->setValue($totalGuestCount)->getStyle()->applyFromArray($cellStyle)->getFont()->applyFromArray($boldFont);
         $sheet->getRowDimension($currentRow)->setRowHeight(15);
-
-        $this->updateReportTotalData('hotel', $row['currency'], $hotelsTotal);
-        $this->updateReportTotalData('service', $row['currency'], $servicesTotal);
-        $this->updateReportTotalData('total', $row['currency'], $amountTotal);
-        $this->updateReportTotalData('payed', $row['currency'], $payedTotal);
-        $this->updateReportTotalData('remaining', $row['currency'], $remainingTotal);
     }
 }

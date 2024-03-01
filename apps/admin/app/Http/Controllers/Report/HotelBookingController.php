@@ -54,7 +54,6 @@ class HotelBookingController extends Controller
 
         $report = $this->reportCompiler->generate(
             request()->user(),
-            'Отчет по броням отелей',
             $endPeriod,
             $startPeriod,
             $managerIds
