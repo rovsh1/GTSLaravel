@@ -6,7 +6,7 @@ import { onClickOutside, useToggle } from '@vueuse/core'
 import { Tooltip } from 'floating-vue'
 import { usePlatformDetect } from 'gts-common/helpers/platform'
 
-import InlineIcon from '~components/InlineIcon.vue'
+import InlineIcon from '~components/Base/InlineIcon.vue'
 
 const props = withDefaults(defineProps<{
   value: string | undefined
@@ -107,11 +107,7 @@ if (props.saveClickOutside && !props.hideClickOutside) {
       {{ displayValue }}
     </span>
 
-    <Tooltip
-      v-else
-      theme="tooltip"
-      handle-resize
-    >
+    <Tooltip v-else theme="tooltip" handle-resize>
       <textarea
         ref="inputRef"
         v-model="localValue"
