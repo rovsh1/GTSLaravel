@@ -2,15 +2,14 @@
 import { computed, reactive, ref } from 'vue'
 
 import { useToggle } from '@vueuse/core'
+import BaseDialog from 'gts-components/Base/BaseDialog'
+import SelectComponent from 'gts-components/Base/SelectComponent'
+import BootstrapButton from 'gts-components/Bootstrap/BootstrapButton/BootstrapButton'
+import { SelectOption } from 'gts-components/Bootstrap/lib'
 
 import { useBookingStore } from '~resources/views/booking/shared/store/booking'
 
 import { Currency } from '~api/models'
-
-import BaseDialog from '~components/BaseDialog.vue'
-import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
-import { SelectOption } from '~components/Bootstrap/lib'
-import SelectComponent from '~components/SelectComponent.vue'
 
 import { useCurrencyStore } from '~stores/currency'
 

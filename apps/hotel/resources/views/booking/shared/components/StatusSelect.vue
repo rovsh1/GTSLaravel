@@ -2,11 +2,10 @@
 import { computed, unref } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
+import ButtonLoadingSpinner from 'gts-components/Base/ButtonLoadingSpinner'
 
 import { BookingStatusResponse } from '~api/booking/models'
 import { StatusSettings } from '~api/booking/status'
-
-import ButtonLoadingSpinner from '~components/ButtonLoadingSpinner.vue'
 
 const props = defineProps<{
   modelValue: BookingStatusResponse | StatusSettings

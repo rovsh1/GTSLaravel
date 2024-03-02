@@ -2,6 +2,7 @@
 import { computed, ref, watch } from 'vue'
 
 import { OnClickOutside } from '@vueuse/components'
+import OverlayLoading from 'gts-components/Base/OverlayLoading'
 
 import { HotelResponse } from '~api/hotel/get'
 import {
@@ -11,8 +12,6 @@ import {
   useHotelRoomQuotasUpdate,
 } from '~api/hotel/quotas/update'
 import { HotelRoom } from '~api/hotel/room'
-
-import OverlayLoading from '~components/OverlayLoading.vue'
 
 import DayMenu from './DayMenu/DayMenu.vue'
 import EditableCell from './EditableCell.vue'

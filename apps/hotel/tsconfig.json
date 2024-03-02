@@ -40,9 +40,6 @@
             "~api/*": [
                 "resources/vue/api/*"
             ],
-            "~components/*": [
-                "resources/vue/components/*"
-            ],
             "~stores/*": [
                 "resources/vue/stores/*"
             ],

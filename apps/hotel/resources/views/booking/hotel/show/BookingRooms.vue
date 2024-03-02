@@ -3,6 +3,9 @@
 import { computed, onMounted } from 'vue'
 
 import { formatPrice } from 'gts-common/helpers/price'
+import EmptyData from 'gts-components/Base/EmptyData'
+import BootstrapCard from 'gts-components/Bootstrap/BootstrapCard/BootstrapCard'
+import BootstrapCardTitle from 'gts-components/Bootstrap/BootstrapCard/BootstrapCardTitle'
 import { storeToRefs } from 'pinia'
 
 import GuestsTable from '~resources/views/booking/shared/components/GuestsTable.vue'
@@ -20,10 +23,6 @@ import {
 import { HotelRate, useHotelRatesAPI } from '~api/hotel/price-rate'
 import { Currency } from '~api/models'
 import { Guest } from '~api/order/guest'
-
-import BootstrapCard from '~components/Bootstrap/BootstrapCard/BootstrapCard.vue'
-import BootstrapCardTitle from '~components/Bootstrap/BootstrapCard/components/BootstrapCardTitle.vue'
-import EmptyData from '~components/EmptyData.vue'
 
 import { useCountryStore } from '~stores/countries'
 import { useCurrencyStore } from '~stores/currency'
