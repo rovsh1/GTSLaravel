@@ -2,15 +2,14 @@
 import { computed, ref, unref } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
+import BaseDialog from 'gts-components/Base/BaseDialog'
+import BootstrapButton from 'gts-components/Bootstrap/BootstrapButton/BootstrapButton'
+import BootstrapCheckbox from 'gts-components/Bootstrap/BootstrapCheckbox/BootstrapCheckbox'
 
 import { AttachmentDialogImageProp } from '~resources/views/images/components/lib'
 
 import { HotelRoomID, HotelRoomImage } from '~api/hotel'
 import { useHotelRoomAttachImageAPI, useHotelRoomDetachImageAPI, useHotelSetMainImageAPI, useHotelUnSetMainImageAPI } from '~api/hotel/images/update'
-
-import BaseDialog from '~components/BaseDialog.vue'
-import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
-import BootstrapCheckbox from '~components/Bootstrap/BootstrapCheckbox.vue'
 
 const props = withDefaults(defineProps<{
   image: AttachmentDialogImageProp
