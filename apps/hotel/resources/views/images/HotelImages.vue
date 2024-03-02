@@ -349,16 +349,17 @@ watch([imagesData, roomImages], (value) => {
     }
   }
 }
-
+/* stylelint-disable declaration-no-important */
 .imageDragHandle {
-  --position: 0.5em;
+  --position: 0.5em !important;
 
-  position: absolute;
-  top: var(--position);
-  left: var(--position);
-  z-index: 1;
-  cursor: grab;
+  position: absolute !important;
+  top: var(--position) !important;
+  left: var(--position) !important;
+  z-index: 1 !important;
+  cursor: grab !important;
 }
+/* stylelint-enable declaration-no-important */
 
 .actions {
   display: flex;

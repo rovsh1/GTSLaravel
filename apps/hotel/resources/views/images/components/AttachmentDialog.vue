@@ -160,11 +160,13 @@ const isCheckboxDisabled = computed<boolean>(() =>
   </BaseDialog>
 </template>
 <style>
+/* stylelint-disable declaration-no-important */
 :root .attachmentDialog {
-  --dialog-width: 60em;
-  --part-padding: 0;
-  --body-border: 0;
+  --dialog-width: 60em !important;
+  --part-padding: 0 !important;
+  --body-border: 0 !important;
 }
+/* stylelint-enable declaration-no-important */
 </style>
 <style lang="scss" scoped>
 @use '~resources/sass/vendor/bootstrap/configuration' as bs;
@@ -210,18 +212,20 @@ const isCheckboxDisabled = computed<boolean>(() =>
   backdrop-filter: blur(10px);
 }
 
+/* stylelint-disable declaration-no-important */
 .closeButton {
-  --position: 1em;
+  --position: 1em !important;
 
-  position: absolute;
-  top: var(--position);
-  right: var(--position);
-  z-index: 2;
+  position: absolute !important;
+  top: var(--position) !important;
+  right: var(--position) !important;
+  z-index: 2 !important;
 
   :root & {
     color: white;
   }
 }
+/* stylelint-enable declaration-no-important */
 
 .roomsList {
   border-bottom-left-radius: bs.$modal-content-border-radius;
