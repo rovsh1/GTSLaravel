@@ -14,7 +14,7 @@ const filesBaseComponents = fs.readdirSync('./src/Base').filter((file) => file.i
 const filesEditableComponents = fs.readdirSync('./src/Editable').filter((file) => file.includes('.vue'))
 const filesBootstrapButtonComponents = fs.readdirSync('./src/Bootstrap/BootstrapButton')
 const filesBootstrapCardComponents = fs.readdirSync('./src/Bootstrap/BootstrapCard')
-const filesBootstrapCheckBoxComponents = fs.readdirSync('./src/Bootstrap/BootstrapCheckBox')
+const filesBootstrapCheckboxComponents = fs.readdirSync('./src/Bootstrap/BootstrapCheckbox')
 const filesBootstrapTabsComponents = fs.readdirSync('./src/Bootstrap/BootstrapTabs')
 const filesBootstrapToastComponents = fs.readdirSync('./src/Bootstrap/BootstrapToast')
 
@@ -35,8 +35,8 @@ const componentsBootstrapCard = filesBootstrapCardComponents.reduce((obj, compon
   obj[`Bootstrap/BootstrapCard/${component.split('.')[0]}`] = `src/Bootstrap/BootstrapCard/${component}`
   return obj
 }, {})
-const componentsBootstrapCheckBox = filesBootstrapCheckBoxComponents.reduce((obj, component) => {
-  obj[`Bootstrap/BootstrapCheckBox/${component.split('.')[0]}`] = `src/Bootstrap/BootstrapCheckBox/${component}`
+const componentsBootstrapCheckbox = filesBootstrapCheckboxComponents.reduce((obj, component) => {
+  obj[`Bootstrap/BootstrapCheckbox/${component.split('.')[0]}`] = `src/Bootstrap/BootstrapCheckbox/${component}`
   return obj
 }, {})
 const componentsBootstrapTabs = filesBootstrapTabsComponents.reduce((obj, component) => {
@@ -60,7 +60,7 @@ export default defineConfig(({ command }) => ({
         ...componentsEditable,
         ...componentsBootstrapButton,
         ...componentsBootstrapCard,
-        ...componentsBootstrapCheckBox,
+        ...componentsBootstrapCheckbox,
         ...componentsBootstrapTabs,
         ...componentsBootstrapToast,
       },
