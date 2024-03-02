@@ -1,7 +1,7 @@
 {
     "name": "gts-components",
     "private": false,
-    "version": "1.0.1",
+    "version": "1.0.4",
     "type": "module",
     "files": [
         "dist"
@@ -115,9 +115,9 @@
             "import": "./dist/Bootstrap/BootstrapCard/BootstrapCardTitle/BootstrapCardTitle.js",
             "require": "./dist/Bootstrap/BootstrapCard/BootstrapCardTitle/BootstrapCardTitle.cjs"
         },
-        "./Bootstrap/BootstrapCheckBox": {
-            "import": "./dist/Bootstrap/BootstrapCheckBox/BootstrapCheckBox/BootstrapCheckBox.js",
-            "require": "./dist/Bootstrap/BootstrapCheckBox/BootstrapCheckBox/BootstrapCheckBox.cjs"
+        "./Bootstrap/BootstrapCheckbox/BootstrapCheckbox": {
+            "import": "./dist/Bootstrap/BootstrapCheckbox/BootstrapCheckbox/BootstrapCheckbox.js",
+            "require": "./dist/Bootstrap/BootstrapCheckbox/BootstrapCheckbox/BootstrapCheckbox.cjs"
         },
         "./Bootstrap/BootstrapTabs/BootstrapTabs": {
             "import": "./dist/Bootstrap/BootstrapTabs/BootstrapTabs/BootstrapTabs.js",
@@ -138,6 +138,10 @@
         "./Bootstrap/BootstrapToast/index": {
             "import": "./dist/Bootstrap/BootstrapToast/index/index.js",
             "require": "./dist/Bootstrap/BootstrapToast/index/index.cjs"
+        },
+        "./Bootstrap/lib": {
+            "import": "./dist/Bootstrap/lib.d.ts",
+            "require": "./dist/Bootstrap/lib.d.ts"
         }
     },
     "typesVersions": {
