@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 
 import { requestInitialData } from 'gts-common/helpers/initial-data'
+import SelectComponent from 'gts-components/Base/SelectComponent'
 import { z } from 'zod'
 
 import { useExternalNumber } from '~resources/views/booking/shared/composables/external-number'
@@ -10,8 +11,6 @@ import { useBookingStore } from '~resources/views/booking/shared/store/booking'
 
 import { ExternalNumberType, ExternalNumberTypeEnum } from '~api/booking/hotel/details'
 import { BookingAvailableActionsResponse } from '~api/booking/status'
-
-import SelectComponent from '~components/SelectComponent.vue'
 
 const { bookingID } = requestInitialData(
   z.object({

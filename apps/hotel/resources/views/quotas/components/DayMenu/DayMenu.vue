@@ -2,6 +2,7 @@
 import { computed, onMounted, ref, watch } from 'vue'
 
 import { flip, useFloating } from '@floating-ui/vue'
+import BootstrapButton from 'gts-components/Bootstrap/BootstrapButton/BootstrapButton'
 
 import { HotelRoomID } from '~api/hotel'
 import { HotelID } from '~api/hotel/get'
@@ -9,8 +10,6 @@ import {
   HotelRoomQuotasStatusUpdateKind,
   HotelRoomQuotasStatusUpdateProps, useHotelRoomQuotasStatusUpdate,
 } from '~api/hotel/quotas/status'
-
-import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 
 import { useDayMenuButtonStatus } from './use-day-menu-button-status'
 

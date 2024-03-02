@@ -88,7 +88,6 @@ export default defineConfig(({ command }) => ({
     alias: {
       '~resources': path.resolve(__dirname, 'resources'),
       '~api': path.resolve(__dirname, 'resources/vue/api'),
-      '~components': path.resolve(__dirname, 'resources/vue/components'),
       '~stores': path.resolve(__dirname, 'resources/vue/stores'),
       '~widgets': path.resolve(__dirname, 'resources/js/widgets'),
       '~cache': path.resolve(__dirname, 'resources/js/cache'),

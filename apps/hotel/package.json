@@ -26,7 +26,7 @@
         "cleave.js": "^1.6.0",
         "floating-vue": "^2.0.0-beta.20",
         "gts-common": "^1.2.0",
-        "gts-components": "^1.0.1",
+        "gts-components": "^1.0.4",
         "jquery": "^3.6.0",
         "jquery-ui": "^1.13.0",
         "litepicker": "^2.0.12",
