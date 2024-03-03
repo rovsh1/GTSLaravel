@@ -4,18 +4,17 @@ import { computed, nextTick, ref, watch, watchEffect } from 'vue'
 import { useToggle } from '@vueuse/core'
 import { formatDateToAPIDate } from 'gts-common/helpers/date'
 import { requestInitialData } from 'gts-common/helpers/initial-data'
+import BaseDialog from 'gts-components/Base/BaseDialog'
+import BaseLayout from 'gts-components/Base/BaseLayout'
+import EmptyData from 'gts-components/Base/EmptyData'
+import OverlayLoading from 'gts-components/Base/OverlayLoading'
+import BootstrapButton from 'gts-components/Bootstrap/BootstrapButton/BootstrapButton'
 import { z } from 'zod'
 
 import { HotelResponse, useHotelGetAPI } from '~api/hotel/get'
 import { useUpdateHotelRoomQuotasBatch } from '~api/hotel/quotas/batch'
 import { useHotelQuotasAPI } from '~api/hotel/quotas/list'
 import { UseHotelRooms, useHotelRoomsListAPI } from '~api/hotel/rooms'
-
-import BaseDialog from '~components/BaseDialog.vue'
-import BaseLayout from '~components/BaseLayout.vue'
-import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
-import EmptyData from '~components/EmptyData.vue'
-import OverlayLoading from '~components/OverlayLoading.vue'
 
 import { createHotelSwitcher } from '~widgets/hotel-switcher/hotel-switcher'
 

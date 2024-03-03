@@ -3,17 +3,16 @@
 import { computed, onMounted, reactive, ref } from 'vue'
 
 import { useDebounceFn, useToggle } from '@vueuse/core'
+import BaseDialog from 'gts-components/Base/BaseDialog'
+import OverlayLoading from 'gts-components/Base/OverlayLoading'
+import Card from 'gts-components/Bootstrap/BootstrapCard/BootstrapCard'
+import BootstrapTabs from 'gts-components/Bootstrap/BootstrapTabs/BootstrapTabs'
+import BootstrapTabsLink from 'gts-components/Bootstrap/BootstrapTabs/BootstrapTabsLink'
+import BootstrapTabsTabContent from 'gts-components/Bootstrap/BootstrapTabs/BootstrapTabsTabContent'
 
 import { BaseResponse } from '~api'
 import { LocaleDictionary, useLocaleDictionaryAPI } from '~api/locale-dictionary/search'
 import { useUpdateLocaleDictionary } from '~api/locale-dictionary/update'
-
-import BaseDialog from '~components/BaseDialog.vue'
-import Card from '~components/Bootstrap/BootstrapCard/BootstrapCard.vue'
-import BootstrapTabs from '~components/Bootstrap/BootstrapTabs/BootstrapTabs.vue'
-import BootstrapTabsLink from '~components/Bootstrap/BootstrapTabs/components/BootstrapTabsLink.vue'
-import BootstrapTabsTabContent from '~components/Bootstrap/BootstrapTabs/components/BootstrapTabsTabContent.vue'
-import OverlayLoading from '~components/OverlayLoading.vue'
 
 type LocaleDictionaryForm = LocaleDictionary & {
   activeLocale: string

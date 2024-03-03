@@ -2,6 +2,8 @@
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 
 import { formatDateTimeToAPIDate, formatSeasonPeriod, parseAPIDate } from 'gts-common/helpers/date'
+import OverlayLoading from 'gts-components/Base/OverlayLoading'
+import { showToast } from 'gts-components/Bootstrap/BootstrapToast/index'
 import { DateTime } from 'luxon'
 import { nanoid } from 'nanoid'
 
@@ -9,9 +11,6 @@ import { daysOfWeek } from '~resources/js/config/constants'
 import { Month } from '~resources/views/hotel/quotas/components/lib/index'
 
 import { updateRoomSeasonPricesByDay, useRoomSeasonsDaysPricesListAPI } from '~api/hotel/prices/seasons'
-
-import { showToast } from '~components/Bootstrap/BootstrapToast'
-import OverlayLoading from '~components/OverlayLoading.vue'
 
 import EditableCell from './EditableCell.vue'
 

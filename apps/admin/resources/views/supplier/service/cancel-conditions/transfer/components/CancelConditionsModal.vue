@@ -3,10 +3,9 @@
 import { computed, ref } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
+import BaseDialog from 'gts-components/Base/BaseDialog'
 
 import { ServiceCancelConditions } from '~api/supplier/cancel-conditions/transfer'
-
-import BaseDialog from '~components/BaseDialog.vue'
 
 const props = defineProps<{
   opened: MaybeRef<boolean>

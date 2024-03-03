@@ -2,9 +2,9 @@
 
 import { computed } from 'vue'
 
-import { useOrderStore } from '~resources/views/booking-order/show/store/order'
+import EditableTextarea from 'gts-components/Editable/EditableTextarea'
 
-import EditableTextarea from '~components/Editable/EditableTextarea.vue'
+import { useOrderStore } from '~resources/views/booking-order/show/store/order'
 
 const orderStore = useOrderStore()
 

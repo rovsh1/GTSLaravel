@@ -3,14 +3,13 @@ import { computed } from 'vue'
 
 import { formatDateTime } from 'gts-common/helpers/date'
 import { downloadFile } from 'gts-common/helpers/download-file'
+import InlineIcon from 'gts-components/Base/InlineIcon'
+import { showToast } from 'gts-components/Bootstrap/BootstrapToast/index'
 
 import { useOrderStore } from '~resources/views/booking-order/show/store/order'
 
 import { OrderAvailableActionsResponse } from '~api/order/status'
 import { OrderVoucher } from '~api/order/voucher'
-
-import { showToast } from '~components/Bootstrap/BootstrapToast'
-import InlineIcon from '~components/InlineIcon.vue'
 
 const orderStore = useOrderStore()
 const availableActions = computed<OrderAvailableActionsResponse | null>(() => orderStore.availableActions)

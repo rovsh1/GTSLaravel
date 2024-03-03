@@ -2,12 +2,12 @@
 
 import { computed } from 'vue'
 
+import EditableDateInput from 'gts-components/Editable/EditableDateInput'
+import EditableTextInput from 'gts-components/Editable/EditableTextInput'
+
 import { BookingOtherDetails } from '~resources/views/booking/services/show/components/details/lib/types'
 import InfoBlock from '~resources/views/booking/shared/components/InfoBlock/InfoBlock.vue'
 import { useBookingStore } from '~resources/views/booking/shared/store/booking'
-
-import EditableDateInput from '~components/Editable/EditableDateInput.vue'
-import EditableTextInput from '~components/Editable/EditableTextInput.vue'
 
 const bookingStore = useBookingStore()
 

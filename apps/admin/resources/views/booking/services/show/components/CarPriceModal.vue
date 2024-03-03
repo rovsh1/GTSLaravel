@@ -3,11 +3,10 @@
 import { computed, ref } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
+import BaseDialog from 'gts-components/Base/BaseDialog'
 
 import { CarPriceItem } from '~api/booking/service'
 import { Currency } from '~api/models'
-
-import BaseDialog from '~components/BaseDialog.vue'
 
 const props = defineProps<{
   bookingId: number

@@ -3,14 +3,13 @@
 import { computed, ref, watchEffect } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
+import BaseDialog from 'gts-components/Base/BaseDialog'
 
 import { useCurrenciesStore } from '~resources/views/supplier/service/price/composables/currency'
 
 import { Money } from '~api/models'
 import { ServicePriceResponse as AirportServicePriceResponse } from '~api/supplier/airport'
 import { ServicePriceResponse as TransferServicePriceResponse } from '~api/supplier/transfer'
-
-import BaseDialog from '~components/BaseDialog.vue'
 
 const props = defineProps<{
   opened: MaybeRef<boolean>

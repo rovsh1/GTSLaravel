@@ -2,8 +2,7 @@
 import { ref } from 'vue'
 
 import { MaybeRef, useDropZone } from '@vueuse/core'
-
-import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
+import BootstrapButton from 'gts-components/Bootstrap/BootstrapButton/BootstrapButton'
 
 import { SelectedFile } from './lib'
 
@@ -116,12 +115,14 @@ const remove = (idToRemove: string) => {
   gap: 0.5em;
 }
 
+/* stylelint-disable declaration-no-important */
 .removeButton {
-  position: absolute;
+  position: absolute !important;
   top: 0;
   right: 0;
   margin: 0.5em;
 }
+/* stylelint-enable declaration-no-important */
 
 .size {
   position: absolute;

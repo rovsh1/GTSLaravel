@@ -4,14 +4,13 @@ import { computed, ref } from 'vue'
 
 import { useToggle } from '@vueuse/core'
 import { useApplicationEventBus } from 'gts-common/helpers/event-bus'
+import BaseDialog from 'gts-components/Base/BaseDialog'
+import OverlayLoading from 'gts-components/Base/OverlayLoading'
 
 import OrderPaymentsTable from '~resources/views/supplier-payment/main/components/BookingPaymentsTable.vue'
 
 import { bookingsLend, PaymentBookingPayload, useGetPaymentAPI,
   usePaymentBookingsListAPI, usePaymentWaitingBookingsListAPI } from '~api/supplier/payment'
-
-import BaseDialog from '~components/BaseDialog.vue'
-import OverlayLoading from '~components/OverlayLoading.vue'
 
 const eventBus = useApplicationEventBus()
 const [isOpened, toggleModal] = useToggle()

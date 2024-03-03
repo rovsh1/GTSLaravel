@@ -3,13 +3,12 @@
 import { onMounted, ref } from 'vue'
 
 import { requestInitialData } from 'gts-common/helpers/initial-data'
+import EmptyData from 'gts-components/Base/EmptyData'
+import BootstrapCard from 'gts-components/Bootstrap/BootstrapCard/BootstrapCard'
+import BootstrapCardTitle from 'gts-components/Bootstrap/BootstrapCard/BootstrapCardTitle'
 import { z } from 'zod'
 
 import { useRoomSeasonsPricesListAPI } from '~api/hotel/prices/seasons'
-
-import BootstrapCard from '~components/Bootstrap/BootstrapCard/BootstrapCard.vue'
-import BootstrapCardTitle from '~components/Bootstrap/BootstrapCard/components/BootstrapCardTitle.vue'
-import EmptyData from '~components/EmptyData.vue'
 
 import HotelPricesTable from './components/HotelPricesTable.vue'
 

@@ -3,14 +3,13 @@
 import { computed } from 'vue'
 
 import { requestInitialData } from 'gts-common/helpers/initial-data'
+import EditableCell from 'gts-components/Editable/EditableNumberInput'
 import { z } from 'zod'
 
 import CollapsableBlock from '~resources/views/hotel/settings/components/CollapsableBlock.vue'
 import { useMarkupSettingsStore } from '~resources/views/hotel/settings/composables/markup-settings'
 
 import { updateConditionHotelMarkupSettings } from '~api/hotel/markup-settings'
-
-import EditableCell from '~components/Editable/EditableNumberInput.vue'
 
 const { hotelID } = requestInitialData(
   z.object({

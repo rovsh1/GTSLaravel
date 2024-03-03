@@ -4,14 +4,13 @@ import { nextTick, ref, watch, watchEffect } from 'vue'
 import { useToggle } from '@vueuse/core'
 import { formatSeasonPeriod } from 'gts-common/helpers/date'
 import { requestInitialData } from 'gts-common/helpers/initial-data'
+import BaseDialog from 'gts-components/Base/BaseDialog'
+import OverlayLoading from 'gts-components/Base/OverlayLoading'
+import { showToast } from 'gts-components/Bootstrap/BootstrapToast/index'
 import { nanoid } from 'nanoid'
 import { z } from 'zod'
 
 import { updateRoomSeasonPrice } from '~api/hotel/prices/seasons'
-
-import BaseDialog from '~components/BaseDialog.vue'
-import { showToast } from '~components/Bootstrap/BootstrapToast'
-import OverlayLoading from '~components/OverlayLoading.vue'
 
 import { generateHashFromObject } from '~helpers/hash'
 

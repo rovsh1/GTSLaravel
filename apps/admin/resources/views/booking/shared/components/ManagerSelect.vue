@@ -2,9 +2,9 @@
 
 import { computed, onMounted } from 'vue'
 
-import { useAdministratorGetAPI } from '~api/administrator'
+import SelectComponent from 'gts-components/Base/SelectComponent'
 
-import SelectComponent from '~components/SelectComponent.vue'
+import { useAdministratorGetAPI } from '~api/administrator'
 
 const props = defineProps<{
   value?: any

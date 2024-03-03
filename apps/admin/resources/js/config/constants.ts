@@ -1,4 +1,4 @@
-import { SelectOption } from '~components/Bootstrap/lib'
+import { SelectOption } from 'gts-components/Bootstrap/lib'
 
 export const daysOfWeek = [
   { value: 1, name: 'понедельник', shortName: 'Пн' },

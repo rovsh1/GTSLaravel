@@ -1,15 +1,14 @@
 <script lang="ts" setup>
 import { computed, reactive, watch } from 'vue'
 
+import DateRangePicker from 'gts-components/Base/DateRangePicker'
+import OverlayLoading from 'gts-components/Base/OverlayLoading'
+import SelectComponent from 'gts-components/Base/SelectComponent'
 import { nanoid } from 'nanoid'
 
 import { daysOfWeekOptions } from '~resources/js/config/constants'
 
 import { HotelRoom } from '~api/hotel/room'
-
-import DateRangePicker from '~components/DateRangePicker.vue'
-import OverlayLoading from '~components/OverlayLoading.vue'
-import SelectComponent from '~components/SelectComponent.vue'
 
 import { Action, ActionsOption, QuotasStatusUpdateFormData, QuotasStatusUpdatePayload } from './lib/types'
 

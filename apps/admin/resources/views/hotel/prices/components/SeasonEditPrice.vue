@@ -2,16 +2,15 @@
 import { computed, reactive, watch } from 'vue'
 
 import { formatDateToAPIDate, parseAPIDateToJSDate } from 'gts-common/helpers/date'
+import DateRangePicker from 'gts-components/Base/DateRangePicker'
+import SelectComponent from 'gts-components/Base/SelectComponent'
+import BootstrapButton from 'gts-components/Bootstrap/BootstrapButton/BootstrapButton'
+import { showToast } from 'gts-components/Bootstrap/BootstrapToast/index'
 import { nanoid } from 'nanoid'
 
 import { daysOfWeekOptions } from '~resources/js/config/constants'
 
 import { updateRoomSeasonPricesBatch } from '~api/hotel/prices/seasons'
-
-import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
-import { showToast } from '~components/Bootstrap/BootstrapToast'
-import DateRangePicker from '~components/DateRangePicker.vue'
-import SelectComponent from '~components/SelectComponent.vue'
 
 import { stringToNumber } from '../lib/convert'
 import { PricesAccumulationData, SeasonPeriod, SeasonUpdateFormData } from '../lib/types'
