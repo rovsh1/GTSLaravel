@@ -1,6 +1,6 @@
-import { mapEntitiesToSelectOptions } from '~resources/views/booking/shared/lib/constants'
+import { SelectOption } from 'gts-components/Bootstrap/lib'
 
-import { SelectOption } from '~components/Bootstrap/lib'
+import { mapEntitiesToSelectOptions } from '~resources/views/booking/shared/lib/constants'
 
 export const status = [
   { id: 1, name: 'Активный' },

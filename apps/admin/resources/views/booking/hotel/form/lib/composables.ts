@@ -1,4 +1,11 @@
-import { TabItem } from '~components/Bootstrap/BootstrapTabs/types'
+export interface TabItem {
+  name: string
+  value?: number
+  title: string
+  isActive: boolean
+  isRequired: boolean
+  isDisabled: boolean
+}
 
 export const tabsItemsSettings: TabItem[] = [{
   name: 'basic-details',

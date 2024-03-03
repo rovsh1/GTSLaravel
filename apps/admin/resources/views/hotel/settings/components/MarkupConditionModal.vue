@@ -3,12 +3,11 @@
 import { computed, ref, watch } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
+import BaseDialog from 'gts-components/Base/BaseDialog'
 
 import TimePeriodSelect from '~resources/views/hotel/settings/components/TimePeriodSelect.vue'
 
 import { MarkupCondition, Time, TimePeriod } from '~api/hotel/markup-settings'
-
-import BaseDialog from '~components/BaseDialog.vue'
 
 const props = withDefaults(defineProps<{
   value?: MarkupCondition

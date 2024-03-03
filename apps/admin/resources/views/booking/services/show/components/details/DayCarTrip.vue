@@ -2,14 +2,14 @@
 
 import { computed } from 'vue'
 
+import EditableDateInput from 'gts-components/Editable/EditableDateInput'
+import EditableTextarea from 'gts-components/Editable/EditableTextarea'
+import EditableTimeInput from 'gts-components/Editable/EditableTimeInput'
+
 import BookingCars from '~resources/views/booking/services/show/components/BookingCars.vue'
 import { BookingDayCarTripDetails } from '~resources/views/booking/services/show/components/details/lib/types'
 import InfoBlock from '~resources/views/booking/shared/components/InfoBlock/InfoBlock.vue'
 import { useBookingStore } from '~resources/views/booking/shared/store/booking'
-
-import EditableDateInput from '~components/Editable/EditableDateInput.vue'
-import EditableTextarea from '~components/Editable/EditableTextarea.vue'
-import EditableTimeInput from '~components/Editable/EditableTimeInput.vue'
 
 const bookingStore = useBookingStore()
 

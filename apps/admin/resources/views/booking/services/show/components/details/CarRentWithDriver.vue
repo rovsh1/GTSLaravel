@@ -3,15 +3,14 @@
 import { computed } from 'vue'
 
 import { formatDateTimeToAPIDateTime, parseAPIDateAndSetDefaultTime } from 'gts-common/helpers/date'
+import EditableDateRangeInput from 'gts-components/Editable/EditableDateRangeInput'
+import EditableTextInput from 'gts-components/Editable/EditableTextInput'
+import EditableTimeInput from 'gts-components/Editable/EditableTimeInput'
 
 import BookingCars from '~resources/views/booking/services/show/components/BookingCars.vue'
 import { BookingCarRentWithDriverDetails } from '~resources/views/booking/services/show/components/details/lib/types'
 import InfoBlock from '~resources/views/booking/shared/components/InfoBlock/InfoBlock.vue'
 import { useBookingStore } from '~resources/views/booking/shared/store/booking'
-
-import EditableDateRangeInput from '~components/Editable/EditableDateRangeInput.vue'
-import EditableTextInput from '~components/Editable/EditableTextInput.vue'
-import EditableTimeInput from '~components/Editable/EditableTimeInput.vue'
 
 const bookingStore = useBookingStore()
 

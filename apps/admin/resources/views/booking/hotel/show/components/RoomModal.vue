@@ -4,6 +4,9 @@ import { computed, nextTick, Ref, ref, watch, watchEffect } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
 import { requestInitialData } from 'gts-common/helpers/initial-data'
+import BaseDialog from 'gts-components/Base/BaseDialog'
+import SelectComponent from 'gts-components/Base/SelectComponent'
+import { SelectOption } from 'gts-components/Bootstrap/lib'
 import { z } from 'zod'
 
 import { useHotelRoomsStore } from '~resources/views/booking/hotel/show/store/hotel-rooms'
@@ -17,10 +20,6 @@ import { addRoomToBooking, updateBookingRoom } from '~api/booking/hotel/rooms'
 import { MarkupCondition, MarkupSettings, useHotelRoomMarkupSettings } from '~api/hotel/markup-settings'
 import { HotelRate, useHotelRatesAPI } from '~api/hotel/price-rate'
 import { HotelRoomResponse } from '~api/hotel/room'
-
-import BaseDialog from '~components/BaseDialog.vue'
-import { SelectOption } from '~components/Bootstrap/lib'
-import SelectComponent from '~components/SelectComponent.vue'
 
 import { isDataValid, validateForm } from '~helpers/form'
 

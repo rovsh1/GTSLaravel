@@ -2,16 +2,15 @@
 import { computed, ref, unref } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
+import BaseDialog from 'gts-components/Base/BaseDialog'
+import BootstrapButton from 'gts-components/Bootstrap/BootstrapButton/BootstrapButton'
+import BootstrapCheckbox from 'gts-components/Bootstrap/BootstrapCheckbox/BootstrapCheckbox'
 
 import { AttachmentDialogImageProp } from '~resources/views/hotel/images/components/lib'
 
 import { HotelRoomID, HotelRoomImage } from '~api/hotel'
 import { HotelID } from '~api/hotel/get'
 import { useHotelRoomAttachImageAPI, useHotelRoomDetachImageAPI, useHotelSetMainImageAPI, useHotelUnSetMainImageAPI } from '~api/hotel/images/update'
-
-import BaseDialog from '~components/BaseDialog.vue'
-import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
-import BootstrapCheckbox from '~components/Bootstrap/BootstrapCheckbox.vue'
 
 const props = withDefaults(defineProps<{
   image: AttachmentDialogImageProp
@@ -165,11 +164,13 @@ const isCheckboxDisabled = computed<boolean>(() =>
   </BaseDialog>
 </template>
 <style>
+/* stylelint-disable declaration-no-important */
 :root .attachmentDialog {
-  --dialog-width: 60em;
-  --part-padding: 0;
-  --body-border: 0;
+  --dialog-width: 60em !important;
+  --part-padding: 0 !important;
+  --body-border: 0 !important;
 }
+/* stylelint-enable declaration-no-important */
 </style>
 <style lang="scss" scoped>
 @use '~resources/sass/vendor/bootstrap/configuration' as bs;
@@ -215,18 +216,20 @@ const isCheckboxDisabled = computed<boolean>(() =>
   backdrop-filter: blur(10px);
 }
 
+/* stylelint-disable declaration-no-important */
 .closeButton {
-  --position: 1em;
+  --position: 1em !important;
 
-  position: absolute;
-  top: var(--position);
-  right: var(--position);
-  z-index: 2;
+  position: absolute !important;
+  top: var(--position) !important;
+  right: var(--position) !important;
+  z-index: 2 !important;
 
   :root & {
     color: white;
   }
 }
+/* stylelint-enable declaration-no-important */
 
 .roomsList {
   border-bottom-left-radius: bs.$modal-content-border-radius;

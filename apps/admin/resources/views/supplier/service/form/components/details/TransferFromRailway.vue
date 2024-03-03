@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
 
+import SelectComponent from 'gts-components/Base/SelectComponent'
+
 import { mapEntitiesToSelectOptions } from '~resources/views/booking/shared/lib/constants'
 
 import { useRailwayStationSearchAPI } from '~api/railway-station'
-
-import SelectComponent from '~components/SelectComponent.vue'
 
 import SelectableCity from '../SelectableCity.vue'
 

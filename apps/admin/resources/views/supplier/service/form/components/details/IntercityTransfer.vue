@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
 
-import BootstrapCheckbox from '~components/Bootstrap/BootstrapCheckbox.vue'
+import BootstrapCheckbox from 'gts-components/Bootstrap/BootstrapCheckbox/BootstrapCheckbox'
 
 import SelectableCity from '../SelectableCity.vue'
 
