@@ -49,7 +49,7 @@ class Hotel extends Model
 
     //use SoftDeletes;
 
-    protected array $quicksearch = ['id', 'hotels.name%'];
+    protected array $quicksearch = ['id', 'hotels.%name%'];
 
     protected $translatable = ['text'];
 
