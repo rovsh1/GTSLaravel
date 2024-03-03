@@ -2,9 +2,9 @@
 
 import { computed } from 'vue'
 
-import { useBookingStore } from '~resources/views/booking/shared/store/booking'
+import EditableTextarea from 'gts-components/Editable/EditableTextarea'
 
-import EditableTextarea from '~components/Editable/EditableTextarea.vue'
+import { useBookingStore } from '~resources/views/booking/shared/store/booking'
 
 const bookingStore = useBookingStore()
 

@@ -1,5 +1,8 @@
 <script setup lang="ts">
 
+import OverlayLoading from 'gts-components/Base/OverlayLoading'
+import BootstrapButton from 'gts-components/Bootstrap/BootstrapButton/BootstrapButton'
+
 import BookingExternalNumberType from '~resources/views/booking/shared/components/BookingPanel/components/BookingExternalNumberType.vue'
 import BookingFinancialCost from '~resources/views/booking/shared/components/BookingPanel/components/BookingFinancialCost.vue'
 import BookingRequests from '~resources/views/booking/shared/components/BookingPanel/components/BookingRequests.vue'
@@ -9,9 +12,6 @@ import BookingTotalAmount from '~resources/views/booking/shared/components/Booki
 import BookingTravelineFlag from '~resources/views/booking/shared/components/BookingPanel/components/BookingTravelineFlag.vue'
 import ControlPanelSection from '~resources/views/booking/shared/components/ControlPanelSection.vue'
 import { useBookingStore } from '~resources/views/booking/shared/store/booking'
-
-import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
-import OverlayLoading from '~components/OverlayLoading.vue'
 
 const bookingStore = useBookingStore()
 const { recalculatePrice } = bookingStore

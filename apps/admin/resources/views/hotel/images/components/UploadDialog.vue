@@ -3,11 +3,10 @@
 import { ref, watch } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
+import BaseDialog from 'gts-components/Base/BaseDialog'
+import BootstrapButton from 'gts-components/Bootstrap/BootstrapButton/BootstrapButton'
 import { nanoid } from 'nanoid'
 import prettyBytes from 'pretty-bytes'
-
-import BaseDialog from '~components/BaseDialog.vue'
-import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 
 import DropZone from './DropZone.vue'
 

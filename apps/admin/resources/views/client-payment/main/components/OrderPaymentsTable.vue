@@ -2,12 +2,11 @@
 import { onMounted, ref, watch } from 'vue'
 
 import { formatPrice } from 'gts-common/helpers/price'
+import BootstrapButton from 'gts-components/Bootstrap/BootstrapButton/BootstrapButton'
 
 import { createSelectionState } from '~resources/views/client-payment/main/lib/selected-item'
 
 import { PaymentInfo, PaymentOrder, PaymentOrderPayload } from '~api/payment/payment'
-
-import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 
 type PaymentOrderDistributed = PaymentOrder & {
   distributedAmount: number

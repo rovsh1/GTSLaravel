@@ -3,14 +3,13 @@
 import { computed, nextTick, ref, watch, watchEffect } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
+import BaseDialog from 'gts-components/Base/BaseDialog'
+import SelectComponent from 'gts-components/Base/SelectComponent'
+import { SelectOption } from 'gts-components/Bootstrap/lib'
 
 import { CarFormData } from '~resources/views/booking/shared/lib/data-types'
 
 import { Car } from '~api/supplier/cars'
-
-import BaseDialog from '~components/BaseDialog.vue'
-import { SelectOption } from '~components/Bootstrap/lib'
-import SelectComponent from '~components/SelectComponent.vue'
 
 import { isDataValid } from '~helpers/form'
 

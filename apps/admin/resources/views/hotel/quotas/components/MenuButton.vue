@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 
-import InlineIcon from '~components/InlineIcon.vue'
+import InlineIcon from 'gts-components/Base/InlineIcon'
 
 defineProps<{
   visible: boolean

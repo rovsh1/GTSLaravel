@@ -54,7 +54,6 @@ module.exports = defineConfig({
         ['^~resources'],
         // Aliases
         ['^~api'],
-        ['^~components'],
         ['^~stores'],
         ['^~widgets'],
         ['^~cache'],

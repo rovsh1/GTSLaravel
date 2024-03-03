@@ -1,4 +1,4 @@
-import { showToast } from '~components/Bootstrap/BootstrapToast'
+import { showToast } from 'gts-components/Bootstrap/BootstrapToast/index'
 
 type UseFetchContextError = {
   data: any

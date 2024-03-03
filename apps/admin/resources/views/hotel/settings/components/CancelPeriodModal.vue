@@ -4,15 +4,14 @@ import { computed, ref, watch } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
 import { formatDateToAPIDate, parseAPIDateToJSDate } from 'gts-common/helpers/date'
+import BaseDialog from 'gts-components/Base/BaseDialog'
+import DateRangePicker from 'gts-components/Base/DateRangePicker'
+import SelectComponent from 'gts-components/Base/SelectComponent'
 
 import { cancelPeriodOptions } from '~resources/views/booking/shared/lib/constants'
 
 import { DateResponse } from '~api'
 import { CancelPeriod, DatePeriod } from '~api/hotel/markup-settings'
-
-import BaseDialog from '~components/BaseDialog.vue'
-import DateRangePicker from '~components/DateRangePicker.vue'
-import SelectComponent from '~components/SelectComponent.vue'
 
 const props = withDefaults(defineProps<{
   value?: CancelPeriod

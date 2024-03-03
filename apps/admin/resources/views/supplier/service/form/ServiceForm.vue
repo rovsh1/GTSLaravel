@@ -4,6 +4,10 @@ import { computed, defineAsyncComponent, onMounted, reactive, ref, shallowRef } 
 import { showConfirmDialog } from 'gts-common/helpers/confirm-dialog'
 import { requestInitialData } from 'gts-common/helpers/initial-data'
 import { toPascalCase } from 'gts-common/helpers/strings'
+import OverlayLoading from 'gts-components/Base/OverlayLoading'
+import SelectComponent from 'gts-components/Base/SelectComponent'
+import BootstrapButton from 'gts-components/Bootstrap/BootstrapButton/BootstrapButton'
+import { SelectOption } from 'gts-components/Bootstrap/lib'
 import { z } from 'zod'
 
 import ErrorComponent from '~resources/views/booking/shared/components/ErrorComponent.vue'
@@ -12,11 +16,6 @@ import { DetailsFormData } from '~resources/views/supplier/service/form/componen
 
 import { useGetBookingDetailsTypesAPI } from '~api/booking/service'
 import { deleteService } from '~api/supplier/service'
-
-import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
-import { SelectOption } from '~components/Bootstrap/lib'
-import OverlayLoading from '~components/OverlayLoading.vue'
-import SelectComponent from '~components/SelectComponent.vue'
 
 function intTransformator(value: any) {
   return parseInt(value, 10)

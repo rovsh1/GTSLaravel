@@ -3,16 +3,15 @@
 import { computed, nextTick, ref, watch, watchEffect } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
+import BaseDialog from 'gts-components/Base/BaseDialog'
+import SelectComponent from 'gts-components/Base/SelectComponent'
+import { SelectOption } from 'gts-components/Bootstrap/lib'
 
 import { genderOptions } from '~resources/views/booking/shared/lib/constants'
 import { GuestFormData } from '~resources/views/booking/shared/lib/data-types'
 
 import { CountryResponse } from '~api/country'
 import { Guest } from '~api/order/guest'
-
-import BaseDialog from '~components/BaseDialog.vue'
-import { SelectOption } from '~components/Bootstrap/lib'
-import SelectComponent from '~components/SelectComponent.vue'
 
 import { isDataValid } from '~helpers/form'
 
