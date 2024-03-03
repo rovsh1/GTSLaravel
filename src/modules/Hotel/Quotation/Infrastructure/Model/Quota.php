@@ -5,6 +5,7 @@ namespace Module\Hotel\Quotation\Infrastructure\Model;
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Query\Builder as Query;
 use Illuminate\Support\Carbon;
 use Module\Hotel\Moderation\Infrastructure\Models\Room;
 use Sdk\Booking\Enum\QuotaChangeTypeEnum;
@@ -15,6 +16,7 @@ use Sdk\Shared\Enum\Hotel\QuotaStatusEnum;
  * Module\Hotel\Infrastructure\Models\Room\Quota
  *
  * @property int $id
+ * @property int $hotel_id
  * @property int $room_id
  * @property Carbon $date
  * @property int $release_days
@@ -71,12 +73,28 @@ class Quota extends Model
         'date' => 'date',
         'status' => QuotaStatusEnum::class,
         'room_id' => 'int',
+        'hotel_id' => 'int',
         'release_days' => 'int',
         'count_total' => 'int',
         'count_reserved' => 'int',
         'count_booked' => 'int',
         'count_available' => 'int',
     ];
+
+    protected static function booted()
+    {
+        static::addGlobalScope('default', function (Builder $builder) {
+            $builder->addSelect('hotel_room_quota.*')
+                ->addSelect('hotel_rooms.hotel_id as hotel_id')
+                ->join('hotel_rooms', 'hotel_rooms.id', 'hotel_room_quota.room_id')
+                ->join('hotels', 'hotels.id', 'hotel_rooms.hotel_id')
+                ->whereNotExists(function (Query $query) {
+                    $query->selectRaw(1)
+                        ->from('traveline_hotels')
+                        ->whereColumn('traveline_hotels.hotel_id', 'hotel_rooms.hotel_id');
+                });
+        });
+    }
 
     public static function batchUpdateStatus(int $roomId, CarbonPeriod $period, QuotaStatusEnum $status): void
     {
@@ -105,9 +123,7 @@ class Quota extends Model
         if ($roomId) {
             $builder->where('room_id', $roomId);
         } else {
-            $builder->whereHas('room', function (Builder $query) use ($hotelId) {
-                $query->whereHotelId($hotelId);
-            });
+            $builder->where('hotel_rooms.hotel_id', $hotelId);
         }
     }
 

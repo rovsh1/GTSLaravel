@@ -5,7 +5,7 @@ namespace App\Admin\Http\Requests\Hotel;
 use Carbon\CarbonPeriod;
 use Illuminate\Foundation\Http\FormRequest;
 
-class GetQuotaRequest extends FormRequest
+class GetQuotaAvailabilityRequest extends FormRequest
 {
     public const AVAILABILITY_SOLD = 'sold';
     public const AVAILABILITY_STOPPED = 'stopped';
@@ -19,21 +19,33 @@ class GetQuotaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'room_id' => ['nullable', 'numeric'],
             'dateFrom' => ['required', 'date'],
             'dateTo' => ['required', 'date'],
-            'availability' => ['nullable', 'in:sold,stopped,available']
+
+            'cityIds' => ['nullable', 'array'],
+            'cityIds.*' => ['numeric'],
+
+            'hotelIds' => ['nullable', 'array'],
+            'hotelIds.*' => ['numeric'],
+
+            'roomIds' => ['nullable', 'array'],
+            'roomIds.*' => ['numeric'],
         ];
     }
 
-    public function getAvailability(): ?string
+    public function getRoomIds(): array
     {
-        return $this->get('availability');
+        return $this->post('roomIds', []);
     }
 
-    public function getRoomId(): ?int
+    public function getCityIds(): array
     {
-        return $this->get('room_id');
+        return $this->get('cityIds', []);
+    }
+
+    public function getHotelIds(): array
+    {
+        return $this->get('hotelIds', []);
     }
 
     public function getPeriod(): CarbonPeriod

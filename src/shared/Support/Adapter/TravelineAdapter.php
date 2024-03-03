@@ -13,6 +13,7 @@ use Pkg\Supplier\Traveline\UseCase\GetAvailableQuotas;
 use Pkg\Supplier\Traveline\UseCase\GetClosedQuotas;
 use Pkg\Supplier\Traveline\UseCase\GetQuotas;
 use Pkg\Supplier\Traveline\UseCase\GetSoldQuotas;
+use Pkg\Supplier\Traveline\UseCase\QuotaAvailability;
 use Pkg\Supplier\Traveline\UseCase\ReserveQuotas;
 use Shared\Contracts\Adapter\TravelineAdapterInterface;
 
@@ -38,14 +39,23 @@ class TravelineAdapter implements TravelineAdapterInterface
         return app(GetAvailableQuotas::class)->execute($hotelId, $period, $roomId);
     }
 
-    public function getClosed(int $hotelId, CarbonPeriod $period, ?int $roomId): array
+    public function getClosedQuotas(int $hotelId, CarbonPeriod $period, ?int $roomId): array
     {
         return app(GetClosedQuotas::class)->execute($hotelId, $period, $roomId);
     }
 
-    public function getSold(int $hotelId, CarbonPeriod $period, ?int $roomId): array
+    public function getSoldQuotas(int $hotelId, CarbonPeriod $period, ?int $roomId): array
     {
         return app(GetSoldQuotas::class)->execute($hotelId, $period, $roomId);
+    }
+
+    public function getQuotasAvailability(
+        CarbonPeriod $period,
+        array $cityIds = [],
+        array $hotelIds = [],
+        array $roomIds = []
+    ): array {
+        return app(QuotaAvailability\Get::class)->execute($period, $cityIds, $hotelIds, $roomIds);
     }
 
     public function update(int $roomId, CarbonPeriod $period, ?int $quota, ?int $releaseDays = null): void

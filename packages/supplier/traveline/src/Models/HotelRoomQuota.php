@@ -6,7 +6,6 @@ namespace Pkg\Supplier\Traveline\Models;
 
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Query\Builder as Query;
 use Sdk\Module\Database\Eloquent\Model;
 use Sdk\Shared\Enum\Hotel\QuotaStatusEnum;
 
@@ -24,7 +23,6 @@ class HotelRoomQuota extends Model
         'count_available',
     ];
 
-
     protected $attributes = [
         'status' => QuotaStatusEnum::OPEN,
     ];
@@ -32,10 +30,21 @@ class HotelRoomQuota extends Model
     protected $casts = [
         'date' => 'date',
         'status' => QuotaStatusEnum::class,
+        'hotel_id' => 'int',
         'room_id' => 'int',
         'release_days' => 'int',
         'count_available' => 'int',
     ];
+
+    protected static function booted()
+    {
+        static::addGlobalScope('default', function (Builder $builder) {
+            $builder->addSelect('traveline_hotel_room_quota.*')
+                ->addSelect('hotel_rooms.hotel_id')
+                ->join('hotel_rooms', 'hotel_rooms.id', 'traveline_hotel_room_quota.room_id')
+                ->join('hotels', 'hotels.id', 'hotel_rooms.hotel_id');
+        });
+    }
 
     public function cancelQuotaReserve(int $count): void
     {
@@ -68,12 +77,7 @@ class HotelRoomQuota extends Model
         if ($roomId) {
             $builder->where('room_id', $roomId);
         } else {
-            $builder->whereExists(function (Query $query) use ($hotelId) {
-                $query->selectRaw(1)
-                    ->from('hotel_rooms')
-                    ->whereColumn('hotel_rooms.id', 'traveline_hotel_room_quota.room_id')
-                    ->where('hotel_id', $hotelId);
-            });
+            $builder->where('hotel_rooms.hotel_id', $hotelId);
         }
     }
 
