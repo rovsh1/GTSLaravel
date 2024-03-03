@@ -43,8 +43,7 @@ abstract class AbstractReportCompiler
         $defaultCellStyle = $this->getCellStyle();
         for ($i = $before; $i <= $before + $numberOfRows; $i++) {
             foreach ($sheet->getColumnIterator() as $column) {
-                $sheet->getCell($column->getColumnIndex() . $i)->getStyle()->applyFromArray($defaultCellStyle)->getFont(
-                )->applyFromArray($this->defaultFont);
+                $sheet->getCell($column->getColumnIndex() . $i)->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($this->defaultFont);
             }
             $sheet->getRowDimension($i)->setRowHeight(self::DEFAULT_ROW_HEIGHT);
         }
