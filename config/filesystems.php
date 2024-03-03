@@ -70,6 +70,11 @@ return [
             'throw' => false,
         ],
 
+        'backup' => [
+            'driver' => 'local',
+            'root' => env('BACKUP_PATH') ?? storage_path('backups')
+        ],
+
     ],
 
     /*
