@@ -20,7 +20,7 @@ class Get implements UseCaseInterface
      * @param array $cityIds
      * @param array $hotelIds
      * @param array $roomIds
-     * @return QuotaDto[]
+     * @return QuotaDto|\Pkg\Supplier\Traveline\Dto\QuotaDto[]
      */
     public function execute(CarbonPeriod $period, array $cityIds = [], array $hotelIds = [], array $roomIds = []): array
     {

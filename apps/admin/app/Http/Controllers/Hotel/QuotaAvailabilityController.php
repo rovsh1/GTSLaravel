@@ -4,7 +4,6 @@ namespace App\Admin\Http\Controllers\Hotel;
 
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Http\Requests\Hotel\GetQuotaAvailabilityRequest;
-use App\Admin\Http\Resources\HotelQuota;
 use App\Admin\Models\Hotel\Hotel;
 use App\Admin\Support\Facades\Hotel\QuotaAvailabilityAdapter;
 use App\Admin\Support\Facades\Layout;
@@ -43,7 +42,7 @@ class QuotaAvailabilityController extends Controller
     private function buildResponse(array $quotas): array
     {
         return collect($quotas)->groupBy('hotelId')->map(function (Collection $quotas, int $hotelId) {
-            $quotasGroupedByDate = $quotas->groupBy(fn(QuotaDto $dto) => $dto->date->format('Y-m-d'))
+            $quotasGroupedByDate = $quotas->groupBy(fn(QuotaDto|\Pkg\Supplier\Traveline\Dto\QuotaDto $dto) => $dto->date->format('Y-m-d'))
                 ->map(fn(Collection $dtos, string $date) => [
                     'date' => $date,
                     'count_available' => $dtos->sum('countAvailable')

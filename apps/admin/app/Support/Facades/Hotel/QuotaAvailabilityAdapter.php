@@ -5,9 +5,10 @@ namespace App\Admin\Support\Facades\Hotel;
 use Carbon\CarbonInterface;
 use Carbon\CarbonPeriod;
 use Illuminate\Support\Facades\Facade;
+use Module\Hotel\Quotation\Application\Dto\QuotaDto;
 
 /**
- * @method static array getQuotasAvailability(CarbonPeriod $period, int[] $cityIds = [], int[] $hotelIds = [], int[] $roomIds = [])
+ * @method static QuotaDto|\Pkg\Supplier\Traveline\Dto\QuotaDto[] getQuotasAvailability(CarbonPeriod $period, int[] $cityIds = [], int[] $hotelIds = [], int[] $roomIds = [])
  */
 class QuotaAvailabilityAdapter extends Facade
 {

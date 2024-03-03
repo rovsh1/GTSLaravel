@@ -111,4 +111,9 @@ class HotelRoomQuota extends Model
         $builder->where('release_days', '<=', $releaseDays);
     }
 
+    public function scopeWhereStatus(Builder $builder, QuotaStatusEnum|int $status): void
+    {
+        $builder->where('traveline_hotel_room_quota.status', $status);
+    }
+
 }

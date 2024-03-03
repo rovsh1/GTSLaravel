@@ -149,6 +149,11 @@ class Quota extends Model
         $builder->whereStatus(QuotaStatusEnum::CLOSE);
     }
 
+    public function scopeWhereStatus(Builder $builder, QuotaStatusEnum|int $status): void
+    {
+        $builder->where('hotel_room_quota.status', $status);
+    }
+
     public function scopeWhereHasAvailable(Builder $builder, int $count = 0): void
     {
         $builder->whereRaw('(count_total - (' . self::buildCountQuery() . ') >= ?)', [$count]);
