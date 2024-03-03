@@ -17,7 +17,21 @@ class Kernel extends ConsoleKernel
         RefreshRatingsCommand::class,
     ];
 
-    protected function schedule(Schedule $schedule) {}
+    protected function schedule(Schedule $schedule)
+    {
+        if (app()->environment('production')) {
+            $this->scheduleProduction($schedule);
+        }
+    }
+
+    private function scheduleProduction(Schedule $schedule): void
+    {
+        $schedule->command('backup:run --only-db')
+            ->dailyAt('03:00');
+
+        $schedule->command('backup:run')
+            ->weeklyOn(0, '04:00');
+    }
 
     protected function commands()
     {
