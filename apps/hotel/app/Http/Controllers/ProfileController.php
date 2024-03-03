@@ -109,17 +109,6 @@ class ProfileController extends AbstractController
             ]);
     }
 
-    public function delete(Request $request): AjaxRedirectResponse
-    {
-        $user = $this->getUser();
-        (new LogoutService())->logout($request);
-        $user->delete();
-
-        return new AjaxRedirectResponse(
-            route('auth.login')
-        );
-    }
-
     public function photo(Request $request)
     {
         $form = Form::name('data')

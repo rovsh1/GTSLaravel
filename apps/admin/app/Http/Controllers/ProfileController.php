@@ -128,17 +128,6 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function delete(Request $request): AjaxResponseInterface
-    {
-        $user = Auth::user();
-        $this->logout($request);
-        $user->delete();
-
-        return new AjaxRedirectResponse(
-            route('auth.login')
-        );
-    }
-
     private function updateAvatar(Administrator $model, UploadedFile $uploadedFile): void
     {
         $fileStorageAdapter = app(FileStorageAdapterInterface::class);
