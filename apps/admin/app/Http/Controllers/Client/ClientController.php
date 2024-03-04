@@ -246,7 +246,7 @@ class ClientController extends AbstractPrototypeController
             ->enum('type', ['label' => 'Тип', 'enum' => TypeEnum::class, 'required' => true, 'emptyItem' => ''])
             ->hidden('gender', ['label' => 'Пол'])
             ->hidden('country_id', ['label' => 'Страна (гражданство)'])
-            ->city('city_id', ['label' => 'Город', 'required' => true, 'emptyItem' => ''])
+            ->hidden('city_id', ['label' => 'Город'])
             ->enum('status', ['label' => 'Статус', 'enum' => StatusEnum::class])
             ->currency('currency', ['label' => 'Валюта', 'required' => true, 'emptyItem' => ''])
             ->enum(
