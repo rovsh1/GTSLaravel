@@ -50,9 +50,10 @@ class ClientController extends AbstractPrototypeController
     public function store(): RedirectResponse
     {
         $form = $this->formFactory()
-            ->method('post');
+            ->method('post')
+            ->failUrl($this->prototype->route('create'));
 
-        $form->submitOrFail($this->prototype->route('create'));
+        $form->submitOrFail();
 
         $preparedData = $this->saving($form->getData());
         $this->model = $this->repository->create($preparedData);
