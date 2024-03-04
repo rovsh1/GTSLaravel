@@ -56,9 +56,22 @@ class ClientController extends AbstractPrototypeController
 
         $preparedData = $this->saving($form->getData());
         $this->model = $this->repository->create($preparedData);
-        if ($this->model->type === TypeEnum::PHYSICAL) {
+
+        $isPhysical = $this->model->type === TypeEnum::PHYSICAL;
+        if ($isPhysical) {
+            if (empty($preparedData['country_id'])) {
+                $form->error('Страна обязательна, для физ. лиц');
+                $form->throwError();
+            }
             $gender = $preparedData['gender'] ?? null;
             $this->createUser($preparedData['country_id'], $gender);
+        }
+
+        if (!$isPhysical) {
+            if (empty($preparedData['city_id'])) {
+                $form->error('Город обязателен, для юр. лиц');
+                $form->throwError();
+            }
         }
 
         $managerId = $preparedData['administrator_id'] ?? null;
