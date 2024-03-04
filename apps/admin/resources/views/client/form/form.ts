@@ -1,8 +1,15 @@
+import { requestInitialData } from 'gts-common/helpers/initial-data'
 import { useSelectElement } from 'gts-common/widgets/select-element'
+import { z } from 'zod'
 
 import '~resources/views/main'
 
+const { id } = requestInitialData(z.object({
+  id: z.number().nullable(),
+}))
+
 $(() => {
+  const isEditMode = id !== null
   const $legalTypeSelect = $('#form_data_type')
   const $genderInput = $('#form_data_gender')
   const $countryField = $('div.field-country_id')
@@ -10,6 +17,8 @@ $(() => {
   const $cityField = $('div.field-city_id')
   const $citySelect = $cityField.find('#form_data_city_id')
   let $genderSelect: JQuery<HTMLSelectElement>
+
+  console.log({ isEditMode })
 
   const initGenderSelect = async () => {
     if ($genderSelect !== undefined) {
