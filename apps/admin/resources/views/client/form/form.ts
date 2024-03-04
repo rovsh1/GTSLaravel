@@ -67,6 +67,9 @@ $(() => {
       $genderInput.attr('required', 'required')
       $countryField.show().toggleClass('field-required', true)
       $countrySelect.attr('required', 'required')
+      if ($countrySelect) {
+        await useSelectElement($countrySelect[0] as HTMLSelectElement)
+      }
       $citySelect.val('').change()
       if (!isFirstInit) {
         $genderSelect.val('').change()
