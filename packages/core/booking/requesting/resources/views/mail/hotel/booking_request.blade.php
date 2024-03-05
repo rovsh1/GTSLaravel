@@ -7,7 +7,7 @@
         </div>
         <div class="text-block">
             <p>Просим Вас обработать <span class="new">запрос на бронирование</span> <a
-                    href="{{ route('service-booking.show', $booking->number) }}"
+                    href="{{ route('hotel-booking.show', $booking->number) }}"
                     target="_blank">по
                     ссылке</a></p>
         </div>
