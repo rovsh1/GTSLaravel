@@ -42,7 +42,7 @@ class ProfitReportCompiler extends AbstractReportCompiler
 
         $data = $this->dataFactory->build($endPeriod, $startPeriod);
         foreach ($data as $currency => $orders) {
-            $this->appendClientRows($currency, $orders);
+            $this->appendRows($currency, $orders);
         }
 
         $this->fillReportPeriod();
@@ -55,7 +55,7 @@ class ProfitReportCompiler extends AbstractReportCompiler
         return $tempFile;
     }
 
-    private function appendClientRows(string $currency, array $rows): void
+    private function appendRows(string $currency, array $rows): void
     {
         $sheet = $this->spreadsheet->getActiveSheet();
         $lastRow = $sheet->getHighestRow();
@@ -127,7 +127,7 @@ class ProfitReportCompiler extends AbstractReportCompiler
             $data = [
                 'A' . $currentRow => $row['id'],
                 'B' . $currentRow => $row['status'],
-                'C' . $currentRow => $row['external_id'],
+                'C' . $currentRow => $row['client_name'],
                 'D' . $currentRow => date('d.m.Y', $row['period_start']) . ' - ' . date('d.m.Y', $row['period_end']),
                 'E' . $currentRow => implode("\n", $row['guests']),
                 'F' . $currentRow => count($row['guests']),
