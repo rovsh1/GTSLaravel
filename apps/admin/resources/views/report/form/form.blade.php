@@ -18,7 +18,7 @@
     <div class="content-body">
         <div class="card card-form">
             <div class="card-body">
-                <form class="retry-submit-lock" action="{{ $form->action }}" method="{{ strtoupper($form->method) === 'GET' ? 'GET' : 'POST' }}"
+                <form action="{{ $form->action }}" method="{{ strtoupper($form->method) === 'GET' ? 'GET' : 'POST' }}"
                       enctype="multipart/form-data">
                     <div class="form-group">{!! $form !!}</div>
 
