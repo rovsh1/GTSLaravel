@@ -20,6 +20,7 @@ final class Invoice extends AbstractAggregateRoot
         private readonly ClientId $clientId,
         private readonly OrderId $orderId,
         private readonly File $document,
+        private readonly ?File $wordDocument,
         private readonly Timestamps $timestamps,
         private ?\DateTimeInterface $sendAt,
         //@todo добавить стоимость инвоисов
@@ -43,6 +44,11 @@ final class Invoice extends AbstractAggregateRoot
     public function document(): File
     {
         return $this->document;
+    }
+
+    public function wordDocument(): ?File
+    {
+        return $this->wordDocument;
     }
 
     public function timestamps(): Timestamps

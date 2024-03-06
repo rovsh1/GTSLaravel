@@ -14,6 +14,7 @@ use Sdk\Module\Database\Eloquent\Model;
  * @property int $client_id
  * @property int $order_id
  * @property string $document
+ * @property string $word_document
  * @property DateTime $created_at
  * @property DateTime $updated_at
  * @property DateTime|null $send_at
@@ -28,6 +29,7 @@ class Invoice extends Model
         'client_id',
         'order_id',
         'document',
+        'word_document',
         'send_at',
     ];
 

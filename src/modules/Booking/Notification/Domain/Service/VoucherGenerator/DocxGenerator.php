@@ -129,7 +129,7 @@ class DocxGenerator
 
         $content = file_get_contents($tempFilePath);
 
-        return $this->fileStorageAdapter->create(str_replace('.pdf', '.docx', $filename), $content);
+        return $this->fileStorageAdapter->create($filename, $content);
     }
 
     private function appendService(Table $table, float $sectionWidth, ServiceInfoDto $service): void

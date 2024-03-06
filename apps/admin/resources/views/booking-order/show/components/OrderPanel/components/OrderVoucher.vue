@@ -92,7 +92,7 @@ const handleVoucherSend = async () => {
           aria-label="Скачать в Word формате"
           @click.prevent="handleDownloadWord"
         >
-          <InlineIcon icon="description" />
+          <InlineIcon icon="edit_document" />
         </a>
         <a
           v-if="availableActions?.canCreateVoucher"

@@ -27,7 +27,7 @@ AclRoute::for('booking-order')
     ->post('/{orderId}/invoice', Controllers\Booking\Order\InvoiceController::class . '@create', 'create', 'invoice.create')
     ->post('/{orderId}/invoice/cancel', Controllers\Booking\Order\InvoiceController::class . '@cancel', 'update', 'invoice.cancel')
     ->post('/{orderId}/invoice/send', Controllers\Booking\Order\InvoiceController::class . '@send', 'update', 'invoice.send')
-    ->get('/{orderId}/invoice/file', Controllers\Booking\Order\InvoiceController::class . '@getFile', 'read', 'invoice.file')
+    ->get('/{orderId}/invoice/file/{guid}', Controllers\Booking\Order\InvoiceController::class . '@getFile', 'read', 'invoice.file')
 
     ->post('/{orderId}/voucher', Controllers\Booking\Order\VoucherController::class . '@create', 'update', 'voucher.create')
     ->post('/{orderId}/voucher/send', Controllers\Booking\Order\VoucherController::class . '@send', 'update', 'voucher.send');

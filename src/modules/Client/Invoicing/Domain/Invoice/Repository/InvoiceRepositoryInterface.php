@@ -10,7 +10,7 @@ use Sdk\Shared\ValueObject\File;
 
 interface InvoiceRepositoryInterface
 {
-    public function create(ClientId $clientId, OrderId $orderId, ?File $document): Invoice;
+    public function create(ClientId $clientId, OrderId $orderId, ?File $document, ?File $wordDocument): Invoice;
 
     public function find(InvoiceId $id): ?Invoice;
 

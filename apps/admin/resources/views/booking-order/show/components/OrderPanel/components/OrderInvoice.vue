@@ -78,6 +78,16 @@ const handleInvoiceSend = async () => {
           <InlineIcon icon="download" />
         </a>
         <a
+          v-if="orderInvoice?.wordDocument"
+          v-tooltip="'Скачать в Word формате'"
+          href="#"
+          class="btn-download"
+          aria-label="Скачать в Word формате"
+          @click.prevent="invoiceStore.downloadWordFile()"
+        >
+          <InlineIcon icon="edit_document" />
+        </a>
+        <a
           v-if="availableActions?.canCancelInvoice"
           v-tooltip="'Отменить'"
           href="#"

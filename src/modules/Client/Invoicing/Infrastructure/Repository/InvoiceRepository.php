@@ -15,12 +15,13 @@ use Sdk\Shared\ValueObject\Timestamps;
 
 class InvoiceRepository implements InvoiceRepositoryInterface
 {
-    public function create(ClientId $clientId, OrderId $orderId, ?File $document): Invoice
+    public function create(ClientId $clientId, OrderId $orderId, ?File $document, ?File $wordDocument): Invoice
     {
-        return DB::transaction(function () use ($clientId, $orderId, $document) {
+        return DB::transaction(function () use ($clientId, $orderId, $document, $wordDocument) {
             $model = Model::create([
                 'client_id' => $clientId->value(),
                 'document' => $document?->guid(),
+                'word_document' => $wordDocument?->guid(),
                 'order_id' => $orderId->value()
             ]);
 
@@ -29,6 +30,7 @@ class InvoiceRepository implements InvoiceRepositoryInterface
                 $clientId,
                 $orderId,
                 $document,
+                $wordDocument,
                 new Timestamps(
                     \DateTimeImmutable::createFromInterface($model->created_at),
                     \DateTimeImmutable::createFromInterface($model->updated_at),
@@ -54,12 +56,16 @@ class InvoiceRepository implements InvoiceRepositoryInterface
 
     public function store(Invoice $invoice): void
     {
+        /** @var Model $model */
         $model = Model::find($invoice->id()->value());
         if (!$model) {
             throw new \Exception();
         }
         if ($model->document === null && $invoice->document() !== null) {
             $model->document = $invoice->document()->guid();
+        }
+        if ($model->word_document === null && $invoice->wordDocument() !== null) {
+            $model->word_document = $invoice->wordDocument()->guid();
         }
 
         if ($model->send_at?->getTimestamp() !== $invoice->sendAt()?->getTimestamp()) {
@@ -87,6 +93,7 @@ class InvoiceRepository implements InvoiceRepositoryInterface
             new ClientId($model->client_id),
             new OrderId($model->order_id),
             $model->document ? new File($model->document) : null,
+            $model->word_document ? new File($model->word_document) : null,
             new Timestamps(
                 createdAt: \DateTimeImmutable::createFromInterface($model->created_at),
                 updatedAt: \DateTimeImmutable::createFromInterface($model->updated_at),

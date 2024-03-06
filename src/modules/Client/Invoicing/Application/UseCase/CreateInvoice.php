@@ -23,6 +23,7 @@ class CreateInvoice implements UseCaseInterface
             id: $invoice->id()->value(),
             orderId: $orderId,
             document: $invoice->document()->guid(),
+            wordDocument: $invoice->wordDocument()?->guid(),
             createdAt: $invoice->timestamps()->createdAt()->format(DATE_ATOM),
             sendAt: $invoice->sendAt()?->format(DATE_ATOM),
         );
