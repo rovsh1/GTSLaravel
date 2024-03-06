@@ -123,7 +123,8 @@ const validateBaseDataForm = computed(() => (isDataValid(null, basicData.name)
 const validateLegalDataForm = computed(() => (isDataValid(null, legalEntityData.name)
   && isDataValid(null, legalEntityData.address) && isDataValid(null, legalEntityData.cityId)))
 
-const validatePhysicalDataForm = computed(() => (isDataValid(null, physicalEntityData.countryId)))
+const validatePhysicalDataForm = computed(() =>
+  (isDataValid(null, physicalEntityData.countryId) && isDataValid(null, physicalEntityData.gender)))
 
 const isFormValid = (): boolean => {
   switch (basicData.type) {
@@ -289,11 +290,13 @@ onMounted(() => {
               <SelectComponent
                 v-if="isOpened"
                 :options="genderOptions"
+                required
                 label="Пол"
                 :returned-empty-value="null"
                 :value="physicalEntityData.gender"
                 @change="(value, event) => {
                   physicalEntityData.gender = value ? Number(value) : value
+                  isDataValid(event, value)
                 }"
               />
             </div>
