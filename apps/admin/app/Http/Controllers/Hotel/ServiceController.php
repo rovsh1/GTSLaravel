@@ -12,6 +12,7 @@ use App\Admin\Support\Repository\RepositoryInterface;
 use App\Shared\Http\Responses\AjaxReloadResponse;
 use App\Shared\Http\Responses\AjaxResponseInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\View\View;
 
 class ServiceController extends Controller
@@ -37,9 +38,9 @@ class ServiceController extends Controller
 
     public function update(Request $request, Hotel $hotel): AjaxResponseInterface
     {
-        $servicesData = \Arr::get($request->toArray(), 'data.services');
+        $servicesData = Arr::get($request->toArray(), 'data.services', []);
         $servicesData = array_map(fn(array $service) => [
-            'is_paid' => \Arr::has($service, 'is_paid'),
+            'is_paid' => Arr::has($service, 'is_paid'),
             'service_id' => (int)$service['service_id'],
             'hotel_id' => $hotel->id,
         ], $servicesData);

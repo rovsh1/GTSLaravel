@@ -30,7 +30,7 @@ class ServiceController extends AbstractHotelController
 
     public function update(Request $request): AjaxResponseInterface
     {
-        $servicesData = \Arr::get($request->toArray(), 'data.services');
+        $servicesData = \Arr::get($request->toArray(), 'data.services', []);
         $servicesData = array_map(fn(array $service) => [
             'is_paid' => \Arr::has($service, 'is_paid'),
             'service_id' => (int)$service['service_id'],
