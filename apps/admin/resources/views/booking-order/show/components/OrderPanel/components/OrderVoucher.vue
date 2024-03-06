@@ -24,6 +24,14 @@ const handleDownload = async (): Promise<void> => {
   await downloadFile(voucher.value.file.url, voucher.value.file.name)
 }
 
+const handleDownloadWord = async (): Promise<void> => {
+  const voucher = await orderStore.createVoucher()
+  if (!voucher.value.wordFile) {
+    return
+  }
+  await downloadFile(voucher.value.wordFile.url, voucher.value.wordFile.name)
+}
+
 const handleOpen = async () => {
   const voucher = await orderStore.createVoucher()
   if (!voucher.value.file) {
@@ -75,6 +83,16 @@ const handleVoucherSend = async () => {
           @click.prevent="handleDownload"
         >
           <InlineIcon icon="download" />
+        </a>
+        <a
+          v-if="availableActions?.canCreateVoucher"
+          v-tooltip="'Скачать в Word формате'"
+          href="#"
+          class="btn-download"
+          aria-label="Скачать в Word формате"
+          @click.prevent="handleDownloadWord"
+        >
+          <InlineIcon icon="description" />
         </a>
         <a
           v-if="availableActions?.canCreateVoucher"
