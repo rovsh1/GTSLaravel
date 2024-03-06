@@ -6,6 +6,7 @@ namespace Module\Booking\Notification\Domain\Factory;
 
 
 use Module\Booking\Moderation\Domain\Order\ValueObject\Voucher;
+use Module\Booking\Notification\Domain\Service\VoucherGenerator\DocxGenerator;
 use Module\Booking\Notification\Domain\Service\VoucherGenerator\FileGenerator;
 use Module\Booking\Shared\Domain\Order\Order;
 use Module\Booking\Shared\Domain\Shared\Service\ClientLocaleContext;
@@ -16,15 +17,22 @@ class VoucherFactory
 {
     public function __construct(
         private readonly FileGenerator $fileGenerator,
+        private readonly DocxGenerator $docxGenerator,
         private readonly ClientLocaleContext $clientLocaleDecorator,
     ) {}
 
     public function build(Order $order): Voucher
     {
         $orderId = $order->id();
+//        $fileDto = $this->clientLocaleDecorator->executeInClientLocale(
+//            $order->clientId(),
+//            fn() => $this->fileGenerator->generate($this->getFilename($orderId), $orderId)
+//        );
+
+
         $fileDto = $this->clientLocaleDecorator->executeInClientLocale(
             $order->clientId(),
-            fn() => $this->fileGenerator->generate($this->getFilename($orderId), $orderId)
+            fn() => $this->docxGenerator->generate($this->getFilename($orderId), $orderId)
         );
 
         return new Voucher(
