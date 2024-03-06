@@ -225,9 +225,7 @@ class BookingDtoFactory
         $travelineStatus = TravelineReservationStatusEnum::NEW;
 
         $travelineReservation = TravelineReservation::whereReservationId($booking->id)->first();
-        if ($travelineReservation !== null && $travelineReservation->created_at->notEqualTo(
-                $travelineReservation->updated_at
-            )) {
+        if ($travelineReservation !== null && $travelineReservation->created_at->notEqualTo($travelineReservation->updated_at)) {
             $travelineStatus = TravelineReservationStatusEnum::MODIFIED;
         }
 
