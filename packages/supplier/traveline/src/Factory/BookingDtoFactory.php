@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Pkg\Supplier\Traveline\Factory;
 
-use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Carbon\CarbonPeriod;
 use Module\Booking\Moderation\Application\Dto\Details\Accommodation\RoomDayPriceDto;
@@ -46,7 +45,7 @@ class BookingDtoFactory
         return new ReservationDto(
             number: $booking->id,
             hotelId: $details->hotelInfo->id,
-            created: new CarbonImmutable($booking->createdAt),
+            created: $booking->createdAt->format('Y-m-d H:i:s'),
             arrivalTime: $details->hotelInfo->checkInTime,
             departureTime: $details->hotelInfo->checkOutTime,
             currencyCode: $booking->prices->supplierPrice->currency->value,
