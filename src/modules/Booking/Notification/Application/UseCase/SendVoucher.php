@@ -48,7 +48,7 @@ class SendVoucher implements UseCaseInterface
             $voucher = $this->voucherFactory->build($order);
         }
 
-        $voucher = new Voucher($voucher->createdAt(), $voucher->file(), now()->toDateTimeImmutable());
+        $voucher = new Voucher($voucher->createdAt(), $voucher->file(), $voucher->wordFile(), now()->toDateTimeImmutable());
         $order->setVoucher($voucher);
         $this->orderDbContext->store($order);
         $this->eventDispatcher->dispatch(...$order->pullEvents());

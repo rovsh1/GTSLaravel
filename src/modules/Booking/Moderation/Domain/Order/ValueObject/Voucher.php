@@ -13,6 +13,7 @@ class Voucher implements SerializableInterface
     public function __construct(
         private readonly \DateTimeImmutable $createdAt,
         private readonly File $file,
+        private readonly ?File $wordFile,
         private readonly ?\DateTimeImmutable $sendAt,
     ) {}
 
@@ -26,6 +27,11 @@ class Voucher implements SerializableInterface
         return $this->file;
     }
 
+    public function wordFile(): ?File
+    {
+        return $this->wordFile;
+    }
+
     public function sendAt(): ?\DateTimeImmutable
     {
         return $this->sendAt;
@@ -36,6 +42,7 @@ class Voucher implements SerializableInterface
         return [
             'createdAt' => $this->createdAt->getTimestamp(),
             'file' => $this->file->guid(),
+            'wordFile' => $this->wordFile?->guid(),
             'sendAt' => $this->sendAt?->getTimestamp(),
         ];
     }
@@ -43,10 +50,12 @@ class Voucher implements SerializableInterface
     public static function deserialize(array $payload): static
     {
         $sendAt = $payload['sendAt'] ?? null;
+        $wordFile = $payload['wordFile'] ?? null;
 
         return new static(
             DateTime::createFromTimestamp($payload['createdAt'])->toDateTimeImmutable(),
             new File($payload['file']),
+            $wordFile !== null ? new File($wordFile) : null,
             $sendAt !== null ? DateTime::createFromTimestamp($sendAt)->toDateTimeImmutable() : null,
         );
     }

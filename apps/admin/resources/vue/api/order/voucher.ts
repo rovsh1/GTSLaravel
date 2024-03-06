@@ -12,6 +12,7 @@ export type OrderVoucher = {
   createdAt: DateResponse
   sendAt: DateResponse | null
   file: FileResponse
+  wordFile: FileResponse | null
 }
 
 export interface OrderVoucherSendResponse extends BaseResponse {
