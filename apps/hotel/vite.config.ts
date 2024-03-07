@@ -41,6 +41,7 @@ export default defineConfig(({ command }) => ({
         'resources/views/default/form/form.scss',
         'resources/views/main.scss',
         'resources/views/main.ts',
+        'resources/views/notes/notes.ts',
         'resources/views/show/show.scss',
         'resources/views/show/show.ts',
         'resources/views/rooms/rooms.scss',
