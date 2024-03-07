@@ -132,7 +132,9 @@ class HotelController extends AbstractPrototypeController
     public function search(SearchRequest $request): JsonResponse
     {
         $hotelsQuery = Hotel::query();
-        if ($request->getCityId() !== null) {
+        if ($request->getCityIds() !== null) {
+            $hotelsQuery->whereIn('hotels.city_id', $request->getCityIds());
+        } elseif ($request->getCityId() !== null) {
             $hotelsQuery->whereCityId($request->getCityId());
         }
 

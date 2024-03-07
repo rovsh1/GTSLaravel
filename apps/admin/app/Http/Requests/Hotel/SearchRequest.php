@@ -18,6 +18,8 @@ class SearchRequest extends FormRequest
     {
         return [
             'city_id' => ['nullable', 'numeric'],
+            'city_ids' => ['nullable', 'array'],
+            'city_ids.*' => ['numeric'],
         ];
     }
 
@@ -28,5 +30,10 @@ class SearchRequest extends FormRequest
         }
 
         return (int)$this->get('city_id');
+    }
+
+    public function getCityIds(): ?array
+    {
+        return $this->get('city_ids');
     }
 }
