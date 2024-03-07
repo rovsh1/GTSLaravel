@@ -15,19 +15,6 @@ class AccommodationModifiedRegistrar extends AbstractRegistrar
     {
         assert($event instanceof AccommodationModified);
 
-        $identifierPrefix = "accommodation[$event->accommodationId]";
-        $identifier = ChangesIdentifier::make($event->bookingId, $identifierPrefix);
-        $currentChanges = $this->changesStorage->find($identifier);
-
-        if (!$currentChanges) {
-            $currentChanges = Changes::makeUpdated(
-                $identifier,
-                "Изменено размещение $event->roomName",
-                $this->eventPayload($event)
-            );
-        }
-        $this->changesStorage->store($currentChanges);
-
         $this->registerFieldChanges($event, 'earlyCheckIn', 'Изменено время раннего заезда');
         $this->registerFieldChanges($event, 'lateCheckOut', 'Изменено время позднего выезда');
         $this->registerFieldChanges($event, 'guestNote', 'Изменен комментарий гостя');
@@ -36,12 +23,29 @@ class AccommodationModifiedRegistrar extends AbstractRegistrar
 
     private function registerFieldChanges(AccommodationModified $event, string $field, string $description): void
     {
+        $isFieldModified = $this->isFieldModified($event->beforePayload, $event->afterPayload, $field);
+        if (!$isFieldModified) {
+            return;
+        }
+
         $identifier = $this->makeIdentifier($event, $field);
         $currentChanges = $this->changesStorage->find($identifier);
-
         $originalDetails = $currentChanges !== null ? AccommodationDetails::deserialize($currentChanges->payload()['original']) : null;
+
+        if ($originalDetails === null) {
+            $this->changesStorage->store(
+                Changes::makeUpdated(
+                    $this->makeIdentifier($event, $field),
+                    $description,
+                    $this->eventPayload($event)
+                )
+            );
+
+            return;
+        }
+
         $afterDetails = AccommodationDetails::deserialize($event->afterPayload);
-        if ($this->isFieldEqual($originalDetails?->$field(), $afterDetails->$field())) {
+        if ($this->isFieldValueEqual($originalDetails->$field(), $afterDetails->$field())) {
             $this->changesStorage->remove($this->makeIdentifier($event, $field));
         } else {
             $this->changesStorage->store(
@@ -68,7 +72,15 @@ class AccommodationModifiedRegistrar extends AbstractRegistrar
         ];
     }
 
-    private function isFieldEqual(mixed $a, mixed $b): bool
+    private function isFieldModified(array $detailsBefore, array $detailsAfter, string $field): bool
+    {
+        $beforeValue = $detailsBefore[$field] ?? null;
+        $afterValue = $detailsAfter[$field] ?? null;
+
+        return $beforeValue !== $afterValue;
+    }
+
+    private function isFieldValueEqual(mixed $a, mixed $b): bool
     {
         if ($a instanceof CanEquate) {
             return $a->isEqual($b);
