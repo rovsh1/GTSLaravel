@@ -33,6 +33,8 @@ export default defineConfig(({ command }) => ({
     laravel({
       input: [
         'resources/js/support/jquery.ts',
+        'resources/js/support/tinymce/tinymce.js',
+        'resources/js/support/tinymce/tinymce-content.scss',
         'resources/views/auth/login/login.scss',
         'resources/views/auth/login/login.ts',
         'resources/views/default/grid/grid.scss',
@@ -43,6 +45,8 @@ export default defineConfig(({ command }) => ({
         'resources/views/show/show.ts',
         'resources/views/rooms/rooms.scss',
         'resources/views/rooms/rooms.ts',
+        'resources/views/room-form/room-form.ts',
+        'resources/views/room-form/room-form.scss',
         'resources/views/images/images.ts',
         'resources/views/quotas/quotas.ts',
         'resources/views/settings/settings.ts',
