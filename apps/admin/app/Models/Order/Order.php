@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Admin\Models\Order;
 
+use Illuminate\Database\Eloquent\Builder;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
 use Sdk\Shared\Enum\Order\OrderStatusEnum;
 
@@ -21,6 +22,11 @@ class Order extends \Module\Booking\Shared\Infrastructure\Models\Order
             OrderStatusEnum::INVOICED,
             OrderStatusEnum::PARTIAL_PAID,
         ];
+    }
+
+    public static function scopeWhereStatus(Builder $builder, OrderStatusEnum|int $status): void
+    {
+        $builder->where('orders.status', $status);
     }
 
     private static function getPayedAmountQuery(): string
