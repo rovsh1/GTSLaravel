@@ -7,6 +7,7 @@ use App\Admin\Models\Reference\City;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
 use Sdk\Module\Database\Eloquent\Model;
 use Sdk\Shared\Enum\CurrencyEnum;
@@ -15,6 +16,7 @@ use Sdk\Shared\Enum\ServiceTypeEnum;
 class Supplier extends Model
 {
     use HasQuicksearch;
+    use SoftDeletes;
 
     protected array $quicksearch = ['id', 'suppliers.%name%'];
 

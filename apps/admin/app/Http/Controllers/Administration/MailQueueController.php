@@ -31,7 +31,8 @@ class MailQueueController extends Controller
         $grid = $this->gridFactory();
         $data = QueueMessage::query()
             ->orderBy('priority', 'desc')
-            ->orderBy('created_at', 'desc');
+            ->orderBy('created_at', 'desc')
+            ->applyCriteria($grid->getSearchCriteria());
 
         $grid->data($data);
 

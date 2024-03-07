@@ -14,7 +14,7 @@ class Landmark extends Model
     use HasTranslations;
     use HasCoordinates;
 
-    protected array $quicksearch = ['id', 'name%'];
+    protected array $quicksearch = ['id', 'r_landmarks_translation.name%'];
 
     protected array $translatable = ['name'];
 

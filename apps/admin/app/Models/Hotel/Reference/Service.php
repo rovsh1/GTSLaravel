@@ -14,7 +14,7 @@ class Service extends Model
 
     public $timestamps = false;
 
-    protected array $quicksearch = ['id', 'name%'];
+    protected array $quicksearch = ['id', 'r_hotel_services_translation.name%'];
 
     protected array $translatable = ['name'];
 
