@@ -2,6 +2,8 @@
 import { computed } from 'vue'
 
 import { formatDateTime } from 'gts-common/helpers/date'
+import InlineIcon from 'gts-components/Base/InlineIcon'
+import { showToast } from 'gts-components/Bootstrap/BootstrapToast/index'
 
 import RequestBlock from '~resources/views/booking/shared/components/RequestBlock.vue'
 import { useOrderInvoiceStore } from '~resources/views/booking-order/show/store/invoice'
@@ -9,9 +11,6 @@ import { useOrderStore } from '~resources/views/booking-order/show/store/order'
 
 import { OrderInvoice } from '~api/order/invoice'
 import { OrderAvailableActionsResponse } from '~api/order/status'
-
-import { showToast } from '~components/Bootstrap/BootstrapToast'
-import InlineIcon from '~components/InlineIcon.vue'
 
 const orderStore = useOrderStore()
 const availableActions = computed<OrderAvailableActionsResponse | null>(() => orderStore.availableActions)
@@ -77,6 +76,16 @@ const handleInvoiceSend = async () => {
           @click.prevent="invoiceStore.downloadFile()"
         >
           <InlineIcon icon="download" />
+        </a>
+        <a
+          v-if="orderInvoice?.wordDocument"
+          v-tooltip="'Скачать в Word формате'"
+          href="#"
+          class="btn-download"
+          aria-label="Скачать в Word формате"
+          @click.prevent="invoiceStore.downloadWordFile()"
+        >
+          <InlineIcon icon="edit_document" />
         </a>
         <a
           v-if="availableActions?.canCancelInvoice"

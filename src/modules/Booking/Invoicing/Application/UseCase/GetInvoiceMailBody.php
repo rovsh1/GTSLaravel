@@ -13,7 +13,7 @@ use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 class GetInvoiceMailBody implements UseCaseInterface
 {
     public function __construct(
-        private readonly MailGenerator $fileGenerator,
+        private readonly MailGenerator $mailGenerator,
         private readonly OrderRepositoryInterface $orderRepository,
         private readonly ClientLocaleContext $clientLocaleDecorator,
     ) {}
@@ -24,7 +24,7 @@ class GetInvoiceMailBody implements UseCaseInterface
 
         return $this->clientLocaleDecorator->executeInClientLocale(
             $order->clientId(),
-            fn() => $this->fileGenerator->generate($order->id())
+            fn() => $this->mailGenerator->generate($order->id())
         );
     }
 }

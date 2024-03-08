@@ -398,6 +398,7 @@ class BookingController extends Controller
             ->enum('source', ['text' => 'Источник', 'order' => true, 'enum' => SourceEnum::class])
             ->date('created_at', ['text' => 'Создан', 'format' => 'datetime', 'order' => true])
             ->text('actions', ['renderer' => fn($row, $val) => $this->getActionButtons($row)])
+            ->supplierPaymentStatus('is_payed_to_supplier', ['text' => 'Оплата поставщику'])
             ->orderBy('bookings.created_at', 'desc')
             ->paginator(20);
     }
@@ -484,10 +485,11 @@ class BookingController extends Controller
             ->addSelect(
                 DB::raw('(SELECT bookings.status IN (' . implode(',', $requestableStatuses) . ')) as is_requestable'),
             )
-            ->addSelect(
-                DB::raw(
-                    'EXISTS(SELECT 1 FROM booking_requests WHERE bookings.id = booking_requests.booking_id AND is_archive = 0) as has_downloadable_request'
-                ),
+            ->selectRaw(
+                'EXISTS(SELECT 1 FROM booking_requests WHERE bookings.id = booking_requests.booking_id AND is_archive = 0) as has_downloadable_request'
+            )
+            ->selectRaw(
+                '(SELECT SUM(sum) FROM supplier_payment_landings WHERE bookings.id = supplier_payment_landings.booking_id) >= COALESCE(supplier_manual_price, supplier_price) as is_payed_to_supplier'
             );
     }
 }

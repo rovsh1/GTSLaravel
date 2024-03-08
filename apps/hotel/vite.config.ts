@@ -40,6 +40,7 @@ export default defineConfig(({ command }) => ({
         'resources/views/main.scss',
         'resources/views/main.ts',
         'resources/views/show/show.scss',
+        'resources/views/show/show.ts',
         'resources/views/rooms/rooms.scss',
         'resources/views/rooms/rooms.ts',
         'resources/views/images/images.ts',
@@ -88,7 +89,6 @@ export default defineConfig(({ command }) => ({
     alias: {
       '~resources': path.resolve(__dirname, 'resources'),
       '~api': path.resolve(__dirname, 'resources/vue/api'),
-      '~components': path.resolve(__dirname, 'resources/vue/components'),
       '~stores': path.resolve(__dirname, 'resources/vue/stores'),
       '~widgets': path.resolve(__dirname, 'resources/js/widgets'),
       '~cache': path.resolve(__dirname, 'resources/js/cache'),

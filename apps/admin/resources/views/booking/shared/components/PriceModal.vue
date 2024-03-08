@@ -3,8 +3,7 @@
 import { computed, ref } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
-
-import BaseDialog from '~components/BaseDialog.vue'
+import BaseDialog from 'gts-components/Base/BaseDialog'
 
 const props = defineProps<{
   opened: MaybeRef<boolean>

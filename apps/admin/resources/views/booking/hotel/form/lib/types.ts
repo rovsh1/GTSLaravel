@@ -1,4 +1,5 @@
 export interface LegalEntityFormData {
+  cityId: number | null
   name: string | null
   industry: number | null
   address: string
@@ -13,15 +14,16 @@ export interface LegalEntityFormData {
 }
 
 export interface PhysicalEntityFormData {
+  countryId: number | null
   gender: number | null
 }
 
 export interface BasicFormData {
   name: string
   type: number | null
-  cityId: number | null
   status: number | null
   currency: string | null
+  language: string
   managerId: number | null
   residency: number | null
   markupGroupId: number | null

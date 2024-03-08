@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Module\Hotel\Quotation\Application\Service\Supplier;
 
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Module\Hotel\Quotation\Application\Dto\QuotaDto;
+use Module\Hotel\Quotation\Application\Service\SupplierQuotaAvailabilityFetcherInterface;
 use Module\Hotel\Quotation\Application\Service\SupplierQuotaBookerInterface;
 use Module\Hotel\Quotation\Application\Service\SupplierQuotaFetcherInterface;
 use Module\Hotel\Quotation\Application\Service\SupplierQuotaUpdaterInterface;
@@ -19,7 +20,10 @@ use Module\Hotel\Quotation\Domain\ValueObject\RoomId;
 use Module\Hotel\Quotation\Infrastructure\Model\Quota;
 use Sdk\Shared\Enum\Hotel\QuotaStatusEnum;
 
-class Gotostans implements SupplierQuotaFetcherInterface, SupplierQuotaUpdaterInterface, SupplierQuotaBookerInterface
+class Gotostans implements SupplierQuotaFetcherInterface,
+                           SupplierQuotaUpdaterInterface,
+                           SupplierQuotaBookerInterface,
+                           SupplierQuotaAvailabilityFetcherInterface
 {
     public function __construct(
         private readonly QuotaRepositoryInterface $quotaRepository,
@@ -77,6 +81,25 @@ class Gotostans implements SupplierQuotaFetcherInterface, SupplierQuotaUpdaterIn
         );
     }
 
+
+    /**
+     * @param CarbonPeriod $period
+     * @param int[] $cityIds
+     * @param int[] $hotelIds
+     * @param int[] $roomIds
+     * @return QuotaDto[]
+     */
+    public function getQuotasAvailability(
+        CarbonPeriod $period,
+        array $cityIds = [],
+        array $hotelIds = [],
+        array $roomIds = []
+    ): array {
+        return $this->mapQuery(
+            $this->bootAvailabilityQuery($period, $cityIds, $hotelIds, $roomIds)
+        );
+    }
+
     public function update(int $roomId, CarbonPeriod $period, ?int $quota, ?int $releaseDays = null): void
     {
         $this->quotaRepository->update(new RoomId($roomId), $period, $quota, $releaseDays);
@@ -129,6 +152,20 @@ class Gotostans implements SupplierQuotaFetcherInterface, SupplierQuotaUpdaterIn
             ->withCountColumns();
     }
 
+    private function bootAvailabilityQuery(
+        CarbonPeriod $period,
+        array $cityIds = [],
+        array $hotelIds = [],
+        array $roomIds = []
+    ): Builder|Quota {
+        return Quota::query()
+            ->withCountColumns()
+            ->wherePeriod($period)
+            ->when(!empty($cityIds), fn(Builder $query) => $query->whereIn('hotels.city_id', $cityIds))
+            ->when(!empty($hotelIds), fn(Builder $query) => $query->whereIn('hotels.id', $hotelIds))
+            ->when(!empty($roomIds), fn(Builder $query) => $query->whereIn('hotel_rooms.id', $roomIds));
+    }
+
     /**
      * @param Builder|Quota $query
      * @return QuotaDto[]
@@ -139,8 +176,9 @@ class Gotostans implements SupplierQuotaFetcherInterface, SupplierQuotaUpdaterIn
             ->get()
             ->map(fn(Quota $quota) => new QuotaDto(
                 id: $quota->id,
+                hotelId: $quota->hotel_id,
                 roomId: $quota->room_id,
-                date: new Carbon($quota->date),
+                date: new CarbonImmutable($quota->date),
                 status: $quota->status === QuotaStatusEnum::OPEN,
                 releaseDays: $quota->release_days,
                 countTotal: $quota->count_total,

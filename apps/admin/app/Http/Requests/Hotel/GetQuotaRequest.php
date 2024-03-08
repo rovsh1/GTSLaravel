@@ -2,9 +2,6 @@
 
 namespace App\Admin\Http\Requests\Hotel;
 
-use App\Shared\Validation\Rules\DateIntervalRule;
-use Carbon\Carbon;
-use Carbon\CarbonInterval;
 use Carbon\CarbonPeriod;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -43,6 +40,7 @@ class GetQuotaRequest extends FormRequest
     {
         $dateFrom = $this->date('dateFrom');
         $dateTo = $this->date('dateTo');
+
         return new CarbonPeriod($dateFrom, $dateTo);
     }
 }

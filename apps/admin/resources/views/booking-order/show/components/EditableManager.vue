@@ -2,11 +2,11 @@
 
 import { computed, onMounted } from 'vue'
 
+import EditableSelect from 'gts-components/Editable/EditableSelect'
+
 import { useOrderStore } from '~resources/views/booking-order/show/store/order'
 
 import { useAdministratorGetAPI } from '~api/administrator'
-
-import EditableSelect from '~components/Editable/EditableSelect.vue'
 
 const { data: administrators, execute: fetchAdministrators } = useAdministratorGetAPI()
 

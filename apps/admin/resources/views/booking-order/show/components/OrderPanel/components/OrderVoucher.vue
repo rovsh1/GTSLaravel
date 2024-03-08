@@ -3,14 +3,13 @@ import { computed } from 'vue'
 
 import { formatDateTime } from 'gts-common/helpers/date'
 import { downloadFile } from 'gts-common/helpers/download-file'
+import InlineIcon from 'gts-components/Base/InlineIcon'
+import { showToast } from 'gts-components/Bootstrap/BootstrapToast/index'
 
 import { useOrderStore } from '~resources/views/booking-order/show/store/order'
 
 import { OrderAvailableActionsResponse } from '~api/order/status'
 import { OrderVoucher } from '~api/order/voucher'
-
-import { showToast } from '~components/Bootstrap/BootstrapToast'
-import InlineIcon from '~components/InlineIcon.vue'
 
 const orderStore = useOrderStore()
 const availableActions = computed<OrderAvailableActionsResponse | null>(() => orderStore.availableActions)
@@ -23,6 +22,14 @@ const handleDownload = async (): Promise<void> => {
     return
   }
   await downloadFile(voucher.value.file.url, voucher.value.file.name)
+}
+
+const handleDownloadWord = async (): Promise<void> => {
+  const voucher = await orderStore.createVoucher()
+  if (!voucher.value.wordFile) {
+    return
+  }
+  await downloadFile(voucher.value.wordFile.url, voucher.value.wordFile.name)
 }
 
 const handleOpen = async () => {
@@ -76,6 +83,16 @@ const handleVoucherSend = async () => {
           @click.prevent="handleDownload"
         >
           <InlineIcon icon="download" />
+        </a>
+        <a
+          v-if="availableActions?.canCreateVoucher"
+          v-tooltip="'Скачать в Word формате'"
+          href="#"
+          class="btn-download"
+          aria-label="Скачать в Word формате"
+          @click.prevent="handleDownloadWord"
+        >
+          <InlineIcon icon="edit_document" />
         </a>
         <a
           v-if="availableActions?.canCreateVoucher"

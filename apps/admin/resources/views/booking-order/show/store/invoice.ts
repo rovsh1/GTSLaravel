@@ -51,7 +51,17 @@ export const useOrderInvoiceStore = defineStore('order-invoice', () => {
   }
 
   const downloadFile = async (): Promise<void> => {
-    await downloadDocument({ orderID })
+    if (!invoice.value?.document) {
+      return
+    }
+    await downloadDocument({ orderID, guid: invoice.value.document })
+  }
+
+  const downloadWordFile = async (): Promise<void> => {
+    if (!invoice.value?.wordDocument) {
+      return
+    }
+    await downloadDocument({ orderID, guid: invoice.value.wordDocument })
   }
 
   onMounted(() => {
@@ -66,5 +76,6 @@ export const useOrderInvoiceStore = defineStore('order-invoice', () => {
     cancelInvoice,
     sendInvoice,
     downloadFile,
+    downloadWordFile,
   }
 })

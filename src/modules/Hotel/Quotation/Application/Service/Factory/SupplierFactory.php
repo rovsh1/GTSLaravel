@@ -34,8 +34,7 @@ class SupplierFactory
         return $this->getSupplier($hotelId);
     }
 
-    private function getSupplier(int $hotelId
-    ): SupplierQuotaFetcherInterface|SupplierQuotaUpdaterInterface|SupplierQuotaBookerInterface {
+    private function getSupplier(int $hotelId): SupplierQuotaFetcherInterface|SupplierQuotaUpdaterInterface|SupplierQuotaBookerInterface {
         if ($this->travelineAdapter->isHotelIntegrationEnabled($hotelId)) {
             return $this->container->make(Traveline::class);
         }

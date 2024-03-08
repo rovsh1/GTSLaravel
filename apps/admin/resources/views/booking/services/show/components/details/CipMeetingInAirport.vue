@@ -5,6 +5,10 @@ import { computed, ref, unref, watch } from 'vue'
 import { MaybeRef } from '@vueuse/core'
 import { showConfirmDialog } from 'gts-common/helpers/confirm-dialog'
 import { requestInitialData } from 'gts-common/helpers/initial-data'
+import IconButton from 'gts-components/Base/IconButton'
+import EditableDateInput from 'gts-components/Editable/EditableDateInput'
+import EditableTextInput from 'gts-components/Editable/EditableTextInput'
+import EditableTimeInput from 'gts-components/Editable/EditableTimeInput'
 import { storeToRefs } from 'pinia'
 import { z } from 'zod'
 
@@ -20,11 +24,6 @@ import { useEditableModal } from '~resources/views/hotel/settings/composables/ed
 
 import { addBookingGuest, deleteBookingGuest } from '~api/booking/service/guests'
 import { addOrderGuest, Guest, updateOrderGuest } from '~api/order/guest'
-
-import EditableDateInput from '~components/Editable/EditableDateInput.vue'
-import EditableTextInput from '~components/Editable/EditableTextInput.vue'
-import EditableTimeInput from '~components/Editable/EditableTimeInput.vue'
-import IconButton from '~components/IconButton.vue'
 
 import { useCountryStore } from '~stores/countries'
 

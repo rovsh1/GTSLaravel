@@ -34,11 +34,16 @@ class InvoiceFactory
                 $this->getFilename($order->id()),
                 $order->id(),
             );
+            $wordFileDto = $this->fileGeneratorAdapter->generateWord(
+                $this->getFilename($order->id(), 'docx'),
+                $order->id(),
+            );
 
             $invoice = $this->invoiceRepository->create(
                 clientId: $order->clientId(),
                 orderId: $order->id(),
-                document: new File($fileDto->guid)
+                document: new File($fileDto->guid),
+                wordDocument: new File($wordFileDto->guid),
             );
 
             $this->invoiceRepository->store($invoice);
@@ -51,9 +56,9 @@ class InvoiceFactory
         return $invoice;
     }
 
-    private function getFilename(OrderId $orderId): string
+    private function getFilename(OrderId $orderId, string $extension = 'pdf'): string
     {
-        return $orderId->value() . '-' . date('Ymd') . '.pdf';
+        return $orderId->value() . '-' . date('Ymd') . ".{$extension}";
     }
 
     private function prepareOrder(OrderId $orderId): Order

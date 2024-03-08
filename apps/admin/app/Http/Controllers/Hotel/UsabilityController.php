@@ -38,7 +38,7 @@ class UsabilityController extends Controller
 
     public function update(Request $request, Hotel $hotel): AjaxResponseInterface
     {
-        $usabilitiesData = \Arr::get($request->toArray(), 'data.usabilities');
+        $usabilitiesData = \Arr::get($request->toArray(), 'data.usabilities', []);
 
         $usabilityUpdateData = [];
         foreach ($usabilitiesData as $usabilityId => $roomsData) {

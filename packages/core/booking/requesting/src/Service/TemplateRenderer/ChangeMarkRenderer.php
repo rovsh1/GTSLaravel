@@ -45,9 +45,15 @@ class ChangeMarkRenderer
         return $this->changedFlag = $this->cached[$field];
     }
 
+    public function hasChanges(?string $field): bool
+    {
+        $changes = $this->changes($field);
+        return count($changes) > 0;
+    }
+
     public function changes(?string $field): array
     {
-        if ($field !== null) {
+        if ($field !== null && !in_array($field, $this->renderedFields)) {
             $this->renderedFields[] = $field;
         }
         $excludeFields = $field === null && !empty($this->renderedFields) ? $this->renderedFields : null;

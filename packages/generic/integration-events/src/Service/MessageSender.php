@@ -2,6 +2,7 @@
 
 namespace Pkg\IntegrationEventBus\Service;
 
+use Illuminate\Support\Facades\Log;
 use Pkg\IntegrationEventBus\Entity\Message;
 use Pkg\Supplier\Traveline\Contracts\IntegrationEventDispatcherInterface as TravelineEventDispatcher;
 use Sdk\Shared\Contracts\Event\IntegrationEventInterface;
@@ -26,7 +27,7 @@ class MessageSender
             try {
                 $module->dispatchEvent($event);
             } catch (\Throwable $e) {
-                dd($e);
+                Log::error('[MessageSender::send] Cant dispatchEvent', ['error' => $e, 'module' => $name]);
             }
         }
         app(TravelineEventDispatcher::class)->dispatch($event->event);

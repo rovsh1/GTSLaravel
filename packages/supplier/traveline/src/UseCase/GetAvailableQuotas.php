@@ -22,6 +22,6 @@ class GetAvailableQuotas
      */
     public function execute(int $hotelId, CarbonPeriod $period, ?int $roomId): array
     {
-        return $this->quotaRepository->getAvailableQuotas($hotelId, $period, $roomId);
+        return $this->quotaRepository->getAvailable($hotelId, $period, $roomId);
     }
 }

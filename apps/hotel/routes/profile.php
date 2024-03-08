@@ -11,5 +11,4 @@ Route::controller(ProfileController::class)
         Route::match(['get', 'post'], '/settings', 'settings')->name('name');
         Route::match(['get', 'post'], '/password', 'password')->name('password');
         Route::match(['get', 'post'], '/photo', 'photo')->name('photo');
-        Route::delete('/delete', 'delete')->name('delete');
     });

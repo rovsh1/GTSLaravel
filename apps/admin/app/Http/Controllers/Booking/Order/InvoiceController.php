@@ -8,6 +8,7 @@ use App\Admin\Http\Controllers\Controller;
 use App\Admin\Support\Facades\Booking\Order\InvoiceAdapter;
 use App\Shared\Http\Responses\AjaxResponseInterface;
 use App\Shared\Http\Responses\AjaxSuccessResponse;
+use App\Shared\Support\Facades\FileStorage;
 use Illuminate\Http\JsonResponse;
 
 class InvoiceController extends Controller
@@ -33,9 +34,9 @@ class InvoiceController extends Controller
         return response()->json($invoice);
     }
 
-    public function getFile(int $orderId): JsonResponse
+    public function getFile(int $orderId, string $guid): JsonResponse
     {
-        $fileInfo = InvoiceAdapter::getFile($orderId);
+        $fileInfo = FileStorage::find($guid);
 
         return response()->json($fileInfo);
     }

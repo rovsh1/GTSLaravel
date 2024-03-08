@@ -60,6 +60,8 @@ AclRoute::for('hotel')
     ->post('/{hotel}/rooms/{room}/images/{image}/unset', Controllers\Hotel\ImageController::class . '@unsetRoomImage', 'update', 'images.room.unset')
     ->post('/{hotel}/rooms/{room}/images/reorder', Controllers\Hotel\ImageController::class . '@reorderRoomImages', 'update', 'images.room.reorder')
 
+    ->get('/quotas/availability', Controllers\Hotel\QuotaAvailabilityController::class . '@index', 'read', 'quotas.availability.index')
+    ->post('/quotas/availability', Controllers\Hotel\QuotaAvailabilityController::class . '@get', 'read', 'quotas.availability.get')
     ->get('/{hotel}/quotas', Controllers\Hotel\QuotaController::class . '@index', 'read', 'quotas.index')
     ->post('/{hotel}/quotas', Controllers\Hotel\QuotaController::class . '@get', 'read', 'quotas.get')
     ->put('/{hotel}/quotas/date/batch',Controllers\Hotel\QuotaController::class . '@batchUpdateDateQuota','update','quotas.date.update.batch')

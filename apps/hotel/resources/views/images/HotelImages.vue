@@ -3,6 +3,12 @@ import { computed, ref, watch } from 'vue'
 import { VueDraggable } from 'vue-draggable-plus'
 
 import { useUrlSearchParams } from '@vueuse/core'
+import BaseLayout from 'gts-components/Base/BaseLayout'
+import ImageZoom from 'gts-components/Base/ImageZoom'
+import InlineIcon from 'gts-components/Base/InlineIcon'
+import LoadingSpinner from 'gts-components/Base/LoadingSpinner'
+import OverlayLoading from 'gts-components/Base/OverlayLoading'
+import BootstrapButton from 'gts-components/Bootstrap/BootstrapButton/BootstrapButton'
 
 import AttachmentDialog from '~resources/views/images/components/AttachmentDialog.vue'
 import { AttachmentDialogImageProp, isImageAttachedToRoom } from '~resources/views/images/components/lib'
@@ -19,13 +25,6 @@ import { useHotelImagesReorderAPI, useHotelRoomImagesReorderAPI } from '~api/hot
 import { useHotelRoomAttachImageAPI, useHotelRoomDetachImageAPI } from '~api/hotel/images/update'
 import { HotelRoom, useHotelRoomAPI } from '~api/hotel/room'
 import { useHotelRoomsListWithAttachedImageAPI } from '~api/hotel/rooms-image'
-
-import BaseLayout from '~components/BaseLayout.vue'
-import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
-import ImageZoom from '~components/ImageZoom.vue'
-import InlineIcon from '~components/InlineIcon.vue'
-import LoadingSpinner from '~components/LoadingSpinner.vue'
-import OverlayLoading from '~components/OverlayLoading.vue'
 
 const { room_id: roomID } = useUrlSearchParams<{ room_id?: number }>()
 
@@ -350,16 +349,17 @@ watch([imagesData, roomImages], (value) => {
     }
   }
 }
-
+/* stylelint-disable declaration-no-important */
 .imageDragHandle {
-  --position: 0.5em;
+  --position: 0.5em !important;
 
-  position: absolute;
-  top: var(--position);
-  left: var(--position);
-  z-index: 1;
-  cursor: grab;
+  position: absolute !important;
+  top: var(--position) !important;
+  left: var(--position) !important;
+  z-index: 1 !important;
+  cursor: grab !important;
 }
+/* stylelint-enable declaration-no-important */
 
 .actions {
   display: flex;

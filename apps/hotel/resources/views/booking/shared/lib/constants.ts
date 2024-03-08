@@ -1,7 +1,7 @@
+import { SelectOption } from 'gts-components/Bootstrap/lib'
+
 import { ExternalNumberTypeEnum } from '~api/booking/hotel/details'
 import { MarkupCondition } from '~api/hotel/markup-settings'
-
-import { SelectOption } from '~components/Bootstrap/lib'
 
 export interface EntityInterface {
   id: number

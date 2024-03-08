@@ -67,7 +67,7 @@ class BookingDbContext implements BookingDbContextInterface
      */
     public function getBookings(BookingIdCollection $ids): array
     {
-        $models = BookingModel::whereId($ids->map(fn(BookingId $id) => $id->value()))->get();
+        $models = BookingModel::whereIn('bookings.id', $ids->map(fn(BookingId $id) => $id->value()))->get();
 
         return $models->map(fn(BookingModel $booking) => $this->bookingMapper->fromModel($booking))->all();
     }

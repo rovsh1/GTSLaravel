@@ -11,4 +11,5 @@ use Sdk\Shared\Dto\FileDto;
 interface FileGeneratorAdapterInterface
 {
     public function generate(string $filename, OrderId $orderId): FileDto;
+    public function generateWord(string $filename, OrderId $orderId): FileDto;
 }

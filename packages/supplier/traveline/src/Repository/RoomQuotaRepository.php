@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Pkg\Supplier\Traveline\Repository;
 
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Pkg\Supplier\Traveline\Dto\QuotaDto;
 use Pkg\Supplier\Traveline\Exception\RoomNotFoundException;
@@ -78,7 +79,7 @@ class RoomQuotaRepository
      * @param int|null $roomId
      * @return QuotaDto[]
      */
-    public function getAllQuotas(int $hotelId, CarbonPeriod $period, ?int $roomId): array
+    public function getAll(int $hotelId, CarbonPeriod $period, ?int $roomId): array
     {
         return $this->mapQuery(
             $this->bootQuery($hotelId, $period, $roomId)
@@ -91,7 +92,7 @@ class RoomQuotaRepository
      * @param int|null $roomId
      * @return QuotaDto[]
      */
-    public function getAvailableQuotas(int $hotelId, CarbonPeriod $period, ?int $roomId): array
+    public function getAvailable(int $hotelId, CarbonPeriod $period, ?int $roomId): array
     {
         return $this->mapQuery(
             $this->bootQuery($hotelId, $period, $roomId)
@@ -111,7 +112,6 @@ class RoomQuotaRepository
         return $this->mapQuery(
             $this->bootQuery($hotelId, $period, $roomId)
                 ->whereClosed()
-                ->whereHasAvailable()
         );
     }
 
@@ -126,14 +126,24 @@ class RoomQuotaRepository
         return $this->mapQuery(
             $this->bootQuery($hotelId, $period, $roomId)
                 ->whereSold()
-                ->whereHasAvailable()
+        );
+    }
+
+    public function getQuotasAvailability(
+        CarbonPeriod $period,
+        array $cityIds = [],
+        array $hotelIds = [],
+        array $roomIds = []
+    ): array {
+        return $this->mapQuery(
+            $this->bootAvailabilityQuery($period, $cityIds, $hotelIds, $roomIds)
         );
     }
 
     public function hasAvailable(int $roomId, CarbonPeriod $period, int $count): bool
     {
         $releaseDays = now()->diffInDays($period->getStartDate());
-        $isReleaseDaysAvailable = HotelRoomQuota::whereDate($period->getEndDate())
+        $isReleaseDaysAvailable = HotelRoomQuota::whereDate($period->getStartDate())
             ->whereRoomId($roomId)
             ->whereOpened()
             ->whereHasAvailable($count)
@@ -151,11 +161,67 @@ class RoomQuotaRepository
             ->exists();
     }
 
+    public function reserveQuotas(int $bookingId, int $roomId, CarbonPeriod $period, int $count): void
+    {
+        DB::transaction(function () use ($bookingId, $roomId, $period, $count) {
+            foreach ($period as $date) {
+                /** @var HotelRoomQuota $quota */
+                $quota = HotelRoomQuota::whereDate($date)->whereRoomId($roomId)->first();
+                $quota->reserveQuota($count);
+                $this->appendBookingQuota($bookingId, $quota->id, $count);
+            }
+        });
+    }
+
+    public function cancelQuotasReserve(int $bookingId): void
+    {
+        DB::transaction(function () use ($bookingId) {
+            $quotas = $this->getBookingQuotas($bookingId);
+            foreach ($quotas as $quota) {
+                ['quotaId' => $quotaId, 'count' => $count] = $quota;
+                /** @var HotelRoomQuota $quota */
+                $quota = HotelRoomQuota::find($quotaId);
+                $quota->cancelQuotaReserve($count);
+            }
+            Cache::forget($this->getBookingQuotasCacheKey($bookingId));
+        });
+    }
+
+    private function getBookingQuotas(int $bookingId): array
+    {
+        return Cache::get($this->getBookingQuotasCacheKey($bookingId), []);
+    }
+
+    private function appendBookingQuota(int $bookingId, int $quotaId, int $count): void
+    {
+        $quotas = $this->getBookingQuotas($bookingId);
+        $quotas[] = ['quotaId' => $quotaId, 'count' => $count];
+        Cache::forever($this->getBookingQuotasCacheKey($bookingId), $quotas);
+    }
+
+    private function getBookingQuotasCacheKey(int $bookingId): string
+    {
+        return "traveline-quotas:booking:{$bookingId}";
+    }
+
     private function bootQuery(int $hotelId, CarbonPeriod $period, ?int $roomId): Builder|HotelRoomQuota
     {
         return HotelRoomQuota::query()
             ->whereHotelId($hotelId, $roomId)
             ->wherePeriod($period);
+    }
+
+    private function bootAvailabilityQuery(
+        CarbonPeriod $period,
+        array $cityIds = [],
+        array $hotelIds = [],
+        array $roomIds = []
+    ): Builder|HotelRoomQuota {
+        return HotelRoomQuota::query()
+            ->wherePeriod($period)
+            ->when(!empty($cityIds), fn(Builder $query) => $query->whereIn('hotels.city_id', $cityIds))
+            ->when(!empty($hotelIds), fn(Builder $query) => $query->whereIn('hotels.id', $hotelIds))
+            ->when(!empty($roomIds), fn(Builder $query) => $query->whereIn('hotel_rooms.id', $roomIds));
     }
 
     /**
@@ -168,8 +234,9 @@ class RoomQuotaRepository
             ->get()
             ->map(fn(HotelRoomQuota $quota) => new QuotaDto(
                 id: $quota->id,
+                hotelId: $quota->hotel_id,
                 roomId: $quota->room_id,
-                date: new Carbon($quota->date),
+                date: new CarbonImmutable($quota->date),
                 status: $quota->status === QuotaStatusEnum::OPEN,
                 releaseDays: $quota->release_days,
                 countTotal: $quota->count_available,

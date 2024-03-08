@@ -35,6 +35,7 @@
 
     @include('BookingRequesting::pdf-templates.hotel._partials.rooms')
 
+    @haschanges(null)
     <div>
         <p style="color: blue; font-weight: bold">Изменения:</p>
         <ul style="margin-top: 3px; padding-inline-start: 25px; color: blue; font-weight: bold">
@@ -43,6 +44,7 @@
             @endchanges
         </ul>
     </div>
+    @endhaschanges
 
     <div class="total-amount clear-both">
         <div class="column w-50">

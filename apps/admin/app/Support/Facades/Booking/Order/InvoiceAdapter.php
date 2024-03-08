@@ -11,7 +11,6 @@ use Sdk\Shared\Dto\FileInfoDto;
 /**
  * @method static InvoiceDto create(int $orderId)
  * @method static InvoiceDto|null get(int $orderId)
- * @method static FileInfoDto|null getFile(int $orderId)
  * @method static void cancel(int $orderId)
  * @method static void send(int $orderId)
  */

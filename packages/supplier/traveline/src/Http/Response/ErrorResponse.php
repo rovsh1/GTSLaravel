@@ -17,7 +17,7 @@ class ErrorResponse extends AbstractTravelineResponse
     public function jsonSerialize(): mixed
     {
         return [
-            'status' => $this->status,
+            'success' => $this->success,
             'errors' => $this->errors
         ];
     }

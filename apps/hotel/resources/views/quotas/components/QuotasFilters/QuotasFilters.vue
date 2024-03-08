@@ -3,15 +3,14 @@ import { computed, ref, watch } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
 import { compareJSDate } from 'gts-common/helpers/date'
+import DateRangePicker from 'gts-components/Base/DateRangePicker'
+import SelectComponent from 'gts-components/Base/SelectComponent'
+import BootstrapButton from 'gts-components/Bootstrap/BootstrapButton/BootstrapButton'
 import { isEqual } from 'lodash'
 import { DateTime } from 'luxon'
 import { nanoid } from 'nanoid'
 
 import { HotelRoom } from '~api/hotel/room'
-
-import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
-import DateRangePicker from '~components/DateRangePicker.vue'
-import SelectComponent from '~components/SelectComponent.vue'
 
 import {
   AvailabilityValue,

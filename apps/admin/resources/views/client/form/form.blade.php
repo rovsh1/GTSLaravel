@@ -5,6 +5,10 @@
 @endsection
 
 @section('scripts')
+    {!! Js::variables([
+        'id' => $model->id ?? null,
+    ]) !!}
+
     @vite('resources/views/client/form/form.ts')
 @endsection
 

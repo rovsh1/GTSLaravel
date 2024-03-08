@@ -3,14 +3,13 @@
 import { computed } from 'vue'
 
 import { requestInitialData } from 'gts-common/helpers/initial-data'
+import ActionsMenu, { Action } from 'gts-components/Base/ActionsMenu'
 import { z } from 'zod'
 
 import InfoBlock from '~resources/views/booking/shared/components/InfoBlock/InfoBlock.vue'
 import InfoBlockTitle from '~resources/views/booking/shared/components/InfoBlock/InfoBlockTitle.vue'
 import BookingsTable from '~resources/views/booking-order/show/components/BookingsTable.vue'
 import { useOrderStore } from '~resources/views/booking-order/show/store/order'
-
-import ActionsMenu, { Action } from '~components/ActionsMenu.vue'
 
 const { serviceBookingCreate, hotelBookingCreate, clientID } = requestInitialData(z.object({
   serviceBookingCreate: z.string(),

@@ -4,6 +4,10 @@
     @vite('resources/views/show/show.scss')
 @endsection
 
+@section('scripts')
+    @vite('resources/views/show/show.ts')
+@endsection
+
 @section('content')
     <div class="content-header">
         <div class="title">{{ $title }}</div>
@@ -18,7 +22,7 @@
         </div>
 
         <div class="mt-3">
-            @include('show.services-card', ['collapsable' => true])
+            @include('show._partials.services-card', ['collapsable' => true])
         </div>
 
         <div class="mt-3">

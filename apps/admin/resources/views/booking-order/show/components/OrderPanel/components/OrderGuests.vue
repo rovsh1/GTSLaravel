@@ -2,6 +2,7 @@
 import { computed, MaybeRef, nextTick, ref, unref, watch } from 'vue'
 
 import { showConfirmDialog } from 'gts-common/helpers/confirm-dialog'
+import IconButton from 'gts-components/Base/IconButton'
 import { storeToRefs } from 'pinia'
 
 import GuestModal from '~resources/views/booking/shared/components/GuestModal.vue'
@@ -13,8 +14,6 @@ import { useOrderStore } from '~resources/views/booking-order/show/store/order'
 import { useEditableModal } from '~resources/views/hotel/settings/composables/editable-modal'
 
 import { addOrderGuest, deleteOrderGuest, updateOrderGuest } from '~api/order/guest'
-
-import IconButton from '~components/IconButton.vue'
 
 import { useCountryStore } from '~stores/countries'
 

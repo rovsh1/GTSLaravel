@@ -5,12 +5,17 @@ declare(strict_types=1);
 namespace Module\Hotel\Quotation\Application\Service\Supplier;
 
 use Carbon\CarbonPeriod;
+use Module\Hotel\Quotation\Application\Dto\QuotaDto;
+use Module\Hotel\Quotation\Application\Service\SupplierQuotaAvailabilityFetcherInterface;
 use Module\Hotel\Quotation\Application\Service\SupplierQuotaBookerInterface;
 use Module\Hotel\Quotation\Application\Service\SupplierQuotaFetcherInterface;
 use Module\Hotel\Quotation\Application\Service\SupplierQuotaUpdaterInterface;
 use Shared\Contracts\Adapter\TravelineAdapterInterface;
 
-class Traveline implements SupplierQuotaFetcherInterface, SupplierQuotaUpdaterInterface, SupplierQuotaBookerInterface
+class Traveline implements SupplierQuotaFetcherInterface,
+                           SupplierQuotaUpdaterInterface,
+                           SupplierQuotaBookerInterface,
+                           SupplierQuotaAvailabilityFetcherInterface
 {
     public function __construct(
         private readonly TravelineAdapterInterface $travelineAdapter,
@@ -33,12 +38,28 @@ class Traveline implements SupplierQuotaFetcherInterface, SupplierQuotaUpdaterIn
 
     public function getClosed(int $hotelId, CarbonPeriod $period, ?int $roomId): array
     {
-        return $this->travelineAdapter->getClosed($hotelId, $period, $roomId);
+        return $this->travelineAdapter->getClosedQuotas($hotelId, $period, $roomId);
     }
 
     public function getSold(int $hotelId, CarbonPeriod $period, ?int $roomId): array
     {
-        return $this->travelineAdapter->getSold($hotelId, $period, $roomId);
+        return $this->travelineAdapter->getSoldQuotas($hotelId, $period, $roomId);
+    }
+
+    /**
+     * @param CarbonPeriod $period
+     * @param int[] $cityIds
+     * @param int[] $hotelIds
+     * @param int[] $roomIds
+     * @return QuotaDto[]
+     */
+    public function getQuotasAvailability(
+        CarbonPeriod $period,
+        array $cityIds = [],
+        array $hotelIds = [],
+        array $roomIds = []
+    ): array {
+        return $this->travelineAdapter->getQuotasAvailability($period, $cityIds, $hotelIds, $roomIds);
     }
 
     public function update(int $roomId, CarbonPeriod $period, ?int $quota, ?int $releaseDays = null): void

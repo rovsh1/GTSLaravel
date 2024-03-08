@@ -49,7 +49,7 @@ class Hotel extends Model
 
     //use SoftDeletes;
 
-    protected array $quicksearch = ['id', 'hotels.name%'];
+    protected array $quicksearch = ['id', 'hotels.%name%'];
 
     protected $translatable = ['text'];
 
@@ -97,11 +97,13 @@ class Hotel extends Model
         static::addGlobalScope('default', function (Builder $builder) {
             $builder
                 ->addSelect('hotels.*')
+                ->addSelect('suppliers.name as supplier_name')
                 ->selectSub(function (Query $query) {
                     $query->selectRaw(1)
                         ->from('traveline_hotels')
                         ->whereColumn('traveline_hotels.hotel_id', 'hotels.id');
                 }, 'is_traveline_integration_enabled')
+                ->join('suppliers', 'suppliers.id', '=', 'hotels.supplier_id')
                 ->join('r_cities', 'r_cities.id', '=', 'hotels.city_id')
                 ->join('r_countries', 'r_countries.id', '=', 'r_cities.country_id')
                 ->join('r_enums', 'r_enums.id', '=', 'hotels.type_id')

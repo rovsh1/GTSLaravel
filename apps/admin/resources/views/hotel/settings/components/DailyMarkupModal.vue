@@ -3,13 +3,12 @@
 import { computed, ref, watch } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
+import BaseDialog from 'gts-components/Base/BaseDialog'
+import SelectComponent from 'gts-components/Base/SelectComponent'
 
 import { cancelPeriodOptions } from '~resources/views/booking/shared/lib/constants'
 
 import { DailyMarkup } from '~api/hotel/markup-settings'
-
-import BaseDialog from '~components/BaseDialog.vue'
-import SelectComponent from '~components/SelectComponent.vue'
 
 const props = withDefaults(defineProps<{
   value?: DailyMarkup

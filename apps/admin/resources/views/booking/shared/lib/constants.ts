@@ -1,12 +1,12 @@
+import { SelectOption } from 'gts-components/Bootstrap/lib'
+
 import { Client } from '~resources/vue/api/client'
 
 import { ExternalNumberTypeEnum } from '~api/booking/hotel/details'
 import { MarkupCondition } from '~api/hotel/markup-settings'
 
-import { SelectOption } from '~components/Bootstrap/lib'
-
 export interface EntityInterface {
-  id: number
+  id: number | string
   name: string
   group?: string
 }
@@ -52,6 +52,11 @@ const humanRequestType = [
   { id: 3, name: 'отмену' },
 ]
 
+const languages = [
+  { id: 'ru', name: 'Русский' },
+  { id: 'en', name: 'Английский' },
+]
+
 export const genderOptions: SelectOption[] = mapEntitiesToSelectOptions(genders)
 
 export const residentTypeOptions: SelectOption[] = mapEntitiesToSelectOptions(residentTypes)
@@ -61,6 +66,8 @@ export const externalNumberTypeOptions: SelectOption[] = mapEntitiesToSelectOpti
 export const cancelPeriodOptions: SelectOption[] = mapEntitiesToSelectOptions(cancelPeriods)
 
 export const clientTypeOptions: SelectOption[] = mapEntitiesToSelectOptions(clientTypes)
+
+export const languageOptions: SelectOption[] = mapEntitiesToSelectOptions(languages)
 
 export const getConditionLabel = (condition: MarkupCondition) => `с ${condition.from} по ${condition.to} (+${condition.percent}%)`
 
@@ -83,7 +90,8 @@ export const getDaysWord = (number: number) => {
   const lastDigit = number % 10
   if (lastDigit === 1) {
     return 'день'
-  } if (lastDigit >= 2 && lastDigit <= 4) {
+  }
+  if (lastDigit >= 2 && lastDigit <= 4) {
     return 'дня'
   }
   return 'дней'

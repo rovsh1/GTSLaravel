@@ -24,6 +24,7 @@ class GetOrderInvoice implements UseCaseInterface
             $invoice->id()->value(),
             $invoice->orderId()->value(),
             $invoice->document()->guid(),
+            $invoice->wordDocument()?->guid(),
             $invoice->timestamps()->createdAt()->format(DATE_ATOM),
             $invoice->sendAt()?->format(DATE_ATOM),
         );

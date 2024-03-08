@@ -2,7 +2,7 @@
 
 namespace Pkg\Booking\Requesting\Domain\Listener;
 
-use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\DbContext\BookingDbContextInterface;
 use Pkg\Booking\Requesting\Domain\Service\ChangesRegistrar\RegistrarFactory;
 use Sdk\Booking\Enum\StatusEnum;
 use Sdk\Booking\IntegrationEvent\BookingEventInterface;
@@ -13,7 +13,7 @@ use Sdk\Shared\Event\IntegrationEventMessage;
 class RegisterChangesListener implements IntegrationEventListenerInterface
 {
     public function __construct(
-        private readonly BookingRepositoryInterface $bookingRepository,
+        private readonly BookingDbContextInterface $bookingDbContext,
         private readonly RegistrarFactory $registrarFactory,
     ) {}
 
@@ -22,7 +22,7 @@ class RegisterChangesListener implements IntegrationEventListenerInterface
         $event = $message->event;
         assert($event instanceof BookingEventInterface);
 
-        $booking = $this->bookingRepository->findOrFail(new BookingId($event->bookingId));
+        $booking = $this->bookingDbContext->findOrFail(new BookingId($event->bookingId));
         if (!$this->needStoreChanges($booking->status()->value())) {
             return;
         }

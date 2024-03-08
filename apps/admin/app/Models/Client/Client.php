@@ -21,9 +21,9 @@ class Client extends \Module\Client\Shared\Infrastructure\Models\Client
         static::addGlobalScope('default', function (Builder $builder) {
             $builder
                 ->addSelect('clients.*')
-                ->join('r_cities', 'r_cities.id', '=', 'clients.city_id')
+                ->leftJoin('r_cities', 'r_cities.id', '=', 'clients.city_id')
                 ->joinTranslatable('r_cities', 'name as city_name')
-                ->join('r_countries', 'r_countries.id', '=', 'r_cities.country_id')
+                ->leftJoin('r_countries', 'r_countries.id', '=', 'r_cities.country_id')
                 ->joinTranslatable('r_countries', 'name as country_name')
                 ->leftJoin('r_currencies', 'r_currencies.code_char', '=', 'clients.currency')
                 ->joinTranslatable('r_currencies', 'name as currency_name')
