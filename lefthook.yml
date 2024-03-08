@@ -33,3 +33,31 @@ pre-commit:
       root: "apps/hotel"
       glob: "*.vue"
       run: npx vue-tsc --noEmit
+    common-eslint:
+      root: "apps/shared/libs/common"
+      glob: "*.{js,ts}"
+      run: npx eslint {staged_files}
+    common-stylelint:
+      root: "apps/shared/libs/common"
+      glob: "*.{vue,scss}"
+      run: npx stylelint {staged_files}
+    common-types:
+      root: "apps/shared/libs/common"
+      glob: "*.ts"
+      run: npx tsc --noEmit
+    components-eslint:
+      root: "apps/shared/libs/components"
+      glob: "*.{js,ts,vue}"
+      run: npx eslint {staged_files}
+    components-stylelint:
+      root: "apps/shared/libs/components"
+      glob: "*.{vue,scss}"
+      run: npx stylelint {staged_files}
+    components-types:
+      root: "apps/shared/libs/components"
+      glob: "*.ts"
+      run: npx tsc --noEmit
+    components-types-vue:
+      root: "apps/shared/libs/components"
+      glob: "*.vue"
+      run: npx vue-tsc --noEmit
