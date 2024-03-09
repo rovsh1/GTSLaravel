@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { reactive, ref, watch } from 'vue'
+import { onMounted, reactive, ref, watch } from 'vue'
 
 import { compareJSDate } from 'gts-common/helpers/date'
 import DateRangePicker from 'gts-components/Base/DateRangePicker'
@@ -15,7 +15,7 @@ import {
   FiltersPayload,
 } from './lib'
 
-const props = withDefaults(defineProps<{
+withDefaults(defineProps<{
   cities: SelectOption[]
   hotels: SelectOption[]
   rooms: SelectOption[]
@@ -32,7 +32,7 @@ const props = withDefaults(defineProps<{
 
 const emit = defineEmits<{
   (event: 'chnagedFiltersPayload', value: FiltersPayload): void
-  (event: 'submit', value: FiltersPayload): void
+  (event: 'submit'): void
 }>()
 
 const periodError = ref<boolean>(false)
@@ -52,17 +52,17 @@ watch(filtersPayload, () => {
 })
 
 watch(() => filtersPayload.cityIds, () => {
-  filtersPayload.hotelIds = null
-  filtersPayload.roomIds = null
+  filtersPayload.hotelIds = []
+  filtersPayload.roomIds = []
 })
 
 watch(() => filtersPayload.hotelIds, () => {
-  filtersPayload.roomIds = null
+  filtersPayload.roomIds = []
 })
 
-const convertValuesToNumbers = (values: any): number[] | null => {
+const convertValuesToNumbers = (values: any): number[] => {
   if (values.length === 0) {
-    return null
+    return []
   }
   const resultArray = values.map(Number)
   return resultArray
@@ -82,6 +82,10 @@ const handlePeriodChanges = (dates: [Date, Date]) => {
   filtersPayload.dateFrom = dateFrom
   filtersPayload.dateTo = dateTo
 }
+
+onMounted(() => {
+  emit('chnagedFiltersPayload', filtersPayload)
+})
 </script>
 <template>
   <div class="quotaAvailabilityFilters">
@@ -100,13 +104,15 @@ const handlePeriodChanges = (dates: [Date, Date]) => {
       <SelectComponent
         :options="cities"
         label="Выберите город(а)"
-        :disabled-placeholder="!filtersPayload.cityIds ? 'Не выбрано' : ''"
+        disabled-placeholder="Не выбрано"
         label-style="outline"
         :value="filtersPayload.cityIds"
         multiple
         placeholder="Не выбрано"
         :disabled="isSubmiting"
-        @change="(value) => filtersPayload.cityIds = convertValuesToNumbers(value)"
+        @change="(value) => {
+          filtersPayload.cityIds = convertValuesToNumbers(value)
+        }"
       />
       <OverlayLoading v-if="isCitiesFetch" />
     </div>
@@ -115,8 +121,8 @@ const handlePeriodChanges = (dates: [Date, Date]) => {
         :options="hotels"
         label="Выберите отель(и)"
         label-style="outline"
-        :disabled="!filtersPayload.cityIds || isSubmiting"
-        disabled-placeholder="Выберите город(а)"
+        :disabled="!filtersPayload.cityIds.length || isSubmiting"
+        :disabled-placeholder="filtersPayload.cityIds.length ? 'Не выбрано' : 'Выберите город(а)'"
         :value="filtersPayload.hotelIds"
         multiple
         placeholder="Не выбрано"
@@ -129,8 +135,8 @@ const handlePeriodChanges = (dates: [Date, Date]) => {
         :options="rooms"
         label="Выберите номер(а)"
         label-style="outline"
-        :disabled="!filtersPayload.hotelIds || isSubmiting"
-        disabled-placeholder="Выберите отель(и)"
+        :disabled="!filtersPayload.hotelIds.length || isSubmiting"
+        :disabled-placeholder="filtersPayload.hotelIds.length ? 'Не выбрано' : 'Выберите отель(и)'"
         :value="filtersPayload.roomIds"
         multiple
         placeholder="Не выбрано"
@@ -143,7 +149,7 @@ const handlePeriodChanges = (dates: [Date, Date]) => {
         label="Поиск"
         :disabled="isCitiesFetch || isHotelsFetch || isRoomsFetch || isSubmiting || periodError"
         severity="primary"
-        @click="() => emit('submit', filtersPayload)"
+        @click="() => emit('submit')"
       />
     </div>
   </div>

@@ -7,7 +7,7 @@ export type AvailabilityValue = 'sold' | 'stopped' | 'available'
 export type FiltersPayload = {
   dateFrom: Date
   dateTo: Date
-  availability: AvailabilityValue | null
+  availability?: AvailabilityValue | null
   roomID?: HotelRoomID | null
 }
 
