@@ -27,6 +27,7 @@ class HotelContextMiddleware
         if ($user === null) {
             return redirect(route('auth.login'));
         }
+        dd($user);
         $this->hotelService->setHotel($user->hotel_id);
 
         return $next($request);
