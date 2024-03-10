@@ -19,15 +19,20 @@ class NotesController extends AbstractHotelController
 
         return Layout::title('Изменить примечание отеля')
             ->view('notes.notes', [
-                'value' => '',
+                'values' => $this->getHotel()->getTranslations('text'),
                 'cancelUrl' => route('hotel.index')
             ]);
     }
 
     public function update(Request $request): RedirectResponse
     {
-        $value = $request->post('notes');
-        //@todo
+        $notes = $request->post('notes');
+
+        $this->getHotel()->update([
+            'text' => [
+                'ru' => $notes
+            ]
+        ]);
 
         return redirect(route('hotel.index'));
     }
