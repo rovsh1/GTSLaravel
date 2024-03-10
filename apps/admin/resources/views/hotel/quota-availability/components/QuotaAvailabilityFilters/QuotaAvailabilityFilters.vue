@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, reactive, ref, watch } from 'vue'
+import { computed, onMounted, reactive, ref, watch } from 'vue'
 
 import { compareJSDate } from 'gts-common/helpers/date'
 import DateRangePicker from 'gts-components/Base/DateRangePicker'
@@ -7,6 +7,7 @@ import OverlayLoading from 'gts-components/Base/OverlayLoading'
 import SelectComponent from 'gts-components/Base/SelectComponent'
 import BootstrapButton from 'gts-components/Bootstrap/BootstrapButton/BootstrapButton'
 import { SelectOption } from 'gts-components/Bootstrap/lib'
+import { isEqual } from 'lodash'
 import { DateTime } from 'luxon'
 import { nanoid } from 'nanoid'
 
@@ -33,9 +34,12 @@ withDefaults(defineProps<{
 const emit = defineEmits<{
   (event: 'chnagedFiltersPayload', value: FiltersPayload): void
   (event: 'submit'): void
+  (event: 'reset'): void
 }>()
 
 const periodError = ref<boolean>(false)
+const isFirstInitializingCities = ref<boolean>(true)
+const isFirstInitializingHotels = ref<boolean>(true)
 
 const periodElementID = `${nanoid()}_period`
 
@@ -52,12 +56,20 @@ watch(filtersPayload, () => {
 })
 
 watch(() => filtersPayload.cityIds, () => {
-  filtersPayload.hotelIds = []
-  filtersPayload.roomIds = []
+  if (!isFirstInitializingCities.value) {
+    filtersPayload.hotelIds = []
+    filtersPayload.roomIds = []
+  } else {
+    isFirstInitializingCities.value = false
+  }
 })
 
 watch(() => filtersPayload.hotelIds, () => {
-  filtersPayload.roomIds = []
+  if (!isFirstInitializingHotels.value) {
+    filtersPayload.roomIds = []
+  } else {
+    isFirstInitializingHotels.value = false
+  }
 })
 
 const convertValuesToNumbers = (values: any): number[] => {
@@ -83,8 +95,42 @@ const handlePeriodChanges = (dates: [Date, Date]) => {
   filtersPayload.dateTo = dateTo
 }
 
+const setFiltersFromUrlParameters = () => {
+  const urlParams = new URLSearchParams(window.location.search)
+  const periodParameter = urlParams.get('period')
+  const citiesParameter = urlParams.get('cities')
+  const hotelsParameter = urlParams.get('hotels')
+  const roomsParameter = urlParams.get('rooms')
+  if (citiesParameter) filtersPayload.cityIds = convertValuesToNumbers(citiesParameter.split(','))
+  if (hotelsParameter) filtersPayload.hotelIds = convertValuesToNumbers(hotelsParameter.split(','))
+  if (roomsParameter) filtersPayload.roomIds = convertValuesToNumbers(roomsParameter.split(','))
+  if (periodParameter) {
+    const [dateFromParametr, dateToParametr] = periodParameter.split('-')
+    const dateFrom = DateTime.fromFormat(dateFromParametr, 'dd.MM.yyyy')
+    const dateTo = DateTime.fromFormat(dateToParametr, 'dd.MM.yyyy')
+    if (dateFrom.isValid && dateTo.isValid) {
+      filtersPayload.dateFrom = dateFrom.toJSDate()
+      filtersPayload.dateTo = dateTo.toJSDate()
+    }
+  }
+  if (urlParams.size) emit('submit')
+}
+
+const isFilterStateChanged = computed<boolean>(() =>
+  !isEqual(defaultFiltersPayload, filtersPayload))
+
+const resetFilters = () => {
+  filtersPayload.dateFrom = defaultFiltersPayload.dateFrom
+  filtersPayload.dateTo = defaultFiltersPayload.dateTo
+  filtersPayload.cityIds = defaultFiltersPayload.cityIds
+  filtersPayload.hotelIds = defaultFiltersPayload.hotelIds
+  filtersPayload.roomIds = defaultFiltersPayload.roomIds
+  emit('reset')
+}
+
 onMounted(() => {
   emit('chnagedFiltersPayload', filtersPayload)
+  setFiltersFromUrlParameters()
 })
 </script>
 <template>
@@ -150,6 +196,14 @@ onMounted(() => {
         :disabled="isCitiesFetch || isHotelsFetch || isRoomsFetch || isSubmiting || periodError"
         severity="primary"
         @click="() => emit('submit')"
+      />
+      <BootstrapButton
+        label="Сбросить"
+        only-icon="filter_alt_off"
+        variant="outline"
+        severity="link"
+        :disabled="isCitiesFetch || isHotelsFetch || isRoomsFetch || isSubmiting || !isFilterStateChanged"
+        @click="resetFilters"
       />
     </div>
   </div>

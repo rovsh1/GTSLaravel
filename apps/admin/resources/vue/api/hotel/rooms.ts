@@ -1,12 +1,20 @@
+import { computed } from 'vue'
+
 import { AfterFetchContext, MaybeRef } from '@vueuse/core'
 
-import { alternateDataAfterFetch, getURL, useAdminAPI } from '~api'
+import { getNullableRef } from '~resources/vue/vue'
+
+import { alternateDataAfterFetch, useAdminAPI } from '~api'
 import { HotelRoom, HotelRoomResponse, mapHotelRoomResponseToHotelRoom } from '~api/hotel/room'
 
 type HotelRoomsResponse = HotelRoomResponse[]
 
 type HotelRoomsListProps = {
   hotelID: number
+}
+
+type HotelRoomsPayload = {
+  hotelIds?: number[]
 }
 
 export type UseHotelRooms = HotelRoom[] | null
@@ -21,12 +29,19 @@ export const useHotelRoomsListAPI = (props: MaybeRef<HotelRoomsListProps | null>
     .get()
     .json<UseHotelRooms>()
 
-export const useHotelRoomsSearchAPI = (props: MaybeRef<{ hotelIds?: number[] }>) =>
-  useAdminAPI(props, ({ hotelIds }) =>
-    getURL('/hotels/rooms/search', hotelIds ? { hotel_ids: hotelIds } : undefined), {
+export const useHotelRoomsSearchAPI = (props: MaybeRef<HotelRoomsPayload>) =>
+  useAdminAPI(props, () =>
+    '/hotels/rooms/search', {
     afterFetch: (ctx: AfterFetchContext<HotelRoomsResponse>) =>
       alternateDataAfterFetch<HotelRoomsResponse, UseHotelRooms>(ctx, (data) =>
         (data.length > 0 ? data.map(mapHotelRoomResponseToHotelRoom) : null)),
   })
-    .get()
+    .post(computed<string>(() => JSON.stringify(
+      getNullableRef<HotelRoomsPayload, any>(
+        props,
+        (payload: HotelRoomsPayload): any => ({
+          ...payload,
+        }),
+      ),
+    )), 'application/json')
     .json<UseHotelRooms>()

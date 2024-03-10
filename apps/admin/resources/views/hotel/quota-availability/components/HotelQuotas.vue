@@ -1,29 +1,45 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 
+import { formatDateToAPIDate } from 'gts-common/helpers/date'
+import OverlayLoading from 'gts-components/Base/OverlayLoading'
 import { DateTime } from 'luxon'
 
-import { Day, Month, RoomQuotaStatus } from '~resources/views/hotel/quotas/components/lib'
+import { Day, Month, RoomQuota, RoomQuotaStatus } from '~resources/views/hotel/quotas/components/lib'
 import { HotelInfo, QuotaAvailability, QuotaInfo } from '~resources/vue/api/hotel/quotas/availability'
+
+import { useHotelQuotasAPI } from '~api/hotel/quotas/list'
+import { UseHotelRooms, useHotelRoomsListAPI } from '~api/hotel/rooms'
+
+import { getRoomQuotas } from './lib'
+import { FiltersPayload } from './QuotaAvailabilityFilters/lib'
 
 type HotelQuotasAccumulationData = {
   hotel: HotelInfo
-  quotasMap: Map<string, QuotaInfo>
+  hotelQuotasCount: Map<string, QuotaInfo>
+  hotelQuotas: Map<string, RoomQuota> | null
+  isShowHotelRooms: boolean
+  rooms: UseHotelRooms
 }
 
 const props = withDefaults(defineProps<{
   hotelsQuotas: QuotaAvailability[] | null
   days: Day[]
   months: Month[]
+  filters: FiltersPayload | null
 }>(), {
 
 })
+
+const selectedHotelID = ref<number | null>(null)
 
 const monthsLocal = computed<Month[]>(() => props.months)
 
 const daysLocal = computed<Day[]>(() => props.days)
 
-const hotelsQuotasLocal = computed<HotelQuotasAccumulationData[]>(() => {
+const hotelsQuotasLocal = ref<HotelQuotasAccumulationData[]>([])
+
+const initHotelsQuotasLocal = () => {
   const hotelsQuotasAccumulation: HotelQuotasAccumulationData[] = []
   const hotelQuotasMap = new Map<string, QuotaInfo>()
 
@@ -39,16 +55,57 @@ const hotelsQuotasLocal = computed<HotelQuotasAccumulationData[]>(() => {
     })
     hotelsQuotasAccumulation.push({
       hotel: hotelQuota.hotel,
-      quotasMap: hotelQuotasMap,
+      hotelQuotasCount: hotelQuotasMap,
+      isShowHotelRooms: false,
+      hotelQuotas: null,
+      rooms: null,
     })
   })
-  return hotelsQuotasAccumulation
+  hotelsQuotasLocal.value = hotelsQuotasAccumulation
+}
+
+watch(() => props.hotelsQuotas, () => {
+  initHotelsQuotasLocal()
 })
+
+const {
+  execute: fetchHotelQuotas,
+  data: hotelQuotas,
+  isFetching: isFetchingHotelQuotas,
+} = useHotelQuotasAPI(computed(() => {
+  const { dateFrom, dateTo } = props.filters as FiltersPayload
+  return {
+    hotelID: selectedHotelID.value as number,
+    dateFrom: formatDateToAPIDate(dateFrom),
+    dateTo: formatDateToAPIDate(dateTo),
+  }
+}))
+
+const {
+  data: rooms,
+  execute: fetchHotelRooms,
+  isFetching: isHotelRoomsFetching,
+} = useHotelRoomsListAPI(computed(() => (selectedHotelID.value ? { hotelID: selectedHotelID.value } : null)))
 
 const getHotelDayDataByPropertyName = (key: string, hotelDayData: Map<string, QuotaInfo>, property: keyof QuotaInfo): any => {
   let value: QuotaInfo | undefined | null = null
   if (hotelDayData.has(key)) {
     value = hotelDayData.get(key)
+    if (value) {
+      return value[property] !== null && value[property] !== undefined ? value[property] : null
+    }
+  }
+  return null
+}
+
+const getHotelQuotasDataByPropertyName = (
+  key: string,
+  hotelQuotasData: Map<string, RoomQuota>,
+  property: keyof RoomQuota,
+): any => {
+  let value: RoomQuota | undefined | null = null
+  if (hotelQuotasData.has(key)) {
+    value = hotelQuotasData.get(key)
     if (value) {
       return value[property] !== null && value[property] !== undefined ? value[property] : null
     }
@@ -73,10 +130,26 @@ const getHotelDayQuotaStatus = (value?: number | null) => {
   return null
 }
 
+const toogleHotelRooms = async (hotelData: HotelQuotasAccumulationData, hotelID: number) => {
+  const source = hotelData
+  if (!source.isShowHotelRooms) {
+    selectedHotelID.value = hotelID
+    await Promise.all([fetchHotelRooms(), fetchHotelQuotas()])
+    source.rooms = rooms.value
+    source.hotelQuotas = getRoomQuotas(hotelQuotas.value)
+    source.isShowHotelRooms = true
+  } else {
+    source.isShowHotelRooms = false
+  }
+}
+
+onMounted(initHotelsQuotasLocal)
+
 </script>
 
 <template>
   <div class="quotasTables">
+    <OverlayLoading v-if="isHotelRoomsFetching || isFetchingHotelQuotas" style="z-index: 999;" />
     <div class="quotasTable card">
       <table class="card-body p-0">
         <thead class="floating-header">
@@ -109,28 +182,76 @@ const getHotelDayQuotaStatus = (value?: number | null) => {
           </tr>
         </thead>
         <tbody>
-          <tr
-            v-for="hotelQuota in hotelsQuotasLocal"
-            :key="hotelQuota.hotel.id"
-            class="typeHeadingRow"
-            @click="() => {
-              console.log('tyt')
-            }"
-          >
-            <th class="headingCell">
-              {{ hotelQuota.hotel.name }}
-            </th>
-            <td class="otherCell">квоты</td>
-            <template v-for="{ key, isLastDayInMonth } in daysLocal" :key="key">
-              <td
-                class="quotaCell"
-                :class="[isLastDayInMonth ? 'month-splitter' : '', dayQuotaCellClassName(getHotelDayQuotaStatus(
-                  getHotelDayDataByPropertyName(`${key}-${hotelQuota.hotel.id}`, hotelQuota.quotasMap, 'countAvailable')))]"
+          <template v-for="hotelQuota in hotelsQuotasLocal" :key="hotelQuota.hotel.id">
+            <tr
+              class="typeHeadingRow"
+              @click="toogleHotelRooms(hotelQuota, hotelQuota.hotel.id)"
+            >
+              <th class="headingCell">
+                {{ hotelQuota.hotel.name }}
+              </th>
+              <td class="otherCell">квоты</td>
+              <template v-for="{ key, isLastDayInMonth } in daysLocal" :key="key">
+                <td
+                  class="quotaCell"
+                  :class="[isLastDayInMonth ? 'month-splitter' : '', dayQuotaCellClassName(getHotelDayQuotaStatus(
+                    getHotelDayDataByPropertyName(`${key}-${hotelQuota.hotel.id}`, hotelQuota.hotelQuotasCount, 'countAvailable')))]"
+                >
+                  {{ getHotelDayDataByPropertyName(`${key}-${hotelQuota.hotel.id}`, hotelQuota.hotelQuotasCount, 'countAvailable') }}
+                </td>
+              </template>
+            </tr>
+            <template v-if="hotelQuota.isShowHotelRooms && hotelQuota.rooms?.length">
+              <tr
+                v-for="(room, index) in hotelQuota.rooms"
+                :key="`${room.hotelID}-${room.id}`"
+                :class="{ 'last-hotel-room-row': index === hotelQuota.rooms.length - 1 }"
+                class="room-row"
               >
-                {{ getHotelDayDataByPropertyName(`${key}-${hotelQuota.hotel.id}`, hotelQuota.quotasMap, 'countAvailable') }}
-              </td>
+                <th class="headingCell">
+                  <div>
+                    {{ room.name }}
+                  </div>
+                  <div>
+                    Кол-во гостей: <span>{{ room.guestsCount }}</span>
+                  </div>
+                  <div>
+                    Кол-во номеров: <span>{{ room.roomsNumber }}</span>
+                  </div>
+                </th>
+                <td class="otherCell">
+                  <div>
+                    квоты - продано
+                  </div>
+                  <div>
+                    релиз дни
+                  </div>
+                </td>
+                <template v-for="{ key, isLastDayInMonth } in daysLocal" :key="key">
+                  <template v-if="hotelQuota.hotelQuotas">
+                    <td
+                      class="quotaCell"
+                      :class="[dayQuotaCellClassName(
+                        (getHotelQuotasDataByPropertyName(`${key}-${room.id}`, hotelQuota.hotelQuotas, 'status') === 'opened'
+                          && getHotelQuotasDataByPropertyName(`${key}-${room.id}`, hotelQuota.hotelQuotas, 'quota') === 0
+                          ? 'warning' : getHotelQuotasDataByPropertyName(`${key}-${room.id}`, hotelQuota.hotelQuotas, 'status'))), isLastDayInMonth ? 'month-splitter' : '']"
+                    >
+                      <template v-if="hotelQuota.hotelQuotas.has(`${key}-${room.id}`)">
+                        <div>
+                          {{ getHotelQuotasDataByPropertyName(`${key}-${room.id}`, hotelQuota.hotelQuotas, 'quota') }} -
+                          {{ getHotelQuotasDataByPropertyName(`${key}-${room.id}`, hotelQuota.hotelQuotas, 'sold') }}
+                        </div>
+                        <div>
+                          {{ getHotelQuotasDataByPropertyName(`${key}-${room.id}`, hotelQuota.hotelQuotas, 'releaseDays') }}
+                        </div>
+                      </template>
+                    </td>
+                  </template>
+                  <td v-else />
+                </template>
+              </tr>
             </template>
-          </tr>
+          </template>
         </tbody>
       </table>
     </div>
@@ -158,7 +279,7 @@ const getHotelDayQuotaStatus = (value?: number | null) => {
 }
 
 .quotasTable {
-  --cell-width: 4em;
+  --cell-width: 6em;
 
   overflow: auto;
   padding: 10px 0;
@@ -194,6 +315,8 @@ th {
 
 .quotaCell {
   vertical-align: middle;
+  padding: 0 0.5rem;
+  font-size: 12px;
   text-align: center;
 }
 
@@ -217,15 +340,16 @@ th {
   @extend %heading-cell;
 
   z-index: 1;
-  min-width: 200px;
-  max-width: 200px;
+  min-width: 270px;
+  max-width: 270px;
   white-space: normal;
 }
 
 .otherCell {
-  width: 70px;
-  max-width: 70px;
+  min-width: 135px;
+  max-width: 170px;
   padding: 0 0.5rem;
+  font-size: 12px;
   text-align: center;
 }
 
@@ -265,6 +389,66 @@ th {
 
 .roomTypeHeadingCell {
   padding-right: 1em;
+}
+
+.room-row {
+  &:hover {
+    th,
+    td:not(.quotaCell) {
+      background-color: lightgray;
+    }
+  }
+
+  .headingCell {
+    padding-left: 2rem;
+    font-size: 11px;
+
+    div:first-child {
+      margin-bottom: 0.5rem;
+    }
+
+    div span {
+      color: red;
+    }
+  }
+
+  .quotaCell {
+    div:last-child {
+      position: relative;
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 20%;
+        z-index: 0;
+        display: block;
+        width: 60%;
+        height: 1px;
+        background: #ccc;
+      }
+    }
+  }
+
+  .otherCell,
+  .quotaCell {
+    div {
+      padding: 5px 0;
+    }
+  }
+
+  th,
+  td {
+    border-bottom: 1px solid var(--bs-border-color-translucent);
+    cursor: default;
+  }
+}
+
+.last-hotel-room-row {
+  th,
+  td {
+    border-bottom: none;
+  }
 }
 
 .dayQuotaCell {
@@ -308,6 +492,6 @@ tr td:last-child {
 }
 
 .floating-row td span {
-  left: 200px;
+  left: 270px;
 }
 </style>

@@ -6,6 +6,7 @@ import BaseLayout from 'gts-components/Base/BaseLayout'
 import EmptyData from 'gts-components/Base/EmptyData'
 import LoadingSpinner from 'gts-components/Base/LoadingSpinner'
 import { SelectOption } from 'gts-components/Bootstrap/lib'
+import { DateTime } from 'luxon'
 import { storeToRefs } from 'pinia'
 
 import { Day, Month } from '~resources/views/hotel/quotas/components/lib'
@@ -87,6 +88,29 @@ watch(() => filtersPayload.value?.hotelIds, (value) => {
   else hotelsRooms.value = []
 })
 
+const setUrlParameters = (filters: FiltersPayload) => {
+  const periodParameterFrom = DateTime.fromJSDate(filters.dateFrom).toFormat('dd.MM.yyyy')
+  const periodParameterTo = DateTime.fromJSDate(filters.dateTo).toFormat('dd.MM.yyyy')
+  const periodParameter = `${periodParameterFrom}-${periodParameterTo}`
+  const citiesParametr = filters.cityIds.length ? filters.cityIds.join(',') : null
+  const hotelsParametr = filters.hotelIds.length ? filters.hotelIds.join(',') : null
+  const roomsParametr = filters.roomIds.length ? filters.roomIds.join(',') : null
+  const params = {
+    period: encodeURIComponent(periodParameter),
+    cities: citiesParametr,
+    hotels: hotelsParametr,
+    rooms: roomsParametr,
+  }
+  const validParams = Object.entries(params)
+    .filter(([_key, value]) => value !== null)
+    .map(([key, value]) => `${key}=${value}`)
+    .join('&')
+  const currentUrl = window.location.pathname
+  const separator = (currentUrl.indexOf('?') > -1) ? '&' : '?'
+  const newUrl = currentUrl + separator + validParams
+  window.history.replaceState({}, document.title, newUrl)
+}
+
 const searhQuotas = async () => {
   if (filtersPayload.value) {
     await fetchQuotaAvailability()
@@ -99,7 +123,14 @@ const searhQuotas = async () => {
     const { period, months } = quotasAccumalationData
     quotasPeriod.value = period
     quotasPeriodMonths.value = months
+    setUrlParameters(filtersPayload.value)
   }
+}
+
+const resetQuotasData = () => {
+  quotaAvailability.value = null
+  const currentUrl = window.location.pathname
+  window.history.replaceState({}, document.title, currentUrl)
 }
 
 </script>
@@ -122,6 +153,7 @@ const searhQuotas = async () => {
             filtersPayload = value
           }"
           @submit="searhQuotas"
+          @reset="resetQuotasData"
         />
         <div v-if="isFetchingQuotaAvailability" class="mt-4 d-flex justify-content-center">
           <LoadingSpinner />
@@ -133,6 +165,7 @@ const searhQuotas = async () => {
             :months="quotasPeriodMonths"
             :days="quotasPeriod"
             :hotels-quotas="quotaAvailability"
+            :filters="filtersPayload"
           />
           <EmptyData v-else class="mt-4">
             Квоты по выбранным параметрам отсутствуют
