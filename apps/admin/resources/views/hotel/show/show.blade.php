@@ -7,6 +7,7 @@
 @section('scripts')
     {!! Js::variables([
         'hotelLandmarkBaseRoute' => $hotelLandmarkBaseRoute,
+        'usersUrl' => $usersUrl,
     ]) !!}
 
     @vite('resources/views/hotel/show/show.ts')

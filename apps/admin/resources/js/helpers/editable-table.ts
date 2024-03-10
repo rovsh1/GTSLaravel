@@ -31,7 +31,7 @@ const editableRow = ($tr: JQuery<HTMLTableRowElement>, route: string, isEditInMo
       }
       window.WindowDialog({
         url: $(this).data('url'),
-        title: 'Изменить контакт',
+        title: 'Изменить запись',
         buttons: ['submit', 'cancel'],
       })
     })
