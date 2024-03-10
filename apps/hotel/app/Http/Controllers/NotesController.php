@@ -18,7 +18,7 @@ class NotesController extends AbstractHotelController
 //        Sidebar::submenu(new HotelMenu($hotel, 'info'));
 
         return Layout::title('Изменить примечание отеля')
-            ->view('show.notes.notes', [
+            ->view('notes.notes', [
                 'value' => '',
                 'cancelUrl' => route('hotel.index')
             ]);
