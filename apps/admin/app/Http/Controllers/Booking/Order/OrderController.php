@@ -270,11 +270,12 @@ class OrderController extends Controller
     private function searchForm()
     {
         return (new SearchForm())
-            ->number('order_id', ['label' => '№ Заказа'])
+            ->text('order_id', ['label' => '№ Заказа', 'type' => 'number'])
             ->client('client_id', ['label' => 'Клиент', 'emptyItem' => ''])
             ->select('manager_id', ['label' => 'Менеджер', 'items' => Administrator::all(), 'emptyItem' => ''])
             ->select('status', ['label' => 'Статус', 'items' => OrderAdapter::getStatuses(), 'emptyItem' => ''])
             ->enum('source', ['label' => 'Источник', 'enum' => SourceEnum::class, 'emptyItem' => ''])
+            ->dateRange('start_period', ['label' => 'Дата заезда'])
             ->dateRange('end_period', ['label' => 'Дата выезда'])
             ->dateRange('created_period', ['label' => 'Дата создания']);
     }

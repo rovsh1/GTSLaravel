@@ -316,7 +316,6 @@ class HotelController extends AbstractPrototypeController
             ->email('email', ['text' => 'Email'])
             ->phone('phone', ['text' => 'Телефон'])
             ->orderBy('presentation', 'asc')
-//            ->header(false)
             ->data(
                 User::where('hotel_id', $this->model->id)
             );
