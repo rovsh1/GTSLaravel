@@ -40,9 +40,7 @@ class RoomController extends AbstractHotelController
         $notes = $request->post('notes');
 
         $room->update([
-            'text' => [
-                'ru' => $notes
-            ]
+            'text' => $notes
         ]);
 
         return redirect(route('rooms.index'));
