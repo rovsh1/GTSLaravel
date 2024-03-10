@@ -14,7 +14,7 @@
     </div>
 
     <div class="content-body">
-        <form class="retry-submit-lock" method="POST">
+        <form class="retry-submit-lock" method="POST" action="{{route('rooms.update', $model)}}">
             <div class="card card-form">
                 <div class="card-header"><h5>Описание</h5></div>
                 <div class="textarea-wrapper">

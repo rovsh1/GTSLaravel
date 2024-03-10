@@ -8,6 +8,7 @@ use App\Hotel\Models\Room;
 use App\Hotel\Support\Facades\Layout;
 use App\Hotel\Support\View\LayoutBuilder as LayoutContract;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class RoomController extends AbstractHotelController
@@ -28,9 +29,23 @@ class RoomController extends AbstractHotelController
     {
         return Layout::title('Изменить описание номера')
             ->view('room-form.room-form', [
+                'model' => $room,
                 'values' => $room->getTranslations('text'),
                 'cancelUrl' => route('rooms.index')
             ]);
+    }
+
+    public function update(Request $request, Room $room): RedirectResponse
+    {
+        $notes = $request->post('notes');
+
+        $room->update([
+            'text' => [
+                'ru' => $notes
+            ]
+        ]);
+
+        return redirect(route('rooms.index'));
     }
 
     public function position(Request $request, Hotel $hotel): array
