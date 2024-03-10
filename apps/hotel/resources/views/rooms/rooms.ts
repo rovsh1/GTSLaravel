@@ -6,7 +6,6 @@ $(() => {
     const usabilityHeight = $(this).find('.usability').height()
     const expandButton = $(this).find('.usability-expand')
     if (usabilityCheckerHeight !== undefined && usabilityHeight !== undefined && usabilityCheckerHeight <= usabilityHeight) {
-      $(this).find('.usability').height(0)
       expandButton.remove()
     }
   })
