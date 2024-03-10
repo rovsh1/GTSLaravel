@@ -27,7 +27,7 @@ class RoomController extends AbstractHotelController
     public function edit(Request $request, Room $room): LayoutContract
     {
         return Layout::title('Изменить описание номера')
-            ->view('room.form', [
+            ->view('room-form.room-form', [
                 'values' => $room->getTranslations('text'),
                 'cancelUrl' => route('rooms.index')
             ]);
