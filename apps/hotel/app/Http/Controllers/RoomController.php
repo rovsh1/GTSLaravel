@@ -24,6 +24,15 @@ class RoomController extends AbstractHotelController
             ]);
     }
 
+    public function edit(Request $request, Room $room): LayoutContract
+    {
+        return Layout::title('Изменить описание номера')
+            ->view('room.form', [
+                'values' => $room->getTranslations('text'),
+                'cancelUrl' => route('rooms.index')
+            ]);
+    }
+
     public function position(Request $request, Hotel $hotel): array
     {
         $hotel->updateRoomsPositions($request->input('indexes'));

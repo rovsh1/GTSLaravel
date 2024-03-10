@@ -11,6 +11,7 @@ Route::controller(RoomController::class)
         Route::get('/', 'index')->name('index');
 
         Route::get('/list', [HotelController::class, 'getRooms'])->name('list');
+        Route::get('/{room}/edit', 'edit')->name('edit');
         Route::get('/{room}/get', 'get')->name('get');
         Route::put('/position', 'position')->name('position');
     });
