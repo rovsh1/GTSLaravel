@@ -4,12 +4,12 @@ use App\Admin\Http\Controllers;
 use App\Admin\Support\Facades\AclRoute;
 
 AclRoute::for('hotel')
-    ->get('/search', Controllers\Hotel\HotelController::class . '@search', 'read', 'search')
+    ->addAction(['GET', 'POST'], '/search', Controllers\Hotel\HotelController::class . '@search', 'read', 'search')
     ->get('/{hotel}/get', Controllers\Hotel\HotelController::class . '@get', 'read', 'get')
     ->get('/{hotel}/settings/get', Controllers\Hotel\HotelController::class . '@settings', 'read', 'settings')
     ->put('/{hotel}/settings', Controllers\Hotel\HotelController::class . '@updateSettings', 'update', 'settings.update')
     ->get('/{hotel}/rooms/list', Controllers\Hotel\HotelController::class . '@getRooms', 'read', 'rooms.list')
-
+    ->addAction(['GET', 'POST'], '/rooms/search', Controllers\Hotel\RoomController::class . '@search', 'read', 'rooms.search')
     ->get('/rooms/names/{lang}/list', Controllers\Hotel\RoomController::class . '@getRoomNames', 'read', 'rooms.names.list')
     ->get('/{hotel}/rooms/{room}/get', Controllers\Hotel\RoomController::class . '@get', 'read', 'get')
     ->put('/{hotel}/rooms/position', Controllers\Hotel\RoomController::class . '@position', 'update', 'rooms.position')

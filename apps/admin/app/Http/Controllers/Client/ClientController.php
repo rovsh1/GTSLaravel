@@ -286,7 +286,7 @@ class ClientController extends AbstractPrototypeController
             ->select('country_id', ['label' => 'Страна', 'emptyItem' => '', 'items' => Country::get()])
             ->city('city_id', ['label' => 'Город', 'emptyItem' => ''])
             ->enum('type', ['label' => 'Тип', 'enum' => TypeEnum::class, 'emptyItem' => ''])
-            ->enum('status', ['label' => 'Источник', 'enum' => StatusEnum::class, 'emptyItem' => ''])
+            ->enum('status', ['label' => 'Статус', 'enum' => StatusEnum::class, 'emptyItem' => ''])
             ->select('markup_group_id', [
                 'label' => 'Группа наценки',
                 'emptyItem' => '',

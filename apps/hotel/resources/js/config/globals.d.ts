@@ -1,4 +1,4 @@
-import { ZodRawShape } from 'zod/lib/types'
+import type { TinyMCE } from 'tinymce'
 
 declare global {
   interface JQuery extends JQueryStatic {
@@ -26,8 +26,6 @@ declare global {
 
     $: JQueryStatic
     jQuery: JQueryStatic
-
-    [key: string]: ZodRawShape
-
+    tinymce: TinyMCE
   }
 }

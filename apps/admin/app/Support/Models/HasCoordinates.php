@@ -2,6 +2,7 @@
 
 namespace App\Admin\Support\Models;
 
+use App\Admin\Support\Distance\Point;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 
 trait HasCoordinates
@@ -27,14 +28,15 @@ trait HasCoordinates
                 if (empty($latitude) || empty($longitude)) {
                     return null;
                 }
+
                 return "{$latitude}{$this->coordinatesSeparator} {$longitude}";
             },
             set: function (string $value) {
-                [$latitude, $longitude] = explode($this->coordinatesSeparator, $value);
+                $point = Point::buildFromCoordinates($value);
 
                 return [
-                    $this->getLatitudeField() => trim($latitude),
-                    $this->getLongitudeField() => trim($longitude),
+                    $this->getLatitudeField() => $point->latitude,
+                    $this->getLongitudeField() => $point->longitude,
                 ];
             }
         );

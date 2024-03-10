@@ -12,7 +12,7 @@ class RailwayStation extends Model
     use HasQuicksearch;
     use HasTranslations;
 
-    protected array $quicksearch = ['id', 'name%'];
+    protected array $quicksearch = ['id', 'r_railway_stations_translation.name%'];
 
     protected array $translatable = ['name'];
 

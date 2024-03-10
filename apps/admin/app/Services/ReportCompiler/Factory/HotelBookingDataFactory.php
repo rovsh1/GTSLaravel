@@ -77,7 +77,9 @@ class HotelBookingDataFactory
 
         return [
             'bookings' => $bookings->toArray(),
-            'guestsIndexedByBookingId' => $guestsIndexedByBookingId->toArray(),
+            'guestsIndexedByBookingId' => count($guestsIndexedByBookingId) > 0
+                ? $guestsIndexedByBookingId->toArray()
+                : [],
         ];
     }
 }

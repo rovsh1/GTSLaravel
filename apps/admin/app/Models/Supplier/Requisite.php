@@ -20,4 +20,9 @@ class Requisite extends Model
         'inn',
         'director_full_name',
     ];
+
+    public function __toString()
+    {
+        return 'Реквизиты';
+    }
 }

@@ -7,7 +7,7 @@
         </div>
         <div class="text-block">
             <p>Просим Вас обработать <span class="cancelled">запрос на аннулирование бронирования</span> <a
-                    href="{{ route('hotel-booking.show', $booking->number) }}"
+                    href="{{ ho_url("/booking/$booking->number") }}"
                     target="_blank">по
                     ссылке</a></p>
         </div>

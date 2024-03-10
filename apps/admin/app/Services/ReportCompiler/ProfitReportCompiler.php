@@ -170,6 +170,8 @@ class ProfitReportCompiler extends AbstractReportCompiler
 
         $this->insertNewRowBefore($sheet->getHighestRow());
         $defaultCellStyle = $this->getCellStyle('FFFFFF', true);
+        $totalCellStyle = $this->getCellStyle('FEFF03', true);
+        $profitCellStyle = $this->getCellStyle('66FF67', true);
         $sheet->getCell('A' . $currentRow)->setValue('Итого')->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
         $sheet->getCell('B' . $currentRow)->setValue('')->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
         $sheet->getCell('C' . $currentRow)->setValue('')->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
@@ -180,9 +182,9 @@ class ProfitReportCompiler extends AbstractReportCompiler
         $sheet->getCell('H' . $currentRow)->setValue($hotelsTotal . ' ' . $currency)->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
         $sheet->getCell('I' . $currentRow)->setValue('')->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
         $sheet->getCell('J' . $currentRow)->setValue($servicesTotal . ' ' . $currency)->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
-        $sheet->getCell('K' . $currentRow)->setValue($amountTotal . ' ' . $currency)->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
+        $sheet->getCell('K' . $currentRow)->setValue($amountTotal . ' ' . $currency)->getStyle()->applyFromArray($totalCellStyle)->getFont()->applyFromArray($boldFont);
         $sheet->getCell('L' . $currentRow)->setValue($supplierTotal . ' ' . $currency)->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
-        $sheet->getCell('M' . $currentRow)->setValue($profitTotal . ' ' . $currency)->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
+        $sheet->getCell('M' . $currentRow)->setValue($profitTotal . ' ' . $currency)->getStyle()->applyFromArray($profitCellStyle)->getFont()->applyFromArray($boldFont);
         $sheet->getRowDimension($currentRow)->setRowHeight(25);
 
         $this->updateReportTotalData('hotel', $currency, $hotelsTotal);

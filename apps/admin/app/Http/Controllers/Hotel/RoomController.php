@@ -4,6 +4,7 @@ namespace App\Admin\Http\Controllers\Hotel;
 
 use App\Admin\Exceptions\FormSubmitFailedException;
 use App\Admin\Http\Controllers\Controller;
+use App\Admin\Http\Requests\Hotel\SearchRoomsRequest;
 use App\Admin\Http\Resources\Room as RoomResource;
 use App\Admin\Models\Hotel\Hotel;
 use App\Admin\Models\Hotel\Reference\BedType;
@@ -25,8 +26,6 @@ use Illuminate\Http\Request;
 
 class RoomController extends Controller
 {
-    public function __construct() {}
-
     public function index(Request $request, Hotel $hotel): LayoutContract
     {
         $this->hotel($hotel);
@@ -131,6 +130,18 @@ class RoomController extends Controller
     public function getRoomNames(Request $request, string $lang): JsonResponse
     {
         return response()->json(Room::getRoomNames($lang));
+    }
+
+    public function search(SearchRoomsRequest $request): JsonResponse
+    {
+        $roomsQuery = Room::query();
+        if ($request->getHotelIds() !== null) {
+            $roomsQuery->whereIn('hotel_rooms.hotel_id', $request->getHotelIds());
+        }
+
+        return response()->json(
+            RoomResource::collection($roomsQuery->get())
+        );
     }
 
     private function formFactory(): FormContract

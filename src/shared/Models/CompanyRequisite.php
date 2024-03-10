@@ -15,7 +15,7 @@ class CompanyRequisite extends Model
 
     protected $table = 's_company_requisites';
 
-    protected $quicksearch = ['key%', 'name%', '%value%'];
+    protected $quicksearch = ['key%', 's_company_requisites_translation.%value%'];
 
     protected $translatable = ['value'];
 

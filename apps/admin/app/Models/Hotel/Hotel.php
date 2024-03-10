@@ -135,6 +135,11 @@ class Hotel extends Model
         $builder->having('is_traveline_integration_enabled', $isEnabled);
     }
 
+    public function scopeWhereTypeId(Builder $builder, int $typeId): void
+    {
+        $builder->where('hotels.type_id', $typeId);
+    }
+
     public function rooms(): HasMany
     {
         return $this->hasMany(Room::class);

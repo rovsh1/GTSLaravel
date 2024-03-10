@@ -2,6 +2,7 @@
 
 namespace App\Admin\Http\Controllers\Data;
 
+use App\Admin\Exceptions\InvalidPointCoordinates;
 use App\Admin\Http\Requests\City\SearchRequest;
 use App\Admin\Models\Reference\City;
 use App\Admin\Support\Facades\Form;
@@ -12,6 +13,7 @@ use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Grid\SearchForm;
 use App\Admin\Support\View\Layout as LayoutContract;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 
 class CityController extends AbstractPrototypeController
 {
@@ -26,10 +28,30 @@ class CityController extends AbstractPrototypeController
             ->view('data.city-form.city-form');
     }
 
+    public function store(): RedirectResponse
+    {
+        try {
+            return parent::store();
+        } catch (InvalidPointCoordinates $e) {
+            $this->form()->error('Указаны некорректные координаты.');
+            $this->form()->throwError();
+        }
+    }
+
     public function edit(int $id): LayoutContract
     {
         return parent::edit($id)
             ->view('data.city-form.city-form');
+    }
+
+    public function update(int $id): RedirectResponse
+    {
+        try {
+            return parent::update($id);
+        } catch (InvalidPointCoordinates $e) {
+            $this->form()->error('Указаны некорректные координаты.');
+            $this->form()->throwError();
+        }
     }
 
     public function search(SearchRequest $request): JsonResponse
@@ -50,7 +72,7 @@ class CityController extends AbstractPrototypeController
             ->country('country_id', ['label' => 'Страна', 'required' => true])
             ->localeText('name', ['label' => 'Наименование', 'required' => true])
             ->coordinates('coordinates', ['label' => 'Координаты', 'required' => true, 'value' => $coordinates])
-            ->number('priority', ['label' => 'Приоритет', 'min' => 0, 'max' => 255]);
+            ->number('priority', ['label' => 'Приоритет', 'min' => 0, 'max' => 255, 'required' => true]);
     }
 
     protected function gridFactory(): GridContract

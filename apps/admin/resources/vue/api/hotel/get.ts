@@ -33,8 +33,15 @@ export const useHotelGetAPI = (props: MaybeRef<{ hotelID: number }>) =>
     .get()
     .json<HotelResponse>()
 
-export const useHotelSearchAPI = (props: MaybeRef<{ cityId?: number }>) =>
-  useAdminAPI(props, ({ cityId }) =>
-    getURL('/hotels/search', cityId ? { city_id: cityId } : undefined))
+export const useHotelSearchAPI = (props: MaybeRef<{ cityId?: number; cityIds?: number[] }>) =>
+  useAdminAPI(props, ({ cityId, cityIds }) => {
+    let queryParams: any
+    if (cityId) {
+      queryParams = { city_id: cityId }
+    } if (cityIds) {
+      queryParams = { city_ids: cityIds }
+    }
+    return getURL('/hotels/search', queryParams)
+  })
     .get()
     .json<HotelResponse[]>()

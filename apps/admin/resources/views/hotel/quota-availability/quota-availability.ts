@@ -1,10 +1,15 @@
-// import { createVueInstance } from '~resources/vue/vue'
+import { createPinia } from 'pinia'
+
+import { createVueInstance } from '~resources/vue/vue'
+
+import QuotaAvailability from './QuotaAvailability.vue'
 
 import '~resources/views/main'
 
-// createVueInstance({
-//   rootComponent: HotelQuotas,
-//   rootContainer: '#hotel-quotas',
-// })
+const pinia = createPinia()
 
-console.log('Create vue instance')
+createVueInstance({
+  rootComponent: QuotaAvailability,
+  rootContainer: '#quota-availability',
+  plugins: [pinia],
+})

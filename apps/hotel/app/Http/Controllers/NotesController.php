@@ -11,23 +11,21 @@ class NotesController extends AbstractHotelController
 {
     public function edit(): LayoutContract
     {
-//        Breadcrumb::prototype($this->prototype)
-//            ->addUrl($this->prototype->route('show', $hotel), (string)$hotel)
-//            ->add('Примечание отеля');
-//
-//        Sidebar::submenu(new HotelMenu($hotel, 'info'));
-
         return Layout::title('Изменить примечание отеля')
-            ->view('show.notes.notes', [
-                'value' => '',
+            ->view('notes.notes', [
+                'values' => $this->getHotel()->getTranslations('text'),
                 'cancelUrl' => route('hotel.index')
             ]);
     }
 
     public function update(Request $request): RedirectResponse
     {
-        $value = $request->post('notes');
-        //@todo
+        //Массив с тремя языками (ru, en, uz)
+        $notes = $request->post('notes');
+
+        $this->getHotel()->update([
+            'text' => $notes
+        ]);
 
         return redirect(route('hotel.index'));
     }

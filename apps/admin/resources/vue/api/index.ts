@@ -50,7 +50,7 @@ const useAPI = (base: string) => <T>(
 
 export const useAdminAPI = useAPI(ADMIN_API_URL)
 
-export const getURL = (url: string, query?: Record<string, string | number>): string =>
+export const getURL = (url: string, query?: Record<string, string | number | number[]>): string =>
   (query === undefined ? url : `${url}?${qs.stringify(query)}`)
 
 const useAlternateFetchData = <Response, Data>(ctx: AfterFetchContext<Response>) =>

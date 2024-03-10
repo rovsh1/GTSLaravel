@@ -1,0 +1,203 @@
+<script lang="ts" setup>
+import { onMounted, reactive, ref, watch } from 'vue'
+
+import { compareJSDate } from 'gts-common/helpers/date'
+import DateRangePicker from 'gts-components/Base/DateRangePicker'
+import OverlayLoading from 'gts-components/Base/OverlayLoading'
+import SelectComponent from 'gts-components/Base/SelectComponent'
+import BootstrapButton from 'gts-components/Bootstrap/BootstrapButton/BootstrapButton'
+import { SelectOption } from 'gts-components/Bootstrap/lib'
+import { DateTime } from 'luxon'
+import { nanoid } from 'nanoid'
+
+import {
+  defaultFiltersPayload,
+  FiltersPayload,
+} from './lib'
+
+withDefaults(defineProps<{
+  cities: SelectOption[]
+  hotels: SelectOption[]
+  rooms: SelectOption[]
+  isCitiesFetch?: boolean
+  isHotelsFetch?: boolean
+  isRoomsFetch?: boolean
+  isSubmiting?: boolean
+}>(), {
+  isCitiesFetch: false,
+  isHotelsFetch: false,
+  isRoomsFetch: false,
+  isSubmiting: false,
+})
+
+const emit = defineEmits<{
+  (event: 'chnagedFiltersPayload', value: FiltersPayload): void
+  (event: 'submit'): void
+}>()
+
+const periodError = ref<boolean>(false)
+
+const periodElementID = `${nanoid()}_period`
+
+const filtersPayload = reactive<FiltersPayload>({
+  dateFrom: defaultFiltersPayload.dateFrom,
+  dateTo: defaultFiltersPayload.dateTo,
+  cityIds: defaultFiltersPayload.cityIds,
+  hotelIds: defaultFiltersPayload.hotelIds,
+  roomIds: defaultFiltersPayload.roomIds,
+})
+
+watch(filtersPayload, () => {
+  emit('chnagedFiltersPayload', filtersPayload)
+})
+
+watch(() => filtersPayload.cityIds, () => {
+  filtersPayload.hotelIds = []
+  filtersPayload.roomIds = []
+})
+
+watch(() => filtersPayload.hotelIds, () => {
+  filtersPayload.roomIds = []
+})
+
+const convertValuesToNumbers = (values: any): number[] => {
+  if (values.length === 0) {
+    return []
+  }
+  const resultArray = values.map(Number)
+  return resultArray
+}
+
+const handlePeriodChanges = (dates: [Date, Date]) => {
+  if (!dates[0] || !dates[1]
+    || (compareJSDate(filtersPayload.dateFrom, dates[0])
+      && compareJSDate(filtersPayload.dateTo, dates[1]))) return
+  const diffInYears = DateTime.fromJSDate(dates[1]).diff(DateTime.fromJSDate(dates[0]), 'years').years
+  if (diffInYears > 1) {
+    periodError.value = true
+  } else {
+    periodError.value = false
+  }
+  const [dateFrom, dateTo] = dates
+  filtersPayload.dateFrom = dateFrom
+  filtersPayload.dateTo = dateTo
+}
+
+onMounted(() => {
+  emit('chnagedFiltersPayload', filtersPayload)
+})
+</script>
+<template>
+  <div class="quotaAvailabilityFilters">
+    <DateRangePicker
+      :id="periodElementID"
+      label="Период"
+      :is-error="periodError"
+      error-text="Период превышает 1 год"
+      :label-outline="false"
+      :value="[filtersPayload.dateFrom, filtersPayload.dateTo]"
+      required
+      :disabled="isSubmiting"
+      @input="(dates) => handlePeriodChanges(dates as [Date, Date])"
+    />
+    <div class="quotaAvailabilityFilters-field">
+      <SelectComponent
+        :options="cities"
+        label="Выберите город(а)"
+        disabled-placeholder="Не выбрано"
+        label-style="outline"
+        :value="filtersPayload.cityIds"
+        multiple
+        placeholder="Не выбрано"
+        :disabled="isSubmiting"
+        @change="(value) => {
+          filtersPayload.cityIds = convertValuesToNumbers(value)
+        }"
+      />
+      <OverlayLoading v-if="isCitiesFetch" />
+    </div>
+    <div class="quotaAvailabilityFilters-field">
+      <SelectComponent
+        :options="hotels"
+        label="Выберите отель(и)"
+        label-style="outline"
+        :disabled="!filtersPayload.cityIds.length || isSubmiting"
+        :disabled-placeholder="filtersPayload.cityIds.length ? 'Не выбрано' : 'Выберите город(а)'"
+        :value="filtersPayload.hotelIds"
+        multiple
+        placeholder="Не выбрано"
+        @change="(value) => filtersPayload.hotelIds = convertValuesToNumbers(value)"
+      />
+      <OverlayLoading v-if="isHotelsFetch" />
+    </div>
+    <div class="quotaAvailabilityFilters-field">
+      <SelectComponent
+        :options="rooms"
+        label="Выберите номер(а)"
+        label-style="outline"
+        :disabled="!filtersPayload.hotelIds.length || isSubmiting"
+        :disabled-placeholder="filtersPayload.hotelIds.length ? 'Не выбрано' : 'Выберите отель(и)'"
+        :value="filtersPayload.roomIds"
+        multiple
+        placeholder="Не выбрано"
+        @change="(value) => filtersPayload.roomIds = convertValuesToNumbers(value)"
+      />
+      <OverlayLoading v-if="isRoomsFetch" />
+    </div>
+    <div class="actions">
+      <BootstrapButton
+        label="Поиск"
+        :disabled="isCitiesFetch || isHotelsFetch || isRoomsFetch || isSubmiting || periodError"
+        severity="primary"
+        @click="() => emit('submit')"
+      />
+    </div>
+  </div>
+</template>
+<style lang="scss">
+%flow {
+  display: flex;
+  gap: 1em;
+}
+
+.quotaAvailabilityFilters {
+  @extend %flow;
+
+  flex-wrap: wrap;
+  align-items: flex-start;
+
+  .quotaAvailabilityFilters-field {
+    position: relative;
+    width: 245px;
+  }
+
+  input {
+    height: 34px;
+  }
+}
+
+.actions {
+  @extend %flow;
+}
+
+.month {
+  :deep(select) {
+    text-transform: capitalize;
+  }
+}
+
+.quotaAvailabilityFilters-disable {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--bs-border-radius);
+  background-color: var(--bs-secondary-bg);
+  opacity: 0.4;
+}
+
+.availability-wrapper {
+  min-width: 9.375rem;
+}
+</style>

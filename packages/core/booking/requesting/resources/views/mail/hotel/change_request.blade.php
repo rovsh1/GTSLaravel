@@ -7,7 +7,7 @@
         </div>
         <div class="text-block">
             <p>Просим Вас обработать <span class="changed">запрос на изменение бронирования</span> <a
-                    href="{{ route('hotel-booking.show', $booking->number) }}"
+                    href="{{ ho_url("/booking/$booking->number") }}"
                     target="_blank">по
                     ссылке</a></p>
         </div>
