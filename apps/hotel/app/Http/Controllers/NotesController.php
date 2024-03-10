@@ -11,7 +11,7 @@ class NotesController extends AbstractHotelController
 {
     public function edit(): LayoutContract
     {
-        return Layout::title('Изменить примечание отеля')
+        return Layout::title('Изменить тестовое описание')
             ->view('notes.notes', [
                 'values' => $this->getHotel()->getTranslations('text'),
                 'cancelUrl' => route('hotel.index')
