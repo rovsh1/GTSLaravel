@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('scripts')
-    @vite('resources/views/hotel/notes/notes.ts')
+    @vite('resources/views/notes/notes.ts')
 @endsection
 
 @section('content')
@@ -12,8 +12,8 @@
     <div class="content-body">
         <form method="POST" class="htmleditor-form retry-submit-lock">
             <div class="textarea-wrapper">
-                @foreach($values as $lang => $value)
-                    <textarea name="notes[{{$lang}}]" id="hotel-notes-textarea" style="visibility: hidden">{!! $value ?? '' !!}</textarea>
+                @foreach(['ru', 'en', 'uz'] as $lang)
+                    <textarea name="notes[{{$lang}}]" id="hotel-notes-textarea" style="visibility: hidden">{!! $values[$lang] ?? '' !!}</textarea>
                 @endforeach
             </div>
 

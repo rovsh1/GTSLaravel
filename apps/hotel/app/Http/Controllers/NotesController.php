@@ -26,12 +26,11 @@ class NotesController extends AbstractHotelController
 
     public function update(Request $request): RedirectResponse
     {
+        //Массив с тремя языками (ru, en, uz)
         $notes = $request->post('notes');
 
         $this->getHotel()->update([
-            'text' => [
-                'ru' => $notes
-            ]
+            'text' => $notes
         ]);
 
         return redirect(route('hotel.index'));
