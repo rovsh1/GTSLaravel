@@ -311,12 +311,12 @@ class HotelController extends AbstractPrototypeController
     {
         return Grid::paginator(self::GRID_LIMIT)
             ->setOption('id', 'hotel-users-grid')
-            ->text('presentation', ['text' => 'Имя в системе', 'order' => true])
+            ->text('presentation', ['text' => 'Имя в системе'])
             ->text('login', ['text' => 'Логин'])
             ->email('email', ['text' => 'Email'])
             ->phone('phone', ['text' => 'Телефон'])
             ->orderBy('presentation', 'asc')
-            ->header(false)
+//            ->header(false)
             ->data(
                 User::where('hotel_id', $this->model->id)
             );
