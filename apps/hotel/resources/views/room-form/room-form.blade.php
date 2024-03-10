@@ -14,11 +14,13 @@
     </div>
 
     <div class="content-body">
-        <form class="retry-submit-lock" action="{{ $form->action }}" method="{{ strtoupper($form->method) === 'GET' ? 'GET' : 'POST' }}">
+        <form class="retry-submit-lock" method="POST">
             <div class="card card-form">
                 <div class="card-header"><h5>Описание</h5></div>
                 <div class="textarea-wrapper">
-                    <textarea name="text[ru]" id="room-text-textarea" style="visibility: hidden">{!! $text ?? '' !!}</textarea>
+                    @foreach(['ru', 'en', 'uz'] as $lang)
+                        <textarea name="notes[{{$lang}}]" id="room-text-textarea" style="visibility: hidden">{!! $values[$lang] ?? '' !!}</textarea>
+                    @endforeach
                 </div>
             </div>
 
