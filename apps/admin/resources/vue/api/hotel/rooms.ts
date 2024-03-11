@@ -14,7 +14,7 @@ type HotelRoomsListProps = {
 }
 
 type HotelRoomsPayload = {
-  hotelIds?: number[]
+  hotel_ids?: number[]
 }
 
 export type UseHotelRooms = HotelRoom[] | null

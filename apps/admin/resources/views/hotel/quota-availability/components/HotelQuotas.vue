@@ -87,7 +87,7 @@ const {
   isFetching: isHotelRoomsFetching,
 } = useHotelRoomsListAPI(computed(() => (selectedHotelID.value ? { hotelID: selectedHotelID.value } : null)))
 
-const getHotelDayDataByPropertyName = (key: string, hotelDayData: Map<string, QuotaInfo>, property: keyof QuotaInfo): any => {
+const getHotelDataByPropertyName = (key: string, hotelDayData: Map<string, QuotaInfo>, property: keyof QuotaInfo): any => {
   let value: QuotaInfo | undefined | null = null
   if (hotelDayData.has(key)) {
     value = hotelDayData.get(key)
@@ -135,7 +135,16 @@ const toogleHotelRooms = async (hotelData: HotelQuotasAccumulationData, hotelID:
   if (!source.isShowHotelRooms) {
     selectedHotelID.value = hotelID
     await Promise.all([fetchHotelRooms(), fetchHotelQuotas()])
-    source.rooms = rooms.value
+    if (props.filters) {
+      const { roomIds, roomTypeIds } = props.filters
+      if (roomIds.length) {
+        source.rooms = rooms.value?.filter((room) => roomIds.includes(room.id)) || []
+      } else if (roomTypeIds.length) {
+        source.rooms = rooms.value?.filter((room) => (room.typeId ? roomTypeIds.includes(room.typeId) : false)) || []
+      } else {
+        source.rooms = rooms.value
+      }
+    }
     source.hotelQuotas = getRoomQuotas(hotelQuotas.value)
     source.isShowHotelRooms = true
   } else {
@@ -195,9 +204,9 @@ onMounted(initHotelsQuotasLocal)
                 <td
                   class="quotaCell"
                   :class="[isLastDayInMonth ? 'month-splitter' : '', dayQuotaCellClassName(getHotelDayQuotaStatus(
-                    getHotelDayDataByPropertyName(`${key}-${hotelQuota.hotel.id}`, hotelQuota.hotelQuotasCount, 'countAvailable')))]"
+                    getHotelDataByPropertyName(`${key}-${hotelQuota.hotel.id}`, hotelQuota.hotelQuotasCount, 'countAvailable')))]"
                 >
-                  {{ getHotelDayDataByPropertyName(`${key}-${hotelQuota.hotel.id}`, hotelQuota.hotelQuotasCount, 'countAvailable') }}
+                  {{ getHotelDataByPropertyName(`${key}-${hotelQuota.hotel.id}`, hotelQuota.hotelQuotasCount, 'countAvailable') }}
                 </td>
               </template>
             </tr>
@@ -434,6 +443,10 @@ th {
   .quotaCell {
     div {
       padding: 5px 0;
+
+      &:hover {
+        background: #ccc;
+      }
     }
   }
 

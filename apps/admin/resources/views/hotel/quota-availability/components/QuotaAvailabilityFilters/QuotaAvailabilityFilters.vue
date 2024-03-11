@@ -20,15 +20,18 @@ withDefaults(defineProps<{
   cities: SelectOption[]
   hotels: SelectOption[]
   rooms: SelectOption[]
+  roomsTypes: SelectOption[]
   isCitiesFetch?: boolean
   isHotelsFetch?: boolean
   isRoomsFetch?: boolean
+  isRoomsTypesFetch?: boolean
   isSubmiting?: boolean
 }>(), {
   isCitiesFetch: false,
   isHotelsFetch: false,
   isRoomsFetch: false,
   isSubmiting: false,
+  isRoomsTypesFetch: false,
 })
 
 const emit = defineEmits<{
@@ -49,6 +52,7 @@ const filtersPayload = reactive<FiltersPayload>({
   cityIds: defaultFiltersPayload.cityIds,
   hotelIds: defaultFiltersPayload.hotelIds,
   roomIds: defaultFiltersPayload.roomIds,
+  roomTypeIds: defaultFiltersPayload.roomTypeIds,
 })
 
 watch(filtersPayload, () => {
@@ -59,16 +63,19 @@ watch(() => filtersPayload.cityIds, () => {
   if (!isFirstInitializingCities.value) {
     filtersPayload.hotelIds = []
     filtersPayload.roomIds = []
+    filtersPayload.roomTypeIds = []
   } else {
     isFirstInitializingCities.value = false
   }
 })
 
-watch(() => filtersPayload.hotelIds, () => {
+watch(() => filtersPayload.hotelIds, (value) => {
   if (!isFirstInitializingHotels.value) {
     filtersPayload.roomIds = []
+    filtersPayload.roomTypeIds = []
   } else {
     isFirstInitializingHotels.value = false
+    if (value.length) filtersPayload.roomTypeIds = []
   }
 })
 
@@ -101,9 +108,11 @@ const setFiltersFromUrlParameters = () => {
   const citiesParameter = urlParams.get('cities')
   const hotelsParameter = urlParams.get('hotels')
   const roomsParameter = urlParams.get('rooms')
+  const roomsTypesParameter = urlParams.get('room-types')
   if (citiesParameter) filtersPayload.cityIds = convertValuesToNumbers(citiesParameter.split(','))
   if (hotelsParameter) filtersPayload.hotelIds = convertValuesToNumbers(hotelsParameter.split(','))
   if (roomsParameter) filtersPayload.roomIds = convertValuesToNumbers(roomsParameter.split(','))
+  if (roomsTypesParameter) filtersPayload.roomTypeIds = convertValuesToNumbers(roomsTypesParameter.split(','))
   if (periodParameter) {
     const [dateFromParametr, dateToParametr] = periodParameter.split('-')
     const dateFrom = DateTime.fromFormat(dateFromParametr, 'dd.MM.yyyy')
@@ -125,6 +134,7 @@ const resetFilters = () => {
   filtersPayload.cityIds = defaultFiltersPayload.cityIds
   filtersPayload.hotelIds = defaultFiltersPayload.hotelIds
   filtersPayload.roomIds = defaultFiltersPayload.roomIds
+  filtersPayload.roomTypeIds = defaultFiltersPayload.roomTypeIds
   emit('reset')
 }
 
@@ -167,8 +177,8 @@ onMounted(() => {
         :options="hotels"
         label="Выберите отель(и)"
         label-style="outline"
-        :disabled="!filtersPayload.cityIds.length || isSubmiting"
-        :disabled-placeholder="filtersPayload.cityIds.length ? 'Не выбрано' : 'Выберите город(а)'"
+        :disabled="isSubmiting"
+        disabled-placeholder="Не выбрано"
         :value="filtersPayload.hotelIds"
         multiple
         placeholder="Не выбрано"
@@ -176,7 +186,7 @@ onMounted(() => {
       />
       <OverlayLoading v-if="isHotelsFetch" />
     </div>
-    <div class="quotaAvailabilityFilters-field">
+    <div v-show="filtersPayload.hotelIds.length" class="quotaAvailabilityFilters-field">
       <SelectComponent
         :options="rooms"
         label="Выберите номер(а)"
@@ -190,10 +200,24 @@ onMounted(() => {
       />
       <OverlayLoading v-if="isRoomsFetch" />
     </div>
+    <div v-show="!filtersPayload.hotelIds.length" class="quotaAvailabilityFilters-field">
+      <SelectComponent
+        :options="roomsTypes"
+        label="Выберите тип номера(ов)"
+        label-style="outline"
+        :disabled="!!filtersPayload.hotelIds.length || isSubmiting"
+        disabled-placeholder="Не выбрано"
+        :value="filtersPayload.roomTypeIds"
+        multiple
+        placeholder="Не выбрано"
+        @change="(value) => filtersPayload.roomTypeIds = convertValuesToNumbers(value)"
+      />
+      <OverlayLoading v-if="isRoomsTypesFetch" />
+    </div>
     <div class="actions">
       <BootstrapButton
         label="Поиск"
-        :disabled="isCitiesFetch || isHotelsFetch || isRoomsFetch || isSubmiting || periodError"
+        :disabled="isCitiesFetch || isHotelsFetch || isRoomsFetch || isRoomsTypesFetch || isSubmiting || periodError"
         severity="primary"
         @click="() => emit('submit')"
       />
@@ -202,7 +226,7 @@ onMounted(() => {
         only-icon="filter_alt_off"
         variant="outline"
         severity="link"
-        :disabled="isCitiesFetch || isHotelsFetch || isRoomsFetch || isSubmiting || !isFilterStateChanged"
+        :disabled="isCitiesFetch || isHotelsFetch || isRoomsFetch || isRoomsTypesFetch || isSubmiting || !isFilterStateChanged"
         @click="resetFilters"
       />
     </div>
