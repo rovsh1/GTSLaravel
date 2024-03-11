@@ -2,6 +2,7 @@
 
 namespace App\Admin\Http\Controllers\Hotel\Reference;
 
+use App\Admin\Http\Resources\RoomType as Resource;
 use App\Admin\Models\Hotel\Reference\RoomType;
 use App\Admin\Support\Http\Controllers\AbstractEnumController;
 use Illuminate\Http\JsonResponse;
@@ -16,7 +17,9 @@ class RoomTypeController extends AbstractEnumController
     public function list(): JsonResponse
     {
         return response()->json(
-            RoomType::all()
+            Resource::collection(
+                RoomType::all()
+            )
         );
     }
 }
