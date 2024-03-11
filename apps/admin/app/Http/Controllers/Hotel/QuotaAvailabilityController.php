@@ -28,6 +28,7 @@ class QuotaAvailabilityController extends Controller
             $request->getCityIds(),
             $request->getHotelIds(),
             $request->getRoomIds(),
+            $request->getRoomTypeIds(),
         );
 
         return response()->json(

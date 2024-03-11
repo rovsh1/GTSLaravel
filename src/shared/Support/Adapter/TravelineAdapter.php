@@ -53,9 +53,10 @@ class TravelineAdapter implements TravelineAdapterInterface
         CarbonPeriod $period,
         array $cityIds = [],
         array $hotelIds = [],
-        array $roomIds = []
+        array $roomIds = [],
+        array $roomTypeIds = []
     ): array {
-        return app(QuotaAvailability\Get::class)->execute($period, $cityIds, $hotelIds, $roomIds);
+        return app(QuotaAvailability\Get::class)->execute($period, $cityIds, $hotelIds, $roomIds, $roomTypeIds);
     }
 
     public function update(int $roomId, CarbonPeriod $period, ?int $quota, ?int $releaseDays = null): void
