@@ -3,7 +3,7 @@
 namespace App\Admin\Http\Controllers\Report;
 
 use App\Admin\Http\Controllers\Controller;
-use App\Admin\Services\ReportCompiler\HotelReportCompiler;
+use App\Admin\Support\Facades\Booking\ReportsAdapter;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Layout;
 use App\Admin\Support\View\Form\Form as FormContract;
@@ -14,11 +14,6 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class HotelBookingController extends Controller
 {
-    public function __construct(
-        private readonly HotelReportCompiler $reportCompiler,
-    ) {
-    }
-
     public function index(): LayoutContract
     {
         $form = $this->formFactory()
@@ -52,12 +47,7 @@ class HotelBookingController extends Controller
         /** @var array $managerIds */
         $managerIds = $data['manager_ids'];
 
-        $report = $this->reportCompiler->generate(
-            request()->user(),
-            $endPeriod,
-            $startPeriod,
-            $managerIds
-        );
+        $report = ReportsAdapter::generateHotelBookingsReport(request()->user(), $endPeriod, $startPeriod, $managerIds);
         $tempFileMetadata = stream_get_meta_data($report);
         $tempFilePath = Arr::get($tempFileMetadata, 'uri');
 

@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App\Admin\Services\ReportCompiler;
+namespace Pkg\Booking\Reporting\Service;
 
 use App\Admin\Models\Administrator\Administrator;
-use App\Admin\Services\ReportCompiler\Factory\HotelBookingDataFactory;
-use App\Admin\Services\ReportCompiler\Factory\HotelCostsDataFactory;
 use App\Admin\Support\Facades\Format;
 use Carbon\CarbonPeriod;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use Pkg\Booking\Reporting\Service\Factory\HotelBookingDataFactory;
+use Pkg\Booking\Reporting\Service\Factory\HotelCostsDataFactory;
 
-class HotelReportCompiler extends AbstractReportCompiler
+class HotelBookingReportCompiler extends AbstractReportCompiler
 {
     private readonly string $templatePath;
 
@@ -19,7 +19,7 @@ class HotelReportCompiler extends AbstractReportCompiler
         private readonly HotelCostsDataFactory $costsDataFactory,
         private readonly HotelBookingDataFactory $bookingDataFactory,
     ) {
-        $this->templatePath = resource_path('report-templates/base_template.xlsx');
+        $this->templatePath = __DIR__ . '/../../resources/templates/report_template.xlsx';
         $reader = IOFactory::createReaderForFile($this->templatePath);
         $this->spreadsheet = $reader->load($this->templatePath);
     }

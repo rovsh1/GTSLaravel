@@ -43,6 +43,7 @@ class ModuleServiceProvider extends ServiceProvider
         'BookingCommon' => 'Pkg\\Booking\\Common\\',
         'BookingRequesting' => 'Pkg\\Booking\\Requesting\\',
         'BookingEventSourcing' => 'Pkg\\Booking\\EventSourcing\\',
+        'BookingReporting' => 'Pkg\\Booking\\Reporting\\',
         'HotelAdministration' => 'Pkg\\Hotel\\Administration\\',
         'CurrencyRate' => 'Pkg\\CurrencyRate\\',
         'MailManager' => 'Pkg\\MailManager\\',

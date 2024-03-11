@@ -4,7 +4,7 @@ namespace App\Admin\Http\Controllers\Report;
 
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Models\Supplier\Supplier;
-use App\Admin\Services\ReportCompiler\ServiceBookingReportCompiler;
+use App\Admin\Support\Facades\Booking\ReportsAdapter;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Layout;
 use App\Admin\Support\View\Form\Form as FormContract;
@@ -15,11 +15,6 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ServiceBookingController extends Controller
 {
-    public function __construct(
-        private readonly ServiceBookingReportCompiler $reportCompiler,
-    ) {
-    }
-
     public function index(): LayoutContract
     {
         $form = $this->formFactory()
@@ -57,9 +52,8 @@ class ServiceBookingController extends Controller
         /** @var array $managerIds */
         $managerIds = $data['manager_ids'];
 
-        $report = $this->reportCompiler->generate(
+        $report = ReportsAdapter::generateServiceBookingsReport(
             request()->user(),
-            'Отчет по броням - услуги',
             $endPeriod,
             $supplierIds,
             $startPeriod,

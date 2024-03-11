@@ -3,7 +3,7 @@
 namespace App\Admin\Http\Controllers\Report;
 
 use App\Admin\Http\Controllers\Controller;
-use App\Admin\Services\ReportCompiler\ProfitReportCompiler;
+use App\Admin\Support\Facades\Booking\ReportsAdapter;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Layout;
 use App\Admin\Support\View\Form\Form as FormContract;
@@ -14,11 +14,6 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ProfitController extends Controller
 {
-    public function __construct(
-        private readonly ProfitReportCompiler $reportCompiler,
-    ) {
-    }
-
     public function index(): LayoutContract
     {
         $form = $this->formFactory()
@@ -50,7 +45,7 @@ class ProfitController extends Controller
         $endPeriod = $data['end_period'];
         $endPeriod = new CarbonPeriod($endPeriod->getStartDate(), $endPeriod->getEndDate()->setTime(23, 59, 59));
 
-        $report = $this->reportCompiler->generate(request()->user(), $endPeriod, $startPeriod);
+        $report = ReportsAdapter::generateProfitReport(request()->user(), $endPeriod, $startPeriod);
         $tempFileMetadata = stream_get_meta_data($report);
         $tempFilePath = Arr::get($tempFileMetadata, 'uri');
 

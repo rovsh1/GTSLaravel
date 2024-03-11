@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Admin\Services\ReportCompiler;
+namespace Pkg\Booking\Reporting\Service;
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;

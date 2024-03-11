@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Admin\Services\ReportCompiler\Factory;
+namespace Pkg\Booking\Reporting\Service\Factory;
 
 use App\Admin\Models\Booking\Booking;
 use App\Admin\Models\Order\Guest;
