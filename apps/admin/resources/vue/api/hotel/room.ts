@@ -17,6 +17,7 @@ export type HotelRoomResponse = {
   name: string
   rooms_number: number
   guests_count: number
+  type_id?: number
   images?: HotelImageResponse[]
 }
 
@@ -26,6 +27,7 @@ export type HotelRoom = {
   name: string
   roomsNumber: number
   guestsCount: number
+  typeId?: number
   images?: HotelImage[]
 }
 
@@ -35,6 +37,7 @@ export const mapHotelRoomResponseToHotelRoom = ({
   name,
   rooms_number: roomsNumber,
   guests_count: guestsCount,
+  type_id: typeId,
   images,
 }: HotelRoomResponse): HotelRoom => ({
   id,
@@ -42,6 +45,7 @@ export const mapHotelRoomResponseToHotelRoom = ({
   name,
   roomsNumber,
   guestsCount,
+  typeId,
   images: images?.map(mapHotelImageResponseToImageResponse),
 })
 

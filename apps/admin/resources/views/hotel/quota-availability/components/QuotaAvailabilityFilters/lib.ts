@@ -6,6 +6,7 @@ export type FiltersPayload = {
   cityIds: number[]
   hotelIds: number[]
   roomIds: number[]
+  roomTypeIds: number[]
 }
 
 export const defaultFiltersPayload: FiltersPayload = {
@@ -14,4 +15,5 @@ export const defaultFiltersPayload: FiltersPayload = {
   cityIds: [],
   hotelIds: [],
   roomIds: [],
+  roomTypeIds: [],
 }

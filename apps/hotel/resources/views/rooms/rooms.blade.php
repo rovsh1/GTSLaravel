@@ -29,16 +29,18 @@
                     </div>
                     <div class="usability-wrapper">
                         <div class="usability">
-                            @foreach($room->usabilities as $usability)
-                                <span class="badge badge-success">{{ $usability->name }}</span>
-                            @endforeach
+                            <div class="usability-height-checker">
+                                @foreach($room->usabilities as $usability)
+                                    <span class="badge badge-success">{{ $usability->name }}</span>
+                                @endforeach
+                            </div>
                         </div>
                         <div class="usability-expand">
                             <i class="material-symbols-outlined">expand_more</i>
                         </div>
                     </div>
                     <div class="buttons">
-                        <a href="https://www.gotostans.com/ru/hotel/{{ $room->hotel_id }}" target="_blank" class="btn btn-light">Описание</a>
+                        <a href="{{ route('rooms.edit', $room) }}" class="btn btn-light">Описание</a>
                         <a href="{{ route('images.index', ['room_id' => $room->id]) }}" class="btn btn-light">Фотографии</a>
                     </div>
                 </div>

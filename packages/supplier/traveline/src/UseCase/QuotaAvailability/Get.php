@@ -19,10 +19,16 @@ class Get
      * @param array $cityIds
      * @param array $hotelIds
      * @param array $roomIds
+     * @param array $roomTypeIds
      * @return QuotaDto
      */
-    public function execute(CarbonPeriod $period, array $cityIds = [], array $hotelIds = [], array $roomIds = []): array
-    {
-        return $this->quotaRepository->getQuotasAvailability($period, $cityIds, $hotelIds, $roomIds);
+    public function execute(
+        CarbonPeriod $period,
+        array $cityIds = [],
+        array $hotelIds = [],
+        array $roomIds = [],
+        array $roomTypeIds = []
+    ): array {
+        return $this->quotaRepository->getQuotasAvailability($period, $cityIds, $hotelIds, $roomIds, $roomTypeIds);
     }
 }

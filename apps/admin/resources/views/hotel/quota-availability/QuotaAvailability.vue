@@ -6,6 +6,7 @@ import BaseLayout from 'gts-components/Base/BaseLayout'
 import EmptyData from 'gts-components/Base/EmptyData'
 import LoadingSpinner from 'gts-components/Base/LoadingSpinner'
 import { SelectOption } from 'gts-components/Bootstrap/lib'
+import { DateTime } from 'luxon'
 import { storeToRefs } from 'pinia'
 
 import { Day, Month } from '~resources/views/hotel/quotas/components/lib'
@@ -14,6 +15,7 @@ import { useQuotaAvailability } from '~resources/vue/api/hotel/quotas/availabili
 import { useHotelRoomsSearchAPI } from '~resources/vue/api/hotel/rooms'
 
 import { useCityStore } from '~stores/city'
+import { useRoomTypesStore } from '~stores/room-types'
 
 import HotelQuotas from './components/HotelQuotas.vue'
 import QuotaAvailabilityFilters from './components/QuotaAvailabilityFilters/QuotaAvailabilityFilters.vue'
@@ -29,7 +31,16 @@ const cityOptions = computed(() => {
   ) as SelectOption[]
 })
 
+const { roomTypes } = storeToRefs(useRoomTypesStore())
+const roomTypesOptions = computed(() => {
+  const options = roomTypes.value || []
+  return options.map(
+    (entity) => ({ value: entity.id, label: entity.name }),
+  ) as SelectOption[]
+})
+
 const filtersPayload = ref<FiltersPayload | null>(null)
+const preSendFiltersPayload = ref<FiltersPayload | null>(null)
 const quotasPeriod = ref<Day[]>([])
 const quotasPeriodMonths = ref<Month[]>([])
 
@@ -43,7 +54,7 @@ const {
   execute: fetchHotelsRooms,
   data: hotelsRooms,
   isFetching: isFetchingHotelsRooms,
-} = useHotelRoomsSearchAPI(computed(() => ({ hotelIds: filtersPayload.value?.hotelIds || undefined })))
+} = useHotelRoomsSearchAPI(computed(() => ({ hotel_ids: filtersPayload.value?.hotelIds || undefined })))
 
 const {
   execute: fetchQuotaAvailability,
@@ -51,13 +62,14 @@ const {
   isFetching: isFetchingQuotaAvailability,
 } = useQuotaAvailability(computed(() => {
   if (!filtersPayload.value) return null
-  const { dateFrom, dateTo, cityIds, hotelIds, roomIds } = filtersPayload.value
+  const { dateFrom, dateTo, cityIds, hotelIds, roomIds, roomTypeIds } = filtersPayload.value
   return {
     dateFrom: formatDateToAPIDate(dateFrom),
     dateTo: formatDateToAPIDate(dateTo),
     cityIds: cityIds || [],
     hotelIds: hotelIds || [],
     roomIds: roomIds || [],
+    roomTypeIds: roomTypeIds || [],
   }
 }))
 
@@ -77,15 +89,39 @@ const hotelsRoomsOptions = computed(() => {
   ) as SelectOption[]
 })
 
-watch(() => filtersPayload.value?.cityIds, (value) => {
-  if (value?.length) fetchHotels()
-  else hotels.value = []
+watch(() => filtersPayload.value?.cityIds, () => {
+  fetchHotels()
 })
 
 watch(() => filtersPayload.value?.hotelIds, (value) => {
   if (value?.length) fetchHotelsRooms()
   else hotelsRooms.value = []
 })
+
+const setUrlParameters = (filters: FiltersPayload) => {
+  const periodParameterFrom = DateTime.fromJSDate(filters.dateFrom).toFormat('dd.MM.yyyy')
+  const periodParameterTo = DateTime.fromJSDate(filters.dateTo).toFormat('dd.MM.yyyy')
+  const periodParameter = `${periodParameterFrom}-${periodParameterTo}`
+  const citiesParametr = filters.cityIds.length ? filters.cityIds.join(',') : null
+  const hotelsParametr = filters.hotelIds.length ? filters.hotelIds.join(',') : null
+  const roomsParametr = filters.roomIds.length ? filters.roomIds.join(',') : null
+  const roomTypesParametr = filters.roomTypeIds.length ? filters.roomTypeIds.join(',') : null
+  const params = {
+    'period': encodeURIComponent(periodParameter),
+    'cities': citiesParametr,
+    'hotels': hotelsParametr,
+    'rooms': roomsParametr,
+    'room-types': roomTypesParametr,
+  }
+  const validParams = Object.entries(params)
+    .filter(([_key, value]) => value !== null)
+    .map(([key, value]) => `${key}=${value}`)
+    .join('&')
+  const currentUrl = window.location.pathname
+  const separator = (currentUrl.indexOf('?') > -1) ? '&' : '?'
+  const newUrl = currentUrl + separator + validParams
+  window.history.replaceState({}, document.title, newUrl)
+}
 
 const searhQuotas = async () => {
   if (filtersPayload.value) {
@@ -96,10 +132,18 @@ const searhQuotas = async () => {
         dateTo: filtersPayload.value.dateTo,
       },
     })
+    preSendFiltersPayload.value = { ...filtersPayload.value }
     const { period, months } = quotasAccumalationData
     quotasPeriod.value = period
     quotasPeriodMonths.value = months
+    setUrlParameters(filtersPayload.value)
   }
+}
+
+const resetQuotasData = () => {
+  quotaAvailability.value = null
+  const currentUrl = window.location.pathname
+  window.history.replaceState({}, document.title, currentUrl)
 }
 
 </script>
@@ -115,6 +159,7 @@ const searhQuotas = async () => {
           :cities="cityOptions"
           :hotels="hotelsOptions"
           :rooms="hotelsRoomsOptions"
+          :rooms-types="roomTypesOptions"
           :is-hotels-fetch="isFetchingHotels"
           :is-rooms-fetch="isFetchingHotelsRooms"
           :is-submiting="isFetchingQuotaAvailability"
@@ -122,17 +167,19 @@ const searhQuotas = async () => {
             filtersPayload = value
           }"
           @submit="searhQuotas"
+          @reset="resetQuotasData"
         />
         <div v-if="isFetchingQuotaAvailability" class="mt-4 d-flex justify-content-center">
           <LoadingSpinner />
         </div>
         <template v-else-if="quotaAvailability">
           <HotelQuotas
-            v-if="quotaAvailability.length"
+            v-if="quotaAvailability.length && preSendFiltersPayload"
             class="mt-4"
             :months="quotasPeriodMonths"
             :days="quotasPeriod"
             :hotels-quotas="quotaAvailability"
+            :filters="preSendFiltersPayload"
           />
           <EmptyData v-else class="mt-4">
             Квоты по выбранным параметрам отсутствуют

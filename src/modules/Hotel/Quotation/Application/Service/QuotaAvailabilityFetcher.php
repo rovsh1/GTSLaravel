@@ -19,10 +19,11 @@ class QuotaAvailabilityFetcher
         CarbonPeriod $period,
         array $cityIds = [],
         array $hotelIds = [],
-        array $roomIds = []
+        array $roomIds = [],
+        array $roomTypeIds = []
     ) {
-        $quotas[] = $this->gotostansSupplier->getQuotasAvailability($period, $cityIds, $hotelIds, $roomIds);
-        $quotas[] = $this->travelineSupplier->getQuotasAvailability($period, $cityIds, $hotelIds, $roomIds);
+        $quotas[] = $this->gotostansSupplier->getQuotasAvailability($period, $cityIds, $hotelIds, $roomIds, $roomTypeIds);
+        $quotas[] = $this->travelineSupplier->getQuotasAvailability($period, $cityIds, $hotelIds, $roomIds, $roomTypeIds);
 
         return array_merge(...$quotas);
     }

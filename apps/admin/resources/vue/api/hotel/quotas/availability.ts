@@ -12,6 +12,7 @@ type QuotaAvailabilityFiltersPayload = {
   cityIds: number[]
   hotelIds: number[]
   roomIds: number[]
+  roomTypeIds: number[]
 }
 
 export type HotelInfo = {

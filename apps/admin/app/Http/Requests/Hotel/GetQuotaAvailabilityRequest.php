@@ -30,12 +30,20 @@ class GetQuotaAvailabilityRequest extends FormRequest
 
             'roomIds' => ['nullable', 'array'],
             'roomIds.*' => ['numeric'],
+
+            'roomTypeIds' => ['nullable', 'array'],
+            'roomTypeIds.*' => ['numeric'],
         ];
     }
 
     public function getRoomIds(): array
     {
         return $this->post('roomIds', []);
+    }
+
+    public function getRoomTypeIds(): array
+    {
+        return $this->post('roomTypeIds', []);
     }
 
     public function getCityIds(): array

@@ -38,13 +38,13 @@ export type Month = {
   daysCount: number
 }
 
-const quotaStatusMap: Record<QuotaStatus, RoomQuotaStatus | undefined> = {
+export const quotaStatusMap: Record<QuotaStatus, RoomQuotaStatus | undefined> = {
   0: 'closed',
   1: 'opened',
 }
 
-const monthKeyFormat = 'yyyy-M'
-const quotaDateFormat = 'yyyy-MM-dd'
+export const monthKeyFormat = 'yyyy-M'
+export const quotaDateFormat = 'yyyy-MM-dd'
 
 export type RoomRender = {
   id: HotelRoomID
@@ -59,7 +59,7 @@ export type QuotasAccumalationData = {
   quotas: Map<string, RoomQuota>
 }
 
-type GetRoomQuotas = (params: {
+export type GetRoomQuotas = (params: {
   filters: FiltersPayload
   quotas: UseHotelQuota
 }) => QuotasAccumalationData
