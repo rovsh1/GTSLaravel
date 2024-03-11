@@ -17,6 +17,10 @@ class HotelService
 
     public function getHotel(): Hotel
     {
+        if (!isset($this->hotel)) {
+            throw new \RuntimeException('Undefined hotel');
+        }
+
         return $this->hotel;
     }
 
