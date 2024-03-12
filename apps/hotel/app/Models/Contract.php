@@ -72,6 +72,7 @@ class Contract extends Model
         static::saved(function (self $model): void {
             if ($model->isActive()) {
                 static::where('id', '!=', $model->id)
+                    ->whereHotelId($model->hotel_id)
                     ->whereStatus(StatusEnum::ACTIVE)
                     ->update(['status' => StatusEnum::INACTIVE]);
             }
