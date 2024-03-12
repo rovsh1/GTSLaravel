@@ -43,11 +43,9 @@ use Sdk\Shared\Enum\Contract\StatusEnum;
  * @method static Builder|Contract active()
  * @mixin \Eloquent
  */
-class Contract extends Model
+class Contract extends \Module\Hotel\Moderation\Infrastructure\Models\Contract
 {
     use HasPeriod;
-
-    protected $table = 'hotel_contracts';
 
     protected $fillable = [
         'hotel_id',
@@ -72,6 +70,7 @@ class Contract extends Model
         static::saved(function (self $model): void {
             if ($model->isActive()) {
                 static::where('id', '!=', $model->id)
+                    ->whereHotelId($model->hotel_id)
                     ->whereStatus(StatusEnum::ACTIVE)
                     ->update(['status' => StatusEnum::INACTIVE]);
             }

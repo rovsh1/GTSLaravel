@@ -67,24 +67,25 @@ class Contract extends Model
     /** @var UploadedFile[]|Collection<UploadedFile> $savingFiles */
     private array|Collection $savingFiles = [];
 
-    public static function booted()
-    {
-        static::saved(function (self $model): void {
-            if ($model->isActive()) {
-                static::where('id', '!=', $model->id)
-                    ->whereStatus(StatusEnum::ACTIVE)
-                    ->update(['status' => StatusEnum::INACTIVE]);
-            }
-
-            if (count($model->savingFiles) === 0) {
-                return;
-            }
-            $fileDtos = array_map(fn(UploadedFile $file) => UploadedFileDto::fromUploadedFile($file),
-                $model->savingFiles);
-            app(UploadContractDocuments::class)->execute($model->id, $fileDtos);
-            $model->savingFiles = [];
-        });
-    }
+//    public static function booted()
+//    {
+//        static::saved(function (self $model): void {
+//            if ($model->isActive()) {
+//                static::where('id', '!=', $model->id)
+//                    ->whereHotelId($model->hotel_id)
+//                    ->whereStatus(StatusEnum::ACTIVE)
+//                    ->update(['status' => StatusEnum::INACTIVE]);
+//            }
+//
+//            if (count($model->savingFiles) === 0) {
+//                return;
+//            }
+//            $fileDtos = array_map(fn(UploadedFile $file) => UploadedFileDto::fromUploadedFile($file),
+//                $model->savingFiles);
+//            app(UploadContractDocuments::class)->execute($model->id, $fileDtos);
+//            $model->savingFiles = [];
+//        });
+//    }
 
     public function scopeActive(Builder $builder)
     {
