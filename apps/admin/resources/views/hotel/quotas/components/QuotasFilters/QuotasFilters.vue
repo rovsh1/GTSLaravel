@@ -13,6 +13,8 @@ import { nanoid } from 'nanoid'
 import { HotelRoom } from '~api/hotel/room'
 
 import {
+  AvailabilityOption,
+  availabilityOptions,
   AvailabilityValue,
   FiltersPayload,
 } from './lib'
@@ -41,17 +43,6 @@ const periodError = ref<boolean>(false)
 const periodElementID = `${nanoid()}_period`
 
 const selectedPeriod = ref<[Date, Date]>([defaultState.dateFrom, defaultState.dateTo])
-
-type AvailabilityOption = {
-  value: AvailabilityValue
-  label: string
-}
-
-const availabilityOptions: AvailabilityOption[] = [
-  { value: 'sold', label: 'Проданные' },
-  { value: 'stopped', label: 'Остановленные' },
-  { value: 'available', label: 'Доступные' },
-]
 
 const selectedAvailabilityOption = ref<AvailabilityOption['value'] | ''>(defaultState.availability)
 

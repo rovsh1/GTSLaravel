@@ -1,5 +1,7 @@
 import { DateTime } from 'luxon'
 
+import { AvailabilityValue } from '~resources/views/hotel/quotas/components/QuotasFilters/lib'
+
 export type FiltersPayload = {
   dateFrom: Date
   dateTo: Date
@@ -7,6 +9,7 @@ export type FiltersPayload = {
   hotelIds: number[]
   roomIds: number[]
   roomTypeIds: number[]
+  availability: AvailabilityValue | null
 }
 
 export const defaultFiltersPayload: FiltersPayload = {
@@ -16,4 +19,5 @@ export const defaultFiltersPayload: FiltersPayload = {
   hotelIds: [],
   roomIds: [],
   roomTypeIds: [],
+  availability: null,
 }

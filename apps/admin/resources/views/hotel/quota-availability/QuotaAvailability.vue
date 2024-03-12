@@ -10,6 +10,7 @@ import { DateTime } from 'luxon'
 import { storeToRefs } from 'pinia'
 
 import { Day, Month } from '~resources/views/hotel/quotas/components/lib'
+import { availabilityOptions, AvailabilityValue } from '~resources/views/hotel/quotas/components/QuotasFilters/lib'
 import { useHotelSearchAPI } from '~resources/vue/api/hotel/get'
 import { useQuotaAvailability } from '~resources/vue/api/hotel/quotas/availability'
 import { useHotelRoomsSearchAPI } from '~resources/vue/api/hotel/rooms'
@@ -39,6 +40,13 @@ const roomTypesOptions = computed(() => {
   ) as SelectOption[]
 })
 
+const availabilitysOptions = computed(() => {
+  const options = availabilityOptions || []
+  return options.map(
+    (entity) => ({ value: entity.value, label: entity.label }),
+  ) as SelectOption[]
+})
+
 const filtersPayload = ref<FiltersPayload | null>(null)
 const preSendFiltersPayload = ref<FiltersPayload | null>(null)
 const quotasPeriod = ref<Day[]>([])
@@ -62,7 +70,7 @@ const {
   isFetching: isFetchingQuotaAvailability,
 } = useQuotaAvailability(computed(() => {
   if (!filtersPayload.value) return null
-  const { dateFrom, dateTo, cityIds, hotelIds, roomIds, roomTypeIds } = filtersPayload.value
+  const { dateFrom, dateTo, cityIds, hotelIds, roomIds, roomTypeIds, availability } = filtersPayload.value
   return {
     dateFrom: formatDateToAPIDate(dateFrom),
     dateTo: formatDateToAPIDate(dateTo),
@@ -70,6 +78,7 @@ const {
     hotelIds: hotelIds || [],
     roomIds: roomIds || [],
     roomTypeIds: roomTypeIds || [],
+    availability,
   }
 }))
 
@@ -106,12 +115,14 @@ const setUrlParameters = (filters: FiltersPayload) => {
   const hotelsParametr = filters.hotelIds.length ? filters.hotelIds.join(',') : null
   const roomsParametr = filters.roomIds.length ? filters.roomIds.join(',') : null
   const roomTypesParametr = filters.roomTypeIds.length ? filters.roomTypeIds.join(',') : null
+  const availabilityParametr = filters.availability
   const params = {
     'period': encodeURIComponent(periodParameter),
     'cities': citiesParametr,
     'hotels': hotelsParametr,
     'rooms': roomsParametr,
     'room-types': roomTypesParametr,
+    'availability': availabilityParametr,
   }
   const validParams = Object.entries(params)
     .filter(([_key, value]) => value !== null)
@@ -125,6 +136,9 @@ const setUrlParameters = (filters: FiltersPayload) => {
 
 const searhQuotas = async () => {
   if (filtersPayload.value) {
+    const validAvailability = availabilitysOptions.value.find((availabilityOption) =>
+      availabilityOption.value === filtersPayload.value?.availability)
+    filtersPayload.value.availability = validAvailability?.value as AvailabilityValue || null
     await fetchQuotaAvailability()
     const quotasAccumalationData = getQuotasPeriod({
       filters: {
@@ -160,6 +174,7 @@ const resetQuotasData = () => {
           :hotels="hotelsOptions"
           :rooms="hotelsRoomsOptions"
           :rooms-types="roomTypesOptions"
+          :availabilitys="availabilitysOptions"
           :is-hotels-fetch="isFetchingHotels"
           :is-rooms-fetch="isFetchingHotelsRooms"
           :is-submiting="isFetchingQuotaAvailability"
