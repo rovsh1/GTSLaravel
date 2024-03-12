@@ -45,6 +45,9 @@ AclRoute::for('hotel')
 
     ->get('/{hotel}/users', Controllers\Hotel\UserController::class . '@createDialog', 'create', 'users.create.dialog')
     ->post('/{hotel}/users', Controllers\Hotel\UserController::class . '@storeDialog', 'create', 'users.store.dialog')
+    ->get('/{hotel}/users/{user}/edit', Controllers\Hotel\UserController::class . '@editDialog', 'update', 'users.edit.dialog')
+    ->put('/{hotel}/users/{user}', Controllers\Hotel\UserController::class . '@updateDialog', 'update', 'users.update.dialog')
+    ->delete('/{hotel}/users/{user}', Controllers\Hotel\UserController::class . '@destroyDialog', 'delete', 'users.destroy.dialog')
 
     ->get('/{hotel}/images', Controllers\Hotel\ImageController::class . '@index', 'update', 'images.index')
     ->get('/{hotel}/images/get', Controllers\Hotel\ImageController::class . '@get', 'update', 'images.get')

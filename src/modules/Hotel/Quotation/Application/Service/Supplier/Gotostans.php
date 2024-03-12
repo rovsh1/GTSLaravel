@@ -87,16 +87,18 @@ class Gotostans implements SupplierQuotaFetcherInterface,
      * @param int[] $cityIds
      * @param int[] $hotelIds
      * @param int[] $roomIds
+     * @param int[] $roomTypeIds
      * @return QuotaDto[]
      */
     public function getQuotasAvailability(
         CarbonPeriod $period,
         array $cityIds = [],
         array $hotelIds = [],
-        array $roomIds = []
+        array $roomIds = [],
+        array $roomTypeIds = []
     ): array {
         return $this->mapQuery(
-            $this->bootAvailabilityQuery($period, $cityIds, $hotelIds, $roomIds)
+            $this->bootAvailabilityQuery($period, $cityIds, $hotelIds, $roomIds, $roomTypeIds)
         );
     }
 
@@ -156,14 +158,16 @@ class Gotostans implements SupplierQuotaFetcherInterface,
         CarbonPeriod $period,
         array $cityIds = [],
         array $hotelIds = [],
-        array $roomIds = []
+        array $roomIds = [],
+        array $roomTypeIds = [],
     ): Builder|Quota {
         return Quota::query()
             ->withCountColumns()
             ->wherePeriod($period)
             ->when(!empty($cityIds), fn(Builder $query) => $query->whereIn('hotels.city_id', $cityIds))
             ->when(!empty($hotelIds), fn(Builder $query) => $query->whereIn('hotels.id', $hotelIds))
-            ->when(!empty($roomIds), fn(Builder $query) => $query->whereIn('hotel_rooms.id', $roomIds));
+            ->when(!empty($roomIds), fn(Builder $query) => $query->whereIn('hotel_rooms.id', $roomIds))
+            ->when(!empty($roomTypeIds), fn(Builder $query) => $query->whereIn('hotel_rooms.type_id', $roomTypeIds));
     }
 
     /**

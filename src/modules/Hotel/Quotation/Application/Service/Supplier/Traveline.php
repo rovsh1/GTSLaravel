@@ -57,9 +57,10 @@ class Traveline implements SupplierQuotaFetcherInterface,
         CarbonPeriod $period,
         array $cityIds = [],
         array $hotelIds = [],
-        array $roomIds = []
+        array $roomIds = [],
+        array $roomTypeIds = []
     ): array {
-        return $this->travelineAdapter->getQuotasAvailability($period, $cityIds, $hotelIds, $roomIds);
+        return $this->travelineAdapter->getQuotasAvailability($period, $cityIds, $hotelIds, $roomIds, $roomTypeIds);
     }
 
     public function update(int $roomId, CarbonPeriod $period, ?int $quota, ?int $releaseDays = null): void

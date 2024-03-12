@@ -14,12 +14,14 @@ interface SupplierQuotaAvailabilityFetcherInterface
      * @param int[] $cityIds
      * @param int[] $hotelIds
      * @param int[] $roomIds
+     * @param int[] $roomTypeIds
      * @return QuotaDto[]
      */
     public function getQuotasAvailability(
         CarbonPeriod $period,
         array $cityIds = [],
         array $hotelIds = [],
-        array $roomIds = []
+        array $roomIds = [],
+        array $roomTypeIds = []
     ): array;
 }

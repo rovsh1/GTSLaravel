@@ -1,13 +1,10 @@
 import { isBusinessDay } from 'gts-common/helpers/date'
 import { DateTime } from 'luxon'
 
-import { Day, Month } from '~resources/views/hotel/quotas/components/lib'
+import { Day, Month, monthKeyFormat, quotaDateFormat, quotaStatusMap, RoomQuota } from '~resources/views/hotel/quotas/components/lib'
 import { FiltersPayload } from '~resources/views/hotel/quotas/components/QuotasFilters/lib'
 
-export type QuotaStatus = 'opened' | 'closed' | 'warning'
-
-const monthKeyFormat = 'yyyy-M'
-const quotaDateFormat = 'yyyy-MM-dd'
+import { UseHotelQuota } from '~api/hotel/quotas/list'
 
 export type QuotasPeriod = {
   period: Day[]
@@ -17,6 +14,8 @@ export type QuotasPeriod = {
 type GetQuotasPeriod = (params: {
   filters: FiltersPayload
 }) => QuotasPeriod
+
+type GetRoomQuotas = (quotas: UseHotelQuota) => Map<string, RoomQuota>
 
 export const getQuotasPeriod: GetQuotasPeriod = ({ filters }) => {
   const { dateFrom, dateTo } = filters
@@ -64,4 +63,31 @@ export const getQuotasPeriod: GetQuotasPeriod = ({ filters }) => {
     period: eachDays || [],
     months: eachMonth || [],
   }
+}
+
+export const getRoomQuotas: GetRoomQuotas = (quotas) => {
+  const roomQuotasMap = new Map<string, RoomQuota>()
+
+  if (quotas) {
+    quotas
+      .forEach((hotelQuota) => {
+        const key = DateTime.fromFormat(hotelQuota.date, quotaDateFormat)
+          .toJSDate()
+          .getTime()
+          .toString()
+        roomQuotasMap.set(`${key}-${hotelQuota.roomID}`, {
+          key: `${key}-${hotelQuota.roomID}`,
+          id: hotelQuota.id,
+          roomID: hotelQuota.roomID,
+          date: hotelQuota.date,
+          status: quotaStatusMap[hotelQuota.status] || null,
+          quota: hotelQuota.count_available,
+          sold: hotelQuota.count_booked,
+          reserve: hotelQuota.count_reserved,
+          releaseDays: hotelQuota.release_days,
+        })
+      })
+  }
+
+  return roomQuotasMap
 }

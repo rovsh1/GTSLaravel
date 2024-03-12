@@ -2,22 +2,26 @@
 
 declare(strict_types=1);
 
-namespace App\Admin\Services\ReportCompiler;
+namespace Pkg\Booking\Reporting\Service;
 
 use App\Admin\Models\Administrator\Administrator;
 use App\Admin\Models\Client\Client;
+use Carbon\CarbonPeriod;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use Pkg\Booking\Reporting\Service\Factory\ClientOrderDataFactory;
 
-class OrderReportCompiler extends AbstractReportCompiler
+class ClientOrderReportCompiler extends AbstractReportCompiler
 {
     private readonly string $templatePath;
 
     private array $reportTotalData = [];
 
-    public function __construct()
+    public function __construct(
+        private readonly ClientOrderDataFactory $dataFactory,
+    )
     {
-        $this->templatePath = resource_path('report-templates/base_template.xlsx');
+        $this->templatePath = __DIR__ . '/../../resources/templates/report_template.xlsx';
         $reader = IOFactory::createReaderForFile($this->templatePath);
         $this->spreadsheet = $reader->load($this->templatePath);
     }
@@ -27,15 +31,21 @@ class OrderReportCompiler extends AbstractReportCompiler
      * @param array $data
      * @return resource
      */
-    public function generate(Administrator $administrator, string $title, array $data): mixed
-    {
+    public function generate(
+        Administrator $administrator,
+        CarbonPeriod $endPeriod,
+        ?CarbonPeriod $startPeriod = null,
+        array $clientIds = [],
+        array $managerIds = []
+    ): mixed {
         $this->setCreatedAtDate(now());
         $this->setManager($administrator->presentation);
         $this->setReportPeriodLabel('Период заказов:');
         $this->setLogo();
-        $this->setSheetTitle($this->spreadsheet->getActiveSheet(), $title);
+        $this->setSheetTitle($this->spreadsheet->getActiveSheet(), 'Отчет по заказам');
 
-        foreach ($data as $clientId => $orders) {
+        $ordersGroupedByClient = $this->dataFactory->build($endPeriod, $startPeriod, $clientIds, $managerIds);
+        foreach ($ordersGroupedByClient as $clientId => $orders) {
             $client = Client::find($clientId);
             $this->appendClientRows($client, $orders);
         }
@@ -117,7 +127,8 @@ class OrderReportCompiler extends AbstractReportCompiler
             $bgColor = ($orderIndex === 0 || $orderIndex % 2 === 0) ? 'DEEAF6' : 'FFFFFF';
             $cellStyle = $this->getCellStyle($bgColor);
 
-            $guestsCount = count($row['guests']);
+            $guests = $row['guests'] ?? [];
+            $guestsCount = count($guests);
             $guestsTotal += $guestsCount;
             $hotelsTotal += $row['hotel_amount'];
             $servicesTotal += $row['service_amount'];
@@ -132,8 +143,8 @@ class OrderReportCompiler extends AbstractReportCompiler
                 'B' . $currentRow => $row['status'],
                 'C' . $currentRow => $row['external_id'],
                 'D' . $currentRow => date('d.m.Y', $row['period_start']) . ' - ' . date('d.m.Y', $row['period_end']),
-                'E' . $currentRow => implode("\n", $row['guests']),
-                'F' . $currentRow => count($row['guests']),
+                'E' . $currentRow => implode("\n", $guests),
+                'F' . $currentRow => count($guests),
                 'G' . $currentRow => implode("\n", $row['hotels']),
                 'H' . $currentRow => $row['hotel_amount'] . ' ' . $row['currency'],
                 'I' . $currentRow => implode("\n", $row['services']),
@@ -153,7 +164,7 @@ class OrderReportCompiler extends AbstractReportCompiler
                     ->applyFromArray($this->defaultFont);
             }
 
-            $rowHeight = max(count($row['hotels']), count($row['services']), count($row['guests']));
+            $rowHeight = max(count($row['hotels']), count($row['services']), count($guests));
             $sheet->getRowDimension($currentRow)->setRowHeight($rowHeight * 15);
 
             if (!isset($this->reportPeriodStart)) {

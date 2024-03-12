@@ -34,7 +34,7 @@ Route::controller(HotelController::class)
             ->as('notes.')
             ->group(function () {
                 Route::get('/', [NotesController::class, 'edit'])->name('edit');
-                Route::put('/', [NotesController::class, 'update'])->name('update');
+                Route::post('/', [NotesController::class, 'update'])->name('update');
             });
 
         Route::prefix('services')

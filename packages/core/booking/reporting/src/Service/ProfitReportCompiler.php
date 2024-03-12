@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Admin\Services\ReportCompiler;
+namespace Pkg\Booking\Reporting\Service;
 
 use App\Admin\Models\Administrator\Administrator;
-use App\Admin\Services\ReportCompiler\Factory\ProfitDataFactory;
 use Carbon\CarbonPeriod;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use Pkg\Booking\Reporting\Service\Factory\ProfitDataFactory;
 
 class ProfitReportCompiler extends AbstractReportCompiler
 {
@@ -19,7 +19,7 @@ class ProfitReportCompiler extends AbstractReportCompiler
     public function __construct(
         private readonly ProfitDataFactory $dataFactory,
     ) {
-        $this->templatePath = resource_path('report-templates/base_template.xlsx');
+        $this->templatePath = __DIR__ . '/../../resources/templates/report_template.xlsx';
         $reader = IOFactory::createReaderForFile($this->templatePath);
         $this->spreadsheet = $reader->load($this->templatePath);
     }
@@ -172,19 +172,38 @@ class ProfitReportCompiler extends AbstractReportCompiler
         $defaultCellStyle = $this->getCellStyle('FFFFFF', true);
         $totalCellStyle = $this->getCellStyle('FEFF03', true);
         $profitCellStyle = $this->getCellStyle('66FF67', true);
-        $sheet->getCell('A' . $currentRow)->setValue('Итого')->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
-        $sheet->getCell('B' . $currentRow)->setValue('')->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
-        $sheet->getCell('C' . $currentRow)->setValue('')->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
-        $sheet->getCell('D' . $currentRow)->setValue('')->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
-        $sheet->getCell('E' . $currentRow)->setValue('')->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
-        $sheet->getCell('F' . $currentRow)->setValue($guestsTotal)->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
-        $sheet->getCell('G' . $currentRow)->setValue('')->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
-        $sheet->getCell('H' . $currentRow)->setValue($hotelsTotal . ' ' . $currency)->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
-        $sheet->getCell('I' . $currentRow)->setValue('')->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
-        $sheet->getCell('J' . $currentRow)->setValue($servicesTotal . ' ' . $currency)->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
-        $sheet->getCell('K' . $currentRow)->setValue($amountTotal . ' ' . $currency)->getStyle()->applyFromArray($totalCellStyle)->getFont()->applyFromArray($boldFont);
-        $sheet->getCell('L' . $currentRow)->setValue($supplierTotal . ' ' . $currency)->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
-        $sheet->getCell('M' . $currentRow)->setValue($profitTotal . ' ' . $currency)->getStyle()->applyFromArray($profitCellStyle)->getFont()->applyFromArray($boldFont);
+        $sheet->getCell('A' . $currentRow)->setValue('Итого')->getStyle()->applyFromArray($defaultCellStyle)->getFont(
+        )->applyFromArray($boldFont);
+        $sheet->getCell('B' . $currentRow)->setValue('')->getStyle()->applyFromArray($defaultCellStyle)->getFont(
+        )->applyFromArray($boldFont);
+        $sheet->getCell('C' . $currentRow)->setValue('')->getStyle()->applyFromArray($defaultCellStyle)->getFont(
+        )->applyFromArray($boldFont);
+        $sheet->getCell('D' . $currentRow)->setValue('')->getStyle()->applyFromArray($defaultCellStyle)->getFont(
+        )->applyFromArray($boldFont);
+        $sheet->getCell('E' . $currentRow)->setValue('')->getStyle()->applyFromArray($defaultCellStyle)->getFont(
+        )->applyFromArray($boldFont);
+        $sheet->getCell('F' . $currentRow)->setValue($guestsTotal)->getStyle()->applyFromArray(
+            $defaultCellStyle
+        )->getFont()->applyFromArray($boldFont);
+        $sheet->getCell('G' . $currentRow)->setValue('')->getStyle()->applyFromArray($defaultCellStyle)->getFont(
+        )->applyFromArray($boldFont);
+        $sheet->getCell('H' . $currentRow)->setValue($hotelsTotal . ' ' . $currency)->getStyle()->applyFromArray(
+            $defaultCellStyle
+        )->getFont()->applyFromArray($boldFont);
+        $sheet->getCell('I' . $currentRow)->setValue('')->getStyle()->applyFromArray($defaultCellStyle)->getFont(
+        )->applyFromArray($boldFont);
+        $sheet->getCell('J' . $currentRow)->setValue($servicesTotal . ' ' . $currency)->getStyle()->applyFromArray(
+            $defaultCellStyle
+        )->getFont()->applyFromArray($boldFont);
+        $sheet->getCell('K' . $currentRow)->setValue($amountTotal . ' ' . $currency)->getStyle()->applyFromArray(
+            $totalCellStyle
+        )->getFont()->applyFromArray($boldFont);
+        $sheet->getCell('L' . $currentRow)->setValue($supplierTotal . ' ' . $currency)->getStyle()->applyFromArray(
+            $defaultCellStyle
+        )->getFont()->applyFromArray($boldFont);
+        $sheet->getCell('M' . $currentRow)->setValue($profitTotal . ' ' . $currency)->getStyle()->applyFromArray(
+            $profitCellStyle
+        )->getFont()->applyFromArray($boldFont);
         $sheet->getRowDimension($currentRow)->setRowHeight(25);
 
         $this->updateReportTotalData('hotel', $currency, $hotelsTotal);
@@ -234,12 +253,19 @@ class ProfitReportCompiler extends AbstractReportCompiler
         foreach ($this->reportTotalData as $currency => $totalAmounts) {
             $this->insertNewRowBefore($sheet->getHighestRow());
             $currentRow++;
-            $sheet->getCell('G' . $currentRow)->setValue($currency)->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
-            $sheet->getCell('H' . $currentRow)->setValue($totalAmounts['hotel_amount'] . ' ' . $currency)->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
-            $sheet->getCell('J' . $currentRow)->setValue($totalAmounts['service_amount'] . ' ' . $currency)->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
-            $sheet->getCell('K' . $currentRow)->setValue($totalAmounts['total_amount'] . ' ' . $currency)->getStyle()->applyFromArray($totalCellStyle)->getFont()->applyFromArray($boldFont);
-            $sheet->getCell('L' . $currentRow)->setValue($totalAmounts['supplier_amount'] . ' ' . $currency)->getStyle()->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
-            $sheet->getCell('M' . $currentRow)->setValue($totalAmounts['profit_amount'] . ' ' . $currency)->getStyle()->applyFromArray($profitCellStyle)->getFont()->applyFromArray($boldFont);
+            $sheet->getCell('G' . $currentRow)->setValue($currency)->getStyle()->applyFromArray(
+                $defaultCellStyle
+            )->getFont()->applyFromArray($boldFont);
+            $sheet->getCell('H' . $currentRow)->setValue($totalAmounts['hotel_amount'] . ' ' . $currency)->getStyle(
+            )->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
+            $sheet->getCell('J' . $currentRow)->setValue($totalAmounts['service_amount'] . ' ' . $currency)->getStyle(
+            )->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
+            $sheet->getCell('K' . $currentRow)->setValue($totalAmounts['total_amount'] . ' ' . $currency)->getStyle(
+            )->applyFromArray($totalCellStyle)->getFont()->applyFromArray($boldFont);
+            $sheet->getCell('L' . $currentRow)->setValue($totalAmounts['supplier_amount'] . ' ' . $currency)->getStyle(
+            )->applyFromArray($defaultCellStyle)->getFont()->applyFromArray($boldFont);
+            $sheet->getCell('M' . $currentRow)->setValue($totalAmounts['profit_amount'] . ' ' . $currency)->getStyle(
+            )->applyFromArray($profitCellStyle)->getFont()->applyFromArray($boldFont);
             $sheet->getRowDimension($currentRow)->setRowHeight($rowHeight);
         }
         $firstRow = $currentRow - $countCurrencies + 1;

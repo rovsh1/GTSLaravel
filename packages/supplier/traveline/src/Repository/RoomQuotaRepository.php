@@ -133,10 +133,11 @@ class RoomQuotaRepository
         CarbonPeriod $period,
         array $cityIds = [],
         array $hotelIds = [],
-        array $roomIds = []
+        array $roomIds = [],
+        array $roomTypeIds = []
     ): array {
         return $this->mapQuery(
-            $this->bootAvailabilityQuery($period, $cityIds, $hotelIds, $roomIds)
+            $this->bootAvailabilityQuery($period, $cityIds, $hotelIds, $roomIds, $roomTypeIds)
         );
     }
 
@@ -215,13 +216,15 @@ class RoomQuotaRepository
         CarbonPeriod $period,
         array $cityIds = [],
         array $hotelIds = [],
-        array $roomIds = []
+        array $roomIds = [],
+        array $roomTypeIds = []
     ): Builder|HotelRoomQuota {
         return HotelRoomQuota::query()
             ->wherePeriod($period)
             ->when(!empty($cityIds), fn(Builder $query) => $query->whereIn('hotels.city_id', $cityIds))
             ->when(!empty($hotelIds), fn(Builder $query) => $query->whereIn('hotels.id', $hotelIds))
-            ->when(!empty($roomIds), fn(Builder $query) => $query->whereIn('hotel_rooms.id', $roomIds));
+            ->when(!empty($roomIds), fn(Builder $query) => $query->whereIn('hotel_rooms.id', $roomIds))
+            ->when(!empty($roomTypeIds), fn(Builder $query) => $query->whereIn('hotel_rooms.type_id', $roomTypeIds));
     }
 
     /**

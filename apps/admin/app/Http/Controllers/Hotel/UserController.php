@@ -3,6 +3,7 @@
 namespace App\Admin\Http\Controllers\Hotel;
 
 use App\Admin\Models\Hotel\Hotel;
+use App\Admin\Models\Hotel\User;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
@@ -45,6 +46,42 @@ class UserController extends AbstractPrototypeController
         $form->submitOrFail(route('hotels.users.create.dialog', $hotel));
         $preparedData = $this->saving($form->getData());
         $this->model = $this->repository->create($preparedData);
+
+        return new AjaxReloadResponse();
+    }
+
+    public function editDialog(Hotel $hotel, User $user): View
+    {
+        $this->model = $user;
+
+        $form = $this->dialogForm($hotel->id)
+            ->method('put')
+            ->action(route('hotels.users.update.dialog', [$hotel, $user]))
+            ->data($user);
+
+        return view('default.dialog-form', [
+            'form' => $form
+        ]);
+    }
+
+    public function updateDialog(Hotel $hotel, User $user): AjaxResponseInterface
+    {
+        $this->model = $user;
+
+        $form = $this->dialogForm($hotel->id)
+            ->method('put')
+            ->failUrl(route('hotels.users.edit.dialog', [$hotel, $user]));
+
+        $form->submitOrFail();
+        $preparedData = $this->saving($form->getData());
+        $this->repository->update($user->id, $preparedData);
+
+        return new AjaxReloadResponse();
+    }
+
+    public function destroyDialog(Hotel $hotel, User $user): AjaxResponseInterface
+    {
+        $this->repository->delete($user->id);
 
         return new AjaxReloadResponse();
     }

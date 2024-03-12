@@ -15,15 +15,24 @@
 
     <div class="content-body">
         <form class="retry-submit-lock" method="POST" action="{{route('rooms.update', $model)}}">
-            <div class="card card-form">
-                <div class="card-header"><h5>Описание</h5></div>
-                <div class="textarea-wrapper">
-                    @foreach(['ru', 'en', 'uz'] as $lang)
-                        <textarea name="notes[{{$lang}}]" id="room-text-textarea" style="visibility: hidden">{!! $values[$lang] ?? '' !!}</textarea>
-                    @endforeach
-                </div>
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                @foreach(['ru', 'uz', 'en'] as $index => $lang)
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link {{ $index === 0 ? 'active' : '' }}" id="description-{{$lang}}-tab" data-bs-toggle="tab" data-bs-target="#description-{{$lang}}" type="button">
+                            <img width="20px" src="{{ asset('images/flag/'. $lang .'.svg') }}" alt="{{$lang}}">
+                        </button>
+                    </li>
+                @endforeach
+            </ul>
+            <div class="tab-content">
+                @foreach(['ru', 'uz', 'en'] as $index => $lang)
+                    <div class="tab-pane show {{ $index === 0 ? 'active' : '' }}" id="description-{{$lang}}" role="tabpanel">
+                        <div class="textarea-wrapper mt-2">
+                            <textarea name="notes[{{$lang}}]" id="room-text-textarea-{{$lang}}" style="visibility: hidden">{!! $values[$lang] ?? '' !!}</textarea>
+                        </div>
+                    </div>
+                @endforeach
             </div>
-
             <div class="form-buttons">
                 <button type="submit" class="btn btn-primary">{{ $submitText ?? 'Сохранить' }}</button>
                 @if(isset($cancelUrl))

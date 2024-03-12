@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Admin\Services\ReportCompiler\Factory;
+namespace Pkg\Booking\Reporting\Service\Factory;
 
 use App\Admin\Models\Booking\Booking;
 use App\Admin\Models\Order\Guest;
@@ -11,26 +11,26 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Module\Booking\Shared\Infrastructure\Enum\StatusSettingsEntityEnum;
 use Sdk\Booking\Enum\StatusEnum;
-use Sdk\Shared\Enum\CurrencyEnum;
-use Shared\Contracts\Adapter\CurrencyRateAdapterInterface;
 
-class ProfitDataFactory
+class ClientOrderDataFactory
 {
-    public function __construct(
-        private readonly CurrencyRateAdapterInterface $currencyRateAdapter,
-    ) {
-    }
 
-    public function build(CarbonPeriod $endPeriod, ?CarbonPeriod $startPeriod = null): array
-    {
+    public function build(
+        CarbonPeriod $endPeriod,
+        ?CarbonPeriod $startPeriod = null,
+        array $clientIds = [],
+        array $managerIds = []
+    ): array {
         $bookings = Booking::query()
             ->addSelect('bookings.*')
             ->addSelect('orders.client_id')
-            ->addSelect('clients.name as client_name')
             ->addSelect('orders.status as order_status')
-            ->addSelect('orders.currency')
             ->addSelect('orders.manual_client_penalty as order_manual_client_penalty')
+            ->addSelect('orders.external_id as order_external_id')
             ->addSelect('booking_hotel_details.hotel_id as hotel_id')
+            ->selectRaw(
+                '(select COALESCE(SUM(sum), 0) from client_payment_landings where client_payment_landings.order_id = orders.id) as payed_amount'
+            )
             ->selectRaw(
                 "(SELECT title FROM supplier_services_translation WHERE language = 'ru' AND translatable_id = COALESCE(booking_airport_details.service_id, booking_other_details.service_id, booking_transfer_details.service_id)) as service_title"
             )
@@ -51,12 +51,21 @@ class ProfitDataFactory
             )
             ->join('orders', 'orders.id', 'bookings.order_id')
             ->join('administrator_orders', 'administrator_orders.order_id', 'orders.id')
-            ->join('clients', 'clients.id', 'orders.client_id')
             ->leftJoin('booking_hotel_details', 'booking_hotel_details.booking_id', 'bookings.id')
             ->leftJoin('booking_other_details', 'booking_other_details.booking_id', 'bookings.id')
             ->leftJoin('booking_transfer_details', 'booking_transfer_details.booking_id', 'bookings.id')
             ->leftJoin('booking_airport_details', 'booking_airport_details.booking_id', 'bookings.id')
             ->whereIn('bookings.status', [StatusEnum::CONFIRMED, StatusEnum::CANCELLED_FEE])
+            ->where(function (Builder $builder) use ($clientIds) {
+                if (!empty($clientIds)) {
+                    $builder->whereIn('orders.client_id', $clientIds);
+                }
+            })
+            ->where(function (Builder $builder) use ($managerIds) {
+                if (!empty($managerIds)) {
+                    $builder->whereIn('administrator_orders.administrator_id', $managerIds);
+                }
+            })
             ->where(function (Builder $builder) use ($startPeriod, $endPeriod) {
                 $startPeriodCondition = !empty($startPeriod) ? [
                     $startPeriod->getStartDate(),
@@ -115,18 +124,16 @@ class ProfitDataFactory
                 );
         }
 
-        return $bookings->groupBy(['currency', 'order_id'])->map(
-            function (Collection $currencies) use ($guests) {
-                return $currencies->map(function (Collection $bookings) use ($guests) {
+        $reportRowsGroupedByClient = $bookings->groupBy(['client_id', 'order_id'])->map(
+            function (Collection $clients) use ($guests) {
+                return $clients->map(function (Collection $bookings) use ($guests) {
                     $firstBooking = $bookings->first();
-                    $currency = $firstBooking->client_currency->name;
                     $orderData = [
                         'id' => $firstBooking->order_id,
-                        'client_name' => $firstBooking->client_name,
-                        'currency' => $currency,
+                        'currency' => $firstBooking->client_currency->name,
                         'manager' => $firstBooking->administrator_name,
                         'payed_amount' => (float)$firstBooking->payed_amount,
-                        'guests' => $guests->get($firstBooking->order_id, []),
+                        'guests' => $guests->get($firstBooking->order_id),
                         'status' => $firstBooking->order_status_name,
                         'external_id' => $firstBooking->order_external_id,
                         'period_start' => null,
@@ -134,7 +141,6 @@ class ProfitDataFactory
                         'service_amount' => 0,
                         'hotel_amount' => 0,
                         'total_amount' => 0,
-                        'total_supplier_amount' => 0,
                         'hotels' => [],
                         'services' => [],
                     ];
@@ -161,32 +167,25 @@ class ProfitDataFactory
                         if (empty($orderData['period_start'])) {
                             $orderData['period_start'] = strtotime($booking->date_start);
                         } else {
-                            $orderData['period_start'] = min($orderData['period_start'], strtotime($booking->date_start));
+                            $orderData['period_start'] = min(
+                                $orderData['period_start'],
+                                strtotime($booking->date_start)
+                            );
                         }
                         $orderData['period_end'] = max($orderData['period_end'], strtotime($booking->date_end));
-
-                        $supplierAmount = $booking->supplier_penalty;
-                        if ($supplierAmount <= 0) {
-                            $supplierAmount = $booking->supplier_manual_price ?? $booking->supplier_price;
-                        }
-                        $supplierAmount = $this->currencyRateAdapter->convertNetRate(
-                            $supplierAmount,
-                            $booking->supplier_currency,
-                            CurrencyEnum::from($currency),
-                            'UZ'
-                        );
-                        $orderData['total_supplier_amount'] += $supplierAmount;
                     }
                     if ($firstBooking->order_manual_client_penalty > 0) {
                         $orderData['total_amount'] = $firstBooking->order_manual_client_penalty;
                         $orderData['hotel_amount'] = 0;
                         $orderData['service_amount'] = 0;
                     }
-                    $orderData['profit_amount'] = $orderData['total_amount'] - $orderData['total_supplier_amount'];
+                    $orderData['remaining_amount'] = $orderData['total_amount'] - $orderData['payed_amount'];
 
                     return $orderData;
                 });
             }
-        )->toArray();
+        );
+
+        return $reportRowsGroupedByClient->toArray();
     }
 }

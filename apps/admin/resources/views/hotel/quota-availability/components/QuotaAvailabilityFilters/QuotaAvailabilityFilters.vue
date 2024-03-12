@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, reactive, ref, watch } from 'vue'
+import { computed, onMounted, reactive, ref, watch } from 'vue'
 
 import { compareJSDate } from 'gts-common/helpers/date'
 import DateRangePicker from 'gts-components/Base/DateRangePicker'
@@ -7,6 +7,7 @@ import OverlayLoading from 'gts-components/Base/OverlayLoading'
 import SelectComponent from 'gts-components/Base/SelectComponent'
 import BootstrapButton from 'gts-components/Bootstrap/BootstrapButton/BootstrapButton'
 import { SelectOption } from 'gts-components/Bootstrap/lib'
+import { isEqual } from 'lodash'
 import { DateTime } from 'luxon'
 import { nanoid } from 'nanoid'
 
@@ -19,23 +20,29 @@ withDefaults(defineProps<{
   cities: SelectOption[]
   hotels: SelectOption[]
   rooms: SelectOption[]
+  roomsTypes: SelectOption[]
   isCitiesFetch?: boolean
   isHotelsFetch?: boolean
   isRoomsFetch?: boolean
+  isRoomsTypesFetch?: boolean
   isSubmiting?: boolean
 }>(), {
   isCitiesFetch: false,
   isHotelsFetch: false,
   isRoomsFetch: false,
   isSubmiting: false,
+  isRoomsTypesFetch: false,
 })
 
 const emit = defineEmits<{
   (event: 'chnagedFiltersPayload', value: FiltersPayload): void
   (event: 'submit'): void
+  (event: 'reset'): void
 }>()
 
 const periodError = ref<boolean>(false)
+const isFirstInitializingCities = ref<boolean>(true)
+const isFirstInitializingHotels = ref<boolean>(true)
 
 const periodElementID = `${nanoid()}_period`
 
@@ -45,6 +52,7 @@ const filtersPayload = reactive<FiltersPayload>({
   cityIds: defaultFiltersPayload.cityIds,
   hotelIds: defaultFiltersPayload.hotelIds,
   roomIds: defaultFiltersPayload.roomIds,
+  roomTypeIds: defaultFiltersPayload.roomTypeIds,
 })
 
 watch(filtersPayload, () => {
@@ -52,12 +60,23 @@ watch(filtersPayload, () => {
 })
 
 watch(() => filtersPayload.cityIds, () => {
-  filtersPayload.hotelIds = []
-  filtersPayload.roomIds = []
+  if (!isFirstInitializingCities.value) {
+    filtersPayload.hotelIds = []
+    filtersPayload.roomIds = []
+    filtersPayload.roomTypeIds = []
+  } else {
+    isFirstInitializingCities.value = false
+  }
 })
 
-watch(() => filtersPayload.hotelIds, () => {
-  filtersPayload.roomIds = []
+watch(() => filtersPayload.hotelIds, (value) => {
+  if (!isFirstInitializingHotels.value) {
+    filtersPayload.roomIds = []
+    filtersPayload.roomTypeIds = []
+  } else {
+    isFirstInitializingHotels.value = false
+    if (value.length) filtersPayload.roomTypeIds = []
+  }
 })
 
 const convertValuesToNumbers = (values: any): number[] => {
@@ -83,8 +102,45 @@ const handlePeriodChanges = (dates: [Date, Date]) => {
   filtersPayload.dateTo = dateTo
 }
 
+const setFiltersFromUrlParameters = () => {
+  const urlParams = new URLSearchParams(window.location.search)
+  const periodParameter = urlParams.get('period')
+  const citiesParameter = urlParams.get('cities')
+  const hotelsParameter = urlParams.get('hotels')
+  const roomsParameter = urlParams.get('rooms')
+  const roomsTypesParameter = urlParams.get('room-types')
+  if (citiesParameter) filtersPayload.cityIds = convertValuesToNumbers(citiesParameter.split(','))
+  if (hotelsParameter) filtersPayload.hotelIds = convertValuesToNumbers(hotelsParameter.split(','))
+  if (roomsParameter) filtersPayload.roomIds = convertValuesToNumbers(roomsParameter.split(','))
+  if (roomsTypesParameter) filtersPayload.roomTypeIds = convertValuesToNumbers(roomsTypesParameter.split(','))
+  if (periodParameter) {
+    const [dateFromParametr, dateToParametr] = periodParameter.split('-')
+    const dateFrom = DateTime.fromFormat(dateFromParametr, 'dd.MM.yyyy')
+    const dateTo = DateTime.fromFormat(dateToParametr, 'dd.MM.yyyy')
+    if (dateFrom.isValid && dateTo.isValid) {
+      filtersPayload.dateFrom = dateFrom.toJSDate()
+      filtersPayload.dateTo = dateTo.toJSDate()
+    }
+  }
+  if (urlParams.size) emit('submit')
+}
+
+const isFilterStateChanged = computed<boolean>(() =>
+  !isEqual(defaultFiltersPayload, filtersPayload))
+
+const resetFilters = () => {
+  filtersPayload.dateFrom = defaultFiltersPayload.dateFrom
+  filtersPayload.dateTo = defaultFiltersPayload.dateTo
+  filtersPayload.cityIds = defaultFiltersPayload.cityIds
+  filtersPayload.hotelIds = defaultFiltersPayload.hotelIds
+  filtersPayload.roomIds = defaultFiltersPayload.roomIds
+  filtersPayload.roomTypeIds = defaultFiltersPayload.roomTypeIds
+  emit('reset')
+}
+
 onMounted(() => {
   emit('chnagedFiltersPayload', filtersPayload)
+  setFiltersFromUrlParameters()
 })
 </script>
 <template>
@@ -121,8 +177,8 @@ onMounted(() => {
         :options="hotels"
         label="Выберите отель(и)"
         label-style="outline"
-        :disabled="!filtersPayload.cityIds.length || isSubmiting"
-        :disabled-placeholder="filtersPayload.cityIds.length ? 'Не выбрано' : 'Выберите город(а)'"
+        :disabled="isSubmiting"
+        disabled-placeholder="Не выбрано"
         :value="filtersPayload.hotelIds"
         multiple
         placeholder="Не выбрано"
@@ -130,7 +186,7 @@ onMounted(() => {
       />
       <OverlayLoading v-if="isHotelsFetch" />
     </div>
-    <div class="quotaAvailabilityFilters-field">
+    <div v-show="filtersPayload.hotelIds.length" class="quotaAvailabilityFilters-field">
       <SelectComponent
         :options="rooms"
         label="Выберите номер(а)"
@@ -144,12 +200,34 @@ onMounted(() => {
       />
       <OverlayLoading v-if="isRoomsFetch" />
     </div>
+    <div v-show="!filtersPayload.hotelIds.length" class="quotaAvailabilityFilters-field">
+      <SelectComponent
+        :options="roomsTypes"
+        label="Выберите тип номера(ов)"
+        label-style="outline"
+        :disabled="!!filtersPayload.hotelIds.length || isSubmiting"
+        disabled-placeholder="Не выбрано"
+        :value="filtersPayload.roomTypeIds"
+        multiple
+        placeholder="Не выбрано"
+        @change="(value) => filtersPayload.roomTypeIds = convertValuesToNumbers(value)"
+      />
+      <OverlayLoading v-if="isRoomsTypesFetch" />
+    </div>
     <div class="actions">
       <BootstrapButton
         label="Поиск"
-        :disabled="isCitiesFetch || isHotelsFetch || isRoomsFetch || isSubmiting || periodError"
+        :disabled="isCitiesFetch || isHotelsFetch || isRoomsFetch || isRoomsTypesFetch || isSubmiting || periodError"
         severity="primary"
         @click="() => emit('submit')"
+      />
+      <BootstrapButton
+        label="Сбросить"
+        only-icon="filter_alt_off"
+        variant="outline"
+        severity="link"
+        :disabled="isCitiesFetch || isHotelsFetch || isRoomsFetch || isRoomsTypesFetch || isSubmiting || !isFilterStateChanged"
+        @click="resetFilters"
       />
     </div>
   </div>

@@ -11,9 +11,10 @@ import { editableTable } from '~helpers/editable-table'
 import '~resources/views/main'
 import '~resources/js/plugins/card-contacts'
 
-const { hotelLandmarkBaseRoute } = requestInitialData(
+const { hotelLandmarkBaseRoute, usersUrl } = requestInitialData(
   z.object({
     hotelLandmarkBaseRoute: z.string().optional(),
+    usersUrl: z.string().optional(),
   }),
 )
 
@@ -90,6 +91,11 @@ $(document)
       $table: $('#hotel-landmark-grid'),
       route: hotelLandmarkBaseRoute,
       canEdit: false,
+    })
+
+    editableTable({
+      $table: $('#hotel-users-grid'),
+      route: usersUrl,
     })
 
     createHotelSwitcher(document.getElementsByClassName('content-header')[0])

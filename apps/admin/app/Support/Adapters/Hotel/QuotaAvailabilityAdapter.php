@@ -11,8 +11,9 @@ class QuotaAvailabilityAdapter
         CarbonPeriod $period,
         array $cityIds = [],
         array $hotelIds = [],
-        array $roomIds = []
+        array $roomIds = [],
+        array $roomTypeIds = []
     ): array {
-        return app(QuotaAvailability\Get::class)->execute($period, $cityIds, $hotelIds, $roomIds);
+        return app(QuotaAvailability\Get::class)->execute($period, $cityIds, $hotelIds, $roomIds, $roomTypeIds);
     }
 }

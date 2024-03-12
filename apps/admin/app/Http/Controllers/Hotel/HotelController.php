@@ -229,10 +229,10 @@ class HotelController extends AbstractPrototypeController
             'usabilitiesUrl' => $showUrl . '/usabilities',
             'usabilitiesEditable' => $isUpdateAllowed,
 
+            'usersUrl' => $showUrl . '/users',
             'usersGrid' => $this->getUsersGrid(),
             'landmarkGrid' => $this->getLandmarkGrid(),
             'landmarkUrl' => $isUpdateAllowed ? route('hotels.landmark.create', ['hotel' => $this->model]) : null,
-            'usersUrl' => $isUpdateAllowed ? route('hotels.users.create.dialog', ['hotel' => $this->model]) : null,
 
             'hotelLandmarkBaseRoute' => route('hotels.landmark.store', $this->model)
         ];
@@ -310,12 +310,12 @@ class HotelController extends AbstractPrototypeController
     private function getUsersGrid(): GridContract
     {
         return Grid::paginator(self::GRID_LIMIT)
-            ->text('presentation', ['text' => 'Имя в системе', 'order' => true])
+            ->setOption('id', 'hotel-users-grid')
+            ->text('presentation', ['text' => 'Имя в системе'])
             ->text('login', ['text' => 'Логин'])
             ->email('email', ['text' => 'Email'])
             ->phone('phone', ['text' => 'Телефон'])
             ->orderBy('presentation', 'asc')
-            ->header(false)
             ->data(
                 User::where('hotel_id', $this->model->id)
             );
