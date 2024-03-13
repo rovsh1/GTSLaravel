@@ -15,9 +15,13 @@ class CompanyRequisite extends Model
 
     protected $table = 's_company_requisites';
 
-    protected $quicksearch = ['key%', 's_company_requisites_translation.%value%'];
+    protected $quicksearch = [
+        'key%',
+        's_company_requisites_translation.%name%',
+        's_company_requisites_translation.%value%'
+    ];
 
-    protected $translatable = ['value'];
+    protected $translatable = ['name', 'value'];
 
     protected $fillable = [
         'key',
@@ -35,6 +39,6 @@ class CompanyRequisite extends Model
 
     public function __toString(): string
     {
-        return (string)$this->key;
+        return (string)$this->name;
     }
 }
