@@ -19,7 +19,7 @@ class FaqController extends AbstractPrototypeController
     {
         return Form::localeText('question', ['label' => 'Випрос', 'required' => true])
             ->localeTextarea('answer', ['label' => 'Ответ', 'required' => true])
-            ->select('type', ['label' => 'Язык по-умолчанию', 'required' => true, 'emptyItem' => '']);
+            ->language('type', ['label' => 'Язык по-умолчанию', 'required' => true, 'emptyItem' => '']);
     }
 
     protected function gridFactory(): GridContract
