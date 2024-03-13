@@ -14,6 +14,9 @@ final class DefaultTransitions extends AbstractTransitions implements StatusTran
         $this->addTransition(StatusEnum::CREATED, StatusEnum::CANCELLED);
 
         $this->addTransition(StatusEnum::PROCESSING, StatusEnum::CANCELLED);
+        //@hack на время переноса броней
+        $this->addTransition(StatusEnum::PROCESSING, StatusEnum::CONFIRMED);
+        //@endhack
         //$this->addTransition(BookingStatusEnum::PROCESSING, BookingStatusEnum::WAITING_CONFIRMATION);
 
         $this->addTransition(StatusEnum::WAITING_CONFIRMATION, StatusEnum::CONFIRMED);
