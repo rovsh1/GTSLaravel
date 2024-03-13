@@ -183,3 +183,7 @@ div.accordion-list section:last-child li:last-child {
     margin-right: 0.313rem;
   }
 }
+
+.tab-content .tab-pane {
+  overflow: auto;
+}
