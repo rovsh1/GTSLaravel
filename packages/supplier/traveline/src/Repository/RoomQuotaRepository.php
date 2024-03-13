@@ -141,6 +141,46 @@ class RoomQuotaRepository
         );
     }
 
+    public function getQuotasSoldAvailability(
+        CarbonPeriod $period,
+        array $cityIds = [],
+        array $hotelIds = [],
+        array $roomIds = [],
+        array $roomTypeIds = []
+    ): array {
+        return $this->mapQuery(
+            $this->bootAvailabilityQuery($period, $cityIds, $hotelIds, $roomIds, $roomTypeIds)
+                ->whereSold()
+        );
+    }
+
+    public function getQuotasClosedAvailability(
+        CarbonPeriod $period,
+        array $cityIds = [],
+        array $hotelIds = [],
+        array $roomIds = [],
+        array $roomTypeIds = []
+    ): array {
+        return $this->mapQuery(
+            $this->bootAvailabilityQuery($period, $cityIds, $hotelIds, $roomIds, $roomTypeIds)
+                ->whereClosed()
+        );
+    }
+
+    public function getQuotasAvailableAvailability(
+        CarbonPeriod $period,
+        array $cityIds = [],
+        array $hotelIds = [],
+        array $roomIds = [],
+        array $roomTypeIds = []
+    ): array {
+        return $this->mapQuery(
+            $this->bootAvailabilityQuery($period, $cityIds, $hotelIds, $roomIds, $roomTypeIds)
+                ->whereOpened()
+                ->whereHasAvailable()
+        );
+    }
+
     public function hasAvailable(int $roomId, CarbonPeriod $period, int $count): bool
     {
         $releaseDays = now()->diffInDays($period->getStartDate());

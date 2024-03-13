@@ -22,6 +22,12 @@ interface TravelineAdapterInterface
 
     public function getQuotasAvailability(CarbonPeriod $period, array $cityIds = [], array $hotelIds = [], array $roomIds = [], array $roomTypeIds = []): array;
 
+    public function getQuotasSoldAvailability(CarbonPeriod $period, array $cityIds = [], array $hotelIds = [], array $roomIds = [], array $roomTypeIds = []): array;
+
+    public function getQuotasClosedAvailability(CarbonPeriod $period, array $cityIds = [], array $hotelIds = [], array $roomIds = [], array $roomTypeIds = []): array;
+
+    public function getQuotasAvailableAvailability(CarbonPeriod $period, array $cityIds = [], array $hotelIds = [], array $roomIds = [], array $roomTypeIds = []): array;
+
     public function update(int $roomId, CarbonPeriod $period, ?int $quota, ?int $releaseDays = null): void;
 
     public function open(int $roomId, CarbonPeriod $period): void;

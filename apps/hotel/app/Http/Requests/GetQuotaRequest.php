@@ -2,9 +2,6 @@
 
 namespace App\Hotel\Http\Requests;
 
-use App\Shared\Validation\Rules\DateIntervalRule;
-use Carbon\Carbon;
-use Carbon\CarbonInterval;
 use Carbon\CarbonPeriod;
 use Illuminate\Foundation\Http\FormRequest;
 

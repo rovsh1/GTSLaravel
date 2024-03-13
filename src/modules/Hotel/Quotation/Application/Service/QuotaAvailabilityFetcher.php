@@ -27,4 +27,43 @@ class QuotaAvailabilityFetcher
 
         return array_merge(...$quotas);
     }
+
+    public function getQuotasSoldAvailability(
+        CarbonPeriod $period,
+        array $cityIds = [],
+        array $hotelIds = [],
+        array $roomIds = [],
+        array $roomTypeIds = []
+    ) {
+        $quotas[] = $this->gotostansSupplier->getQuotasSoldAvailability($period, $cityIds, $hotelIds, $roomIds, $roomTypeIds);
+        $quotas[] = $this->travelineSupplier->getQuotasSoldAvailability($period, $cityIds, $hotelIds, $roomIds, $roomTypeIds);
+
+        return array_merge(...$quotas);
+    }
+
+    public function getQuotasClosedAvailability(
+        CarbonPeriod $period,
+        array $cityIds = [],
+        array $hotelIds = [],
+        array $roomIds = [],
+        array $roomTypeIds = []
+    ) {
+        $quotas[] = $this->gotostansSupplier->getQuotasClosedAvailability($period, $cityIds, $hotelIds, $roomIds, $roomTypeIds);
+        $quotas[] = $this->travelineSupplier->getQuotasClosedAvailability($period, $cityIds, $hotelIds, $roomIds, $roomTypeIds);
+
+        return array_merge(...$quotas);
+    }
+
+    public function getQuotasAvailableAvailability(
+        CarbonPeriod $period,
+        array $cityIds = [],
+        array $hotelIds = [],
+        array $roomIds = [],
+        array $roomTypeIds = []
+    ) {
+        $quotas[] = $this->gotostansSupplier->getQuotasAvailableAvailability($period, $cityIds, $hotelIds, $roomIds, $roomTypeIds);
+        $quotas[] = $this->travelineSupplier->getQuotasAvailableAvailability($period, $cityIds, $hotelIds, $roomIds, $roomTypeIds);
+
+        return array_merge(...$quotas);
+    }
 }

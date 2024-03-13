@@ -9,6 +9,9 @@ use Module\Hotel\Quotation\Application\Dto\QuotaDto;
 
 /**
  * @method static QuotaDto|\Pkg\Supplier\Traveline\Dto\QuotaDto[] getQuotasAvailability(CarbonPeriod $period, int[] $cityIds = [], int[] $hotelIds = [], int[] $roomIds = [], int[] $roomTypeIds = [])
+ * @method static QuotaDto|\Pkg\Supplier\Traveline\Dto\QuotaDto[] getQuotasSoldAvailability(CarbonPeriod $period, int[] $cityIds = [], int[] $hotelIds = [], int[] $roomIds = [], int[] $roomTypeIds = [])
+ * @method static QuotaDto|\Pkg\Supplier\Traveline\Dto\QuotaDto[] getQuotasClosedAvailability(CarbonPeriod $period, int[] $cityIds = [], int[] $hotelIds = [], int[] $roomIds = [], int[] $roomTypeIds = [])
+ * @method static QuotaDto|\Pkg\Supplier\Traveline\Dto\QuotaDto[] getQuotasAvailableAvailability(CarbonPeriod $period, int[] $cityIds = [], int[] $hotelIds = [], int[] $roomIds = [], int[] $roomTypeIds = [])
  */
 class QuotaAvailabilityAdapter extends Facade
 {

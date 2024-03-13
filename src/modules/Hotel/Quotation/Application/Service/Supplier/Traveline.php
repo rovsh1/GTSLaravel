@@ -63,6 +63,57 @@ class Traveline implements SupplierQuotaFetcherInterface,
         return $this->travelineAdapter->getQuotasAvailability($period, $cityIds, $hotelIds, $roomIds, $roomTypeIds);
     }
 
+    /**
+     * @param CarbonPeriod $period
+     * @param int[] $cityIds
+     * @param int[] $hotelIds
+     * @param int[] $roomIds
+     * @return QuotaDto[]
+     */
+    public function getQuotasSoldAvailability(
+        CarbonPeriod $period,
+        array $cityIds = [],
+        array $hotelIds = [],
+        array $roomIds = [],
+        array $roomTypeIds = []
+    ): array {
+        return $this->travelineAdapter->getQuotasSoldAvailability($period, $cityIds, $hotelIds, $roomIds, $roomTypeIds);
+    }
+
+    /**
+     * @param CarbonPeriod $period
+     * @param int[] $cityIds
+     * @param int[] $hotelIds
+     * @param int[] $roomIds
+     * @return QuotaDto[]
+     */
+    public function getQuotasClosedAvailability(
+        CarbonPeriod $period,
+        array $cityIds = [],
+        array $hotelIds = [],
+        array $roomIds = [],
+        array $roomTypeIds = []
+    ): array {
+        return $this->travelineAdapter->getQuotasClosedAvailability($period, $cityIds, $hotelIds, $roomIds, $roomTypeIds);
+    }
+
+    /**
+     * @param CarbonPeriod $period
+     * @param int[] $cityIds
+     * @param int[] $hotelIds
+     * @param int[] $roomIds
+     * @return QuotaDto[]
+     */
+    public function getQuotasAvailableAvailability(
+        CarbonPeriod $period,
+        array $cityIds = [],
+        array $hotelIds = [],
+        array $roomIds = [],
+        array $roomTypeIds = []
+    ): array {
+        return $this->travelineAdapter->getQuotasAvailableAvailability($period, $cityIds, $hotelIds, $roomIds, $roomTypeIds);
+    }
+
     public function update(int $roomId, CarbonPeriod $period, ?int $quota, ?int $releaseDays = null): void
     {
         $this->travelineAdapter->update($roomId, $period, $quota, $releaseDays);
