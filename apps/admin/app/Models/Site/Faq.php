@@ -26,11 +26,6 @@ class Faq extends Model
         'type'
     ];
 
-    protected $attributes = [
-        //@todo выяснить, что за тип. Сейчас в базе всегда 2
-        'type' => 2
-    ];
-
     protected $casts = [
         'type' => 'int'
     ];
