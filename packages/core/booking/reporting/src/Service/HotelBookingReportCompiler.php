@@ -143,8 +143,8 @@ class HotelBookingReportCompiler extends AbstractReportCompiler
                 'A' . $currentRow => $row->hotel_name,
                 'B' . $currentRow => $row->city_name,
                 'C' . $currentRow => Format::number($price) . ' ' . $row->currency,
-                'D' . $currentRow => Format::number($remainingAmount) . ' ' . $row->currency,
-                'E' . $currentRow => Format::number($payedAmount) . ' ' . $row->currency,
+                'D' . $currentRow => Format::number($payedAmount) . ' ' . $row->currency,
+                'E' . $currentRow => Format::number($remainingAmount) . ' ' . $row->currency,
                 'F' . $currentRow => $countBookings,
             ];
 
