@@ -11,6 +11,8 @@ import { isEqual } from 'lodash'
 import { DateTime } from 'luxon'
 import { nanoid } from 'nanoid'
 
+import { AvailabilityValue } from '~resources/views/hotel/quotas/components/QuotasFilters/lib'
+
 import {
   defaultFiltersPayload,
   FiltersPayload,
@@ -21,6 +23,7 @@ withDefaults(defineProps<{
   hotels: SelectOption[]
   rooms: SelectOption[]
   roomsTypes: SelectOption[]
+  availabilitys: SelectOption[]
   isCitiesFetch?: boolean
   isHotelsFetch?: boolean
   isRoomsFetch?: boolean
@@ -53,6 +56,7 @@ const filtersPayload = reactive<FiltersPayload>({
   hotelIds: defaultFiltersPayload.hotelIds,
   roomIds: defaultFiltersPayload.roomIds,
   roomTypeIds: defaultFiltersPayload.roomTypeIds,
+  availability: defaultFiltersPayload.availability,
 })
 
 watch(filtersPayload, () => {
@@ -109,10 +113,12 @@ const setFiltersFromUrlParameters = () => {
   const hotelsParameter = urlParams.get('hotels')
   const roomsParameter = urlParams.get('rooms')
   const roomsTypesParameter = urlParams.get('room-types')
+  const availabilityParameter = urlParams.get('availability')
   if (citiesParameter) filtersPayload.cityIds = convertValuesToNumbers(citiesParameter.split(','))
   if (hotelsParameter) filtersPayload.hotelIds = convertValuesToNumbers(hotelsParameter.split(','))
   if (roomsParameter) filtersPayload.roomIds = convertValuesToNumbers(roomsParameter.split(','))
   if (roomsTypesParameter) filtersPayload.roomTypeIds = convertValuesToNumbers(roomsTypesParameter.split(','))
+  if (availabilityParameter) filtersPayload.availability = availabilityParameter?.trim().toLocaleLowerCase() as AvailabilityValue
   if (periodParameter) {
     const [dateFromParametr, dateToParametr] = periodParameter.split('-')
     const dateFrom = DateTime.fromFormat(dateFromParametr, 'dd.MM.yyyy')
@@ -135,6 +141,7 @@ const resetFilters = () => {
   filtersPayload.hotelIds = defaultFiltersPayload.hotelIds
   filtersPayload.roomIds = defaultFiltersPayload.roomIds
   filtersPayload.roomTypeIds = defaultFiltersPayload.roomTypeIds
+  filtersPayload.availability = defaultFiltersPayload.availability
   emit('reset')
 }
 
@@ -214,12 +221,27 @@ onMounted(() => {
       />
       <OverlayLoading v-if="isRoomsTypesFetch" />
     </div>
+    <div class="quotaAvailabilityFilters-field">
+      <SelectComponent
+        :options="availabilitys"
+        label="Доступность"
+        label-style="outline"
+        :value="filtersPayload.availability"
+        :disabled="isSubmiting"
+        :allow-empty-item="true"
+        empty-item="Не выбрано"
+        :returned-empty-value="null"
+        @change="(value) => {
+          filtersPayload.availability = value as AvailabilityValue || null
+        }"
+      />
+    </div>
     <div class="actions">
       <BootstrapButton
         label="Поиск"
         :disabled="isCitiesFetch || isHotelsFetch || isRoomsFetch || isRoomsTypesFetch || isSubmiting || periodError"
         severity="primary"
-        @click="() => emit('submit')"
+        @click="emit('submit')"
       />
       <BootstrapButton
         label="Сбросить"
