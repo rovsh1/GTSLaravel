@@ -19,7 +19,7 @@ class FaqController extends AbstractPrototypeController
     {
         return Form::localeText('question', ['label' => 'Випрос', 'required' => true])
             ->localeTextarea('answer', ['label' => 'Ответ', 'required' => true])
-            ->select('type', ['label' => 'Тип', 'required' => true, 'emptyItem' => '',[
+            ->select('type', ['label' => 'Тип', 'required' => true, 'emptyItem' => '', 'items' => [
                 ['id' => 1, 'text' => 'Профиль'],
                 ['id' => 2, 'text' => 'Сайт'],
             ]]);
