@@ -9,53 +9,53 @@ class RouteResourceRegistrar
         private readonly Resource $resource
     ) {}
 
-    public function get(string $uri, string $action, string $permission, string $name): static
+    public function get(string $uri, string $action, ?string $permission, string $name): static
     {
         return $this->addAction(['GET'], $uri, $action, $permission, $name);
     }
 
-    public function post(string $uri, string $action, string $permission, string $name): static
+    public function post(string $uri, string $action, ?string $permission, string $name): static
     {
         return $this->addAction(['POST'], $uri, $action, $permission, $name);
     }
 
-    public function put(string $uri, string $action, string $permission, string $name): static
+    public function put(string $uri, string $action, ?string $permission, string $name): static
     {
         return $this->addAction(['PUT'], $uri, $action, $permission, $name);
     }
 
-    public function patch(string $uri, string $action, string $permission, string $name): static
+    public function patch(string $uri, string $action, ?string $permission, string $name): static
     {
         return $this->addAction(['PATCH'], $uri, $action, $permission, $name);
     }
 
-    public function delete(string $uri, string $action, string $permission, string $name): static
+    public function delete(string $uri, string $action, ?string $permission, string $name): static
     {
         return $this->addAction(['DELETE'], $uri, $action, $permission, $name);
     }
 
-    public function options(string $uri, string $action, string $permission, string $name): static
+    public function options(string $uri, string $action, ?string $permission, string $name): static
     {
         return $this->addAction(['OPTIONS'], $uri, $action, $permission, $name);
     }
 
-    public function any(string $uri, string $action, string $permission, string $name): static
+    public function any(string $uri, string $action, ?string $permission, string $name): static
     {
         return $this->addAction(\Illuminate\Routing\Router::$verbs, $uri, $action, $permission, $name);
     }
 
-    public function match(array $methods, string $uri, string $action, string $permission, string $name): static
+    public function match(array $methods, string $uri, ?string $action, ?string $permission, string $name): static
     {
         return $this->addAction($methods, $uri, $action, $permission, $name);
     }
 
-    public function addAction(array $methods, string $uri, string $action, string $permission, string $name): static
+    public function addAction(array $methods, string $uri, string $action, ?string $permission, string $name): static
     {
         $this->routes->addAction(
             $methods,
             '/' . $this->resource->route . $uri,
             $action,
-            $this->resource->permissionSlug($permission),
+            $permission !== null ? $this->resource->permissionSlug($permission) : null,
             $this->resource->route . '.' . $name
         );
         return $this;

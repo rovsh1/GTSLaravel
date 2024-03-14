@@ -10,9 +10,10 @@ class RoutesCollection
 
     public function __construct(
         private readonly Router $router
-    ) {}
+    ) {
+    }
 
-    public function addAction(array $methods, string $uri, string $action, string $permission, string $name): static
+    public function addAction(array $methods, string $uri, string $action, ?string $permission, string $name): static
     {
         $actionData = new \stdClass();
         $actionData->methods = $methods;
@@ -29,7 +30,9 @@ class RoutesCollection
         foreach ($this->actions as $action) {
             $route = Route::match($action->methods, $action->uri, $action->action)->name($action->name);
 
-            $this->router->assignRoute($route->getName(), $action->permission);
+            if ($action->permission !== null) {
+                $this->router->assignRoute($route->getName(), $action->permission);
+            }
         }
 
         $this->actions = [];
