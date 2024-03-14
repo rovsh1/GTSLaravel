@@ -35,7 +35,7 @@
                         </a>
                     </x-slot:header-controls>
                 @endif
-                
+
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     @foreach(['ru', 'uz', 'en'] as $index => $lang)
                         <li class="nav-item" role="presentation">
@@ -48,8 +48,8 @@
                 <div class="tab-content">
                     @foreach(['ru', 'uz', 'en'] as $index => $lang)
                         <div class="tab-pane show mt-3 {{ $index === 0 ? 'active' : '' }}" id="description-{{$lang}}" role="tabpanel">
-                            @if($model->text)
-                                {!! $model->text !!}
+                            @if(isset($model->getTranslations('text')[$lang]))
+                                {!! $model->getTranslations('text')[$lang] !!}
                             @else
                                 <i class="empty">Отсутствует</i>
                             @endif

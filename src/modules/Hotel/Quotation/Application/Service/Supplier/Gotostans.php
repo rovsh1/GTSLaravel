@@ -81,7 +81,6 @@ class Gotostans implements SupplierQuotaFetcherInterface,
         );
     }
 
-
     /**
      * @param CarbonPeriod $period
      * @param int[] $cityIds
@@ -99,6 +98,70 @@ class Gotostans implements SupplierQuotaFetcherInterface,
     ): array {
         return $this->mapQuery(
             $this->bootAvailabilityQuery($period, $cityIds, $hotelIds, $roomIds, $roomTypeIds)
+        );
+    }
+
+    /**
+     * @param CarbonPeriod $period
+     * @param int[] $cityIds
+     * @param int[] $hotelIds
+     * @param int[] $roomIds
+     * @param int[] $roomTypeIds
+     * @return QuotaDto[]
+     */
+    public function getQuotasSoldAvailability(
+        CarbonPeriod $period,
+        array $cityIds = [],
+        array $hotelIds = [],
+        array $roomIds = [],
+        array $roomTypeIds = []
+    ): array {
+        return $this->mapQuery(
+            $this->bootAvailabilityQuery($period, $cityIds, $hotelIds, $roomIds, $roomTypeIds)
+                ->whereSold()
+        );
+    }
+
+    /**
+     * @param CarbonPeriod $period
+     * @param int[] $cityIds
+     * @param int[] $hotelIds
+     * @param int[] $roomIds
+     * @param int[] $roomTypeIds
+     * @return QuotaDto[]
+     */
+    public function getQuotasClosedAvailability(
+        CarbonPeriod $period,
+        array $cityIds = [],
+        array $hotelIds = [],
+        array $roomIds = [],
+        array $roomTypeIds = []
+    ): array {
+        return $this->mapQuery(
+            $this->bootAvailabilityQuery($period, $cityIds, $hotelIds, $roomIds, $roomTypeIds)
+                ->whereClosed()
+        );
+    }
+
+    /**
+     * @param CarbonPeriod $period
+     * @param int[] $cityIds
+     * @param int[] $hotelIds
+     * @param int[] $roomIds
+     * @param int[] $roomTypeIds
+     * @return QuotaDto[]
+     */
+    public function getQuotasAvailableAvailability(
+        CarbonPeriod $period,
+        array $cityIds = [],
+        array $hotelIds = [],
+        array $roomIds = [],
+        array $roomTypeIds = []
+    ): array {
+        return $this->mapQuery(
+            $this->bootAvailabilityQuery($period, $cityIds, $hotelIds, $roomIds, $roomTypeIds)
+                ->whereOpened()
+                ->whereHasAvailable()
         );
     }
 

@@ -23,13 +23,36 @@ class QuotaAvailabilityController extends Controller
 
     public function get(GetQuotaAvailabilityRequest $request): JsonResponse
     {
-        $quotas = QuotaAvailabilityAdapter::getQuotasAvailability(
-            $request->getPeriod(),
-            $request->getCityIds(),
-            $request->getHotelIds(),
-            $request->getRoomIds(),
-            $request->getRoomTypeIds(),
-        );
+        $quotas = match ($request->getAvailability()) {
+            $request::AVAILABILITY_AVAILABLE => QuotaAvailabilityAdapter::getQuotasAvailableAvailability(
+                $request->getPeriod(),
+                $request->getCityIds(),
+                $request->getHotelIds(),
+                $request->getRoomIds(),
+                $request->getRoomTypeIds()
+            ),
+            $request::AVAILABILITY_SOLD => QuotaAvailabilityAdapter::getQuotasSoldAvailability(
+                $request->getPeriod(),
+                $request->getCityIds(),
+                $request->getHotelIds(),
+                $request->getRoomIds(),
+                $request->getRoomTypeIds()
+            ),
+            $request::AVAILABILITY_STOPPED => QuotaAvailabilityAdapter::getQuotasClosedAvailability(
+                $request->getPeriod(),
+                $request->getCityIds(),
+                $request->getHotelIds(),
+                $request->getRoomIds(),
+                $request->getRoomTypeIds()
+            ),
+            default => QuotaAvailabilityAdapter::getQuotasAvailability(
+                $request->getPeriod(),
+                $request->getCityIds(),
+                $request->getHotelIds(),
+                $request->getRoomIds(),
+                $request->getRoomTypeIds()
+            )
+        };
 
         return response()->json(
             $this->buildResponse($quotas)
@@ -43,7 +66,9 @@ class QuotaAvailabilityController extends Controller
     private function buildResponse(array $quotas): array
     {
         return collect($quotas)->groupBy('hotelId')->map(function (Collection $quotas, int $hotelId) {
-            $quotasGroupedByDate = $quotas->groupBy(fn(QuotaDto|\Pkg\Supplier\Traveline\Dto\QuotaDto $dto) => $dto->date->format('Y-m-d'))
+            $quotasGroupedByDate = $quotas->groupBy(
+                fn(QuotaDto|\Pkg\Supplier\Traveline\Dto\QuotaDto $dto) => $dto->date->format('Y-m-d')
+            )
                 ->map(fn(Collection $dtos, string $date) => [
                     'date' => $date,
                     'count_available' => $dtos->sum('countAvailable')

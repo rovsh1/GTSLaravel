@@ -19,6 +19,8 @@ class GetQuotaAvailabilityRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'availability' => ['nullable', 'in:sold,stopped,available'],
+
             'dateFrom' => ['required', 'date'],
             'dateTo' => ['required', 'date'],
 
@@ -34,6 +36,11 @@ class GetQuotaAvailabilityRequest extends FormRequest
             'roomTypeIds' => ['nullable', 'array'],
             'roomTypeIds.*' => ['numeric'],
         ];
+    }
+
+    public function getAvailability(): ?string
+    {
+        return $this->post('availability');
     }
 
     public function getRoomIds(): array

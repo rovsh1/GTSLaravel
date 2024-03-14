@@ -53,7 +53,7 @@ class ServiceBookingReportCompiler extends AbstractReportCompiler
         ] = $this->dataFactory->build($endPeriod, $supplierIds, $startPeriod, $serviceTypes, $managerIds);
 
         $this->fillReportHeaderData($supplierNames, $serviceNames);
-        $this->appendRows($bookings->toArray(), $guests->all());
+        $this->appendRows($bookings, $guests);
         $this->fillReportPeriod();
 
         $writer = $this->getWritter();
@@ -73,12 +73,8 @@ class ServiceBookingReportCompiler extends AbstractReportCompiler
         $headerFont = [...$this->defaultFont, 'size' => 12, 'italic' => true, 'bold' => true];
         $headerValueFont = [...$headerFont, 'italic' => false, 'color' => ['rgb' => '0000FF']];
         $cellStyle = $this->getCellStyle();
-        $sheet->getCell([1, $currentRow])->setValue('Выбранные услуги:')->getStyle()->applyFromArray(
-            $cellStyle
-        )->getFont()->applyFromArray($headerFont);
-        $sheet->getCell([2, $currentRow])->setValue(implode(', ', $serviceNames))->getStyle()->applyFromArray(
-            $cellStyle
-        )->getFont()->applyFromArray($headerValueFont);
+        $sheet->getCell([1, $currentRow])->setValue('Выбранные услуги:')->getStyle()->applyFromArray($cellStyle)->getFont()->applyFromArray($headerFont);
+        $sheet->getCell([2, $currentRow])->setValue(implode(', ', $serviceNames))->getStyle()->applyFromArray($cellStyle)->getFont()->applyFromArray($headerValueFont);
         $currentRow++;
 
         if (count($supplierNames) <= 10) {
@@ -86,10 +82,8 @@ class ServiceBookingReportCompiler extends AbstractReportCompiler
         } else {
             $supplierNames = '';
         }
-        $sheet->getCell([1, $currentRow])->setValue('Поставщик:')->getStyle()->applyFromArray($cellStyle)->getFont(
-        )->applyFromArray($headerFont);
-        $sheet->getCell([2, $currentRow])->setValue($supplierNames)->getStyle()->applyFromArray($cellStyle)->getFont(
-        )->applyFromArray($headerValueFont);
+        $sheet->getCell([1, $currentRow])->setValue('Поставщик:')->getStyle()->applyFromArray($cellStyle)->getFont()->applyFromArray($headerFont);
+        $sheet->getCell([2, $currentRow])->setValue($supplierNames)->getStyle()->applyFromArray($cellStyle)->getFont()->applyFromArray($headerValueFont);
     }
 
     private function appendRows(array $bookings, array $guestsIndexedByBookingId): void
@@ -174,23 +168,15 @@ class ServiceBookingReportCompiler extends AbstractReportCompiler
 
         $cellStyle = $this->getCellStyle('FFFFFF', true);
         $this->insertNewRowBefore($sheet->getHighestRow());
-        $sheet->getCell('A' . $currentRow)->setValue('Итого')->getStyle()->applyFromArray($cellStyle)->getFont(
-        )->applyFromArray($boldFont);
-        $sheet->getCell('B' . $currentRow)->setValue('')->getStyle()->applyFromArray($cellStyle)->getFont(
-        )->applyFromArray($boldFont);
-        $sheet->getCell('C' . $currentRow)->setValue('')->getStyle()->applyFromArray($cellStyle)->getFont(
-        )->applyFromArray($boldFont);
-        $sheet->getCell('D' . $currentRow)->setValue('')->getStyle()->applyFromArray($cellStyle)->getFont(
-        )->applyFromArray($boldFont);
-        $sheet->getCell('E' . $currentRow)->setValue('')->getStyle()->applyFromArray($cellStyle)->getFont(
-        )->applyFromArray($boldFont);
-        $sheet->getCell('F' . $currentRow)->setValue('')->getStyle()->applyFromArray($cellStyle)->getFont(
-        )->applyFromArray($boldFont);
-        $sheet->getCell('G' . $currentRow)->setValue('')->getStyle()->applyFromArray($cellStyle)->getFont(
-        )->applyFromArray($boldFont);
-        $sheet->getCell('H' . $currentRow)->setValue(
-            Format::price($totalAmount) . ' ' . $booking['supplier_currency']
-        )->getStyle()->applyFromArray($cellStyle)->getFont()->applyFromArray($boldFont);
+        $currentRow++;
+        $sheet->getCell('A' . $currentRow)->setValue('Итого')->getStyle()->applyFromArray($cellStyle)->getFont()->applyFromArray($boldFont);
+        $sheet->getCell('B' . $currentRow)->setValue('')->getStyle()->applyFromArray($cellStyle)->getFont()->applyFromArray($boldFont);
+        $sheet->getCell('C' . $currentRow)->setValue('')->getStyle()->applyFromArray($cellStyle)->getFont()->applyFromArray($boldFont);
+        $sheet->getCell('D' . $currentRow)->setValue('')->getStyle()->applyFromArray($cellStyle)->getFont()->applyFromArray($boldFont);
+        $sheet->getCell('E' . $currentRow)->setValue('')->getStyle()->applyFromArray($cellStyle)->getFont()->applyFromArray($boldFont);
+        $sheet->getCell('F' . $currentRow)->setValue('')->getStyle()->applyFromArray($cellStyle)->getFont()->applyFromArray($boldFont);
+        $sheet->getCell('G' . $currentRow)->setValue('')->getStyle()->applyFromArray($cellStyle)->getFont()->applyFromArray($boldFont);
+        $sheet->getCell('H' . $currentRow)->setValue(Format::price($totalAmount) . ' ' . $booking['supplier_currency'])->getStyle()->applyFromArray($cellStyle)->getFont()->applyFromArray($boldFont);
         $sheet->getRowDimension($currentRow)->setRowHeight(15);
     }
 }

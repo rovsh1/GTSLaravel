@@ -40,6 +40,9 @@ class BookingDtoFactory
         }
 
         $bookingPeriod = new CarbonPeriod($details->period->dateFrom, $details->period->dateTo);
+        // @hack в БД период хранится в двух полях типа date.
+        // Дефолтная таймзона приложения - UTC, поэтому при получении даты из базы она превращается в "{date} -1 day 21:00:00".
+        // Т.к. большинство пользователей работает в таймзоне Asia/Tashkent, мы приводим период к этой зоне для Traveline.
         $bookingPeriod->setTimezone($this->defaultTimezone);
 
         return new ReservationDto(
@@ -101,16 +104,8 @@ class BookingDtoFactory
         HotelInfoDto $hotelInfo,
         AccommodationDto $accommodation
     ): array {
-        $startDate = $this->getPeriodStartDateByCheckInCondition(
-            $period,
-            $hotelInfo->checkInTime,
-            $accommodation->details->earlyCheckIn
-        );
-        $endDate = $this->getPeriodEndDateByCheckOutCondition(
-            $period,
-            $hotelInfo->checkOutTime,
-            $accommodation->details->lateCheckOut
-        );
+        $startDate = $this->getPeriodStartDateByCheckInCondition($period, $hotelInfo->checkInTime, $accommodation->details->earlyCheckIn);
+        $endDate = $this->getPeriodEndDateByCheckOutCondition($period, $hotelInfo->checkOutTime, $accommodation->details->lateCheckOut);
         $preparedPeriod = new CarbonPeriod($startDate, $endDate, 'P1D');
 
         $countDays = $preparedPeriod->count();
