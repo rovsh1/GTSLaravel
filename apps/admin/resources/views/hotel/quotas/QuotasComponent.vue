@@ -8,19 +8,13 @@ import EmptyData from 'gts-components/Base/EmptyData'
 import OverlayLoading from 'gts-components/Base/OverlayLoading'
 import BootstrapButton from 'gts-components/Bootstrap/BootstrapButton/BootstrapButton'
 
-import { HotelResponse } from '~api/hotel/get'
-import { HotelRoomQuotasStatusUpdateProps } from '~api/hotel/quotas/status'
-import { HotelRoomQuotasUpdateProps } from '~api/hotel/quotas/update'
-import { HotelRoom } from '~api/hotel/room'
-import { UseHotelRooms } from '~api/hotel/rooms'
-
 import QuotasFilters from './components/QuotasFilters/QuotasFilters.vue'
 import QuotasStatusSwitcher from './components/QuotasStatusSwitcher.vue'
 import RoomQuotasComponent from './components/RoomQuotas.vue'
 
-import { Day, Month, RoomQuota } from './components/lib'
-import { QuotasStatusUpdatePayload } from './components/lib/types'
-import { defaultFiltersPayload, FiltersPayload } from './components/QuotasFilters/lib'
+import { Day, FiltersPayload, HotelResponse, HotelRoom, HotelRoomQuotasStatusUpdatePayload,
+  HotelRoomQuotasUpdatePayload, Month, QuotasStatusUpdatePayload, RoomQuota, UseHotelRooms } from './components/lib/types'
+import { defaultFiltersPayload } from './components/QuotasFilters/lib'
 
 const props = defineProps<{
   isHotelFetching: boolean
@@ -41,8 +35,8 @@ const props = defineProps<{
 const emit = defineEmits<{
   (event: 'fetchHotelQuotas', filters: FiltersPayload): void
   (event: 'updateHotelRoomQuotasBatch', batchfilters: QuotasStatusUpdatePayload, filters: FiltersPayload): void
-  (event: 'roomQuotasUpdate', updatedQuotas: HotelRoomQuotasUpdateProps): void
-  (event: 'roomQuotasStatusUpdate', quotasStatusPayload: HotelRoomQuotasStatusUpdateProps | null): void
+  (event: 'roomQuotasUpdate', updatedQuotas: HotelRoomQuotasUpdatePayload): void
+  (event: 'roomQuotasStatusUpdate', quotasStatusPayload: HotelRoomQuotasStatusUpdatePayload | null): void
 }>()
 
 const openingDayMenuRoomId = ref<number | null>(null)
@@ -174,7 +168,7 @@ const handleUpdateQuotasBatch = async () => {
                 updatedRoomID = updatedRoomIDParam
                 fetchHotelQuotas()
               }"
-              @room-quotas-update="(value: HotelRoomQuotasUpdateProps) => {
+              @room-quotas-update="(value: HotelRoomQuotasUpdatePayload) => {
                 emit('roomQuotasUpdate', value)
               }"
               @room-quotas-status-update="value => emit('roomQuotasStatusUpdate', value)"

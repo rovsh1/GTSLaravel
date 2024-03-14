@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon'
 
-import { AvailabilityValue } from '~resources/views/hotel/quotas/components/QuotasFilters/lib'
+import { AvailabilityValue } from '~resources/views/hotel/quotas/components/lib/types'
 
 export type FiltersPayload = {
   dateFrom: Date

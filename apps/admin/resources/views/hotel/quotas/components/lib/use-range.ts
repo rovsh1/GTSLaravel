@@ -1,6 +1,7 @@
 import { Ref, ref } from 'vue'
 
-import { ActiveKey, Day } from './index'
+import { ActiveKey } from './index'
+import { Day } from './types'
 
 const inRange = (key: string | null, range: string[]): boolean => {
   if (!key) return false

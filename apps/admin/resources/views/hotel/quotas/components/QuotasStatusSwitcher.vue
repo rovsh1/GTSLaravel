@@ -8,9 +8,7 @@ import { nanoid } from 'nanoid'
 
 import { daysOfWeekOptions } from '~resources/js/config/constants'
 
-import { HotelRoom } from '~api/hotel/room'
-
-import { Action, ActionsOption, QuotasStatusUpdateFormData, QuotasStatusUpdatePayload } from './lib/types'
+import { Action, ActionsOption, HotelRoom, QuotasStatusUpdateFormData, QuotasStatusUpdatePayload } from './lib/types'
 
 const props = withDefaults(defineProps<{
   rooms: HotelRoom[]

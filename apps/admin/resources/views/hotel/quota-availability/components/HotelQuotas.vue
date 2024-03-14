@@ -5,7 +5,7 @@ import { formatDateToAPIDate } from 'gts-common/helpers/date'
 import OverlayLoading from 'gts-components/Base/OverlayLoading'
 import { DateTime } from 'luxon'
 
-import { Day, Month, RoomQuota, RoomQuotaStatus } from '~resources/views/hotel/quotas/components/lib'
+import { Day, Month, RoomQuota, RoomQuotaStatus } from '~resources/views/hotel/quotas/components/lib/types'
 import { HotelInfo, QuotaAvailability, QuotaInfo } from '~resources/vue/api/hotel/quotas/availability'
 
 import { useHotelQuotasAPI } from '~api/hotel/quotas/list'

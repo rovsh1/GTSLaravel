@@ -10,14 +10,11 @@ import { isEqual } from 'lodash'
 import { DateTime } from 'luxon'
 import { nanoid } from 'nanoid'
 
-import { HotelRoom } from '~api/hotel/room'
-
-import {
-  AvailabilityOption,
+import { AvailabilityOption,
   availabilityOptions,
   AvailabilityValue,
   FiltersPayload,
-} from './lib'
+  HotelRoom } from '../lib/types'
 
 const props = withDefaults(defineProps<{
   rooms: HotelRoom[]

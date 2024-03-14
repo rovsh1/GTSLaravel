@@ -11,7 +11,7 @@ import { isEqual } from 'lodash'
 import { DateTime } from 'luxon'
 import { nanoid } from 'nanoid'
 
-import { AvailabilityValue } from '~resources/views/hotel/quotas/components/QuotasFilters/lib'
+import { AvailabilityValue } from '~resources/views/hotel/quotas/components/lib/types'
 
 import {
   defaultFiltersPayload,

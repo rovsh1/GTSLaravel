@@ -8,17 +8,18 @@ import { z } from 'zod'
 import { useHotelGetAPI } from '~api/hotel/get'
 import { useUpdateHotelRoomQuotasBatch } from '~api/hotel/quotas/batch'
 import { useHotelQuotasAPI } from '~api/hotel/quotas/list'
-import { HotelRoomQuotasStatusUpdateProps, useHotelRoomQuotasStatusUpdate } from '~api/hotel/quotas/status'
-import { HotelRoomQuotasUpdateProps, useHotelRoomQuotasUpdate } from '~api/hotel/quotas/update'
+import { useHotelRoomQuotasStatusUpdate } from '~api/hotel/quotas/status'
+import { useHotelRoomQuotasUpdate } from '~api/hotel/quotas/update'
 import { useHotelRoomsListAPI } from '~api/hotel/rooms'
 
 import { createHotelSwitcher } from '~widgets/hotel-switcher/hotel-switcher'
 
 import QuotasComponent from './QuotasComponent.vue'
 
-import { Day, getRoomQuotas, Month, RoomQuota } from './components/lib'
-import { QuotasStatusUpdatePayload } from './components/lib/types'
-import { defaultFiltersPayload, FiltersPayload } from './components/QuotasFilters/lib'
+import { getRoomQuotas } from './components/lib'
+import { Day, FiltersPayload, HotelRoomQuotasStatusUpdatePayload,
+  HotelRoomQuotasUpdatePayload, Month, QuotasStatusUpdatePayload, RoomQuota } from './components/lib/types'
+import { defaultFiltersPayload } from './components/QuotasFilters/lib'
 
 const { hotelID } = requestInitialData(z.object({
   hotelID: z.number(),
@@ -43,8 +44,8 @@ fetchHotelRoomsAPI()
 const filtersQuotasStatusBatchPayload = ref<QuotasStatusUpdatePayload | null>(null)
 const filtersPayload = ref<FiltersPayload>(defaultFiltersPayload)
 const waitLoadAndRedrawData = ref<boolean>(false)
-const hotelRoomQuotasUpdateProps = ref<HotelRoomQuotasUpdateProps | null>(null)
-const updateRoomQuotasStatusPayload = ref<HotelRoomQuotasStatusUpdateProps | null>(null)
+const hotelRoomQuotasUpdateProps = ref<HotelRoomQuotasUpdatePayload | null>(null)
+const updateRoomQuotasStatusPayload = ref<HotelRoomQuotasStatusUpdatePayload | null>(null)
 
 const {
   execute: executeHotelRoomQuotasStatusUpdate,
@@ -138,14 +139,14 @@ const handleUpdateQuotasBatch = async (batchFilters: QuotasStatusUpdatePayload, 
   fetchHotelQuotasWrapper(filtersPayload.value)
 }
 
-const handleUpdateRoomQuotas = async (updatingQuotasPayload: HotelRoomQuotasUpdateProps | null) => {
+const handleUpdateRoomQuotas = async (updatingQuotasPayload: HotelRoomQuotasUpdatePayload | null) => {
   if (!updatingQuotasPayload) return
   hotelRoomQuotasUpdateData.value = null
   hotelRoomQuotasUpdateProps.value = updatingQuotasPayload
   executeHotelRoomQuotasUpdate()
 }
 
-const handleUpdateRoomQuotasStatus = async (updatingQuotasStatusPayload: HotelRoomQuotasStatusUpdateProps | null) => {
+const handleUpdateRoomQuotasStatus = async (updatingQuotasStatusPayload: HotelRoomQuotasStatusUpdatePayload | null) => {
   hotelRoomQuotasStatusUpdateData.value = null
   updateRoomQuotasStatusPayload.value = updatingQuotasStatusPayload
   executeHotelRoomQuotasStatusUpdate()

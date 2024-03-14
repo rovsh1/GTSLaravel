@@ -1,6 +1,6 @@
 import { computed, Ref } from 'vue'
 
-import { HotelRoomQuotasStatusUpdateKind } from '~api/hotel/quotas/status'
+import { HotelRoomQuotasStatusUpdateKind } from '../lib/types'
 
 type UseDayMenuButtonStatusParams = {
   kind: HotelRoomQuotasStatusUpdateKind

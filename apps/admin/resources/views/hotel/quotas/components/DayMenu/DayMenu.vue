@@ -4,20 +4,17 @@ import { computed, onMounted, ref, watch } from 'vue'
 import { flip, useFloating } from '@floating-ui/vue'
 import BootstrapButton from 'gts-components/Bootstrap/BootstrapButton/BootstrapButton'
 
-import { HotelRoomID } from '~api/hotel'
-import { HotelID } from '~api/hotel/get'
 import {
   HotelRoomQuotasStatusUpdateKind,
-  HotelRoomQuotasStatusUpdateProps,
-} from '~api/hotel/quotas/status'
-
+  HotelRoomQuotasStatusUpdatePayload,
+} from '../lib/types'
 import { useDayMenuButtonStatus } from './use-day-menu-button-status'
 
 const props = defineProps<{
   menuRef: HTMLElement | null
   menuDayKey: string | null
-  hotel: HotelID
-  room: HotelRoomID
+  hotel: number
+  room: number
   dates: string[] | null
   isUpdateRoomQuotasStatus: boolean
   isSuccessUpdateRoomQuotasStatus: boolean
@@ -26,7 +23,7 @@ const props = defineProps<{
 const emit = defineEmits<{
   (event: 'done'): void
   (event: 'set-menu-element', element: HTMLElement | null): void
-  (event: 'roomQuotasStatusUpdate', quotasStatusPayload: HotelRoomQuotasStatusUpdateProps | null): void
+  (event: 'roomQuotasStatusUpdate', quotasStatusPayload: HotelRoomQuotasStatusUpdatePayload | null): void
 }>()
 
 const reference = computed(() => props.menuRef)
@@ -39,7 +36,7 @@ const { floatingStyles, placement } = useFloating(reference, floating, {
 
 const selectedKind = ref<HotelRoomQuotasStatusUpdateKind | null>(null)
 
-const updateProps = computed<HotelRoomQuotasStatusUpdateProps | null>(() => {
+const updateProps = computed<HotelRoomQuotasStatusUpdatePayload | null>(() => {
   const { hotel: hotelID, room: roomID, dates } = props
   const kind = selectedKind.value
   if (dates === null || kind === null) return null

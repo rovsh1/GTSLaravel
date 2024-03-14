@@ -8,7 +8,7 @@ import { DateTime } from 'luxon'
 import { nanoid } from 'nanoid'
 
 import { daysOfWeek } from '~resources/js/config/constants'
-import { Month } from '~resources/views/hotel/quotas/components/lib/index'
+import { Month } from '~resources/views/hotel/quotas/components/lib/types'
 
 import { updateRoomSeasonPricesByDay, useRoomSeasonsDaysPricesListAPI } from '~api/hotel/prices/seasons'
 

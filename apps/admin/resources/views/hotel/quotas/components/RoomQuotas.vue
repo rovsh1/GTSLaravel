@@ -4,21 +4,14 @@ import { computed, ref, watch } from 'vue'
 import { OnClickOutside } from '@vueuse/components'
 import OverlayLoading from 'gts-components/Base/OverlayLoading'
 
-import { HotelResponse } from '~api/hotel/get'
-import { HotelRoomQuotasStatusUpdateProps } from '~api/hotel/quotas/status'
-import {
-  HotelRoomQuotasCountUpdateProps,
-  HotelRoomQuotasUpdateProps,
-  HotelRoomReleaseDaysUpdateProps,
-} from '~api/hotel/quotas/update'
-import { HotelRoom } from '~api/hotel/room'
-
 import DayMenu from './DayMenu/DayMenu.vue'
 import EditableCell from './EditableCell.vue'
 import RoomHeader from './RoomHeader.vue'
 
 import { MenuParams, useDayMenu } from './DayMenu/use-day-menu'
-import { Day, Month, RoomQuota, RoomQuotaStatus } from './lib'
+import { Day, HotelResponse, HotelRoom, HotelRoomQuotasCountUpdateProps,
+  HotelRoomQuotasStatusUpdatePayload, HotelRoomQuotasUpdatePayload,
+  HotelRoomReleaseDaysUpdateProps, Month, RoomQuota, RoomQuotaStatus } from './lib/types'
 import { useTableRange } from './lib/use-range'
 
 const props = defineProps<{
@@ -39,8 +32,8 @@ const props = defineProps<{
 const emit = defineEmits<{
   (event: 'update', roomID: number): void
   (event: 'open-day-menu-in-another-room', roomID: number | null): void
-  (event: 'roomQuotasUpdate', updatedQuotas: HotelRoomQuotasUpdateProps): void
-  (event: 'roomQuotasStatusUpdate', quotasStatusPayload: HotelRoomQuotasStatusUpdateProps | null): void
+  (event: 'roomQuotasUpdate', updatedQuotas: HotelRoomQuotasUpdatePayload): void
+  (event: 'roomQuotasStatusUpdate', quotasStatusPayload: HotelRoomQuotasStatusUpdatePayload | null): void
 }>()
 
 const isOpeningAnotherRoomDayMenu = ref<boolean>(false)
@@ -134,7 +127,7 @@ const dayMenuDone = () => {
 
 type HandleValue<R> = (date: string, value: number) => R
 
-const hotelRoomQuotasUpdateProps = ref<HotelRoomQuotasUpdateProps | null>(null)
+const hotelRoomQuotasUpdateProps = ref<HotelRoomQuotasUpdatePayload | null>(null)
 
 watch(() => props.updatedQuotasRoomId, (value) => {
   if (!value) return

@@ -1,63 +1,8 @@
 import { isBusinessDay } from 'gts-common/helpers/date'
 import { DateTime } from 'luxon'
 
-import { FiltersPayload } from '~resources/views/hotel/quotas/components/QuotasFilters/lib'
-
-import { HotelRoomID } from '~api/hotel'
-import { HotelQuotaID, QuotaStatus, UseHotelQuota } from '~api/hotel/quotas/list'
-
-export type RoomQuotaStatus = 'opened' | 'closed' | 'warning'
-
-export type RoomQuota = {
-  key: string
-  id: HotelQuotaID | null
-  roomID: HotelRoomID
-  date: string
-  status: RoomQuotaStatus | null
-  quota: number | null
-  sold: number | null
-  reserve: number | null
-  releaseDays: number | null
-}
-
-export type Day = {
-  key: string
-  date: string
-  dayOfWeek: string
-  dayOfMonth: string
-  isHoliday: boolean
-  monthKey: string
-  monthName: string
-  isLastDayInMonth: boolean
-  dayQuota: RoomQuota | null
-}
-
-export type Month = {
-  monthKey: string
-  monthName: string
-  daysCount: number
-}
-
-export const quotaStatusMap: Record<QuotaStatus, RoomQuotaStatus | undefined> = {
-  0: 'closed',
-  1: 'opened',
-}
-
-export const monthKeyFormat = 'yyyy-M'
-export const quotaDateFormat = 'yyyy-MM-dd'
-
-export type RoomRender = {
-  id: HotelRoomID
-  label: string
-  guests: number
-  count: number
-}
-
-export type QuotasAccumalationData = {
-  period: Day[]
-  months: Month[]
-  quotas: Map<string, RoomQuota>
-}
+import { Day, FiltersPayload, Month, monthKeyFormat, quotaDateFormat, QuotasAccumalationData,
+  quotaStatusMap, RoomQuota, UseHotelQuota } from './types'
 
 export type GetRoomQuotas = (params: {
   filters: FiltersPayload
