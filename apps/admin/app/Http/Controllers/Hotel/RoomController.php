@@ -146,7 +146,8 @@ class RoomController extends Controller
 
     private function formFactory(): FormContract
     {
-        return Form::hidden('beds')
+        return Form::name('data')
+            ->hidden('beds')
             ->select('type_id', [
                 'label' => 'Тип номера',
                 'required' => true,
