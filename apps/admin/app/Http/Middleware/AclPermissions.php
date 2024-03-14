@@ -2,7 +2,9 @@
 
 namespace App\Admin\Http\Middleware;
 
+use App\Admin\Models\Administrator\AccessRule;
 use App\Admin\Support\Facades\Acl;
+use App\Admin\Support\Facades\AppContext;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -37,14 +39,13 @@ class AclPermissions
         if ($administrator->superuser) {
             $permissions->superuser(true);
 //            AppContext::set('superuser', true);
-//        } else {
+        } else {
 //            $context = [];
-//            $rules = AccessRule::whereAdministrator($administrator->id)
-//                ->where('flag', true);
-//            foreach ($rules->cursor() as $r) {
-//                $permissions->allow($r->resource, $r->permission);
+            $rules = AccessRule::whereAdministrator($administrator->id)->where('flag', true);
+            foreach ($rules->cursor() as $r) {
+                $permissions->allow($r->resource, $r->permission);
 //                $context[$r->resource] = $r->permission;
-//            }
+            }
 //            AppContext::set('permissions', $context);
         }
     }
