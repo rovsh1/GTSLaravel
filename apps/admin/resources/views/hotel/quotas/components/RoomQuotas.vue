@@ -5,11 +5,11 @@ import { OnClickOutside } from '@vueuse/components'
 import OverlayLoading from 'gts-components/Base/OverlayLoading'
 
 import { HotelResponse } from '~api/hotel/get'
+import { HotelRoomQuotasStatusUpdateProps } from '~api/hotel/quotas/status'
 import {
   HotelRoomQuotasCountUpdateProps,
   HotelRoomQuotasUpdateProps,
   HotelRoomReleaseDaysUpdateProps,
-  useHotelRoomQuotasUpdate,
 } from '~api/hotel/quotas/update'
 import { HotelRoom } from '~api/hotel/room'
 
@@ -30,11 +30,17 @@ const props = defineProps<{
   editable: boolean
   reloadActiveRoom: boolean
   openingDayMenuRoomId: number | null
+  isHotelRoomQuotasUpdateFetching: boolean
+  updatedQuotasRoomId: number | null
+  isUpdateRoomQuotasStatus: boolean
+  isSuccessUpdateRoomQuotasStatus: boolean
 }>()
 
 const emit = defineEmits<{
   (event: 'update', roomID: number): void
   (event: 'open-day-menu-in-another-room', roomID: number | null): void
+  (event: 'roomQuotasUpdate', updatedQuotas: HotelRoomQuotasUpdateProps): void
+  (event: 'roomQuotasStatusUpdate', quotasStatusPayload: HotelRoomQuotasStatusUpdateProps | null): void
 }>()
 
 const isOpeningAnotherRoomDayMenu = ref<boolean>(false)
@@ -130,18 +136,14 @@ type HandleValue<R> = (date: string, value: number) => R
 
 const hotelRoomQuotasUpdateProps = ref<HotelRoomQuotasUpdateProps | null>(null)
 
-const {
-  execute: executeHotelRoomQuotasUpdate,
-  data: hotelRoomQuotasUpdateData,
-  isFetching: isHotelRoomQuotasUpdateFetching,
-} = useHotelRoomQuotasUpdate(hotelRoomQuotasUpdateProps)
-
-watch(hotelRoomQuotasUpdateData, (value) => {
-  if (value === null || !value.success) return
-  hotelRoomQuotasUpdateProps.value = null
-  emit('update', props.room.id)
-  activeQuotasCountKey.value = null
-  activeReleaseDaysKey.value = null
+watch(() => props.updatedQuotasRoomId, (value) => {
+  if (!value) return
+  if (value === props.room.id) {
+    hotelRoomQuotasUpdateProps.value = null
+    emit('update', props.room.id)
+    activeQuotasCountKey.value = null
+    activeReleaseDaysKey.value = null
+  }
 })
 
 type GetQuotasCountPayload = HandleValue<HotelRoomQuotasCountUpdateProps>
@@ -168,7 +170,7 @@ const getQuotasCountPayload: GetQuotasCountPayload = (dateKey, value) => {
 
 const handleQuotaValue: HandleValue<void> = (dateKey, value) => {
   hotelRoomQuotasUpdateProps.value = getQuotasCountPayload(dateKey, value)
-  executeHotelRoomQuotasUpdate()
+  emit('roomQuotasUpdate', hotelRoomQuotasUpdateProps.value)
 }
 
 type GetReleaseDaysPayload = HandleValue<HotelRoomReleaseDaysUpdateProps>
@@ -195,7 +197,7 @@ const getReleaseDaysPayload: GetReleaseDaysPayload = (dateKey, value) => {
 
 const handleReleaseDaysValue: HandleValue<void> = (dateKey, value) => {
   hotelRoomQuotasUpdateProps.value = getReleaseDaysPayload(dateKey, value)
-  executeHotelRoomQuotasUpdate()
+  emit('roomQuotasUpdate', hotelRoomQuotasUpdateProps.value)
 }
 
 const getCurrentCellKey = (dayKey: string) => `${dayKey}-${props.room.id}`
@@ -236,7 +238,7 @@ const resetActiveKey = () => {
       <room-header :label="room.name" :guests="room.guestsCount" :count="room.roomsNumber" />
     </div>
     <div class="quotasTables">
-      <OverlayLoading v-if="isHotelRoomQuotasUpdateFetching || reloadActiveRoom" />
+      <OverlayLoading v-if="(isHotelRoomQuotasUpdateFetching && room.id === updatedQuotasRoomId) || reloadActiveRoom" />
       <div class="quotasTable card" @scroll="closeDayMenu">
         <table class="card-body">
           <thead>
@@ -398,6 +400,8 @@ const resetActiveKey = () => {
         }"
       >
         <day-menu
+          :is-success-update-room-quotas-status="isSuccessUpdateRoomQuotasStatus"
+          :is-update-room-quotas-status="isUpdateRoomQuotasStatus"
           :menu-ref="dayMenuRef"
           :menu-day-key="dayMenuPosition ? dayMenuPosition.dayKey : null"
           :hotel="hotel.id"
@@ -405,6 +409,7 @@ const resetActiveKey = () => {
           :dates="dayMenuDates"
           @done="dayMenuDone"
           @set-menu-element="value => dayMenuElementRef = value"
+          @room-quotas-status-update="value => emit('roomQuotasStatusUpdate', value)"
         />
       </OnClickOutside>
     </Teleport>

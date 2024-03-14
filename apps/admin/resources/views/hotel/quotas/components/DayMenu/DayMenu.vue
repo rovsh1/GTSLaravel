@@ -8,7 +8,7 @@ import { HotelRoomID } from '~api/hotel'
 import { HotelID } from '~api/hotel/get'
 import {
   HotelRoomQuotasStatusUpdateKind,
-  HotelRoomQuotasStatusUpdateProps, useHotelRoomQuotasStatusUpdate,
+  HotelRoomQuotasStatusUpdateProps,
 } from '~api/hotel/quotas/status'
 
 import { useDayMenuButtonStatus } from './use-day-menu-button-status'
@@ -19,11 +19,14 @@ const props = defineProps<{
   hotel: HotelID
   room: HotelRoomID
   dates: string[] | null
+  isUpdateRoomQuotasStatus: boolean
+  isSuccessUpdateRoomQuotasStatus: boolean
 }>()
 
 const emit = defineEmits<{
   (event: 'done'): void
   (event: 'set-menu-element', element: HTMLElement | null): void
+  (event: 'roomQuotasStatusUpdate', quotasStatusPayload: HotelRoomQuotasStatusUpdateProps | null): void
 }>()
 
 const reference = computed(() => props.menuRef)
@@ -49,20 +52,16 @@ const updateProps = computed<HotelRoomQuotasStatusUpdateProps | null>(() => {
   }
 })
 
-const {
-  execute,
-  data,
-  isFetching,
-} = useHotelRoomQuotasStatusUpdate(updateProps)
+const isUpdateRoomQuotasStatus = computed<boolean>(() => props.isUpdateRoomQuotasStatus)
 
-watch(data, (value) => {
-  if (value === null || !value.success) return
+watch(() => props.isSuccessUpdateRoomQuotasStatus, (value) => {
+  if (!value) return
   emit('done')
   selectedKind.value = null
 })
 
 const done = () => {
-  execute()
+  emit('roomQuotasStatusUpdate', updateProps.value)
 }
 
 const openDay = () => {
@@ -83,17 +82,17 @@ const resetDay = () => {
 const {
   isLoading: isOpenLoading,
   isDisabled: isOpenDisabled,
-} = useDayMenuButtonStatus({ kind: 'open', selectedKind, isFetching })
+} = useDayMenuButtonStatus({ kind: 'open', selectedKind, isFetching: isUpdateRoomQuotasStatus })
 
 const {
   isLoading: isCloseLoading,
   isDisabled: isCloseDisabled,
-} = useDayMenuButtonStatus({ kind: 'close', selectedKind, isFetching })
+} = useDayMenuButtonStatus({ kind: 'close', selectedKind, isFetching: isUpdateRoomQuotasStatus })
 
 const {
   isLoading: isResetLoading,
   isDisabled: isResetDisabled,
-} = useDayMenuButtonStatus({ kind: 'reset', selectedKind, isFetching })
+} = useDayMenuButtonStatus({ kind: 'reset', selectedKind, isFetching: isUpdateRoomQuotasStatus })
 
 onMounted(() => {
   emit('set-menu-element', floating.value)
