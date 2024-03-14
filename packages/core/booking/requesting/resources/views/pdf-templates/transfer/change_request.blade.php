@@ -26,12 +26,23 @@
 
     @include('BookingRequesting::pdf-templates.transfer._partials.cars')
 
+    @haschanges(null)
+    <div>
+        <p style="color: blue; font-weight: bold">Изменения:</p>
+        <ul style="margin-top: 3px; padding-inline-start: 25px; color: blue; font-weight: bold">
+            @changes(null)
+            <li>{{ $change->description() }}</li>
+            @endchanges
+        </ul>
+    </div>
+    @endhaschanges
+
     <div class="total-amount clear-both">
         <div class="column w-50">
             <p><b>ИТОГО К ОПЛАТЕ</b></p>
         </div>
         <div class="column w-50 text-right">
-            <p><b>{{ Format::number($booking->supplierPrice->amount) }} {{ Format::number($booking->supplierPrice->currency) }}</b></p>
+            <p><b>{{ Format::number($booking->supplierPrice->amount) }} {{ $booking->supplierPrice->currency }}</b></p>
         </div>
     </div>
 @endsection

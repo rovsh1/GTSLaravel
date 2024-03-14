@@ -2,6 +2,18 @@
 
 namespace Module\Booking\Shared\Domain\Booking\Service\IntegrationEventMapper;
 
+use Module\Booking\Shared\Domain\Booking\Service\IntegrationEventMapper\Airport\AirportGuestBindedMapper;
+use Module\Booking\Shared\Domain\Booking\Service\IntegrationEventMapper\Airport\AirportGuestUnbindedMapper;
+use Module\Booking\Shared\Domain\Booking\Service\IntegrationEventMapper\Hotel\AccommodationGuestBindedMapper;
+use Module\Booking\Shared\Domain\Booking\Service\IntegrationEventMapper\Hotel\AccommodationGuestEditedMapper;
+use Module\Booking\Shared\Domain\Booking\Service\IntegrationEventMapper\Hotel\AccommodationGuestUnbindedMapper;
+use Module\Booking\Shared\Domain\Booking\Service\IntegrationEventMapper\Hotel\AccommodationModifiedMapper;
+use Module\Booking\Shared\Domain\Booking\Service\IntegrationEventMapper\Transfer\CarBidAddedMapper;
+use Module\Booking\Shared\Domain\Booking\Service\IntegrationEventMapper\Transfer\CarBidRemovedMapper;
+use Module\Booking\Shared\Domain\Booking\Service\IntegrationEventMapper\Transfer\CarBidModifiedMapper;
+use Module\Booking\Shared\Domain\Booking\Service\IntegrationEventMapper\Transfer\CarBidReplacedMapper;
+use Module\Booking\Shared\Domain\Booking\Service\IntegrationEventMapper\Transfer\TransferGuestBindedMapper;
+use Module\Booking\Shared\Domain\Booking\Service\IntegrationEventMapper\Transfer\TransferGuestUnbindedMapper;
 use Module\Booking\Shared\Domain\Guest\Event\GuestModified;
 use Sdk\Booking\Event\ArrivalDateChanged;
 use Sdk\Booking\Event\BookingCancelledEventInterface;
@@ -13,6 +25,10 @@ use Sdk\Booking\Event\PriceUpdated;
 use Sdk\Booking\Event\ServiceBooking\GuestBinded as AirportGuestBinded;
 use Sdk\Booking\Event\ServiceBooking\GuestUnbinded as AirportGuestUnbinded;
 use Sdk\Booking\Event\ServiceDateChanged;
+use Sdk\Booking\Event\TransferBooking\CarBidAdded;
+use Sdk\Booking\Event\TransferBooking\CarBidDetailsEdited;
+use Sdk\Booking\Event\TransferBooking\CarBidRemoved;
+use Sdk\Booking\Event\TransferBooking\CarBidReplaced;
 use Sdk\Booking\Event\TransferBooking\GuestBinded as TransferGuestBinded;
 use Sdk\Booking\Event\TransferBooking\GuestUnbinded as TransferGuestUnbinded;
 use Sdk\Module\Contracts\Event\DomainEventInterface;
@@ -38,10 +54,17 @@ class MapperFactory
             AccommodationGuestUnbinded::class => AccommodationGuestUnbindedMapper::class,
             GuestModified::class => AccommodationGuestEditedMapper::class,
             AccommodationDetailsEdited::class => AccommodationModifiedMapper::class,
+
             TransferGuestBinded::class => TransferGuestBindedMapper::class,
             TransferGuestUnbinded::class => TransferGuestUnbindedMapper::class,
+            CarBidDetailsEdited::class => CarBidModifiedMapper::class,
+            CarBidReplaced::class => CarBidReplacedMapper::class,
+            CarBidAdded::class => CarBidAddedMapper::class,
+            CarBidRemoved::class => CarBidRemovedMapper::class,
+
             AirportGuestBinded::class => AirportGuestBindedMapper::class,
             AirportGuestUnbinded::class => AirportGuestUnbindedMapper::class,
+
             PriceUpdated::class => PriceChangedMapper::class,
             ArrivalDateChanged::class => ArrivalDateChangedMapper::class,
             DepartureDateChanged::class => DepartureDateChangedMapper::class,

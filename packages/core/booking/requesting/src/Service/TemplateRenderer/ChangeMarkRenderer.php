@@ -28,7 +28,9 @@ class ChangeMarkRenderer
     public function reset(): void
     {
         unset($this->booking);
+        $this->changedFlag = false;
         $this->cached = [];
+        $this->renderedFields = [];
     }
 
     public function changed(string $field): bool

@@ -1,13 +1,14 @@
 <?php
 
-namespace Module\Booking\Shared\Domain\Booking\Service\IntegrationEventMapper;
+namespace Module\Booking\Shared\Domain\Booking\Service\IntegrationEventMapper\Transfer;
 
+use Module\Booking\Shared\Domain\Booking\Service\IntegrationEventMapper\MapperInterface;
 use Module\Booking\Shared\Domain\Guest\Repository\GuestRepositoryInterface;
-use Sdk\Booking\Event\ServiceBooking\GuestBinded;
-use Sdk\Booking\IntegrationEvent\AirportBooking\GuestAdded;
+use Sdk\Booking\Event\TransferBooking\GuestBinded;
+use Sdk\Booking\IntegrationEvent\TransferBooking\GuestAdded;
 use Sdk\Module\Contracts\Event\DomainEventInterface;
 
-class AirportGuestBindedMapper implements MapperInterface
+class TransferGuestBindedMapper implements MapperInterface
 {
     public function __construct(
         private readonly GuestRepositoryInterface $guestRepository,
@@ -22,6 +23,8 @@ class AirportGuestBindedMapper implements MapperInterface
         return [
             new GuestAdded(
                 $event->bookingId()->value(),
+                $event->carBid->id()->value(),
+                $event->carBid->carId()->value(),
                 $guest->id()->value(),
                 $guest->fullName()
             )
