@@ -341,7 +341,7 @@ class BookingController extends AbstractHotelController
             ->exists();
 
         if (!$hasAccess) {
-            abort(403);
+            abort(403, 'This action is unauthorized.');
         }
     }
 }
