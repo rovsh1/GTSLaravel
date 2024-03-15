@@ -4,7 +4,6 @@ import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { formatDateTimeToAPIDate, formatSeasonPeriod, parseAPIDate } from 'gts-common/helpers/date'
 import OverlayLoading from 'gts-components/Base/OverlayLoading'
 import { showToast } from 'gts-components/Bootstrap/BootstrapToast/index'
-import { Month } from 'gts-quotas-component/types'
 import { DateTime } from 'luxon'
 import { nanoid } from 'nanoid'
 
@@ -15,7 +14,7 @@ import { updateRoomSeasonPricesByDay, useRoomSeasonsDaysPricesListAPI } from '~a
 import EditableCell from './EditableCell.vue'
 
 import { getStatusClassByFlag, getStatusClassByPrice } from '../lib/status'
-import { PricesAccumulationData, PricesAccumulationDataForDays, SeasonPeriod } from '../lib/types'
+import { Month, PricesAccumulationData, PricesAccumulationDataForDays, SeasonPeriod } from '../lib/types'
 
 const props = withDefaults(defineProps<{
   seasonData: PricesAccumulationData
