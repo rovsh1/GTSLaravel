@@ -1,7 +1,7 @@
 {
     "name": "gts-quotas-component",
     "private": false,
-    "version": "1.2.7",
+    "version": "1.2.9",
     "type": "module",
     "files": [
         "dist"
@@ -54,8 +54,8 @@
         "@vueuse/core": "^10.0.2",
         "bootstrap": "^5.3.2",
         "floating-vue": "^2.0.0-beta.20",
-        "gts-common": "^1.2.2",
-        "gts-components": "^1.2.2",
+        "gts-common": "^1.2.3",
+        "gts-components": "^1.2.3",
         "jquery": "^3.6.0",
         "luxon": "^3.3.0",
         "lodash": "^4.17.21",
