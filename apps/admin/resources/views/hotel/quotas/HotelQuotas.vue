@@ -3,6 +3,10 @@ import { computed, nextTick, ref, watchEffect } from 'vue'
 
 import { formatDateToAPIDate } from 'gts-common/helpers/date'
 import { requestInitialData } from 'gts-common/helpers/initial-data'
+import QuotasComponent from 'gts-quotas-component/component'
+import { defaultFiltersPayload, getRoomQuotas } from 'gts-quotas-component/lib'
+import { Day, FiltersPayload, HotelRoomQuotasStatusUpdatePayload,
+  HotelRoomQuotasUpdatePayload, Month, QuotasStatusUpdatePayload, RoomQuota } from 'gts-quotas-component/types'
 import { z } from 'zod'
 
 import { useHotelGetAPI } from '~api/hotel/get'
@@ -13,13 +17,6 @@ import { useHotelRoomQuotasUpdate } from '~api/hotel/quotas/update'
 import { useHotelRoomsListAPI } from '~api/hotel/rooms'
 
 import { createHotelSwitcher } from '~widgets/hotel-switcher/hotel-switcher'
-
-import QuotasComponent from './QuotasComponent.vue'
-
-import { getRoomQuotas } from './components/lib'
-import { Day, FiltersPayload, HotelRoomQuotasStatusUpdatePayload,
-  HotelRoomQuotasUpdatePayload, Month, QuotasStatusUpdatePayload, RoomQuota } from './components/lib/types'
-import { defaultFiltersPayload } from './components/QuotasFilters/lib'
 
 const { hotelID } = requestInitialData(z.object({
   hotelID: z.number(),

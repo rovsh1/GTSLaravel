@@ -1,13 +1,34 @@
 import { isBusinessDay } from 'gts-common/helpers/date'
 import { DateTime } from 'luxon'
 
-import { Day, FiltersPayload, Month, monthKeyFormat, quotaDateFormat, QuotasAccumalationData,
-  quotaStatusMap, RoomQuota, UseHotelQuota } from './types'
+import { AvailabilityOption, Day, FiltersPayload,
+  Month, QuotasAccumalationData, QuotaStatus, RoomQuota, RoomQuotaStatus, UseHotelQuota } from './types'
+
+export const quotaStatusMap: Record<QuotaStatus, RoomQuotaStatus | undefined> = {
+  0: 'closed',
+  1: 'opened',
+}
+
+export const monthKeyFormat = 'yyyy-M'
+export const quotaDateFormat = 'yyyy-MM-dd'
 
 export type GetRoomQuotas = (params: {
   filters: FiltersPayload
   quotas: UseHotelQuota
 }) => QuotasAccumalationData
+
+export const defaultFiltersPayload: FiltersPayload = {
+  dateFrom: DateTime.now().startOf('month').toJSDate(),
+  dateTo: DateTime.now().endOf('month').toJSDate(),
+  availability: null,
+  roomID: null,
+}
+
+export const availabilityOptions: AvailabilityOption[] = [
+  { value: 'sold', label: 'Проданные' },
+  { value: 'stopped', label: 'Остановленные' },
+  { value: 'available', label: 'Доступные' },
+]
 
 export const getRoomQuotas: GetRoomQuotas = ({ filters, quotas }) => {
   const { dateFrom, dateTo } = filters

@@ -7,11 +7,10 @@ import OverlayLoading from 'gts-components/Base/OverlayLoading'
 import SelectComponent from 'gts-components/Base/SelectComponent'
 import BootstrapButton from 'gts-components/Bootstrap/BootstrapButton/BootstrapButton'
 import { SelectOption } from 'gts-components/Bootstrap/lib'
+import { AvailabilityValue } from 'gts-quotas-component/types'
 import { isEqual } from 'lodash'
 import { DateTime } from 'luxon'
 import { nanoid } from 'nanoid'
-
-import { AvailabilityValue } from '~resources/views/hotel/quotas/components/lib/types'
 
 import {
   defaultFiltersPayload,

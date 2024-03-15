@@ -10,8 +10,8 @@ import { isEqual } from 'lodash'
 import { DateTime } from 'luxon'
 import { nanoid } from 'nanoid'
 
+import { availabilityOptions } from '../lib'
 import { AvailabilityOption,
-  availabilityOptions,
   AvailabilityValue,
   FiltersPayload,
   HotelRoom } from '../lib/types'

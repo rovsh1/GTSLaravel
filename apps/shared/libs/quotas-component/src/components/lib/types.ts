@@ -87,12 +87,6 @@ export type AvailabilityOption = {
   label: string
 }
 
-export const availabilityOptions: AvailabilityOption[] = [
-  { value: 'sold', label: 'Проданные' },
-  { value: 'stopped', label: 'Остановленные' },
-  { value: 'available', label: 'Доступные' },
-]
-
 export type FiltersPayload = {
   dateFrom: Date
   dateTo: Date
@@ -164,11 +158,3 @@ export type HotelQuota = Omit<HotelQuotaResponse, 'room_id'> & {
 }
 
 export type UseHotelQuota = HotelQuota[] | null
-
-export const quotaStatusMap: Record<QuotaStatus, RoomQuotaStatus | undefined> = {
-  0: 'closed',
-  1: 'opened',
-}
-
-export const monthKeyFormat = 'yyyy-M'
-export const quotaDateFormat = 'yyyy-MM-dd'

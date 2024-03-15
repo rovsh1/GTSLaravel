@@ -6,8 +6,7 @@ import OverlayLoading from 'gts-components/Base/OverlayLoading'
 import SelectComponent from 'gts-components/Base/SelectComponent'
 import { nanoid } from 'nanoid'
 
-import { daysOfWeekOptions } from '~resources/js/config/constants'
-
+import { daysOfWeekOptions } from './lib/constants'
 import { Action, ActionsOption, HotelRoom, QuotasStatusUpdateFormData, QuotasStatusUpdatePayload } from './lib/types'
 
 const props = withDefaults(defineProps<{

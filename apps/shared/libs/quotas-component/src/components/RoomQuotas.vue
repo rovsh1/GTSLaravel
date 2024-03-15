@@ -409,7 +409,7 @@ const resetActiveKey = () => {
   </div>
 </template>
 <style lang="scss" scoped>
-@use '~resources/sass/vendor/bootstrap/configuration' as bs;
+@use '~assets/sass/configuration' as bs;
 @use 'shared' as shared;
 
 .roomHeader {

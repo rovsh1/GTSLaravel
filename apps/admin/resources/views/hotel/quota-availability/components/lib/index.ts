@@ -1,7 +1,7 @@
 import { isBusinessDay } from 'gts-common/helpers/date'
+import { monthKeyFormat, quotaDateFormat, quotaStatusMap } from 'gts-quotas-component/lib'
+import { Day, FiltersPayload, Month, RoomQuota } from 'gts-quotas-component/types'
 import { DateTime } from 'luxon'
-
-import { Day, FiltersPayload, Month, monthKeyFormat, quotaDateFormat, quotaStatusMap, RoomQuota } from '~resources/views/hotel/quotas/components/lib/types'
 
 import { UseHotelQuota } from '~api/hotel/quotas/list'
 

@@ -3,9 +3,9 @@ import { computed, onMounted, ref, watch } from 'vue'
 
 import { formatDateToAPIDate } from 'gts-common/helpers/date'
 import OverlayLoading from 'gts-components/Base/OverlayLoading'
+import { Day, Month, RoomQuota, RoomQuotaStatus } from 'gts-quotas-component/types'
 import { DateTime } from 'luxon'
 
-import { Day, Month, RoomQuota, RoomQuotaStatus } from '~resources/views/hotel/quotas/components/lib/types'
 import { HotelInfo, QuotaAvailability, QuotaInfo } from '~resources/vue/api/hotel/quotas/availability'
 
 import { useHotelQuotasAPI } from '~api/hotel/quotas/list'

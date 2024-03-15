@@ -12,6 +12,9 @@ import QuotasFilters from './components/QuotasFilters/QuotasFilters.vue'
 import QuotasStatusSwitcher from './components/QuotasStatusSwitcher.vue'
 import RoomQuotasComponent from './components/RoomQuotas.vue'
 
+import '~assets/support/jquery'
+import '~assets/support/select2'
+
 import { Day, FiltersPayload, HotelResponse, HotelRoom, HotelRoomQuotasStatusUpdatePayload,
   HotelRoomQuotasUpdatePayload, Month, QuotasStatusUpdatePayload, RoomQuota, UseHotelRooms } from './components/lib/types'
 import { defaultFiltersPayload } from './components/QuotasFilters/lib'

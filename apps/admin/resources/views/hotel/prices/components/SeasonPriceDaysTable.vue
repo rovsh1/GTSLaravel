@@ -4,11 +4,11 @@ import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { formatDateTimeToAPIDate, formatSeasonPeriod, parseAPIDate } from 'gts-common/helpers/date'
 import OverlayLoading from 'gts-components/Base/OverlayLoading'
 import { showToast } from 'gts-components/Bootstrap/BootstrapToast/index'
+import { Month } from 'gts-quotas-component/types'
 import { DateTime } from 'luxon'
 import { nanoid } from 'nanoid'
 
 import { daysOfWeek } from '~resources/js/config/constants'
-import { Month } from '~resources/views/hotel/quotas/components/lib/types'
 
 import { updateRoomSeasonPricesByDay, useRoomSeasonsDaysPricesListAPI } from '~api/hotel/prices/seasons'
 
