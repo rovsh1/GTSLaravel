@@ -61,19 +61,19 @@ pre-commit:
       root: "apps/shared/libs/components"
       glob: "*.vue"
       run: npx vue-tsc --noEmit
-    components-eslint:
+    quotas-component-eslint:
       root: "apps/shared/libs/quotas-component"
       glob: "*.{js,ts,vue}"
       run: npx eslint {staged_files}
-    components-stylelint:
+    quotas-component-stylelint:
       root: "apps/shared/libs/quotas-component"
       glob: "*.{vue,scss}"
       run: npx stylelint {staged_files}
-    components-types:
+    quotas-component-types:
       root: "apps/shared/libs/quotas-component"
       glob: "*.ts"
       run: npx tsc --noEmit
-    components-types-vue:
+    quotas-component-types-vue:
       root: "apps/shared/libs/quotas-component"
       glob: "*.vue"
       run: npx vue-tsc --noEmit
