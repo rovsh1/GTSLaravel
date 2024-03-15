@@ -1,9 +1,10 @@
 <?php
 
-namespace Module\Booking\Shared\Domain\Booking\Service\IntegrationEventMapper;
+namespace Module\Booking\Shared\Domain\Booking\Service\IntegrationEventMapper\Hotel;
 
 use Module\Booking\Shared\Domain\Booking\Repository\AccommodationRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\Service\IntegrationEventMapper\MapperInterface;
 use Module\Booking\Shared\Domain\Guest\Event\GuestModified;
 use Sdk\Booking\IntegrationEvent\HotelBooking\GuestEdited as IntegrationEvent;
 use Sdk\Module\Contracts\Event\DomainEventInterface;

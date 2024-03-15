@@ -9,6 +9,7 @@ use Pkg\Booking\Requesting\Service\TemplateRenderer\Dto\GuestDto;
 class CarDto
 {
     public function __construct(
+        public readonly int $carBidId,
         public readonly string $mark,
         public readonly string $model,
         public readonly int $carsCount,

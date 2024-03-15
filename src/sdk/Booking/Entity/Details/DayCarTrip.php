@@ -7,6 +7,7 @@ namespace Sdk\Booking\Entity\Details;
 use DateTimeInterface;
 use Sdk\Booking\Contracts\Entity\TransferDetailsInterface;
 use Sdk\Booking\Entity\Details\Concerns\HasDepartureDateTrait;
+use Sdk\Booking\Event\DetailsFieldUpdated;
 use Sdk\Booking\Support\Entity\AbstractServiceDetails;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\CityId;
@@ -53,7 +54,9 @@ final class DayCarTrip extends AbstractServiceDetails implements TransferDetails
 
     public function setDestinationsDescription(?string $destinationsDescription): void
     {
+        $valueBefore = $this->destinationsDescription;
         $this->destinationsDescription = $destinationsDescription;
+        $this->pushEvent(new DetailsFieldUpdated($this, 'destinationsDescription', $destinationsDescription, $valueBefore));
     }
 
     public function serialize(): array

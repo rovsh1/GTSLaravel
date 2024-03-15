@@ -84,6 +84,7 @@ class TransferBookingDataFactory
         $carsIndexedById = collect($cars)->keyBy('id');
 
         return $carBids->map(fn(CarBid $carBid) => new CarDto(
+            $carBid->id()->value(),
             $carsIndexedById[$carBid->carId()->value()]->mark,
             $carsIndexedById[$carBid->carId()->value()]->model,
             $carBid->details()->carsCount(),

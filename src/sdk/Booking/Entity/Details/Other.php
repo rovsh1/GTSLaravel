@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Sdk\Booking\Entity\Details;
 
 use Sdk\Booking\Contracts\Entity\DetailsInterface;
+use Sdk\Booking\Event\DetailsFieldUpdated;
 use Sdk\Booking\Event\ServiceDateChanged;
 use Sdk\Booking\Support\Entity\AbstractServiceDetails;
 use Sdk\Booking\ValueObject\BookingId;
@@ -32,7 +33,9 @@ final class Other extends AbstractServiceDetails implements DetailsInterface
 
     public function setDescription(?string $description): void
     {
+        $valueBefore = $this->description;
         $this->description = $description;
+        $this->pushEvent(new DetailsFieldUpdated($this, 'description', $description, $valueBefore));
     }
 
     public function description(): ?string

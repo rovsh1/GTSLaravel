@@ -38,13 +38,22 @@ class RegistrarFactory
             GuestAdded::class => GuestAddedRegistrar::class,
             GuestRemoved::class => GuestRemovedRegistrar::class,
             IntegrationEvent\HotelBooking\GuestEdited::class => GuestEditedRegistrar::class,
+
             IntegrationEvent\AirportBooking\GuestAdded::class => ChangesRegistrar\AirportBooking\GuestAddedRegistrar::class,
             IntegrationEvent\AirportBooking\GuestRemoved::class => ChangesRegistrar\AirportBooking\GuestRemovedRegistrar::class,
+
             IntegrationEvent\TransferBooking\GuestAdded::class => ChangesRegistrar\TransferBooking\GuestAddedRegistrar::class,
             IntegrationEvent\TransferBooking\GuestRemoved::class => ChangesRegistrar\TransferBooking\GuestRemovedRegistrar::class,
+            IntegrationEvent\TransferBooking\CarBidAdded::class => ChangesRegistrar\TransferBooking\CarBidAddedRegistrar::class,
+            IntegrationEvent\TransferBooking\CarBidRemoved::class => ChangesRegistrar\TransferBooking\CarBidRemovedRegistrar::class,
+            IntegrationEvent\TransferBooking\CarBidReplaced::class => ChangesRegistrar\TransferBooking\CarBidReplacedRegistrar::class,
+            IntegrationEvent\TransferBooking\CarBidModified::class => ChangesRegistrar\TransferBooking\CarBidModifiedRegistrar::class,
+
             IntegrationEvent\DepartureDateChanged::class => DepartureDateChangedRegistrar::class,
             IntegrationEvent\ArrivalDateChanged::class => ArrivalDateChangedRegistrar::class,
             IntegrationEvent\ServiceDateChanged::class => ServiceDateChangedRegistrar::class,
+
+            IntegrationEvent\DetailsFieldModified::class => DetailsFieldModifiedRegistrar::class,
             default => null
         };
     }

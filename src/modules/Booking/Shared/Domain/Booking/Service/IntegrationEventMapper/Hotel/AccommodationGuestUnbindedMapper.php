@@ -1,13 +1,14 @@
 <?php
 
-namespace Module\Booking\Shared\Domain\Booking\Service\IntegrationEventMapper;
+namespace Module\Booking\Shared\Domain\Booking\Service\IntegrationEventMapper\Hotel;
 
+use Module\Booking\Shared\Domain\Booking\Service\IntegrationEventMapper\MapperInterface;
 use Module\Booking\Shared\Domain\Guest\Repository\GuestRepositoryInterface;
-use Sdk\Booking\Event\ServiceBooking\GuestUnbinded;
-use Sdk\Booking\IntegrationEvent\AirportBooking\GuestRemoved;
+use Sdk\Booking\Event\HotelBooking\GuestUnbinded;
+use Sdk\Booking\IntegrationEvent\HotelBooking\GuestRemoved;
 use Sdk\Module\Contracts\Event\DomainEventInterface;
 
-class AirportGuestUnbindedMapper implements MapperInterface
+class AccommodationGuestUnbindedMapper implements MapperInterface
 {
     public function __construct(
         private readonly GuestRepositoryInterface $guestRepository,
@@ -22,6 +23,8 @@ class AirportGuestUnbindedMapper implements MapperInterface
         return [
             new GuestRemoved(
                 $event->bookingId()->value(),
+                $event->accommodation->id()->value(),
+                $event->accommodation->roomInfo()->name(),
                 $guest->id()->value(),
                 $guest->fullName()
             )

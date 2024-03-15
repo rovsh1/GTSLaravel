@@ -1,8 +1,9 @@
 <?php
 
-namespace Module\Booking\Shared\Domain\Booking\Service\IntegrationEventMapper;
+namespace Module\Booking\Shared\Domain\Booking\Service\IntegrationEventMapper\Hotel;
 
 use Module\Booking\Shared\Domain\Booking\Repository\AccommodationRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\Service\IntegrationEventMapper\MapperInterface;
 use Sdk\Booking\Event\HotelBooking\AccommodationDetailsEdited;
 use Sdk\Booking\IntegrationEvent\HotelBooking\AccommodationModified;
 use Sdk\Module\Contracts\Event\DomainEventInterface;
