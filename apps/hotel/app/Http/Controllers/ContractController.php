@@ -39,7 +39,6 @@ class ContractController extends AbstractHotelController
     protected function gridFactory(): GridContract
     {
         return Grid::paginator(16)
-            ->id('id', ['text' => 'ID', 'order' => true])
             ->text(
                 'contract_number',
                 ['text' => 'Номер', 'order' => true, 'renderer' => fn($r, $t) => (string)$r]
