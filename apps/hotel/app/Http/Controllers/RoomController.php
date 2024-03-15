@@ -40,9 +40,7 @@ class RoomController extends AbstractHotelController
 
     public function update(Request $request, Room $room): RedirectResponse
     {
-        if (Gate::denies('update-room', $room)) {
-            abort(403);
-        }
+        Gate::authorize('update-room', $room);
 
         $notes = $request->post('notes');
 
@@ -62,9 +60,7 @@ class RoomController extends AbstractHotelController
 
     public function get(Request $request, Room $room): JsonResponse
     {
-        if (Gate::denies('update-room', $room)) {
-            abort(403);
-        }
+        Gate::authorize('update-room', $room);
 
         return response()->json(RoomResource::make($room));
     }

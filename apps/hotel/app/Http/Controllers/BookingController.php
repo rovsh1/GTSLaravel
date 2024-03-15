@@ -335,7 +335,7 @@ class BookingController extends AbstractHotelController
         $hasAccess = Booking::query()
             ->withoutGlobalScope('default')
             ->selectRaw(1)
-            ->where('id', $bookingId)
+            ->where('bookings.id', $bookingId)
             ->join('booking_hotel_details', 'booking_hotel_details.booking_id', 'bookings.id')
             ->where('booking_hotel_details.hotel_id', $this->getHotel()->id)
             ->exists();

@@ -41,11 +41,9 @@ class ImageController extends AbstractHotelController
             if ($room === null) {
                 throw new NotFoundHttpException('Room id not found');
             }
+            Gate::authorize('update-room', $room);
         }
 
-        if (Gate::denies('update-room', $room)) {
-            abort(403);
-        }
 
         return Layout::title($room?->name ?? 'Фотографии')
             ->view('images.images', ['hotel' => $this->getHotel()]);
@@ -61,9 +59,7 @@ class ImageController extends AbstractHotelController
     public function upload(UploadImagesRequest $request): AjaxResponseInterface
     {
         $room = Room::find($request->getRoomId());
-        if (Gate::denies('update-room', $room)) {
-            abort(403);
-        }
+        Gate::authorize('update-room', $room);
 
         //@todo загружать во временную папку, отдавать путь. А после submit формы, сохранять
         foreach ($request->getFiles() as $file) {
@@ -81,9 +77,7 @@ class ImageController extends AbstractHotelController
 
     public function destroy(Request $request, Image $image): AjaxResponseInterface
     {
-        if (Gate::denies('update-image', $image)) {
-            abort(403);
-        }
+        Gate::authorize('update-image', $image);
 
         app(DeleteImage::class)->execute($this->getHotel()->id, $image->id);
 
@@ -99,9 +93,7 @@ class ImageController extends AbstractHotelController
 
     public function reorderRoomImages(Request $request, Room $room): AjaxResponseInterface
     {
-        if (Gate::denies('update-room', $room)) {
-            abort(403);
-        }
+        Gate::authorize('update-room', $room);
 
         $room->updateImageIndexes($request->input('indexes'));
 
@@ -110,9 +102,7 @@ class ImageController extends AbstractHotelController
 
     public function getRoomImages(Request $request, Room $room): JsonResponse
     {
-        if (Gate::denies('update-room', $room)) {
-            abort(403);
-        }
+        Gate::authorize('update-room', $room);
 
         $files = $this->roomImageRepository->get($this->getHotel()->id, $room->id);
 
@@ -123,9 +113,7 @@ class ImageController extends AbstractHotelController
 
     public function setRoomImage(Request $request, Room $room, Image $image): AjaxResponseInterface
     {
-        if (Gate::denies('update-image', $image)) {
-            abort(403);
-        }
+        Gate::authorize('update-image', $image);
 
         $this->roomImageRepository->create($image->id, $room->id);
 
@@ -134,9 +122,7 @@ class ImageController extends AbstractHotelController
 
     public function unsetRoomImage(Request $request, Room $room, Image $image): AjaxResponseInterface
     {
-        if (Gate::denies('update-image', $image)) {
-            abort(403);
-        }
+        Gate::authorize('update-image', $image);
 
         $this->roomImageRepository->delete($image->id, $room->id);
 
@@ -145,9 +131,7 @@ class ImageController extends AbstractHotelController
 
     public function getImageRooms(Request $request, Image $image): JsonResponse
     {
-        if (Gate::denies('update-image', $image)) {
-            abort(403);
-        }
+        Gate::authorize('update-image', $image);
 
         $roomIds = $this->roomImageRepository->getImageRoomIds($this->getHotel()->id, $image->id);
         $rooms = RoomResource::collection($this->getHotel()->rooms)->toArray($request);
@@ -162,9 +146,7 @@ class ImageController extends AbstractHotelController
 
     public function setMainImage(Request $request, Image $image): AjaxResponseInterface
     {
-        if (Gate::denies('update-image', $image)) {
-            abort(403);
-        }
+        Gate::authorize('update-image', $image);
 
         $image->update(['is_main' => true]);
 
@@ -173,9 +155,7 @@ class ImageController extends AbstractHotelController
 
     public function unsetMainImage(Request $request, Image $image): AjaxResponseInterface
     {
-        if (Gate::denies('update-image', $image)) {
-            abort(403);
-        }
+        Gate::authorize('update-image', $image);
 
         $image->update(['is_main' => false]);
 
