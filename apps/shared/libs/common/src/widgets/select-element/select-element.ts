@@ -1,4 +1,3 @@
-import $ from 'jquery'
 import { Options } from 'select2'
 
 import './style.scss'
