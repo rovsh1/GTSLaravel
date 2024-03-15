@@ -9,8 +9,8 @@ final class DetailsFieldModified extends AbstractBookingEvent
     public function __construct(
         int $bookingId,
         public readonly string $field,
-        public readonly string $value,
-        public readonly string $valueBefore,
+        public readonly mixed $value,
+        public readonly mixed $valueBefore,
     ) {
         parent::__construct($bookingId);
     }
