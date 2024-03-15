@@ -15,6 +15,7 @@ use App\Shared\Http\Responses\AjaxResponseInterface;
 use App\Shared\Http\Responses\AjaxSuccessResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Module\Hotel\Moderation\Application\RequestDto\AddImageRequestDto;
 use Module\Hotel\Moderation\Application\UseCase\AddImage;
 use Module\Hotel\Moderation\Application\UseCase\DeleteImage;
@@ -42,6 +43,10 @@ class ImageController extends AbstractHotelController
             }
         }
 
+        if (Gate::denies('update-room', $room)) {
+            abort(403);
+        }
+
         return Layout::title($room?->name ?? 'Фотографии')
             ->view('images.images', ['hotel' => $this->getHotel()]);
     }
@@ -55,6 +60,11 @@ class ImageController extends AbstractHotelController
 
     public function upload(UploadImagesRequest $request): AjaxResponseInterface
     {
+        $room = Room::find($request->getRoomId());
+        if (Gate::denies('update-room', $room)) {
+            abort(403);
+        }
+
         //@todo загружать во временную папку, отдавать путь. А после submit формы, сохранять
         foreach ($request->getFiles() as $file) {
             app(AddImage::class)->execute(
@@ -71,6 +81,10 @@ class ImageController extends AbstractHotelController
 
     public function destroy(Request $request, Image $image): AjaxResponseInterface
     {
+        if (Gate::denies('update-image', $image)) {
+            abort(403);
+        }
+
         app(DeleteImage::class)->execute($this->getHotel()->id, $image->id);
 
         return new AjaxSuccessResponse();
@@ -85,6 +99,10 @@ class ImageController extends AbstractHotelController
 
     public function reorderRoomImages(Request $request, Room $room): AjaxResponseInterface
     {
+        if (Gate::denies('update-room', $room)) {
+            abort(403);
+        }
+
         $room->updateImageIndexes($request->input('indexes'));
 
         return new AjaxSuccessResponse();
@@ -92,6 +110,10 @@ class ImageController extends AbstractHotelController
 
     public function getRoomImages(Request $request, Room $room): JsonResponse
     {
+        if (Gate::denies('update-room', $room)) {
+            abort(403);
+        }
+
         $files = $this->roomImageRepository->get($this->getHotel()->id, $room->id);
 
         return response()->json(
@@ -101,6 +123,10 @@ class ImageController extends AbstractHotelController
 
     public function setRoomImage(Request $request, Room $room, Image $image): AjaxResponseInterface
     {
+        if (Gate::denies('update-image', $image)) {
+            abort(403);
+        }
+
         $this->roomImageRepository->create($image->id, $room->id);
 
         return new AjaxSuccessResponse();
@@ -108,6 +134,10 @@ class ImageController extends AbstractHotelController
 
     public function unsetRoomImage(Request $request, Room $room, Image $image): AjaxResponseInterface
     {
+        if (Gate::denies('update-image', $image)) {
+            abort(403);
+        }
+
         $this->roomImageRepository->delete($image->id, $room->id);
 
         return new AjaxSuccessResponse();
@@ -115,6 +145,10 @@ class ImageController extends AbstractHotelController
 
     public function getImageRooms(Request $request, Image $image): JsonResponse
     {
+        if (Gate::denies('update-image', $image)) {
+            abort(403);
+        }
+
         $roomIds = $this->roomImageRepository->getImageRoomIds($this->getHotel()->id, $image->id);
         $rooms = RoomResource::collection($this->getHotel()->rooms)->toArray($request);
         $rooms = array_map(function (array $roomData) use ($roomIds) {
@@ -128,6 +162,10 @@ class ImageController extends AbstractHotelController
 
     public function setMainImage(Request $request, Image $image): AjaxResponseInterface
     {
+        if (Gate::denies('update-image', $image)) {
+            abort(403);
+        }
+
         $image->update(['is_main' => true]);
 
         return new AjaxSuccessResponse();
@@ -135,6 +173,10 @@ class ImageController extends AbstractHotelController
 
     public function unsetMainImage(Request $request, Image $image): AjaxResponseInterface
     {
+        if (Gate::denies('update-image', $image)) {
+            abort(403);
+        }
+
         $image->update(['is_main' => false]);
 
         return new AjaxSuccessResponse();
