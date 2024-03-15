@@ -13,7 +13,7 @@ class Country extends Select
     {
         parent::__construct($name, $options);
 
-        $this->setItems(Model::whereId(self::UZBEKISTAN_COUNTRY_ID)->get());
+        $this->setItems(Model::onlyVisibleForLists()->get());
     }
 
     public function getValue()

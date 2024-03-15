@@ -36,6 +36,7 @@ class CountryController extends AbstractPrototypeController
             ->text('phone_code', ['label' => 'Код телефона', 'maxlength' => 8, 'required' => true])
             ->currency('currency', ['label' => 'Валюта', 'required' => true, 'emptyItem' => ''])
             ->checkbox('default', ['label' => 'По умолчанию'])
+            ->checkbox('is_show_in_lists', ['label' => 'Показывать в списках'])
             ->number('priority', ['label' => 'Приоритет', 'min' => 0, 'max' => 255]);
     }
 
