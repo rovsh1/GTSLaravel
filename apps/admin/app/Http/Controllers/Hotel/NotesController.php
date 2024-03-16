@@ -27,11 +27,11 @@ class NotesController extends Controller
     {
         Breadcrumb::prototype($this->prototype)
             ->addUrl($this->prototype->route('show', $hotel), (string)$hotel)
-            ->add('Примечание отеля');
+            ->add('Текстовое описание отеля');
 
         Sidebar::submenu(new HotelMenu($hotel, 'info'));
 
-        return Layout::title('Изменить примечание отеля')
+        return Layout::title('Изменить текстовое описание отеля')
             ->view('hotel.notes.notes', [
                 'value' => $hotel->text,
                 'cancelUrl' => $this->prototype->route('show', $hotel)

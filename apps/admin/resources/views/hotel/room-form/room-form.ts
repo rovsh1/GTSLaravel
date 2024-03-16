@@ -8,6 +8,7 @@ import bootBeds from '~resources/views/hotel/_services/room-editor'
 import '~resources/views/main'
 
 $(async () => {
+  const langs = ['ru', 'uz', 'en']
   const switchInputToSelect = async (inputsIDs: string, urlForGetData: string): Promise<void> => {
     const IDsinputsIDsList = inputsIDs.split(',')
     if (IDsinputsIDsList.length < 1) return
@@ -52,7 +53,11 @@ $(async () => {
     })
   }
 
-  (new HtmlEditor('#room-text-textarea', {})).init()
+  const initHtmlEditor = async (lang: string) => (new HtmlEditor(`#room-text-textarea-${lang}`, {})).init()
+  /* eslint-disable no-restricted-syntax, no-await-in-loop */
+  for (const lang of langs) {
+    await initHtmlEditor(lang)
+  }
   await switchInputToSelect('form_data_name_ru', '/hotels/rooms/names/ru/list')
   await switchInputToSelect('form_data_name_en', '/hotels/rooms/names/en/list')
   await switchInputToSelect('form_data_name_uz', '/hotels/rooms/names/uz/list')
