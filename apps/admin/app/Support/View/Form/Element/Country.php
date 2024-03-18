@@ -11,13 +11,9 @@ class Country extends Select
 
     public function __construct(string $name, array $options = [])
     {
+        $options['default'] = self::UZBEKISTAN_COUNTRY_ID;
         parent::__construct($name, $options);
 
         $this->setItems(Model::onlyVisibleForLists()->get());
-    }
-
-    public function getValue()
-    {
-        return self::UZBEKISTAN_COUNTRY_ID;
     }
 }
