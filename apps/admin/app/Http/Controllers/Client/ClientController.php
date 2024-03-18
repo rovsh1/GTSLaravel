@@ -208,12 +208,13 @@ class ClientController extends AbstractPrototypeController
     {
         return (new ParamsTable())
             ->id('id', 'ID')
-            ->text('name', 'Наименование')
             ->enum('type', 'Тип', TypeEnum::class)
-            ->text('country_name', 'Страна')
+            ->text('name', 'ФИО или название компании')
+            ->text('country_name', 'Страна (гражданство)')
+            ->enum('status', 'Статус', StatusEnum::class)
             ->text('currency_name', 'Валюта')
-            ->text('markup_group_name', 'Группа наценки')
             ->enum('residency', 'Тип цены', ResidencyEnum::class)
+            ->text('markup_group_name', 'Группа наценки')
             ->enum('language', 'Язык', LanguageEnum::class)
             ->text('administrator_name', 'Менеджер')
             ->data($this->model);
@@ -247,8 +248,8 @@ class ClientController extends AbstractPrototypeController
 
     protected function formFactory(): FormContract
     {
-        return Form::text('name', ['label' => 'ФИО или название компании', 'required' => true])
-            ->enum('type', ['label' => 'Тип', 'enum' => TypeEnum::class, 'required' => true, 'emptyItem' => ''])
+        return Form::enum('type', ['label' => 'Тип', 'enum' => TypeEnum::class, 'required' => true, 'emptyItem' => ''])
+            ->text('name', ['label' => 'ФИО или название компании', 'required' => true])
             ->hidden('gender', ['label' => 'Пол'])
             ->select('country_id', ['label' => 'Страна (гражданство)', 'emptyItem' => '', 'required'=>true, 'items' => Country::all()])
             ->enum('status', ['label' => 'Статус', 'enum' => StatusEnum::class])
@@ -257,16 +258,16 @@ class ClientController extends AbstractPrototypeController
                 'residency',
                 ['label' => 'Тип стоимости', 'enum' => ResidencyEnum::class, 'required' => true, 'emptyItem' => '']
             )
-            ->enum(
-                'language',
-                ['label' => 'Язык', 'enum' => LanguageEnum::class, 'required' => true, 'emptyItem' => '']
-            )
             ->select('markup_group_id', [
                 'label' => 'Группа наценки',
                 'required' => true,
                 'emptyItem' => '',
                 'items' => MarkupGroup::get()
             ])
+            ->enum(
+                'language',
+                ['label' => 'Язык', 'enum' => LanguageEnum::class, 'required' => true, 'emptyItem' => '']
+            )
             ->manager('administrator_id', ['label' => 'Менеджер', 'emptyItem' => '']);
     }
 
