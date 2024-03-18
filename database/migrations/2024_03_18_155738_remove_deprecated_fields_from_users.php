@@ -19,7 +19,7 @@ return new class extends Migration {
         });
 
         Schema::table('administrators', function (Blueprint $table) {
-            $table->dropColumn(['patronymic', 'name', 'surname']);
+            $table->dropColumn(['name', 'surname']);
         });
     }
 
