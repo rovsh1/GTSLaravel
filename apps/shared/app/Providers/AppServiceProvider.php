@@ -19,6 +19,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(MacrosServiceProvider::class);
         $this->app->register(CoreServiceProvider::class);
         $this->app->register(ModuleServiceProvider::class);
+        $this->app->register(DropboxServiceProvider::class);
 
         $this->registerApp();
 
