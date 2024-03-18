@@ -80,16 +80,16 @@ class UserController extends AbstractPrototypeController
                 ]
             )
             ->text(
-                'city_name',
+                'country_name',
                 [
-                    'text' => 'Город / Клиент',
-                    'renderer' => function ($row, $city) {
+                    'text' => 'Страна / Клиент',
+                    'renderer' => function ($row, $country) {
                         $clientName = $row['client_name'] ?? null;
-                        if ($city && $clientName) {
-                            return $city . ' / ' . $clientName;
-                        } elseif ($city && !$clientName) {
-                            return $city;
-                        } elseif (!$city && $clientName) {
+                        if ($country && $clientName) {
+                            return $country . ' / ' . $clientName;
+                        } elseif ($country && !$clientName) {
+                            return $country;
+                        } elseif (!$country && $clientName) {
                             return $clientName;
                         }
 

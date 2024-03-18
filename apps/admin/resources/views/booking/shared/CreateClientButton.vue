@@ -28,20 +28,11 @@ import {
 
 import { createClient, useIndustryListAPI } from '~api/client'
 
-import { useCityStore } from '~stores/city'
 import { useCountryStore } from '~stores/countries'
 import { useCurrencyStore } from '~stores/currency'
 import { useMarkupGroupStore } from '~stores/markup-group'
 
 import { isDataValid } from '~helpers/form'
-
-const { cities } = storeToRefs(useCityStore())
-const cityOptions = computed(() => {
-  const citiesOptions = cities.value ? cities.value : []
-  return citiesOptions.map(
-    (entity) => ({ value: entity.id, label: entity.name, group: entity.country_name }),
-  ) as SelectOption[]
-})
 
 const { countries } = storeToRefs(useCountryStore())
 const countryOptions = computed(() => {
@@ -85,10 +76,10 @@ const basicData = reactive<BasicFormData>({
   managerId: null,
   residency: null,
   markupGroupId: null,
+  countryId: null,
 })
 
 const legalEntityData = reactive<LegalEntityFormData>({
-  cityId: null,
   name: null,
   industry: null,
   address: '',
@@ -103,7 +94,6 @@ const legalEntityData = reactive<LegalEntityFormData>({
 })
 
 const physicalEntityData = reactive<PhysicalEntityFormData>({
-  countryId: null,
   gender: null,
 })
 
@@ -116,15 +106,15 @@ const getActiveTab = computed(() => {
 })
 
 const validateBaseDataForm = computed(() => (isDataValid(null, basicData.name)
-  && isDataValid(null, basicData.type)
+  && isDataValid(null, basicData.type) && isDataValid(null, basicData.countryId)
   && isDataValid(null, basicData.currency) && isDataValid(null, basicData.residency)
   && isDataValid(null, basicData.markupGroupId) && isDataValid(null, basicData.language)))
 
 const validateLegalDataForm = computed(() => (isDataValid(null, legalEntityData.name)
-  && isDataValid(null, legalEntityData.address) && isDataValid(null, legalEntityData.cityId)))
+  && isDataValid(null, legalEntityData.address)))
 
 const validatePhysicalDataForm = computed(() =>
-  (isDataValid(null, physicalEntityData.countryId) && isDataValid(null, physicalEntityData.gender)))
+  (isDataValid(null, physicalEntityData.gender)))
 
 const isFormValid = (): boolean => {
   switch (basicData.type) {
@@ -169,7 +159,7 @@ const resetForm = () => {
   basicData.managerId = null
   basicData.residency = null
   basicData.markupGroupId = null
-  legalEntityData.cityId = null
+  basicData.countryId = null
   legalEntityData.name = null
   legalEntityData.industry = null
   legalEntityData.address = ''
@@ -182,7 +172,6 @@ const resetForm = () => {
   legalEntityData.bankName = null
   legalEntityData.currentAccount = null
   physicalEntityData.gender = null
-  physicalEntityData.countryId = null
   switchTab(tabsItems.value[0])
   nextTick(() => {
     $('.is-invalid').removeClass('is-invalid')
@@ -247,7 +236,7 @@ onMounted(() => {
             :tab-name="tab.name"
             :is-active="tab.isActive"
             :is-required="tab.isRequired"
-            :is-disabled="tab.isDisabled && (!validateBaseDataForm || (basicData.type === 2 && !legalEntityData.cityId))"
+            :is-disabled="tab.isDisabled && (!validateBaseDataForm || (basicData.type === 2))"
             @click.prevent="switchTab(tab)"
           >
             {{ tab.title }}
@@ -301,33 +290,17 @@ onMounted(() => {
               />
             </div>
 
-            <div v-if="basicData.type === 1" class="col-md-12 mt-2 country-wrapper">
+            <div class="col-md-12 mt-2 country-wrapper">
               <SelectComponent
                 v-if="isOpened"
                 :options="countryOptions"
                 required
                 label="Страна (гражданство)"
                 :returned-empty-value="null"
-                :value="physicalEntityData.countryId"
+                :value="basicData.countryId"
                 :enable-tags="true"
                 @change="(value, event) => {
-                  physicalEntityData.countryId = Number(value)
-                  isDataValid(event, value)
-                }"
-              />
-            </div>
-
-            <div v-if="basicData.type === 2" class="col-md-12 mt-2 city-wrapper">
-              <SelectComponent
-                v-if="isOpened"
-                :options="cityOptions"
-                required
-                label="Город"
-                :returned-empty-value="null"
-                :value="legalEntityData.cityId"
-                :enable-tags="true"
-                @change="(value, event) => {
-                  legalEntityData.cityId = Number(value)
+                  basicData.countryId = Number(value)
                   isDataValid(event, value)
                 }"
               />
@@ -524,7 +497,7 @@ onMounted(() => {
     <template #actions-end>
       <button
         v-if="getActiveTab === 'basic-details' && basicData.type === 2"
-        :disabled="!validateBaseDataForm || !legalEntityData.cityId"
+        :disabled="!validateBaseDataForm"
         class="btn btn-primary"
         type="button"
         @click="switchTab(tabsItems[basicData.type ? 1 : 0])"

@@ -68,13 +68,6 @@ class ClientController extends AbstractPrototypeController
             $this->createUser($preparedData['country_id'], $gender);
         }
 
-        if (!$isPhysical) {
-            if (empty($preparedData['city_id'])) {
-                $form->error('Город обязателен, для юр. лиц');
-                $form->throwError();
-            }
-        }
-
         $managerId = $preparedData['administrator_id'] ?? null;
         if ($managerId === null) {
             $managerId = request()->user()->id;
@@ -92,7 +85,7 @@ class ClientController extends AbstractPrototypeController
     public function storeDialog(CreateClientRequest $request): JsonResponse
     {
         $data = $this->saving([
-            'city_id' => $request->getCityId(),
+            'country_id' => $request->getCountryId(),
             'currency' => $request->getCurrency(),
             'type' => $request->getType(),
             'name' => $request->getName(),
@@ -106,7 +99,6 @@ class ClientController extends AbstractPrototypeController
         if ($legalData !== null) {
             $legal = Legal::create([
                 'client_id' => $this->model->id,
-                'city_id' => $legalData->cityId,
                 'industry_id' => $legalData->industry,
                 'name' => $legalData->name,
                 'address' => $legalData->address,
@@ -127,7 +119,7 @@ class ClientController extends AbstractPrototypeController
 
         $physical = $request->getPhysical();
         if ($this->model->type === TypeEnum::PHYSICAL && $physical !== null) {
-            $this->createUser($physical->countryId, $physical->gender);
+            $this->createUser($request->getCountryId(), $physical->gender);
         }
 
         $managerId = $request->user()->id;
@@ -218,7 +210,7 @@ class ClientController extends AbstractPrototypeController
             ->id('id', 'ID')
             ->text('name', 'Наименование')
             ->enum('type', 'Тип', TypeEnum::class)
-            ->text('city_name', 'Город')
+            ->text('country_name', 'Страна')
             ->text('currency_name', 'Валюта')
             ->text('markup_group_name', 'Группа наценки')
             ->enum('residency', 'Тип цены', ResidencyEnum::class)
@@ -249,7 +241,6 @@ class ClientController extends AbstractPrototypeController
             ->enum('type', ['text' => 'Тип', 'enum' => TypeEnum::class])
             ->text('markup_group_name', ['text' => 'Наценка'])
             ->text('country_name', ['text' => 'Страна'])
-            ->text('city_name', ['text' => 'Город'])
             ->enum('status', ['text' => 'Статус', 'enum' => StatusEnum::class])
             ->orderBy('name', 'asc');
     }
@@ -259,13 +250,12 @@ class ClientController extends AbstractPrototypeController
         return Form::text('name', ['label' => 'ФИО или название компании', 'required' => true])
             ->enum('type', ['label' => 'Тип', 'enum' => TypeEnum::class, 'required' => true, 'emptyItem' => ''])
             ->hidden('gender', ['label' => 'Пол'])
-            ->select('country_id', ['label' => 'Страна (гражданство)', 'emptyItem' => '', 'items' => Country::all()])
-            ->city('city_id', ['label' => 'Город', 'emptyItem' => ''])
+            ->select('country_id', ['label' => 'Страна (гражданство)', 'emptyItem' => '', 'required'=>true, 'items' => Country::all()])
             ->enum('status', ['label' => 'Статус', 'enum' => StatusEnum::class])
             ->currency('currency', ['label' => 'Валюта', 'required' => true, 'emptyItem' => ''])
             ->enum(
                 'residency',
-                ['label' => 'Группа наценки', 'enum' => ResidencyEnum::class, 'required' => true, 'emptyItem' => '']
+                ['label' => 'Тип стоимости', 'enum' => ResidencyEnum::class, 'required' => true, 'emptyItem' => '']
             )
             ->enum(
                 'language',
@@ -284,7 +274,6 @@ class ClientController extends AbstractPrototypeController
     {
         return (new SearchForm())
             ->select('country_id', ['label' => 'Страна', 'emptyItem' => '', 'items' => Country::get()])
-            ->city('city_id', ['label' => 'Город', 'emptyItem' => ''])
             ->enum('type', ['label' => 'Тип', 'enum' => TypeEnum::class, 'emptyItem' => ''])
             ->enum('status', ['label' => 'Статус', 'enum' => StatusEnum::class, 'emptyItem' => ''])
             ->select('markup_group_id', [

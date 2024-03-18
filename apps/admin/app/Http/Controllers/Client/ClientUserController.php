@@ -124,7 +124,6 @@ class ClientUserController extends Controller
                     'order' => true
                 ]
             )
-            ->text('city_name', ['text' => 'Город'])
             ->text('email', ['text' => 'Email'])
             ->text('phone', ['text' => 'Телефон']);
     }
