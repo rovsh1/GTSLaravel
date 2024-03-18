@@ -43,7 +43,7 @@
                         @foreach(['ru', 'uz', 'en'] as $index => $lang)
                             <div class="tab-pane show {{ $index === 0 ? 'active' : '' }}" id="description-{{$lang}}" role="tabpanel">
                                 <div class="textarea-wrapper mt-2">
-                                    <textarea name="notes[{{$lang}}]" id="room-text-textarea-{{$lang}}" style="visibility: hidden">{!! $values[$lang] ?? '' !!}</textarea>
+                                    <textarea name="data[text][{{$lang}}]" id="room-text-textarea-{{$lang}}" style="visibility: hidden">{!! $values[$lang] ?? '' !!}</textarea>
                                 </div>
                             </div>
                         @endforeach
