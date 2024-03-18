@@ -15,8 +15,6 @@ class Administrator extends AbstractAggregateRoot implements EntityInterface
         private string $presentation,
         private ?string $email,
         private ?string $phone,
-        private ?string $name,
-        private ?string $surname,
         private ?string $post,
     ) {}
 
@@ -38,16 +36,6 @@ class Administrator extends AbstractAggregateRoot implements EntityInterface
     public function phone(): ?string
     {
         return $this->phone;
-    }
-
-    public function name(): ?string
-    {
-        return $this->name;
-    }
-
-    public function surname(): ?string
-    {
-        return $this->surname;
     }
 
     public function post(): ?string

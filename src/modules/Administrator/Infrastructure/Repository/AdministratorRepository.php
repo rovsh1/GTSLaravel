@@ -49,8 +49,6 @@ class AdministratorRepository implements AdministratorRepositoryInterface
             $model->presentation,
             $model->email,
             $model->phone,
-            $model->name,
-            $model->surname,
             $model->post_name,
         );
     }

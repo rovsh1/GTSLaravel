@@ -311,7 +311,7 @@ class HotelController extends AbstractPrototypeController
     {
         return Grid::paginator(self::GRID_LIMIT)
             ->setOption('id', 'hotel-users-grid')
-            ->text('presentation', ['text' => 'Имя в системе'])
+            ->text('presentation', ['text' => 'Имя в системе (ФИО)'])
             ->text('login', ['text' => 'Логин'])
             ->email('email', ['text' => 'Email'])
             ->phone('phone', ['text' => 'Телефон'])

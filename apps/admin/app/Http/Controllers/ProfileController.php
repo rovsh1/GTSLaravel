@@ -32,9 +32,7 @@ class ProfileController extends Controller
     public function settings(Request $request)
     {
         $form = Form::name('data')
-            ->text('presentation', ['label' => 'Имя в системе', 'required' => true])
-            ->text('name', ['label' => 'Имя'])
-            ->text('surname', ['label' => 'Фамилия'])
+            ->text('presentation', ['label' => 'Имя в системе (ФИО)', 'required' => true])
             ->text('email', [
                 'label' => 'Email',
                 'inputType' => 'email'

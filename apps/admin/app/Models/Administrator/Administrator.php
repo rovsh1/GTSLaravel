@@ -15,9 +15,6 @@ use Sdk\Module\Database\Eloquent\HasQuicksearch;
  * @property int id
  * @property int post_id
  * @property string presentation
- * @property string name
- * @property string surname
- * @property string login
  * @property string email
  * @property string phone
  * @property bool superuser
@@ -40,8 +37,6 @@ class Administrator extends Authenticatable
     protected $fillable = [
         'post_id',
         'presentation',
-        'name',
-        'surname',
         'login',
         'password',
         'phone',

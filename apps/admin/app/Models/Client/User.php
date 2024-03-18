@@ -18,9 +18,6 @@ class User extends Model
 
     protected array $quicksearch = [
         'users.id',
-        'users.%name%',
-        'users.%surname%',
-        'users.%patronymic%',
         'users.%presentation%',
         'users.%login%',
         'users.%email%',
@@ -29,9 +26,6 @@ class User extends Model
     protected $fillable = [
         'client_id',
         'country_id',
-        'name',
-        'surname',
-        'patronymic',
         'presentation',
         'gender',
         'login',
@@ -73,10 +67,6 @@ class User extends Model
 
     public function getDisplayName(): string
     {
-        if ($this->surname || $this->name || $this->patronymic) {
-            return $this->surname . ' ' . $this->name . ' ' . $this->patronymic;
-        }
-
         return (string)$this->presentation;
     }
 

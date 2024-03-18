@@ -52,11 +52,8 @@ class UserController extends AbstractPrototypeController
     {
         return (new ParamsTable())
             ->id('id', 'ID')
-            ->text('presentation', 'Имя в системе')
+            ->text('presentation', 'Имя в системе (ФИО)')
             ->text('client_name', 'Клиент')
-            ->text('surname', 'Фамилия')
-            ->text('name', 'Имя')
-            ->text('patronymic', 'Отчество')
             ->enum('gender', 'Пол', GenderEnum::class)
             ->text('country_name', 'Страна (гражданство)')
             ->text('email', 'Email')
@@ -104,10 +101,7 @@ class UserController extends AbstractPrototypeController
     protected function formFactory(): FormContract
     {
         return Form::client('client_id', ['label' => 'Клиент', 'required' => true, 'emptyItem' => ''])
-            ->text('presentation', ['label' => 'Имя в системе', 'required' => true])
-            ->text('surname', ['label' => 'Фамилия', 'required' => true])
-            ->text('name', ['label' => 'Имя', 'required' => true])
-            ->text('patronymic', ['label' => 'Отчество', 'required' => true])
+            ->text('presentation', ['label' => 'Имя в системе (ФИО)', 'required' => true])
             ->text('email', ['label' => 'Email', 'required' => true])
             ->text('phone', ['label' => 'Телефон'])
             ->password('password', ['label' => 'Пароль', 'required' => !$this->isEdit])
