@@ -213,7 +213,7 @@ class ClientController extends AbstractPrototypeController
             ->text('country_name', 'Страна (гражданство)')
             ->enum('status', 'Статус', StatusEnum::class)
             ->text('currency_name', 'Валюта')
-            ->enum('residency', 'Тип цены', ResidencyEnum::class)
+            ->enum('residency', 'Тариф', ResidencyEnum::class)
             ->text('markup_group_name', 'Группа наценки')
             ->enum('language', 'Язык', LanguageEnum::class)
             ->text('administrator_name', 'Менеджер')
@@ -256,7 +256,7 @@ class ClientController extends AbstractPrototypeController
             ->currency('currency', ['label' => 'Валюта', 'required' => true, 'emptyItem' => ''])
             ->enum(
                 'residency',
-                ['label' => 'Тип стоимости', 'enum' => ResidencyEnum::class, 'required' => true, 'emptyItem' => '']
+                ['label' => 'Тариф', 'enum' => ResidencyEnum::class, 'required' => true, 'emptyItem' => '']
             )
             ->select('markup_group_id', [
                 'label' => 'Группа наценки',
