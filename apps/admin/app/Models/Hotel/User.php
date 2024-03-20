@@ -14,7 +14,7 @@ class User extends Model
 
     public $timestamps = false;
 
-    protected array $quicksearch = ['id', 'presentation%'];
+    protected array $quicksearch = ['id', '%presentation%', '%login%', '%email%'];
 
     protected $table = 'hotel_administrators';
 
@@ -25,9 +25,6 @@ class User extends Model
     protected $fillable = [
         'hotel_id',
         'presentation',
-        'name',
-        'surname',
-        'patronymic',
         'login',
         'password',
         'email',

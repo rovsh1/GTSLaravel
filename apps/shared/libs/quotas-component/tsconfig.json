@@ -1,0 +1,47 @@
+{
+    "compilerOptions": {
+        "noEmit": true,
+        "target": "ESNext",
+        "strict": true,
+        "module": "ESNext",
+        "lib": [
+            "ESNext",
+            "DOM"
+        ],
+        "moduleResolution": "Node",
+        "sourceMap": true,
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
+        "useDefineForClassFields": false,
+        "resolveJsonModule": true,
+        "skipLibCheck": true,
+        "isolatedModules": false,
+        "allowJs": true,
+        "noUnusedLocals": false,
+        "noUnusedParameters": false,
+        "noImplicitReturns": true,
+        "types": [
+            "vite/client",
+            "jquery",
+            "./node_modules/@types/bootstrap/index",
+            "./src/globals",
+        ],
+        "baseUrl": "./",
+        "paths": {
+            "~assets/*": [
+                "src/assets/*"
+            ]
+        }
+    },
+    "include": [
+        "src/**/*",
+    ],
+    "exclude": [
+        "node_modules"
+    ],
+    "references": [
+        {
+            "path": "./tsconfig.node.json"
+        }
+    ]
+}

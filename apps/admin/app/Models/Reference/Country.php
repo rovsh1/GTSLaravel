@@ -29,7 +29,8 @@ class Country extends Model
         'phone_code',
         'language',
         'currency',
-        'priority'
+        'priority',
+        'is_show_in_lists'
     ];
 
     protected $casts = [
@@ -77,6 +78,11 @@ class Country extends Model
                 ->from('r_airports as t')
                 ->whereColumn('t.city_id', 'r_cities.id');
         });
+    }
+
+    public function scopeOnlyVisibleForLists(Builder $builder): void
+    {
+        $builder->where('is_show_in_lists', true);
     }
 
     public function __toString()

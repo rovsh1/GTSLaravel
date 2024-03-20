@@ -85,7 +85,7 @@ class RoomController extends Controller
         return $this->formLayout($form)
             ->title((string)$room)
             ->data([
-                'text' => $room->text,
+                'values' => $room->getTranslations('text'),
                 'cancelUrl' => route('hotels.rooms.index', $hotel),
                 'deleteUrl' => route('hotels.rooms.destroy', [$hotel, $room])
             ]);

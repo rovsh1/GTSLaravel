@@ -18,9 +18,6 @@ class User extends Model
 
     protected array $quicksearch = [
         'users.id',
-        'users.%name%',
-        'users.%surname%',
-        'users.%patronymic%',
         'users.%presentation%',
         'users.%login%',
         'users.%email%',
@@ -29,9 +26,6 @@ class User extends Model
     protected $fillable = [
         'client_id',
         'country_id',
-        'name',
-        'surname',
-        'patronymic',
         'presentation',
         'gender',
         'login',
@@ -62,9 +56,7 @@ class User extends Model
                 ->leftJoin('r_countries', 'r_countries.id', '=', 'users.country_id')
                 ->joinTranslatable('r_countries', 'name as country_name')
                 ->leftJoin('clients', 'clients.id', '=', 'users.client_id')
-                ->addSelect('clients.name as client_name')
-                ->leftJoin('r_cities', 'r_cities.id', '=', 'clients.city_id')
-                ->joinTranslatable('r_cities', 'name as city_name');
+                ->addSelect('clients.name as client_name');
         });
     }
 
@@ -75,10 +67,6 @@ class User extends Model
 
     public function getDisplayName(): string
     {
-        if ($this->surname || $this->name || $this->patronymic) {
-            return $this->surname . ' ' . $this->name . ' ' . $this->patronymic;
-        }
-
         return (string)$this->presentation;
     }
 

@@ -59,6 +59,7 @@ class BookingController extends AbstractHotelController
 
     public function show(int $id): LayoutContract
     {
+        $this->checkRights($id);
         $booking = BookingAdapter::getBooking($id);
         $order = OrderAdapter::getOrder($booking->orderId);
         $hotelId = $booking->details->hotelInfo->id;
@@ -84,6 +85,8 @@ class BookingController extends AbstractHotelController
 
     public function get(int $id): JsonResponse
     {
+        $this->checkRights($id);
+
         return response()->json(
             BookingAdapter::getBooking($id)
         );
@@ -91,6 +94,8 @@ class BookingController extends AbstractHotelController
 
     public function getOrderGuests(int $id): JsonResponse
     {
+        $this->checkRights($id);
+
         $booking = BookingAdapter::getBooking($id);
         $guests = OrderAdapter::getGuests($booking->orderId);
 
@@ -99,6 +104,8 @@ class BookingController extends AbstractHotelController
 
     public function getAvailableActions(int $id): JsonResponse
     {
+        $this->checkRights($id);
+
         return response()->json(
             BookingAdapter::getAvailableActions($id)
         );
@@ -113,6 +120,8 @@ class BookingController extends AbstractHotelController
 
     public function updateStatus(UpdateStatusRequest $request, int $id): JsonResponse
     {
+        $this->checkRights($id);
+
         return response()->json(
             BookingAdapter::updateStatus(
                 id: $id,
@@ -125,6 +134,8 @@ class BookingController extends AbstractHotelController
 
     public function setNoCheckIn(SetNoCheckInRequest $request, int $id): AjaxResponseInterface
     {
+        $this->checkRights($id);
+
         BookingAdapter::setNoCheckIn($id, $request->getSupplierPenalty());
 
         return new AjaxSuccessResponse();
@@ -132,6 +143,8 @@ class BookingController extends AbstractHotelController
 
     public function getStatusHistory(int $id): JsonResponse
     {
+        $this->checkRights($id);
+
         return response()->json(
             array_map(fn($eventDto) => [
                 'event' => $eventDto->description,
@@ -146,6 +159,8 @@ class BookingController extends AbstractHotelController
 
     public function updateNote(int $id, UpdateNoteRequest $request): AjaxResponseInterface
     {
+        $this->checkRights($id);
+
         BookingAdapter::updateNote($id, $request->getNote());
 
         return new AjaxSuccessResponse();
@@ -153,6 +168,8 @@ class BookingController extends AbstractHotelController
 
     public function timeline(int $id): LayoutContract
     {
+        $this->checkRights($id);
+
         $title = "Бронь №{$id}";
 
         return Layout::title($title)
@@ -163,6 +180,8 @@ class BookingController extends AbstractHotelController
 
     public function updateExternalNumber(UpdateExternalNumberRequest $request, int $id): AjaxResponseInterface
     {
+        $this->checkRights($id);
+
         DetailsAdapter::updateExternalNumber($id, $request->getType(), $request->getNumber());
 
         return new AjaxSuccessResponse();
@@ -170,6 +189,8 @@ class BookingController extends AbstractHotelController
 
     public function updatePenalty(UpdatePenaltyRequest $request, int $id): AjaxResponseInterface
     {
+        $this->checkRights($id);
+
         BookingAdapter::setPenalty($id, $request->getPenalty());
 
         return new AjaxSuccessResponse();
@@ -307,5 +328,20 @@ class BookingController extends AbstractHotelController
                     'EXISTS(SELECT 1 FROM booking_requests WHERE bookings.id = booking_requests.booking_id AND is_archive = 0) as has_downloadable_request'
                 ),
             );
+    }
+
+    private function checkRights(int $bookingId): void
+    {
+        $hasAccess = Booking::query()
+            ->withoutGlobalScope('default')
+            ->selectRaw(1)
+            ->where('bookings.id', $bookingId)
+            ->join('booking_hotel_details', 'booking_hotel_details.booking_id', 'bookings.id')
+            ->where('booking_hotel_details.hotel_id', $this->getHotel()->id)
+            ->exists();
+
+        if (!$hasAccess) {
+            abort(403, 'This action is unauthorized.');
+        }
     }
 }

@@ -10,9 +10,6 @@ use Sdk\Module\Database\Eloquent\HasQuicksearch;
 /**
  * @property int $hotel_id
  * @property string|null $presentation
- * @property string|null $name
- * @property string|null $surname
- * @property string|null $patronymic
  * @property string $email
  * @property string|null $phone
  */
@@ -29,9 +26,6 @@ class Administrator extends Authenticatable
     protected $fillable = [
         'hotel_id',
         'presentation',
-        'name',
-        'surname',
-        'patronymic',
         'login',
         'password',
         'email',

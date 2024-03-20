@@ -23,17 +23,16 @@ class CreateClientRequest extends FormRequest
             'type' => ['required', 'numeric'],
             'currency' => ['required', new Enum(CurrencyEnum::class)],
             'markupGroupId' => ['required', 'numeric'],
+            'countryId' => ['required', 'numeric'],
             'residency' => ['required', new Enum(ResidencyEnum::class)],
             'status' => ['nullable', 'numeric'],
             'language' => ['required', new Enum(LanguageEnum::class)],
             'managerId' => ['nullable', 'numeric'],
 
             'physical' => ['required_without:legal', 'array'],
-            'physical.countryId' => ['required_without:legal', 'numeric'],
             'physical.gender' => ['nullable', 'numeric'],
 
             'legal' => ['required_without:physical', 'array'],
-            'legal.cityId' => ['required_with:legal', 'numeric'],
             'legal.name' => ['required_with:legal', 'string'],
             'legal.industry' => ['nullable', 'numeric'],
             'legal.address' => ['required_with:legal', 'string'],
@@ -63,15 +62,6 @@ class CreateClientRequest extends FormRequest
         return $this->post('language');
     }
 
-    public function getCityId(): ?int
-    {
-        $legal = $this->post('legal');
-        if (empty($legal)) {
-            return null;
-        }
-        return (int)$legal['cityId'];
-    }
-
     public function getCurrency(): string
     {
         return $this->post('currency');
@@ -97,6 +87,11 @@ class CreateClientRequest extends FormRequest
         return $this->post('managerId');
     }
 
+    public function getCountryId(): int
+    {
+        return $this->post('countryId');
+    }
+
     public function getPhysical(): ?PhysicalDto
     {
         $data = $this->post('physical');
@@ -104,7 +99,7 @@ class CreateClientRequest extends FormRequest
             return null;
         }
 
-        return new PhysicalDto($data['countryId'], $data['gender']);
+        return new PhysicalDto($data['gender']);
     }
 
     public function getLegal(): ?LegalDto
@@ -116,7 +111,6 @@ class CreateClientRequest extends FormRequest
 
         return new LegalDto(
             name: $data['name'],
-            cityId: $data['cityId'],
             industry: $data['industry'],
             address: $data['address'],
             bik: $data['bik'],

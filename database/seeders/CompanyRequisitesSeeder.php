@@ -22,7 +22,8 @@ class CompanyRequisitesSeeder extends Seeder
             DB::table('s_company_requisites_translation')->insert([
                 'translatable_id' => $id,
                 'language' => 'ru',
-                'value' => $constant->default()
+                'value' => $constant->default(),
+                'name' => $constant->default(),
             ]);
         }
     }

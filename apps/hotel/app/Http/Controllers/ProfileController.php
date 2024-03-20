@@ -33,9 +33,7 @@ class ProfileController extends AbstractController
     public function settings(Request $request)
     {
         $form = Form::name('data')
-            ->text('presentation', ['label' => 'Имя в системе', 'required' => true])
-            ->text('name', ['label' => 'Имя', 'required' => true])
-            ->text('surname', ['label' => 'Фамилия', 'required' => true])
+            ->text('presentation', ['label' => 'Имя в системе (ФИО)', 'required' => true])
             ->text('email', [
                 'label' => 'Email',
                 'inputType' => 'email',

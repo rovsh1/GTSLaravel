@@ -65,3 +65,9 @@ export type SeasonUpdateFormData = {
   daysWeekSelected: string[]
   price: string
 }
+
+export type Month = {
+  monthKey: string
+  monthName: string
+  daysCount: number
+}

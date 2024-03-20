@@ -24,7 +24,7 @@
                     </div>
                 @endisset
                 <div class="block-row" data-action="settings">
-                    <div class="label">Имя</div>
+                    <div class="label">Имя в системе (ФИО)</div>
                     <div class="value">{{ $user->presentation }}</div>
                 </div>
                 <div class="block-row" data-action="settings">

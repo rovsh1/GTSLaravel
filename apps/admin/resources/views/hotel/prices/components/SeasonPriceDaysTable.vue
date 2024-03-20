@@ -8,14 +8,13 @@ import { DateTime } from 'luxon'
 import { nanoid } from 'nanoid'
 
 import { daysOfWeek } from '~resources/js/config/constants'
-import { Month } from '~resources/views/hotel/quotas/components/lib/index'
 
 import { updateRoomSeasonPricesByDay, useRoomSeasonsDaysPricesListAPI } from '~api/hotel/prices/seasons'
 
 import EditableCell from './EditableCell.vue'
 
 import { getStatusClassByFlag, getStatusClassByPrice } from '../lib/status'
-import { PricesAccumulationData, PricesAccumulationDataForDays, SeasonPeriod } from '../lib/types'
+import { Month, PricesAccumulationData, PricesAccumulationDataForDays, SeasonPeriod } from '../lib/types'
 
 const props = withDefaults(defineProps<{
   seasonData: PricesAccumulationData

@@ -17,13 +17,15 @@ return new class extends Migration {
         });
 
         foreach (app(CompanyRequisitesInterface::class) as $constant) {
-            $id = DB::table('s_company_requisites')->where('key', $constant->key())->first()->id;
+            $id = DB::table('s_company_requisites')->where('key', $constant->key())->first()?->id;
 
-            DB::table('s_company_requisites_translation')
-                ->updateOrInsert(
-                    ['translatable_id' => $id, 'language' => 'ru'],
-                    ['name' => $constant->name(), 'value' => $constant->default()]
-                );
+            if ($id) {
+                DB::table('s_company_requisites_translation')
+                    ->updateOrInsert(
+                        ['translatable_id' => $id, 'language' => 'ru'],
+                        ['name' => $constant->name(), 'value' => $constant->default()]
+                    );
+            }
         }
     }
 

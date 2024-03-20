@@ -15,7 +15,8 @@ use Sdk\Module\Database\Eloquent\Model;
 use Sdk\Shared\Dto\FileDto;
 
 /**
- * @property int id
+ * @property int $id
+ * @property int $hotel_id
  * @property HasMany beds
  * @property-read string $name
  * @property-read Image $images

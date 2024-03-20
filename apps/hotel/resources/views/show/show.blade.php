@@ -26,7 +26,7 @@
         </div>
 
         <div class="mt-3">
-            <x-ui.card :collapsable="true" header="Тестовое описание">
+            <x-ui.card :collapsable="true" header="Текстовое описание">
                 @if($notesUrl)
                     <x-slot:header-controls>
                         <a href="{{ $notesUrl }}" class="btn btn-add" id="btn-notes-edit">

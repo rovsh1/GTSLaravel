@@ -15,7 +15,7 @@ class Client extends Model
 
     protected $fillable = [
         'name',
-        'city_id',
+        'country_id',
         'currency',
         'is_b2b',
         'type',

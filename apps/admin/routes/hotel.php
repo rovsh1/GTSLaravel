@@ -81,9 +81,9 @@ AclRoute::for('hotel')
 
     ->resource('seasons', Controllers\Hotel\SeasonController::class)
     ->resource('rates', Controllers\Hotel\RateController::class, ['except' => ['show']])
-    ->get('/{hotel}/rates/search', Controllers\Hotel\RateController::class . '@search','read', 'rates.search')
+    ->get('/{hotel}/rates/search', Controllers\Hotel\RateController::class . '@search',null, 'rates.search')
 
-    ->get('/{hotel}/settings/markup', Controllers\Hotel\MarkupSettingsController::class . '@get','read', 'settings.markup.get')
+    ->get('/{hotel}/settings/markup', Controllers\Hotel\MarkupSettingsController::class . '@get',null, 'settings.markup.get')
     ->put('/{hotel}/settings/markup', Controllers\Hotel\MarkupSettingsController::class . '@update','update', 'settings.markup.update')
     ->post('/{hotel}/settings/markup/condition', Controllers\Hotel\MarkupSettingsController::class . '@addCondition','update', 'settings.markup.condition.add')
     ->delete('/{hotel}/settings/markup/condition', Controllers\Hotel\MarkupSettingsController::class . '@deleteCondition','update', 'settings.markup.condition.delete')

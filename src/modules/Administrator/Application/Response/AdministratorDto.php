@@ -14,8 +14,6 @@ class AdministratorDto extends AbstractDomainBasedDto
         public readonly string $presentation,
         public readonly ?string $email,
         public readonly ?string $phone,
-        public readonly ?string $name,
-        public readonly ?string $surname,
         public readonly ?string $post,
     ) {}
 
@@ -28,8 +26,6 @@ class AdministratorDto extends AbstractDomainBasedDto
             $entity->presentation(),
             $entity->email(),
             $entity->phone(),
-            $entity->name(),
-            $entity->surname(),
             $entity->post(),
         );
     }

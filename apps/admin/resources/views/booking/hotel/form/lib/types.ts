@@ -1,5 +1,4 @@
 export interface LegalEntityFormData {
-  cityId: number | null
   name: string | null
   industry: number | null
   address: string
@@ -14,7 +13,6 @@ export interface LegalEntityFormData {
 }
 
 export interface PhysicalEntityFormData {
-  countryId: number | null
   gender: number | null
 }
 
@@ -27,6 +25,7 @@ export interface BasicFormData {
   managerId: number | null
   residency: number | null
   markupGroupId: number | null
+  countryId: number | null
 }
 
 export interface CreatePhysicalClient extends BasicFormData {

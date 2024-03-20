@@ -2,7 +2,6 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
 import { useSelectElement } from 'gts-common/widgets/select-element'
-import $ from 'jquery'
 import { nanoid } from 'nanoid'
 
 import { SelectOption } from '~components/Bootstrap/lib'

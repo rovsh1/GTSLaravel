@@ -75,6 +75,13 @@ return [
             'root' => env('BACKUP_PATH') ?? storage_path('backups')
         ],
 
+        'dropbox' => [
+            'driver' => 'dropbox',
+            'key' => env('DROPBOX_APP_KEY'),
+            'secret' => env('DROPBOX_APP_SECRET'),
+            'authorization_token' => env('DROPBOX_ACCESS_TOKEN'),
+            'base_path' => env('DROPBOX_BASE_PATH', '')
+        ],
     ],
 
     /*

@@ -39,7 +39,7 @@ class AdministratorController extends AbstractPrototypeController
                 'emptyItem' => '',
                 'items' => Post::get()
             ])
-            ->text('presentation', ['label' => 'Имя в системе', 'required' => true])
+            ->text('presentation', ['label' => 'Имя в системе (ФИО)', 'required' => true])
             ->text('login', ['label' => 'Логин', 'autocomplete' => 'username', 'required' => true])
             ->email('email', ['label' => 'Email', 'autocomplete' => 'email'])
             ->phone('phone', ['label' => 'Телефон'])
@@ -77,7 +77,7 @@ class AdministratorController extends AbstractPrototypeController
         return Grid::enableQuicksearch()
             ->paginator(self::GRID_LIMIT)
             ->edit($this->prototype)
-            ->text('presentation', ['text' => 'Имя', 'order' => true])
+            ->text('presentation', ['text' => 'Имя в системе (ФИО)', 'order' => true])
             ->text('login', ['text' => 'Логин', 'order' => true])
             ->text('post_name', ['text' => 'Должность', 'order' => true])
             //->addColumn('role', 'enum', ['text' => 'Роль', 'enum' => AccessRole::class, 'order' => true])

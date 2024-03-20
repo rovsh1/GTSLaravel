@@ -1,30 +1,18 @@
 <script lang="ts" setup>
-import { computed, nextTick, ref, watch } from 'vue'
+import { computed, nextTick, ref } from 'vue'
 
-import { useToggle } from '@vueuse/core'
 import { formatDateToAPIDate } from 'gts-common/helpers/date'
-import BaseDialog from 'gts-components/Base/BaseDialog'
-import BaseLayout from 'gts-components/Base/BaseLayout'
-import EmptyData from 'gts-components/Base/EmptyData'
-import OverlayLoading from 'gts-components/Base/OverlayLoading'
-import BootstrapButton from 'gts-components/Bootstrap/BootstrapButton/BootstrapButton'
+import QuotasComponent from 'gts-quotas-component/component'
+import { defaultFiltersPayload, getRoomQuotas } from 'gts-quotas-component/lib'
+import { Day, FiltersPayload, HotelRoomQuotasStatusUpdatePayload,
+  HotelRoomQuotasUpdatePayload, Month, QuotasStatusUpdatePayload, RoomQuota } from 'gts-quotas-component/types'
 
-import { HotelResponse, useHotelGetAPI } from '~api/hotel/get'
+import { useHotelGetAPI } from '~api/hotel/get'
 import { useUpdateHotelRoomQuotasBatch } from '~api/hotel/quotas/batch'
 import { useHotelQuotasAPI } from '~api/hotel/quotas/list'
-import { UseHotelRooms, useHotelRoomsListAPI } from '~api/hotel/rooms'
-
-import QuotasFilters from './components/QuotasFilters/QuotasFilters.vue'
-import QuotasStatusSwitcher from './components/QuotasStatusSwitcher.vue'
-import RoomQuotasComponent from './components/RoomQuotas.vue'
-
-import { Day, getRoomQuotas, Month, RoomQuota } from './components/lib'
-import { QuotasStatusUpdatePayload } from './components/lib/types'
-import { defaultFiltersPayload, FiltersPayload } from './components/QuotasFilters/lib'
-
-const openingDayMenuRoomId = ref<number | null>(null)
-
-const [isOpenedOpenCloseQuotasModal, toggleModalOpenCloseQuotas] = useToggle()
+import { useHotelRoomQuotasStatusUpdate } from '~api/hotel/quotas/status'
+import { useHotelRoomQuotasUpdate } from '~api/hotel/quotas/update'
+import { useHotelRoomsListAPI } from '~api/hotel/rooms'
 
 const {
   data: hotelData,
@@ -34,23 +22,36 @@ const {
 
 fetchHotel()
 
-const hotel = computed<HotelResponse | null>(() => hotelData.value)
-
 const {
   data: roomsData,
   execute: fetchHotelRoomsAPI,
   isFetching: isHotelRoomsFetching,
 } = useHotelRoomsListAPI()
 
-const rooms = computed<UseHotelRooms>(() => roomsData.value)
-
 fetchHotelRoomsAPI()
 
 const filtersQuotasStatusBatchPayload = ref<QuotasStatusUpdatePayload | null>(null)
 const filtersPayload = ref<FiltersPayload>(defaultFiltersPayload)
 const waitLoadAndRedrawData = ref<boolean>(false)
-const waitSwitchRooms = ref<boolean>(false)
-const updatedRoomID = ref<number | null>(null)
+const hotelRoomQuotasUpdateProps = ref<HotelRoomQuotasUpdatePayload | null>(null)
+const updateRoomQuotasStatusPayload = ref<HotelRoomQuotasStatusUpdatePayload | null>(null)
+
+const {
+  execute: executeHotelRoomQuotasStatusUpdate,
+  data: hotelRoomQuotasStatusUpdateData,
+  isFetching: isHotelRoomQuotasStatusUpdateFetching,
+} = useHotelRoomQuotasStatusUpdate(updateRoomQuotasStatusPayload)
+
+const isSuccessUpdateRoomQuotasStatus = computed<boolean>(() => !!hotelRoomQuotasStatusUpdateData.value?.success)
+
+const {
+  execute: executeHotelRoomQuotasUpdate,
+  data: hotelRoomQuotasUpdateData,
+  isFetching: isHotelRoomQuotasUpdateFetching,
+} = useHotelRoomQuotasUpdate(hotelRoomQuotasUpdateProps)
+
+const updatedQuotasRoomId = computed<number | null>(() => (hotelRoomQuotasUpdateData.value?.success
+  ? hotelRoomQuotasUpdateProps.value?.roomID || null : null))
 
 const {
   execute: fetchHotelQuotas,
@@ -84,7 +85,8 @@ const quotasPeriod = ref<Day[]>([])
 const quotasPeriodMonths = ref<Month[]>([])
 const allQuotas = ref<Map<string, RoomQuota>>(new Map<string, RoomQuota>([]))
 
-const fetchHotelQuotasWrapper = async () => {
+const fetchHotelQuotasWrapper = async (filters: FiltersPayload) => {
+  filtersPayload.value = filters
   waitLoadAndRedrawData.value = true
   try {
     await fetchHotelQuotas()
@@ -98,167 +100,62 @@ const fetchHotelQuotasWrapper = async () => {
     allQuotas.value = quotas
     nextTick(() => {
       waitLoadAndRedrawData.value = false
-      updatedRoomID.value = null
     })
   } catch (error) {
     nextTick(() => {
       waitLoadAndRedrawData.value = false
-      updatedRoomID.value = null
     })
   }
 }
 
-fetchHotelQuotasWrapper()
+fetchHotelQuotasWrapper(filtersPayload.value)
 
-watch(filtersPayload, () => {
-  updatedRoomID.value = null
-  fetchHotelQuotasWrapper()
-})
-
-const editable = ref(false)
-
-const activeRoomIDs = ref<number[]>([])
-
-watch(editable, (value) => {
-  if (value === false) {
-    fetchHotelQuotasWrapper()
-  }
-})
-
-const handleFilters = (value: FiltersPayload) => {
-  filtersPayload.value = value
-}
-
-const switchRooms = (value: number[]) => {
-  activeRoomIDs.value = value
-  nextTick(() => {
-    waitSwitchRooms.value = false
-  })
-}
-
-const handleUpdateQuotasBatch = async () => {
-  if (!filtersQuotasStatusBatchPayload.value || isUpdateHotelRoomQuotasBatch.value) return
+const handleUpdateQuotasBatch = async (batchFilters: QuotasStatusUpdatePayload, filters: FiltersPayload) => {
+  if (!batchFilters || isUpdateHotelRoomQuotasBatch.value) return
+  filtersQuotasStatusBatchPayload.value = batchFilters
+  filtersPayload.value = filters
   await executeUpdateHotelRoomQuotasBatch()
-  fetchHotelQuotasWrapper()
-  toggleModalOpenCloseQuotas(false)
+  fetchHotelQuotasWrapper(filtersPayload.value)
+}
+
+const handleUpdateRoomQuotas = async (updatingQuotasPayload: HotelRoomQuotasUpdatePayload | null) => {
+  if (!updatingQuotasPayload) return
+  hotelRoomQuotasUpdateData.value = null
+  hotelRoomQuotasUpdateProps.value = updatingQuotasPayload
+  executeHotelRoomQuotasUpdate()
+}
+
+const handleUpdateRoomQuotasStatus = async (updatingQuotasStatusPayload: HotelRoomQuotasStatusUpdatePayload | null) => {
+  hotelRoomQuotasStatusUpdateData.value = null
+  updateRoomQuotasStatusPayload.value = updatingQuotasStatusPayload
+  executeHotelRoomQuotasStatusUpdate()
 }
 
 </script>
 <template>
   <div id="hotel-quotas-wrapper">
-    <BaseLayout :loading="isHotelFetching || isHotelRoomsFetching">
-      <template #title>
-        <div class="title">{{ hotel?.name ?? '' }}</div>
-      </template>
-      <template #header-controls>
-        <BootstrapButton
-          :label="editable ? 'Готово' : 'Редактировать'"
-          :start-icon="editable ? 'done' : 'edit'"
-          severity="primary"
-          :disabled="rooms === null || waitLoadAndRedrawData || waitSwitchRooms"
-          @click="editable = !editable"
-        />
-        <BootstrapButton
-          label="Открыть/закрыть квоты"
-          severity="link"
-          :disabled="rooms === null || waitLoadAndRedrawData || waitSwitchRooms"
-          @click="toggleModalOpenCloseQuotas()"
-        />
-      </template>
-      <div class="quotasBody">
-        <QuotasFilters
-          v-if="rooms"
-          :rooms="rooms"
-          :loading="waitLoadAndRedrawData || waitSwitchRooms"
-          @submit="value => handleFilters(value)"
-          @switch-room="(value) => switchRooms(value)"
-          @wait-switch-room="waitSwitchRooms = true"
-        />
-        <div v-if="hotel === null">
-          <EmptyData>
-            Не удалось найти данные о отеле.
-          </EmptyData>
-        </div>
-        <div v-else-if="rooms === null">
-          <EmptyData>
-            Не удалось найти номера у отеля.
-          </EmptyData>
-        </div>
-        <div v-else class="quotasTables">
-          <OverlayLoading v-if="waitSwitchRooms" />
-          <template v-for="room in rooms" :key="room.id">
-            <div v-if="activeRoomIDs.includes(room.id)" style="position: relative;">
-              <OverlayLoading v-if="(updatedRoomID === null) ? waitLoadAndRedrawData : false" />
-              <RoomQuotasComponent
-                :hotel="hotel"
-                :room="room"
-                :days="quotasPeriod"
-                :months="quotasPeriodMonths"
-                :all-quotas="allQuotas"
-                :editable="editable"
-                :reload-active-room="(updatedRoomID === room.id) ? waitLoadAndRedrawData : false"
-                :opening-day-menu-room-id="openingDayMenuRoomId"
-                @open-day-menu-in-another-room="(value: number | null) => {
-                  openingDayMenuRoomId = value
-                }"
-                @update="(updatedRoomIDParam: number) => {
-                  updatedRoomID = updatedRoomIDParam
-                  fetchHotelQuotasWrapper()
-                }"
-              />
-            </div>
-          </template>
-        </div>
-      </div>
-    </BaseLayout>
-    <BaseDialog
-      :opened="isOpenedOpenCloseQuotasModal as boolean"
-      :auto-width="true"
-      :click-outside-ignore="['.litepicker']"
-      @keydown.enter="handleUpdateQuotasBatch"
-      @close="toggleModalOpenCloseQuotas(false)"
-    >
-      <template #title>
-        Открытие/закрытие квот
-      </template>
-      <QuotasStatusSwitcher
-        v-if="rooms"
-        :initial-period="[filtersPayload.dateFrom, filtersPayload.dateTo]"
-        :re-init-form="isOpenedOpenCloseQuotasModal"
-        :rooms="rooms"
-        :disabled="isUpdateHotelRoomQuotasBatch"
-        @submit="value => filtersQuotasStatusBatchPayload = value"
-      />
-      <template #actions-end>
-        <button
-          class="btn btn-primary"
-          type="button"
-          :disabled="!filtersQuotasStatusBatchPayload || isUpdateHotelRoomQuotasBatch"
-          @click="handleUpdateQuotasBatch"
-        >
-          Применить
-        </button>
-        <button :disabled="isUpdateHotelRoomQuotasBatch" class="btn btn-cancel" type="button" @click="toggleModalOpenCloseQuotas(false)">Скрыть</button>
-      </template>
-    </BaseDialog>
+    <QuotasComponent
+      :is-hotel-fetching="isHotelFetching"
+      :is-hotel-rooms-fetching="isHotelRoomsFetching"
+      :is-update-hotel-room-quotas-batch="isUpdateHotelRoomQuotasBatch"
+      :is-hotel-room-quotas-update-fetching="isHotelRoomQuotasUpdateFetching"
+      :is-update-room-quotas-status="isHotelRoomQuotasStatusUpdateFetching"
+      :is-success-update-room-quotas-status="isSuccessUpdateRoomQuotasStatus"
+      :updated-quotas-room-id="updatedQuotasRoomId"
+      :wait-load-and-redraw-data="waitLoadAndRedrawData"
+      :hotel="hotelData"
+      :rooms="roomsData || []"
+      :days="quotasPeriod"
+      :months="quotasPeriodMonths"
+      :all-quotas="allQuotas"
+      @fetch-hotel-quotas="fetchHotelQuotasWrapper"
+      @update-hotel-room-quotas-batch="handleUpdateQuotasBatch"
+      @room-quotas-update="handleUpdateRoomQuotas"
+      @room-quotas-status-update="handleUpdateRoomQuotasStatus"
+    />
   </div>
 </template>
 <style lang="scss" scoped>
-@use '~resources/sass/vendor/bootstrap/configuration' as bs;
-
-.quotasBody {
-  display: flex;
-  flex-flow: column;
-  gap: 2em;
-}
-
-.quotasTables {
-  position: relative;
-  display: flex;
-  flex-flow: column;
-  gap: 2em;
-}
-
 #hotel-quotas-wrapper {
   position: relative;
 }

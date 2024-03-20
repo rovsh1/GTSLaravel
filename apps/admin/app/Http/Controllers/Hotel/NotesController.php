@@ -27,13 +27,13 @@ class NotesController extends Controller
     {
         Breadcrumb::prototype($this->prototype)
             ->addUrl($this->prototype->route('show', $hotel), (string)$hotel)
-            ->add('Примечание отеля');
+            ->add('Текстовое описание отеля');
 
         Sidebar::submenu(new HotelMenu($hotel, 'info'));
 
-        return Layout::title('Изменить примечание отеля')
+        return Layout::title('Изменить текстовое описание отеля')
             ->view('hotel.notes.notes', [
-                'value' => $hotel->text,
+                'values' => $hotel->getTranslations('text'),
                 'cancelUrl' => $this->prototype->route('show', $hotel)
             ]);
     }
@@ -43,9 +43,7 @@ class NotesController extends Controller
         $notes = $request->post('notes');
 
         $hotel->update([
-            'text' => [
-                'ru' => $notes
-            ]
+            'text' => $notes
         ]);
 
         return redirect($this->prototype->route('show', $hotel));
