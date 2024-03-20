@@ -9,6 +9,6 @@ class DashboardController extends Controller
     public function index()
     {
         //Sitemap::
-        return redirect(route('hotel-booking.index'));
+        return redirect(route('booking-order.index'));
     }
 }
