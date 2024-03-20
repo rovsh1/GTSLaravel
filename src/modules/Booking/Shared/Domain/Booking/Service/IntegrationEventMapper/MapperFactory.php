@@ -5,7 +5,7 @@ namespace Module\Booking\Shared\Domain\Booking\Service\IntegrationEventMapper;
 use Module\Booking\Shared\Domain\Booking\Service\IntegrationEventMapper\Airport\AirportGuestBindedMapper;
 use Module\Booking\Shared\Domain\Booking\Service\IntegrationEventMapper\Airport\AirportGuestUnbindedMapper;
 use Module\Booking\Shared\Domain\Booking\Service\IntegrationEventMapper\Hotel\AccommodationGuestBindedMapper;
-use Module\Booking\Shared\Domain\Booking\Service\IntegrationEventMapper\Hotel\AccommodationGuestEditedMapper;
+use Module\Booking\Shared\Domain\Booking\Service\IntegrationEventMapper\Hotel\OrderGuestEditedMapper;
 use Module\Booking\Shared\Domain\Booking\Service\IntegrationEventMapper\Hotel\AccommodationGuestUnbindedMapper;
 use Module\Booking\Shared\Domain\Booking\Service\IntegrationEventMapper\Hotel\AccommodationModifiedMapper;
 use Module\Booking\Shared\Domain\Booking\Service\IntegrationEventMapper\Transfer\CarBidAddedMapper;
@@ -52,7 +52,7 @@ class MapperFactory
         $class = match ($event) {
             AccommodationGuestBinded::class => AccommodationGuestBindedMapper::class,
             AccommodationGuestUnbinded::class => AccommodationGuestUnbindedMapper::class,
-            GuestModified::class => AccommodationGuestEditedMapper::class,
+            GuestModified::class => OrderGuestEditedMapper::class,
             AccommodationDetailsEdited::class => AccommodationModifiedMapper::class,
 
             TransferGuestBinded::class => TransferGuestBindedMapper::class,

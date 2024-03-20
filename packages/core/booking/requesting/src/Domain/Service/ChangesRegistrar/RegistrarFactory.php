@@ -41,8 +41,10 @@ class RegistrarFactory
 
             IntegrationEvent\AirportBooking\GuestAdded::class => ChangesRegistrar\AirportBooking\GuestAddedRegistrar::class,
             IntegrationEvent\AirportBooking\GuestRemoved::class => ChangesRegistrar\AirportBooking\GuestRemovedRegistrar::class,
+            IntegrationEvent\AirportBooking\GuestEdited::class => ChangesRegistrar\AirportBooking\GuestEditedRegistrar::class,
 
             IntegrationEvent\TransferBooking\GuestAdded::class => ChangesRegistrar\TransferBooking\GuestAddedRegistrar::class,
+            IntegrationEvent\TransferBooking\GuestEdited::class => ChangesRegistrar\TransferBooking\GuestEditedRegistrar::class,
             IntegrationEvent\TransferBooking\GuestRemoved::class => ChangesRegistrar\TransferBooking\GuestRemovedRegistrar::class,
             IntegrationEvent\TransferBooking\CarBidAdded::class => ChangesRegistrar\TransferBooking\CarBidAddedRegistrar::class,
             IntegrationEvent\TransferBooking\CarBidRemoved::class => ChangesRegistrar\TransferBooking\CarBidRemovedRegistrar::class,

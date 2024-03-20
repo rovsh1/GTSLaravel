@@ -13,14 +13,15 @@ class CIPSendoffInAirportStorage extends AbstractStorage
     {
         $model = Airport::findOrFail($details->id()->value());
 
+        $model->data = [
+            'serviceInfo' => $this->serializeServiceInfo($details->serviceInfo()),
+            'airportId' => $details->airportId()->value(),
+            'flightNumber' => $details->flightNumber(),
+        ];
+
         $model->update([
             'date' => $details->departureDate(),
             'guestIds' => $details->guestIds()->serialize(),
-            'booking_airport_details.data' => [
-                'serviceInfo' => $this->serializeServiceInfo($details->serviceInfo()),
-                'airportId' => $details->airportId()->value(),
-                'flightNumber' => $details->flightNumber(),
-            ]
         ]);
     }
 }
