@@ -24,6 +24,7 @@ return new class extends Migration {
         });
 
         $q = DB::connection('mysql_old')
+            ->query()
             ->addSelect('traveline_reservations.*')
             ->addSelect('reservation.hotel_id')
             ->table('traveline_reservations')
