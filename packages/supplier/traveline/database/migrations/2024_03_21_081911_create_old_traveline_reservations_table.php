@@ -25,9 +25,9 @@ return new class extends Migration {
 
         $q = DB::connection('mysql_old')
             ->query()
+            ->from('traveline_reservations')
             ->addSelect('traveline_reservations.*')
             ->addSelect('reservation.hotel_id')
-            ->table('traveline_reservations')
             ->join('reservation', 'reservation.id', 'traveline_reservations.reservation_id');
 
         foreach ($q->cursor() as $reservation) {
