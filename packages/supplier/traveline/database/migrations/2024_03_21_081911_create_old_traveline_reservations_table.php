@@ -39,7 +39,7 @@ return new class extends Migration {
                 'data' => $reservation->data,
                 'accepted_at' => $reservation->accepted_at,
                 'created_at' => $reservation->created_at,
-                'updated_at' => $reservation->updated,
+                'updated_at' => $reservation->updated_at,
             ]);
         }
     }
