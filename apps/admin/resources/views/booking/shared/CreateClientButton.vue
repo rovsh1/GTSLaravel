@@ -339,7 +339,7 @@ onMounted(() => {
                 v-if="isOpened"
                 :options="residentTypeOptions"
                 required
-                label="Тип цены"
+                label="Тариф"
                 :returned-empty-value="null"
                 :value="basicData.residency"
                 @change="(value, event) => {
