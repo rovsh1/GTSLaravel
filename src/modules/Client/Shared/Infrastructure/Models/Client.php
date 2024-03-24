@@ -8,6 +8,7 @@ use Sdk\Shared\Enum\Client\ResidencyEnum;
 use Sdk\Shared\Enum\Client\StatusEnum;
 use Sdk\Shared\Enum\Client\TypeEnum;
 use Sdk\Shared\Enum\CurrencyEnum;
+use Sdk\Shared\Enum\GenderEnum;
 
 class Client extends Model
 {
@@ -19,6 +20,7 @@ class Client extends Model
         'currency',
         'is_b2b',
         'type',
+        'gender',
         'status',
         'residency',
         'language',
@@ -28,6 +30,7 @@ class Client extends Model
 
     protected $casts = [
         'currency' => CurrencyEnum::class,
+        'gender' => GenderEnum::class,
         'status' => StatusEnum::class,
         'type' => TypeEnum::class,
         'residency' => ResidencyEnum::class,

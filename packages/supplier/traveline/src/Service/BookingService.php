@@ -40,6 +40,8 @@ class BookingService
             throw new HotelNotConnectedException();
         }
 
+        //@todo если приходит id брони или $dateUpdate, нужно отдавать в т.ч. старые брони
+
         $reservations = [];
         if ($reservationId === null && $hotelId === null && $dateUpdate === null) {
             $reservations = $this->adapter->getActiveReservations();
