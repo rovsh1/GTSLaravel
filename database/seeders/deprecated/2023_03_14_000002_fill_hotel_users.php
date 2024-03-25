@@ -22,9 +22,9 @@ return new class extends Migration {
                 ->insert([
                     'hotel_id' => $r->hotel_id,
                     'presentation' => $r->presentation,
-                    'name' => $r->name,
-                    'surname' => $r->surname,
-                    'patronymic' => $r->patronymic,
+//                    'name' => $r->name,
+//                    'surname' => $r->surname,
+//                    'patronymic' => $r->patronymic,
                     'login' => $r->login,
                     'password' => $r->password,
                     'email' => $r->email,
