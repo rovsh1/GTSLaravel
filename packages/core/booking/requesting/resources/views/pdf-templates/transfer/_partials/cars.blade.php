@@ -7,13 +7,13 @@
             <div class="column w-17 text-right"><b>Итого</b></div>
         </div>
         <div class="service-guests w-55">
-            @changemark('carBid[$car->carBidId].guests')
+            @changemark("carBid[$car->carBidId].guests")
                 <p>Гость(и):</p>
             @endchangemark()
             <ol>
                 @foreach($car->guests as $guest)
                     <li>
-                        @changemark('carBid[$car->carBidId].guests')
+                        @changemark("carBid[$car->carBidId].guests")
                             {{ $guest->fullName }}, {{ $guest->gender }}, {{ $guest->countryName }}
                         @endchangemark()
                     </li>
