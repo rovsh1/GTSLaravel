@@ -14,7 +14,7 @@ VALUES
       (2606, 'ru', 'Стандартный двухместный', '<p>двухместный номер для двоих человек</p>'),
       (2606, 'uz', 'Standart Room Double or Twin  use', NULL);
 
-INSERT INTO hotel_administrators (hotel_id, status, presentation, name, surname, patronymic, login, password, remember_token, email, phone) VALUES (565, 1, 'test20','test20','test20','test20','test20','$2y$10$AGAG.HXuzLOfVyct7mMDm.S99p6hbFg7gw3jTgEQhV9xWjfkEVGsy',null,'test202020@mail.ru', '595695');
+INSERT INTO hotel_administrators (hotel_id, status, presentation, login, password, remember_token, email, phone) VALUES (565, 1, 'test20','test20','$2y$10$AGAG.HXuzLOfVyct7mMDm.S99p6hbFg7gw3jTgEQhV9xWjfkEVGsy',null,'test202020@mail.ru', '595695');
 
 INSERT INTO `hotel_contracts` (`id`, `hotel_id`, `status`, `date_start`, `date_end`, `created_at`, `updated_at`)
 VALUES (10002, 565, 1, '2024-01-01', '2024-12-31', '2024-02-08 08:26:43', '2024-02-08 08:26:43');
