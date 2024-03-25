@@ -232,7 +232,6 @@ class BookingController extends Controller
     {
         return Grid::enableQuicksearch()
             ->setSearchForm($this->searchForm())
-            ->checkbox('checked', ['checkboxClass' => 'js-select-booking', 'dataAttributeName' => 'booking-id'])
             ->travelineBadge('is_traveline_integration_enabled', ['text' => 'TL'])
             ->id('id', [
                 'text' => '№',
