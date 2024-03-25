@@ -8,7 +8,7 @@ final class GuestRemoved extends AbstractBookingEvent
 {
     public function __construct(
         int $bookingId,
-        public readonly int $bidId,
+        public readonly int $carBidId,
         public readonly int $carId,
 //        public readonly int $carModel,
         public readonly int $guestId,
