@@ -16,8 +16,7 @@ class GuestRemovedRegistrar extends AbstractRegistrar
 
         $identifier = new ChangesIdentifier(
             $event->bookingId,
-//            "carBid[$event->bidId].guests"
-            'guests'
+            "carBid[$event->carBidId].guests"
         );
         $currentChanges = $this->changesStorage->find($identifier);
 
@@ -48,7 +47,7 @@ class GuestRemovedRegistrar extends AbstractRegistrar
         return [
             'guestId' => $event->guestId,
             'guestName' => $event->guestName,
-            'bidId' => $event->bidId,
+            'bidId' => $event->carBidId,
             'carId' => $event->carId,
         ];
     }
