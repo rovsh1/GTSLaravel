@@ -21,6 +21,7 @@ class MailGenerator
 
     public function getSubject(BookingRequest $request): string
     {
+        /** @var string $subject */
         $subject = match ($request->type()) {
             RequestTypeEnum::BOOKING => __('Запрос на бронирование'),
             RequestTypeEnum::CHANGE => __('Запрос на изменение'),
