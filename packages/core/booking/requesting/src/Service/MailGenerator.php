@@ -21,11 +21,13 @@ class MailGenerator
 
     public function getSubject(BookingRequest $request): string
     {
-        return match ($request->type()) {
+        $subject = match ($request->type()) {
             RequestTypeEnum::BOOKING => __('Запрос на бронирование'),
             RequestTypeEnum::CHANGE => __('Запрос на изменение'),
             RequestTypeEnum::CANCEL => __('Запрос на отмену'),
         };
+
+        return "#{$request->bookingId()->value()} - {$subject}";
     }
 
     public function generate(BookingRequest $request): string
