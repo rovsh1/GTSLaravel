@@ -27,6 +27,9 @@ return new class extends Migration {
                     '(SELECT GROUP_CONCAT(price_type) FROM client_price_types WHERE client_id=clients.id) as price_types'
                 )
             );
+
+        $countriesByCityId = DB::table('r_cities')->get()->keyBy('id')->map->country_id;
+
         foreach ($q->cursor() as $r) {
             $priceTypes = !empty($r->price_types) ? explode(',', $r->price_types) : [];
 
@@ -47,7 +50,7 @@ return new class extends Migration {
             try {
                 DB::table('clients')->insert([
                     'id' => $r->id,
-                    'city_id' => $r->city_id,
+                    'country_id' => $countriesByCityId[$r->city_id] ?? 5,
                     'currency' => CurrencyEnum::fromId($r->currency_id)->value,
                     'type' => $r->type,
                     'residency' => $residency,

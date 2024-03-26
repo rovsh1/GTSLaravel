@@ -1,20 +1,12 @@
-import { requestInitialData } from 'gts-common/helpers/initial-data'
 import { useSelectElement } from 'gts-common/widgets/select-element'
-import { z } from 'zod'
 
 import '~resources/views/main'
 
-const { id } = requestInitialData(z.object({
-  id: z.number().nullable(),
-}))
-
 $(() => {
-  const isEditMode = id !== null
   let isFirstInit = true
   const $legalTypeSelect = $('#form_data_type')
   const $genderInput = $('#form_data_gender')
   let $genderSelect: JQuery<HTMLSelectElement>
-  const editedLegalType = $legalTypeSelect?.val() || null
 
   const initGenderSelect = async () => {
     if ($genderSelect !== undefined) {
@@ -46,7 +38,7 @@ $(() => {
 
     if ($legalTypeSelect.val() === '2') {
       $genderSelect?.val('').change()
-    } else if ($legalTypeSelect.val() === '1' && (!isEditMode || (isEditMode && editedLegalType !== $legalTypeSelect.val()))) {
+    } else if ($legalTypeSelect.val() === '1') {
       await initGenderSelect()
       $genderField.show().toggleClass('field-required', true)
       $genderSelect.attr('required', 'required')

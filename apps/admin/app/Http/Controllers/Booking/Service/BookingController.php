@@ -367,7 +367,6 @@ class BookingController extends Controller
     {
         return Grid::enableQuicksearch()
             ->setSearchForm($this->searchForm())
-            ->checkbox('checked', ['checkboxClass' => 'js-select-booking', 'dataAttributeName' => 'booking-id'])
             ->id('id', [
                 'text' => '№',
                 'order' => true,

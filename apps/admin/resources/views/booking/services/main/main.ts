@@ -1,4 +1,3 @@
-import { showConfirmDialog } from 'gts-common/helpers/confirm-dialog'
 import { formatDateTime } from 'gts-common/helpers/date'
 import createPopover, { PopoverItem } from 'gts-common/widgets/popover'
 
@@ -12,43 +11,6 @@ import { BookingAvailableActionsResponse } from '~api/booking/status'
 import '~resources/views/main'
 
 $(() => {
-  const selectedBookings: string[] = []
-
-  const $deleteBookingsButton = $('<a />', {
-    href: '#',
-    html: '<i class="icon">delete</i>Удалить брони',
-    class: 'btn btn-delete text-danger border-0 disabled',
-  }).click(async (event) => {
-    event.preventDefault()
-
-    const { result: isConfirmed, toggleLoading } = await showConfirmDialog('Удалить запись?', 'btn-danger')
-    if (isConfirmed) {
-      toggleLoading()
-      await axios.delete('/service-booking/bulk', { data: { ids: selectedBookings } })
-      location.reload()
-    }
-  })
-
-  $('.content-header a.btn-add').after($deleteBookingsButton)
-
-  $('.js-select-booking').change((event: any): void => {
-    const $checkbox = $(event.target)
-    const bookingId = $checkbox.data('booking-id')
-    if ($checkbox.is(':checked')) {
-      selectedBookings.push(bookingId)
-      $deleteBookingsButton.toggleClass('disabled', false)
-      return
-    }
-
-    const index = selectedBookings.indexOf(bookingId)
-    if (index !== -1) {
-      selectedBookings.splice(index, 1)
-      if (selectedBookings.length === 0) {
-        $deleteBookingsButton.toggleClass('disabled', true)
-      }
-    }
-  })
-
   $('.btn-request-download').on('click', async (e: any) => {
     e.preventDefault()
     const bookingId = $(e.currentTarget).parent().parent().parent()

@@ -33,6 +33,7 @@ use Sdk\Shared\Enum\Client\StatusEnum;
 use Sdk\Shared\Enum\Client\TypeEnum;
 use Sdk\Shared\Enum\Client\User\RoleEnum;
 use Sdk\Shared\Enum\Client\User\StatusEnum as UserStatusEnum;
+use Sdk\Shared\Enum\GenderEnum;
 
 class ClientController extends AbstractPrototypeController
 {
@@ -84,9 +85,11 @@ class ClientController extends AbstractPrototypeController
 
     public function storeDialog(CreateClientRequest $request): JsonResponse
     {
+        $isPhysical = $request->getType() === TypeEnum::PHYSICAL->value;
         $data = $this->saving([
             'country_id' => $request->getCountryId(),
             'currency' => $request->getCurrency(),
+            'gender' => $isPhysical ? $request->getPhysical()?->gender : null,
             'type' => $request->getType(),
             'name' => $request->getName(),
             'status' => $request->getStatus() ?? StatusEnum::ACTIVE,
@@ -118,7 +121,7 @@ class ClientController extends AbstractPrototypeController
         }
 
         $physical = $request->getPhysical();
-        if ($this->model->type === TypeEnum::PHYSICAL && $physical !== null) {
+        if ($isPhysical && $physical !== null) {
             $this->createUser($request->getCountryId(), $physical->gender);
         }
 
@@ -210,10 +213,11 @@ class ClientController extends AbstractPrototypeController
             ->id('id', 'ID')
             ->enum('type', 'Тип', TypeEnum::class)
             ->text('name', 'ФИО или название компании')
+            ->enum('gender', 'Пол', GenderEnum::class)
             ->text('country_name', 'Страна (гражданство)')
             ->enum('status', 'Статус', StatusEnum::class)
             ->text('currency_name', 'Валюта')
-            ->enum('residency', 'Тип цены', ResidencyEnum::class)
+            ->enum('residency', 'Тариф', ResidencyEnum::class)
             ->text('markup_group_name', 'Группа наценки')
             ->enum('language', 'Язык', LanguageEnum::class)
             ->text('administrator_name', 'Менеджер')
@@ -239,6 +243,7 @@ class ClientController extends AbstractPrototypeController
             ->setSearchForm($this->searchForm())
             ->paginator(self::GRID_LIMIT)
             ->text('name', ['text' => 'ФИО', 'route' => $this->prototype->routeName('show')])
+            ->enum('gender', ['text' => 'Пол', 'enum' => GenderEnum::class])
             ->enum('type', ['text' => 'Тип', 'enum' => TypeEnum::class])
             ->text('markup_group_name', ['text' => 'Наценка'])
             ->text('country_name', ['text' => 'Страна'])
@@ -256,7 +261,7 @@ class ClientController extends AbstractPrototypeController
             ->currency('currency', ['label' => 'Валюта', 'required' => true, 'emptyItem' => ''])
             ->enum(
                 'residency',
-                ['label' => 'Тип стоимости', 'enum' => ResidencyEnum::class, 'required' => true, 'emptyItem' => '']
+                ['label' => 'Тариф', 'enum' => ResidencyEnum::class, 'required' => true, 'emptyItem' => '']
             )
             ->select('markup_group_id', [
                 'label' => 'Группа наценки',
