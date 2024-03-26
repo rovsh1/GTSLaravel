@@ -68,7 +68,7 @@ class BookingController extends Controller
                 'searchForm' => $grid->getSearchForm(),
                 'grid' => $grid,
                 'paginator' => $grid->getPaginator(),
-                'createUrl' => route('service-booking.create')
+                'createUrl' => $this->isAllowed('create') ? $this->prototype->route('create') : null
             ]);
     }
 
