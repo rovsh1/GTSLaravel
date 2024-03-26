@@ -2,6 +2,7 @@
 
 namespace Module\Client\Shared\Infrastructure\Models;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Sdk\Module\Database\Eloquent\Model;
 use Sdk\Shared\Enum\Client\LanguageEnum;
 use Sdk\Shared\Enum\Client\ResidencyEnum;
@@ -12,6 +13,8 @@ use Sdk\Shared\Enum\GenderEnum;
 
 class Client extends Model
 {
+    use SoftDeletes;
+
     protected $table = 'clients';
 
     protected $fillable = [
