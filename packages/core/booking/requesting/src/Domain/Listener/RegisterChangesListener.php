@@ -40,6 +40,7 @@ class RegisterChangesListener implements IntegrationEventListenerInterface
         return in_array($status, [
             StatusEnum::NOT_CONFIRMED,
             StatusEnum::WAITING_PROCESSING,
+            StatusEnum::WAITING_CONFIRMATION,
         ]);
     }
 }
