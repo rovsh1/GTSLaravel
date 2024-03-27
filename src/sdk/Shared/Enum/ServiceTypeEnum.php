@@ -54,4 +54,9 @@ enum ServiceTypeEnum: int
     {
         return in_array($this, self::getTransferCases(), true);
     }
+
+    public function isHotelBooking(): bool
+    {
+        return $this === ServiceTypeEnum::HOTEL_BOOKING;
+    }
 }
