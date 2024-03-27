@@ -14,7 +14,7 @@ class StoreTravelineReservation
 {
     public function handle(BookingEventInterface $event): void
     {
-        //на одно изменение приходит по 2-3 события, делаем запросы в TL с ограничением: 1 запрос в 5 секунд по одной броне.
+        //на одно изменение приходит по 2-3 события, делаем запросы в TL с ограничением: 1 запрос в 3 секунд по одной броне.
         RateLimiter::attempt(
             'RegisterReservationChanges:' . $event->bookingId,
             1,
@@ -37,7 +37,7 @@ class StoreTravelineReservation
                     'updated_at' => now()
                 ]);
             },
-            5,
+            3,
         );
     }
 
