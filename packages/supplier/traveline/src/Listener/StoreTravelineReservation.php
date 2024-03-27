@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
 use Pkg\Supplier\Traveline\Models\TravelineReservation;
+use Sdk\Booking\Enum\QuotaProcessingMethodEnum;
 use Sdk\Booking\IntegrationEvent\BookingEventInterface;
 
 class StoreTravelineReservation
@@ -45,6 +46,7 @@ class StoreTravelineReservation
     {
         $hotelId = DB::table('booking_hotel_details')
             ->where('booking_id', $bookingId)
+            ->whereIn('quota_processing_method', [QuotaProcessingMethodEnum::QUOTA, QuotaProcessingMethodEnum::SITE])
             ->select('traveline_hotels.hotel_id')
             ->join('traveline_hotels', 'traveline_hotels.hotel_id', '=', 'booking_hotel_details.hotel_id')
             ->first()
