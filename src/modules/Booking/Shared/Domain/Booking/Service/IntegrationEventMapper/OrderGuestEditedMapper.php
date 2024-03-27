@@ -28,7 +28,7 @@ class OrderGuestEditedMapper implements MapperInterface
         \Log::debug('[OrderGuestEditedMapper] GuestModified event', ['guest_id' => $event->guestId()->value()]);
         foreach ($bookings as $booking) {
             if ($booking->serviceType()->isAirportService()) {
-                \Log::debug('[OrderGuestEditedMapper] Airport booking', ['guest_id' => $event->guestId()->value()]);
+                \Log::debug('[OrderGuestEditedMapper] Airport booking', ['guest_id' => $event->guestId()->value(),  'booking_id' => $booking->id()->value()]);
                 $events[] = new AirportIntegrationEvent(
                     $booking->id()->value(),
                     $event->guest()->id()->value(),
@@ -39,7 +39,7 @@ class OrderGuestEditedMapper implements MapperInterface
             }
 
             if ($booking->serviceType()->isHotelBooking()) {
-                \Log::debug('[OrderGuestEditedMapper] Hotel booking', ['guest_id' => $event->guestId()->value()]);
+                \Log::debug('[OrderGuestEditedMapper] Hotel booking', ['guest_id' => $event->guestId()->value(), 'booking_id' => $booking->id()->value()]);
                 $accommodations = $this->accommodationRepository->getByBookingId($booking->id());
                 foreach ($accommodations as $accommodation) {
                     if (!$accommodation->guestIds()->has($event->guestId())) {
@@ -59,7 +59,7 @@ class OrderGuestEditedMapper implements MapperInterface
             }
 
             if ($booking->serviceType()->isTransferService()) {
-                \Log::debug('[OrderGuestEditedMapper] Transfer booking', ['guest_id' => $event->guestId()->value()]);
+                \Log::debug('[OrderGuestEditedMapper] Transfer booking', ['guest_id' => $event->guestId()->value(), 'booking_id' => $booking->id()->value()]);
                 $carBids = $this->carBidDbContext->getByBookingId($booking->id());
                 foreach ($carBids as $carBid) {
                     if (!$carBid->guestIds()->has($event->guestId())) {
