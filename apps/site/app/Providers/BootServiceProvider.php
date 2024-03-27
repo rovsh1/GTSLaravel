@@ -3,6 +3,8 @@
 namespace App\Site\Providers;
 
 use App\Site\Support\Context\ContextManager;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\ServiceProvider;
 use Sdk\Shared\Contracts\Context\ContextInterface;
 
@@ -23,6 +25,8 @@ class BootServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        if (Cookie::get('lang') !== null) {
+            App::setLocale(Cookie::get('lang'));
+        }
     }
 }

@@ -13,7 +13,7 @@ use Sdk\Shared\Enum\Client\TypeEnum;
 
 class Client extends \Module\Client\Shared\Infrastructure\Models\Client
 {
-    use HasQuicksearch, SoftDeletes;
+    use HasQuicksearch;
 
     protected array $quicksearch = ['id', 'clients.%name%'];
 

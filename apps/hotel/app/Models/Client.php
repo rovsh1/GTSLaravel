@@ -14,7 +14,7 @@ use Sdk\Module\Database\Eloquent\HasQuicksearch;
 
 class Client extends \Module\Client\Shared\Infrastructure\Models\Client
 {
-    use HasQuicksearch, SoftDeletes;
+    use HasQuicksearch;
 
     protected array $quicksearch = ['id', 'clients.%name%'];
 
