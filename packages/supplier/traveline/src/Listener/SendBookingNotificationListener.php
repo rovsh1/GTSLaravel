@@ -27,7 +27,7 @@ class SendBookingNotificationListener
                 if (!$travelineReservationExists) {
                     return;
                 }
-                \Log::debug('[Traveline] SendBookingNotificationListener Send notification to traveline', ['booking_id' => $event->bookingId]);
+                \Log::debug('[Traveline] Send notification to traveline', ['booking_id' => $event->bookingId]);
                 $this->travelineAdapter->sendReservationNotification();
             },
             3,
