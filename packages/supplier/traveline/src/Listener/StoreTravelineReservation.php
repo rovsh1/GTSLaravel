@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Pkg\Supplier\Traveline\Listener;
 
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
 use Pkg\Supplier\Traveline\Models\TravelineReservation;
 use Sdk\Booking\Enum\QuotaProcessingMethodEnum;
@@ -20,8 +19,6 @@ class StoreTravelineReservation
             'RegisterReservationChanges:' . $event->bookingId,
             1,
             function () use ($event) {
-                Log::debug('[Traveline] RegisterReservationChanges', ['event' => $event::class]);
-
                 $travelineReservation = TravelineReservation::whereReservationId($event->bookingId)->first();
                 if ($travelineReservation === null) {
                     $this->createTravelineReservation($event->bookingId);
