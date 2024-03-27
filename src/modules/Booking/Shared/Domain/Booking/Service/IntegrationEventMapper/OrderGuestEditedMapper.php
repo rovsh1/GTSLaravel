@@ -77,7 +77,7 @@ class OrderGuestEditedMapper implements MapperInterface
             }
         }
 
-        \Log::debug('[OrderGuestEditedMapper] Events', ['guest_id' => $event->guestId()->value(), 'events' => $events]);
+        \Log::debug('[OrderGuestEditedMapper] Events', ['guest_id' => $event->guestId()->value(), 'events_count' => count($events)]);
 
         return $events;
     }
