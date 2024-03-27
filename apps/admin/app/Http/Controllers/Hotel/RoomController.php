@@ -33,8 +33,8 @@ class RoomController extends Controller
         return Layout::title('Номера отеля')
             ->view('hotel.rooms.rooms', [
                 'hotel' => $hotel,
-                'editAllowed' => true,
-                'deleteAllowed' => true,
+                'editAllowed' => Acl::isUpdateAllowed('hotel'),
+                'deleteAllowed' => Acl::isDeleteAllowed('hotel'),
                 'createUrl' => Acl::isCreateAllowed('hotel') ? route('hotels.rooms.create', $hotel) : null,
                 'rooms' => $hotel->rooms
             ]);
