@@ -48,7 +48,8 @@ class ModuleServiceProvider extends ServiceProvider
         'CurrencyRate' => 'Pkg\\CurrencyRate\\',
         'MailManager' => 'Pkg\\MailManager\\',
         'IntegrationEventBus' => 'Pkg\\IntegrationEventBus\\',
-        'Traveline' => 'Pkg\\Supplier\\Traveline\\',
+        'TravelineApp' => 'Pkg\\App\\Traveline\\',
+        'TravelineSupplier' => 'Pkg\\Supplier\\Traveline\\',
     ];
 
     protected array $shared = [

@@ -25,6 +25,8 @@
     "gts/integration-event-bus": "*",
     "gts/locale-translator": "*",
     "gts/mail-manager": "*",
+    "gts/app-traveline-api": "^1.0",
+    "gts/supplier-traveline": "^1.0",
     "guzzlehttp/guzzle": "^7.2",
     "laravel/framework": "^10.0",
     "laravel/horizon": "^5.21",
@@ -57,7 +59,6 @@
       "App\\Api\\": "apps/api/app/",
       "App\\Shared\\": "apps/shared/app/",
       "Module\\": "src/modules/",
-      "Pkg\\Supplier\\Traveline\\": "packages/supplier/traveline/src",
       "Pkg\\Booking\\Common\\": "packages/core/booking/common/src",
       "Pkg\\Booking\\Requesting\\": "packages/core/booking/requesting/src",
       "Pkg\\Booking\\EventSourcing\\": "packages/core/booking/event-sourcing/src",
@@ -121,6 +122,14 @@
     {
       "type": "path",
       "url": "packages/generic/integration-events"
+    },
+    {
+      "type": "path",
+      "url": "packages/app-traveline-api"
+    },
+    {
+      "type": "path",
+      "url": "packages/supplier-traveline"
     }
   ]
 }
